@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use App\Models\Project;
+use App\Models\Exam;
 use App\Http\Requests\ProjectRequest;
 
 class ProjectsController extends Controller
@@ -103,5 +104,10 @@ class ProjectsController extends Controller
         $project->delete();
 
         return to_route('projects.index');
+    }
+
+    public function examsByProjectId($id){
+        $exams = Exam::where('project_id',$id)->get();
+        return view('projects.examsByProjectId',compact('exams'));
     }
 }

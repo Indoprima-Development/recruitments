@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ExamsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectsController;
 
@@ -41,5 +41,12 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('exam-histories', 'examHistories');
     });
 
+    //PROJECT
     Route::resource('/projects',ProjectsController::class);
+    Route::controller(ProjectsController::class)->group(function () {
+        Route::get('/projects/{id}/exams', 'examsByProjectId');
+    });
+
+    //EXAM
+    Route::resource('/exams',ExamsController::class);
 });

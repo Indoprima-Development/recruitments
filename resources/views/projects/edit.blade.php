@@ -18,15 +18,15 @@
 		</div>
 		<div class="mb-3">
 			{{ Form::label('created_by', 'Created_by', ['class'=>'form-label']) }}
-			{{ Form::text('created_by', null, array('class' => 'form-control')) }}
+			{{ Form::text('created_by', null, array('class' => 'form-control','readonly')) }}
 		</div>
 		<div class="mb-3">
 			{{ Form::label('is_can_take_multiple', 'Is_can_take_multiple', ['class'=>'form-label']) }}
-			{{ Form::string('is_can_take_multiple', null, array('class' => 'form-control')) }}
+			{{ Form::text('is_can_take_multiple', null, array('class' => 'form-control')) }}
 		</div>
 		<div class="mb-3">
 			{{ Form::label('is_open', 'Is_open', ['class'=>'form-label']) }}
-			{{ Form::string('is_open', null, array('class' => 'form-control')) }}
+			{{ Form::text('is_open', null, array('class' => 'form-control')) }}
 		</div>
 
 		{{ Form::submit('Edit', array('class' => 'btn btn-primary')) }}
