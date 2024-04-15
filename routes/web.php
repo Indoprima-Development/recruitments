@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ExamsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\QnasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,4 +50,13 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     //EXAM
     Route::resource('/exams',ExamsController::class);
+    Route::controller(ExamsController::class)->group(function () {
+        Route::get('/exams/{id}/qnas', 'qnasByExamId');
+    });
+
+    //QNA
+    Route::resource('/qnas',QnasController::class);
+    Route::controller(QnasController::class)->group(function () {
+        // Route::get('/exams/{id}/qnas', 'qnasByExamId');
+    });
 });

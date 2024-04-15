@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Project;
 use App\Models\Exam;
+use App\Models\Qna;
 use App\Http\Requests\ExamRequest;
 
 class ExamsController extends Controller
@@ -27,7 +29,8 @@ class ExamsController extends Controller
      */
     public function create()
     {
-        return view('exams.create');
+        $projects= Project::all();
+        return view('exams.create',compact('projects'));
     }
 
     /**
@@ -69,8 +72,9 @@ class ExamsController extends Controller
      */
     public function edit($id)
     {
+        $projects= Project::all();
         $exam = Exam::findOrFail($id);
-        return view('exams.edit',['exam'=>$exam]);
+        return view('exams.edit',compact('exam','projects'));
     }
 
     /**
@@ -105,5 +109,11 @@ class ExamsController extends Controller
         $exam->delete();
 
         return to_route('exams.index');
+    }
+
+    public function qnasByExamId($id){
+        $examId = DecryptData($id);
+        $qnas = Qna::where('exam_id',$examId)->get();
+        return view('exams.qnasByExamId', compact('qnas'));
     }
 }

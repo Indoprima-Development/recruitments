@@ -107,7 +107,8 @@ class ProjectsController extends Controller
     }
 
     public function examsByProjectId($id){
-        $exams = Exam::where('project_id',$id)->get();
+        $projectId = DecryptData($id);
+        $exams = Exam::where('project_id',$projectId)->get();
         return view('projects.examsByProjectId',compact('exams'));
     }
 }
