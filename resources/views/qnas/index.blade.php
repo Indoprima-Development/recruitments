@@ -17,13 +17,6 @@
 				<th>answer4</th>
 				<th>answer5</th>
 				<th>key</th>
-				<th>question_img</th>
-				<th>answer1_img</th>
-				<th>answer2_img</th>
-				<th>answer3_img</th>
-				<th>answer4_img</th>
-				<th>answer5_img</th>
-
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -41,13 +34,6 @@
 					<td>{{ $qna->answer4 }}</td>
 					<td>{{ $qna->answer5 }}</td>
 					<td>{{ $qna->key }}</td>
-					<td>{{ $qna->question_img }}</td>
-					<td>{{ $qna->answer1_img }}</td>
-					<td>{{ $qna->answer2_img }}</td>
-					<td>{{ $qna->answer3_img }}</td>
-					<td>{{ $qna->answer4_img }}</td>
-					<td>{{ $qna->answer5_img }}</td>
-
 					<td>
 						<div class="d-flex gap-2">
                             <a href="{{ route('qnas.show', [$qna->id]) }}" class="btn btn-info">Show</a>

@@ -8,6 +8,11 @@
 </style>
 @endsection
 
+<?php
+$numbers = range(1, 20);
+$answers = range(1, 5);
+?>
+
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -25,7 +30,7 @@
                         </div>
 
                         <div class="col-sm-12 col-md-4 text-end">
-                            <a href="{{url('submit-test',EncryptData($data['examTransaction']->id))}}" class="btn btn-primary">Finish Test</a>
+                            <button id="btnSubmitTest" type="button" class="btn btn-primary">Finish Test</button>
                         </div>
                     </div>
                 </div>
@@ -34,30 +39,97 @@
     </div>
 
     <div class="row">
-        <div class="col-12">
-            <div class="card bg-light-info shadow-none position-relative overflow-hidden">
-                <div class="card-body px-4 py-3">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <!-- <h4 class="fw-semibold mb-8">Cards</h4> -->
-                            <div class="row">
-                                @for($i=1;$i <= 20;$i++) <div class="col-1 mb-1">
-                                    <div id="btnSoal{{$i}}" index="{{$i}}" class="bg-muted rounded-2 d-flex align-items-center justify-content-center p-6 btnSoal">
-                                        <h4 class="text-white">{{$i}}</h4>
-                                    </div>
-                            </div>
-                            @endfor
+        <div class="col-lg-4">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 text-center">
+                            <h6 class="text-white">{{$data['exam']->exam_name}}
+                            </h6>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="card shadow-none border">
+                <div class="card-body">
+                    <h4 class="mb-3">Question Number</h4>
+                    <p class="card-subtitle">Please choose one number to get the question</p>
+                    <div class="vstack gap-3 mt-4">
+                        <div class="row">
+                            @foreach($numbers as $i)
+                            <div class="col-2 mb-2">
+                                <a id="btnSoal{{$i}}" index="{{$i}}" class="btnSoal btn btn-muted p-0 hstack justify-content-center" href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Choose">
+                                    <h4 class="text-white">{{$i}}</h4>
+                                </a>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            @foreach($data["qna"] as $key => $d)
+            <div style="display: none;" id="cardQna{{$key+1}}" index="{{$key+1}}" class="cardQna">
+                <div class="card bg-light-primary">
+                    <div class="card-body border-bottom">
+                        <div class="d-flex align-items-center gap-6 flex-wrap">
+                            <h6 class="mb-0">Question</h6>
+                        </div>
+                        <p class="text-dark my-3">
+                            {{$d->question}}
+                        </p>
+
+                        @if($d->question_img != '' && $d->question_img != null)
+                        <div class="row">
+                            <div class="col-12">
+                                <img src="{{asset($d->question_img)}}" alt="modernize-img" width="100%" class="rounded-4 w-100 object-fit-cover">
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <h6>Answer</h6>
+
+                @foreach($answers as $i)
+                <?php
+                $radioBtnId = "radio_" . $d->id . "_" . $i;
+                $radioBtnName = "radio_" . $d->id;
+                $radioBtnValue = EncryptData($d->id . "_" . $i . "_" . $d->key);
+                $radioBtnAnswerVar = "answer" . $i;
+                $imageAnswerVar = "answer$i" . "_img";
+                ?>
+                <div class="card">
+                    <div class="card-body border-bottom">
+                        <div class="d-flex align-items-center gap-6 flex-wrap">
+                            <input class="form-check-input success rounded-circle inputAnswer" width="40" height="40" type="radio" name="{{$radioBtnName}}" id="{{$radioBtnId}}" value="{{$radioBtnValue}}">
+                            <label class="form-check-label" for="{{$radioBtnId}}">
+                                <h6 class="mb-0">{{$d->$radioBtnAnswerVar}}</h6>
+                            </label>
+                        </div>
+
+                        @if($d->$imageAnswerVar != '' && $d->$imageAnswerVar != null)
+                        <div class="row">
+                            <div class="col-12">
+                                <img src="{{asset($d->$imageAnswerVar)}}" alt="modernize-img" width="100%" class="rounded-4 w-100 object-fit-cover">
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endforeach
         </div>
     </div>
 
     <div class="col-xl-12 col-12 d-flex align-items-strech">
         <div class="card w-100">
             @foreach($data["qna"] as $key => $d)
-            <div class="card-body p-4 cardQna" id="cardQna{{$key+1}}" index="{{$key+1}}" style="display: none;">
+            <div class="card-body p-4" style="display: none;">
                 <h5 class="card-title fw-semibold">{{$d->question}}</h5>
                 <div class="row py-2">
                     @for($i=1;$i <= 5;$i++)<i></i>
@@ -101,6 +173,22 @@
             let url = "{{url('qna-transaction')}}/" + $(this).val()
             $.get(url, function(data, status) {
                 alert("answer saved")
+            });
+        });
+
+        $("#btnSubmitTest").click(function() {
+            Swal.fire({
+                title: "Are you sure to finish this test?",
+                text: "you can't take this test twice",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#5D87FF",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = "{{url('submit-test',EncryptData($data['examTransaction']->id))}}"
+                }
             });
         });
     });
@@ -175,7 +263,7 @@
     }
     var y = setInterval(callAjax, 30000);
 
-    $(document).on("contextmenu", function(e){
+    $(document).on("contextmenu", function(e) {
         e.preventDefault();
     });
 </script>

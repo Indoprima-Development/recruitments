@@ -20,6 +20,14 @@ class HomeController extends Controller
 
     public function examination($project_id)
     {
+        $data['examTransaction'] = Exam_transaction::where('user_id', Auth::user()->id)
+            ->where('is_open', true)
+            ->first();
+        
+        if (!empty($data['examTransaction'])) {
+            return redirect('qna/'.EncryptData($data['examTransaction']->exam_id));
+        }
+
         $project_id = DecryptData($project_id);
         $data['projects']   = Project::findOrFail($project_id);
         $data['exam']       = Exam::where('project_id', $project_id)->get();
@@ -53,6 +61,8 @@ class HomeController extends Controller
         $data['qna'] = Qna::select('*')
             ->where('exam_id', $exam_id)
             ->get();
+
+        $data['exam'] = Exam::findOrFail($exam_id);
 
         return view('home.qna', compact('data'));
     }

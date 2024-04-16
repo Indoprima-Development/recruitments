@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Exam;
 use App\Models\Qna;
 use App\Http\Requests\QnaRequest;
+use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class QnasController extends Controller
 {
@@ -27,7 +30,8 @@ class QnasController extends Controller
      */
     public function create()
     {
-        return view('qnas.create');
+        $exams = Exam::all();
+        return view('qnas.create',compact('exams'));
     }
 
     /**
@@ -125,5 +129,18 @@ class QnasController extends Controller
         $qna->delete();
 
         return to_route('qnas.index');
+    }
+
+    public function qnaUploadImage(Request $request){
+        $filename = "$request->type.png";
+        $pathUpload = "qna/$request->qna_id";
+        UploadFile($request->file,$pathUpload,$filename);
+        
+        Qna::where('id',$request->qna_id)->update([
+            $request->type => $pathUpload.'/'.$filename
+        ]);
+
+        Alert::success('Success', 'Upload image success');
+        return redirect()->back();
     }
 }

@@ -34,12 +34,6 @@ class QnaRequest extends FormRequest
 			'answer4' => 'required',
 			'answer5' => 'required',
 			'key' => 'required',
-			'question_img' => 'required',
-			'answer1_img' => 'required',
-			'answer2_img' => 'required',
-			'answer3_img' => 'required',
-			'answer4_img' => 'required',
-			'answer5_img' => 'required',
         ];
     }
 }

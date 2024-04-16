@@ -24,12 +24,12 @@ class CreateQnasTable extends Migration
 			$table->text('answer4');
 			$table->text('answer5');
 			$table->integer('key');
-			$table->text('question_img');
-			$table->text('answer1_img');
-			$table->text('answer2_img');
-			$table->text('answer3_img');
-			$table->text('answer4_img');
-			$table->text('answer5_img');
+			$table->text('question_img')->nullable();
+			$table->text('answer1_img')->nullable();
+			$table->text('answer2_img')->nullable();
+			$table->text('answer3_img')->nullable();
+			$table->text('answer4_img')->nullable();
+			$table->text('answer5_img')->nullable();
             $table->timestamps();
         });
     }

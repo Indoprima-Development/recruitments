@@ -57,6 +57,6 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     //QNA
     Route::resource('/qnas',QnasController::class);
     Route::controller(QnasController::class)->group(function () {
-        // Route::get('/exams/{id}/qnas', 'qnasByExamId');
+        Route::post('/qnas-upload-image', 'qnaUploadImage');
     });
 });
