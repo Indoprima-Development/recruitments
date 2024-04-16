@@ -9,6 +9,9 @@ use App\Models\Exam;
 use App\Models\Exam_transaction;
 use App\Models\Qna;
 use App\Models\Qna_transaction;
+//
+use App\Repository\QnaRepository;
+use App\Repository\ProjectRepository;
 
 class HomeController extends Controller
 {
@@ -23,9 +26,9 @@ class HomeController extends Controller
         $data['examTransaction'] = Exam_transaction::where('user_id', Auth::user()->id)
             ->where('is_open', true)
             ->first();
-        
+
         if (!empty($data['examTransaction'])) {
-            return redirect('qna/'.EncryptData($data['examTransaction']->exam_id));
+            return redirect('qna/' . EncryptData($data['examTransaction']->exam_id));
         }
 
         $project_id = DecryptData($project_id);
@@ -62,6 +65,8 @@ class HomeController extends Controller
             ->where('exam_id', $exam_id)
             ->with('qnaTransaction')
             ->get();
+
+        // QnaRepository::QnaGetByExamId(1)
 
         $data['exam'] = Exam::findOrFail($exam_id);
 
@@ -163,10 +168,11 @@ class HomeController extends Controller
         return true;
     }
 
-    public function examHistories(){
+    public function examHistories()
+    {
         $data['examTransaction'] = Exam_transaction::where('user_id', Auth::user()->id)
-        ->with('exam')
-        ->get();
+            ->with('exam')
+            ->get();
 
         return view('home.examHistories', compact('data'));
     }
