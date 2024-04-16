@@ -14,6 +14,7 @@
                 </a>
             </li>
         </ul>
+        @if(Auth::user()->role == 'admin')
         <ul class="navbar-nav quick-links d-none d-xl-flex">
             <li class="nav-item dropdown hover-dd d-none d-xl-block">
                 <a class="nav-link" href="javascript:void(0)" data-bs-toggle="dropdown">Apps<span class="mt-1"><i class="ti ti-chevron-down"></i></span></a>
@@ -131,6 +132,7 @@
             </li>
             @endif
         </ul>
+        @endif
         <div class="d-block d-xl-none">
             <a href="{{url('/')}}" class="text-nowrap nav-link">
                 <img src="{{asset('package/dist/images/logos/logo.png')}}" width="300" alt="" />

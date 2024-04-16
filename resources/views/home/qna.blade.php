@@ -105,7 +105,11 @@ $answers = range(1, 5);
                 <div class="card">
                     <div class="card-body border-bottom">
                         <div class="d-flex align-items-center gap-6 flex-wrap">
+                            @if($d->qnaTransaction != null && $i == $d->qnaTransaction->answer)
+                            <input class="form-check-input success rounded-circle inputAnswer" width="40" height="40" type="radio" name="{{$radioBtnName}}" id="{{$radioBtnId}}" value="{{$radioBtnValue}}" checked>
+                            @else
                             <input class="form-check-input success rounded-circle inputAnswer" width="40" height="40" type="radio" name="{{$radioBtnName}}" id="{{$radioBtnId}}" value="{{$radioBtnValue}}">
+                            @endif
                             <label class="form-check-label" for="{{$radioBtnId}}">
                                 <h6 class="mb-0">{{$d->$radioBtnAnswerVar}}</h6>
                             </label>

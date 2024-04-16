@@ -14,19 +14,20 @@
         <div class="col-sm-12 col-lg-12 text-center">
             <div class="card">
                 <div class="card-body">
-                    @if($data['examTransaction']->score >= 80)
+                    @if(false)
                     <span class="mt-2 badge fw-semibold py-1 bg-primary-subtle text-primary">LOLOS</span>
-                    @else
                     <span class="mt-2 badge fw-semibold py-1 bg-danger-subtle text-danger">TIDAK LOLOS</span>
                     @endif
                     <div class="my-4">
                         <img src="{{asset('package/dist/images/backgrounds/gold.png')}}" alt="" class="img-fluid" width="80" height="80">
                     </div>
+
+                    @if(false)
                     <div class="mb-3 text-center">
                         <h5 class="fw-bolder fs-6 mb-0">Score</h5>
                         <h2 class="fw-bolder fs-12 ms-2 mb-0">{{$data['examTransaction']->score}}</h2>
-
                     </div>
+                    @endif
                     <a href="{{url('/')}}" class="btn btn-primary fw-bolder rounded-2 py-6 w-100 text-capitalize">Exit</a>
                 </div>
             </div>

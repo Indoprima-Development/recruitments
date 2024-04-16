@@ -60,6 +60,7 @@ class HomeController extends Controller
         //get qna
         $data['qna'] = Qna::select('*')
             ->where('exam_id', $exam_id)
+            ->with('qnaTransaction')
             ->get();
 
         $data['exam'] = Exam::findOrFail($exam_id);

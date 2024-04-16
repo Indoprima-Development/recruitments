@@ -18,4 +18,9 @@ class Qna extends Model
 	{
 		return $this->belongsTo('App\Models\User');
 	}
+
+	public function qnaTransaction()
+	{
+		return $this->hasOne('App\Models\Qna_transaction');
+	}
 }
