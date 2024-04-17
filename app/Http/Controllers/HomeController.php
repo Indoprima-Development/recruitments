@@ -25,10 +25,15 @@ class HomeController extends Controller
     {
         $project_id = DecryptData($project_id);
 
-        $data['examTransaction'] = Exam_transaction::select('exam_transactions.*')
-            ->where('exam_transactions.user_id', Auth::user()->id)
-            ->join('exams', 'exams.id', 'exam_transactions.exam_id')
-            ->where('exams.project_id', $project_id)
+        // $data['examTransaction'] = Exam_transaction::select('exam_transactions.*')
+        //     ->where('exam_transactions.user_id', Auth::user()->id)
+        //     ->join('exams', 'exams.id', 'exam_transactions.exam_id')
+        //     ->where('exams.project_id', $project_id)
+        //     ->first();
+
+        $data['examTransaction'] = Exam_transaction::select('*')
+            ->where('user_id', Auth::user()->id)
+            ->where('is_open', true)
             ->first();
 
         if (!empty($data['examTransaction'])) {
@@ -68,8 +73,8 @@ class HomeController extends Controller
             ->where('exam_id', $exam_id)
             ->with('qnaTransaction')
             ->get();
-
-        // QnaRepository::QnaGetByExamId(1)
+        
+        $data['qna'] = collect($data['qna'])->shuffle()->values();
 
         $data['exam'] = Exam::findOrFail($exam_id);
 
