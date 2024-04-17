@@ -148,6 +148,7 @@ class HomeController extends Controller
 
     public function rankTest($exam_id)
     {
+        $exam_id = DecryptData($exam_id);
         $data['exam'] = Exam::findOrFail($exam_id);
         $data['examTransaction'] = Exam_transaction::where('exam_id', $exam_id)
             ->orderBy('score', 'DESC')

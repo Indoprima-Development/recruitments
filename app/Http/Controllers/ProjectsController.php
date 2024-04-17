@@ -108,7 +108,8 @@ class ProjectsController extends Controller
 
     public function examsByProjectId($id){
         $projectId = DecryptData($id);
+        $project = Project::where('id',$projectId)->first();
         $exams = Exam::where('project_id',$projectId)->get();
-        return view('projects.examsByProjectId',compact('exams'));
+        return view('projects.examsByProjectId',compact('exams','project'));
     }
 }

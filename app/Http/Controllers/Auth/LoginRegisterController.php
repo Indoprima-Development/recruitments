@@ -65,6 +65,7 @@ class LoginRegisterController extends Controller
             SaveSession('user', $user);
             Auth::login($user);
             $user->update([
+                'name' => $request->name,
                 'ktp' => $request->ktp,
                 'nohp' => $request->nohp
             ]);
@@ -72,7 +73,7 @@ class LoginRegisterController extends Controller
             return redirect('/')->withSuccess('You have successfully logged in!');
         } else {
             $user = User::create([
-                'name' => $request->ktp,
+                'name' => $request->name,
                 'email' => $request->ktp."@mail.com",
                 'ktp' => $request->ktp,
                 'nohp' => $request->nohp,

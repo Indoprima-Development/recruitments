@@ -11,18 +11,14 @@
 @endif
 
 {{ Form::model($exam, array('route' => array('exams.update', $exam->id), 'method' => 'PUT')) }}
-
+{{ Form::hidden('user_id', null, array('class' => 'form-control','readonly')) }}
 <div class="mb-3">
-    {{ Form::label('project_id', 'Project_id', ['class'=>'form-label']) }}
+    {{ Form::label('project_id', 'Project id', ['class'=>'form-label']) }}
     <select class="form-select" name="project_id">
         @foreach($projects as $p)
         <option value="{{ $p->id }}" {{$p->id == $exam->project_id ? 'selected' : ''}}>{{ $p->project_name }}</option>
         @endforeach
     </select>
-</div>
-<div class="mb-3">
-    {{ Form::label('user_id', 'User_id', ['class'=>'form-label']) }}
-    {{ Form::text('user_id', null, array('class' => 'form-control','readonly')) }}
 </div>
 <div class="mb-3">
     {{ Form::label('exam_name', 'Exam_name', ['class'=>'form-label']) }}

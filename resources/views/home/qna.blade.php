@@ -20,16 +20,16 @@ $answers = range(1, 5);
             <div class="card bg-light-warning shadow-none position-relative overflow-hidden">
                 <div class="card-body px-4 py-3">
                     <div class="row">
-                        <div class="col-sm-12 col-md-8">
-                            <h4>
+                        <div class="col-sm-12 col-md-8 mb-2">
+                            <h5>
                                 <span id="days">0</span> Days
                                 <span id="hours">0</span> Hours
                                 <span id="minutes">0</span> Minutes
                                 <span id="seconds">0</span> Seconds
-                            </h4>
+                            </h5>
                         </div>
 
-                        <div class="col-sm-12 col-md-4 text-end">
+                        <div class="col-sm-12 col-md-4 mb-2 text-end">
                             <button id="btnSubmitTest" type="button" class="btn btn-primary">Finish Test</button>
                         </div>
                     </div>

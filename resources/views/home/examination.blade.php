@@ -25,9 +25,12 @@
                     <h5 class="card-title fw-semibold">Select Recruitmen Test</h5>
                     <p class="card-subtitle mb-3">The Beginner's Guide to Collectible Items</p>
                     <div class="row">
-                        @foreach($data["exam"] as $d)
+                        <?php
+                            $arr = ['primary','success','dark','warning','danger'];
+                        ?>
+                        @foreach($data["exam"] as $i => $d)
                         <div class="col-sm-6 col-md-3 mb-3">
-                            <div class="card bg-light-primary overflow-hidden mb-4 mb-md-0 shadow-none border">
+                            <div class="card bg-light-{{$arr[$i%5]}} overflow-hidden mb-4 mb-md-0 shadow-none border">
                                 <!-- <div class="position-relative mb-3">
                                     <div class="card-img-overlay">
                                         <div class="text-end">
@@ -41,7 +44,7 @@
                                             <span class="text-dark fw-bold">{{$d->exam_name}}</span>
                                         </h5>
                                     </div>
-                                    <button examId="{{EncryptData($d->id)}}" class="btn btn-primary w-100 mt-3 btnConfirm">Take Test</button>
+                                    <button examId="{{EncryptData($d->id)}}" class="btn btn-{{$arr[$i%5]}} w-100 mt-3 btnConfirm">Take Selection</button>
                                 </div>
                             </div>
                         </div>

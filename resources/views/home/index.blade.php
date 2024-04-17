@@ -8,7 +8,7 @@
                 <div class="card-body px-4 py-3">
                     <div class="row align-items-center">
                         <div class="col-9">
-                            <h4 class="fw-semibold mb-8">Recruitmen PT. Indoprima Gemilang</h4>
+                            <h4 class="fw-semibold mb-8">Recruitment PT. Indoprima Gemilang</h4>
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"></li>
@@ -27,8 +27,8 @@
         <div class="col-xl-12 col-12 d-flex align-items-strech">
             <div class="card w-100">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold">Select Recruitmen Test</h5>
-                    <p class="card-subtitle mb-3">The Beginner's Guide to Collectible Items</p>
+                    <h5 class="card-title fw-semibold">Recruitment Test</h5>
+                    <p class="card-subtitle mb-3">Choose the selection you want to take.</p>
                     <div class="row">
                         @foreach($data["projects"] as $d)
                         <div class="co-sm-6 col-md-3">

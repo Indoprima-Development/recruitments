@@ -30,7 +30,7 @@ class QnasController extends Controller
      */
     public function create()
     {
-        $exams = Exam::all();
+        $exams = Exam::with('exam')->get();
         return view('qnas.create',compact('exams'));
     }
 

@@ -25,10 +25,10 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="text-center">Exam</th>
-                                        <th class="text-center">Score</th>
                                         <th class="text-center">Date Start</th>
                                         <th class="text-center">Date Finish</th>
-                                        <th class="text-center">Status</th>
+                                        <!-- <th class="text-center">Score</th>
+                                        <th class="text-center">Status</th> -->
                                     </tr>
                                     <!-- end row -->
                                 </thead>
@@ -37,9 +37,10 @@
                                     <tr>
                                         <td class="text-center">{{$i+1}}</td>
                                         <td class="text-center">{{$d->exam->exam_name}}</td>
-                                        <td class="text-center">{{$d->score}}</td>
                                         <td class="text-center">{{$d->created_at}}</td>
                                         <td class="text-center">{{$d->updated_at}}</td>
+                                        @if(false)
+                                        <td class="text-center">{{$d->score}}</td>
                                         <td class="text-center">
                                             @if($d->score >= 80)
                                             <span class="badge fw-semibold py-1 bg-primary-subtle text-primary">LOLOS</span>
@@ -47,6 +48,7 @@
                                             <span class="badge fw-semibold py-1 bg-danger-subtle text-danger">TIDAK LOLOS</span>
                                             @endif
                                         </td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                     <!-- end row -->

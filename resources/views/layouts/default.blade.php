@@ -37,7 +37,22 @@
         <div class="body-wrapper">
             @yield('content')
 
-            <div class="container-fluid">@yield('content2')</div>
+            <div class="container-fluid">
+                <section class="datatables">
+                    <!-- basic table -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        @yield('content2')
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
         <div class="dark-transparent sidebartoggler"></div>
     </div>
