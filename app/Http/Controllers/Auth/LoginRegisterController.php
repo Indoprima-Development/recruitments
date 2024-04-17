@@ -60,7 +60,8 @@ class LoginRegisterController extends Controller
             'nohp' => 'required'
         ]);
 
-        $user = User::where('ktp', $request->ktp)->orWhere('nohp', $request->nohp)->first();
+        // $user = User::where('ktp', $request->ktp)->orWhere('nohp', $request->nohp)->first();
+        $user = User::where('nohp', $request->nohp)->first();
         if (!empty($user)) {
             SaveSession('user', $user);
             Auth::login($user);
@@ -72,20 +73,20 @@ class LoginRegisterController extends Controller
             $request->session()->regenerate();
             return redirect('/')->withSuccess('You have successfully logged in!');
         }
-         else {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->ktp."@mail.com",
-                'ktp' => $request->ktp,
-                'nohp' => $request->nohp,
-                'role' => 'user',
-            ]);
+        //  else {
+        //     $user = User::create([
+        //         'name' => $request->name,
+        //         'email' => $request->ktp."@mail.com",
+        //         'ktp' => $request->ktp,
+        //         'nohp' => $request->nohp,
+        //         'role' => 'user',
+        //     ]);
 
-            SaveSession('user', $user);
-            Auth::login($user);
-            $request->session()->regenerate();
-            return redirect('/')->withSuccess('You have successfully logged in!');
-        }
+        //     SaveSession('user', $user);
+        //     Auth::login($user);
+        //     $request->session()->regenerate();
+        //     return redirect('/')->withSuccess('You have successfully logged in!');
+        // }
 
         Alert::error('Failed!', 'Your provided credentials do not match in our records.');
 
