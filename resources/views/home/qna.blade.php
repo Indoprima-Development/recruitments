@@ -167,14 +167,18 @@ $answers = range(1, 5);
 
 @section('addJs')
 <script>
+    var currentNumbers = 1;
     $(document).ready(function() {
-        var currentNumbers = 1;
         makeElementShow(1)
         makeButtonActive(1)
 
         $("#btnNext").click(function() {
-            let next = currentNumbers+1;
-            $("#btnSoal"+next).click();
+            let next = parseInt(currentNumbers)+1;
+            if(next > 20){
+                next = 1;
+                currentNumbers = 1;
+            }
+            $("#btnSoal"+next.toString()).click();
         });
 
 

@@ -25,16 +25,16 @@ class HomeController extends Controller
     {
         $project_id = DecryptData($project_id);
 
-        // $data['examTransaction'] = Exam_transaction::select('exam_transactions.*')
-        //     ->where('exam_transactions.user_id', Auth::user()->id)
-        //     ->join('exams', 'exams.id', 'exam_transactions.exam_id')
-        //     ->where('exams.project_id', $project_id)
-        //     ->first();
-
-        $data['examTransaction'] = Exam_transaction::select('*')
-            ->where('user_id', Auth::user()->id)
-            ->where('is_open', true)
+        $data['examTransaction'] = Exam_transaction::select('exam_transactions.*')
+            ->where('exam_transactions.user_id', Auth::user()->id)
+            ->join('exams', 'exams.id', 'exam_transactions.exam_id')
+            ->where('exams.project_id', $project_id)
             ->first();
+
+        // $data['examTransaction'] = Exam_transaction::select('*')
+        //     ->where('user_id', Auth::user()->id)
+        //     ->where('is_open', true)
+        //     ->first();
 
         if (!empty($data['examTransaction'])) {
             return redirect('qna/' . EncryptData($data['examTransaction']->exam_id));
