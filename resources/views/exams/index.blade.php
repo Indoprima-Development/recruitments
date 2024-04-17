@@ -14,7 +14,7 @@
 	<div class="card-body px-4 py-3">
 		<div class="row align-items-center">
 			<div class="col-12">
-				<h4 class="fw-semibold mb-8">{{$project->project_name}}</h4>
+				<h4 class="fw-semibold mb-8">{{$project->project_name ?? 'All Project'}}</h4>
 			</div>
 		</div>
 	</div>

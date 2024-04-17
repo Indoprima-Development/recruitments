@@ -56,14 +56,16 @@
                                         <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">KTP</label>
-                                        <input type="number" name="ktp" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <label for="ktp" class="form-label">KTP</label>
+                                        <input type="number" min=0 name="ktp" class="form-control" id="ktp" aria-describedby="emailHelp">
+                                        <small id="ktp-warning" class="text-danger">KTP numbers is not correct</small>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="exampleInputPassword1" class="form-label">No. HP</label>
-                                        <input type="number" name="nohp" class="form-control" id="exampleInputPassword1">
+                                        <label for="nohp" class="form-label">Phone Number</label>
+                                        <input type="number" min=0 name="nohp" class="form-control" id="nohp">
+                                        <small id="nohp-warning" class="text-danger">Phone numbers is not correct</small>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</button>
+                                    <button id="btnSubmit" type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2" disabled>Sign In</button>
                                     <div class="d-flex align-items-center justify-content-center">
                                         <p class="fs-4 mb-0 fw-medium">Make sure to fill in your identity correctly</p>
                                     </div>
@@ -90,6 +92,56 @@
     <script src="{{asset('package/dist/js/custom.js')}}"></script>
     <!-- current page js files -->
     <script src="{{asset('package/dist/libs/owl.carousel/dist/owl.carousel.min.js')}}"></script>
+
+    <script>
+        var ktp = false
+        var nohp = false
+        $(document).ready(function() {
+            $("#ktp").on("input", function() {
+                var inputVal = $(this).val();
+
+                if (parseInt(inputVal) < 0) {
+                    $("#ktp").val(0);
+                }
+
+                if (inputVal.length === 16) {
+                    $('#ktp-warning').hide();
+                    ktp = true
+                } else {
+                    $('#ktp-warning').show();
+                    ktp = false
+                }
+
+                toogleBtnSubmit()
+            });
+
+            $("#nohp").on("input", function() {
+                var inputVal = $(this).val();
+
+                if (parseInt(inputVal) < 0) {
+                    $("#nohp").val(0);
+                }
+
+                if (inputVal.length < 8) {
+                    $('#nohp-warning').show();
+                    nohp = false
+                } else {
+                    $('#nohp-warning').hide();
+                    nohp = true
+                }
+
+                toogleBtnSubmit()
+            });
+
+            function toogleBtnSubmit(){
+                console.log(nohp)
+                $("#btnSubmit").prop("disabled", true);
+                if (nohp && ktp) {
+                    $("#btnSubmit").prop("disabled", false);
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

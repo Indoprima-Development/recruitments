@@ -71,7 +71,8 @@ class LoginRegisterController extends Controller
             ]);
             $request->session()->regenerate();
             return redirect('/')->withSuccess('You have successfully logged in!');
-        } else {
+        }
+         else {
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->ktp."@mail.com",
