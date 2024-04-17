@@ -23,15 +23,18 @@ class HomeController extends Controller
 
     public function examination($project_id)
     {
-        $data['examTransaction'] = Exam_transaction::where('user_id', Auth::user()->id)
-            ->where('is_open', true)
+        $project_id = DecryptData($project_id);
+
+        $data['examTransaction'] = Exam_transaction::select('exam_transactions.*')
+            ->where('exam_transactions.user_id', Auth::user()->id)
+            ->join('exams', 'exams.id', 'exam_transactions.exam_id')
+            ->where('exams.project_id', $project_id)
             ->first();
 
         if (!empty($data['examTransaction'])) {
             return redirect('qna/' . EncryptData($data['examTransaction']->exam_id));
         }
 
-        $project_id = DecryptData($project_id);
         $data['projects']   = Project::findOrFail($project_id);
         $data['exam']       = Exam::where('project_id', $project_id)->get();
         return view('home.examination', compact('data'));

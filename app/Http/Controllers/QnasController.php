@@ -83,8 +83,9 @@ class QnasController extends Controller
      */
     public function edit($id)
     {
+        $exams = Exam::all();
         $qna = Qna::findOrFail($id);
-        return view('qnas.edit',['qna'=>$qna]);
+        return view('qnas.edit',compact('exams','qna'));
     }
 
     /**

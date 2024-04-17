@@ -176,7 +176,7 @@ $answers = range(1, 5);
         $(".inputAnswer").change(function() {
             let url = "{{url('qna-transaction')}}/" + $(this).val()
             $.get(url, function(data, status) {
-                alert("answer saved")
+                // alert("answer saved")
             });
         });
 

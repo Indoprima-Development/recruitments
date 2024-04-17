@@ -34,9 +34,16 @@
 </form>
 
 {{ Form::model($qna, array('route' => array('qnas.update', $qna->id), 'method' => 'PUT')) }}
-
-{{ Form::hidden('exam_id', $qna->exam_id, array('class' => 'form-control')) }}
 {{ Form::hidden('user_id', Auth::user()->id, array('class' => 'form-control')) }}
+
+<div class="mb-3">
+	{{ Form::label('exam_id', 'Exam Id', ['class'=>'form-label']) }}
+	<select class="form-select" name="exam_id">
+		@foreach($exams as $e)
+		<option value="{{$e->id}}" {{$qna->exam_id == $e->id ? 'selected':''}}>{{$e->exam_name}}</option>
+		@endforeach
+	</select>
+</div>
 
 <div class="mb-3">
 	{{ Form::label('key', 'Key', ['class'=>'form-label']) }}
