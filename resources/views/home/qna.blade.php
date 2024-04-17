@@ -155,6 +155,12 @@ $answers = range(1, 5);
             @endforeach
         </div>
     </div>
+
+    <div class="col-xl-12 col-12 text-end mt-n4">
+        <button class="btn btn-primary" type="button" id="btnNext">
+            Next
+        </button>
+    </div>
 </div>
 </div>
 @endsection
@@ -162,12 +168,20 @@ $answers = range(1, 5);
 @section('addJs')
 <script>
     $(document).ready(function() {
+        var currentNumbers = 1;
         makeElementShow(1)
         makeButtonActive(1)
+
+        $("#btnNext").click(function() {
+            let next = currentNumbers+1;
+            $("#btnSoal"+next).click();
+        });
+
 
         // Attach click event handler to the button with id "myButton"
         $(".btnSoal").click(function() {
             let index = $(this).attr("index")
+            currentNumbers = index;
             makeAllButtonNotActive()
             makeButtonActive(index)
             makeElementShow(index)

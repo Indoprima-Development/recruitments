@@ -131,7 +131,7 @@ class HomeController extends Controller
 
         $score = 0;
         foreach ($qnaTransactions as $t) {
-            if ($t->answer) {
+            if ($t->is_true) {
                 $score += 5;
             }
         }
