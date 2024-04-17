@@ -191,7 +191,7 @@ $answers = range(1, 5);
                 confirmButtonText: "Yes"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location = "{{url('submit-test',EncryptData($data['examTransaction']->id))}}"
+                    window.location = "{{url('submit-test',EncryptData($data['examTransaction']->exam_id))}}"
                 }
             });
         });
@@ -260,7 +260,7 @@ $answers = range(1, 5);
             if (data == true) {
 
             } else {
-                var urlsubmit = "{{url('submit-test',EncryptData($data['examTransaction']->id))}}"
+                var urlsubmit = "{{url('submit-test',EncryptData($data['examTransaction']->exam_id))}}"
                 window.location = urlsubmit
             }
         });

@@ -26,7 +26,7 @@
                     <p class="card-subtitle mb-3">The Beginner's Guide to Collectible Items</p>
                     <div class="row">
                         @foreach($data["exam"] as $d)
-                        <div class="col-sm-6 col-md-3">
+                        <div class="col-sm-6 col-md-3 mb-3">
                             <div class="card bg-light-primary overflow-hidden mb-4 mb-md-0 shadow-none border">
                                 <!-- <div class="position-relative mb-3">
                                     <div class="card-img-overlay">
