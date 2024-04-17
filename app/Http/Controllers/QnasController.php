@@ -107,12 +107,6 @@ class QnasController extends Controller
 		$qna->answer4 = $request->input('answer4');
 		$qna->answer5 = $request->input('answer5');
 		$qna->key = $request->input('key');
-		$qna->question_img = $request->input('question_img');
-		$qna->answer1_img = $request->input('answer1_img');
-		$qna->answer2_img = $request->input('answer2_img');
-		$qna->answer3_img = $request->input('answer3_img');
-		$qna->answer4_img = $request->input('answer4_img');
-		$qna->answer5_img = $request->input('answer5_img');
         $qna->save();
 
         return redirect()->back();
