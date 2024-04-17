@@ -4,7 +4,7 @@ namespace App\Constants;
 
 class Constants
 {
-    const AppName = 'perjadin';
+    const AppName = 'recruitment';
 
     const ApiPegawaiBaseUrl = '127.0.0.1:8000';
 

@@ -21,6 +21,6 @@ class Qna extends Model
 
 	public function qnaTransaction()
 	{
-		return $this->hasOne('App\Models\Qna_transaction');
+		return $this->hasOne('App\Models\Qna_transaction')->where('user_id', auth()->id());
 	}
 }

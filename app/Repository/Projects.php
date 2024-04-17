@@ -4,9 +4,9 @@ namespace App\Repository;
 use Illuminate\Http\Request;
 use App\Models\Project;
 
-class Projects
+class ProjectRepository
 {
-    public function GetAll(){
+    public static function GetAll(){
         return Project::all();
     }
 
