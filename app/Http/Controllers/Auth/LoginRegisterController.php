@@ -45,7 +45,7 @@ class LoginRegisterController extends Controller
         Auth::attempt($credentials);
         $request->session()->regenerate();
         return redirect()->route('dashboard')
-        ->withSuccess('You have successfully registered & logged in!');
+            ->withSuccess('You have successfully registered & logged in!');
     }
 
     public function login()
@@ -60,14 +60,27 @@ class LoginRegisterController extends Controller
             'nohp' => 'required'
         ]);
 
-        $user = User::where('ktp',$request->ktp)->orWhere('nohp',$request->nohp)->first();
-        if(!empty($user)){
-            SaveSession('user',$user);
+        $user = User::where('ktp', $request->ktp)->orWhere('nohp', $request->nohp)->first();
+        if (!empty($user)) {
+            SaveSession('user', $user);
             Auth::login($user);
             $user->update([
                 'ktp' => $request->ktp,
-                'nohp'=> $request->nohp
+                'nohp' => $request->nohp
             ]);
+            $request->session()->regenerate();
+            return redirect('/')->withSuccess('You have successfully logged in!');
+        } else {
+            $user = User::create([
+                'name' => $request->ktp,
+                'email' => $request->ktp."@mail.com",
+                'ktp' => $request->ktp,
+                'nohp' => $request->nohp,
+                'role' => 'user',
+            ]);
+
+            SaveSession('user', $user);
+            Auth::login($user);
             $request->session()->regenerate();
             return redirect('/')->withSuccess('You have successfully logged in!');
         }
@@ -86,15 +99,14 @@ class LoginRegisterController extends Controller
      */
     public function dashboard()
     {
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             return view('auth.dashboard');
         }
 
         return redirect()->route('login')
             ->withErrors([
-            'email' => 'Please login to access the dashboard.',
-        ])->onlyInput('email');
+                'email' => 'Please login to access the dashboard.',
+            ])->onlyInput('email');
     }
 
     /**
@@ -111,5 +123,4 @@ class LoginRegisterController extends Controller
         return redirect()->route('login')
             ->withSuccess('You have logged out successfully!');;
     }
-
 }
