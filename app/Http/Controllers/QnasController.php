@@ -114,7 +114,7 @@ class QnasController extends Controller
 		$qna->answer5_img = $request->input('answer5_img');
         $qna->save();
 
-        return to_route('qnas.index');
+        return redirect()->back();
     }
 
     /**
@@ -128,7 +128,7 @@ class QnasController extends Controller
         $qna = Qna::findOrFail($id);
         $qna->delete();
 
-        return to_route('qnas.index');
+        return redirect()->back();
     }
 
     public function qnaUploadImage(Request $request){

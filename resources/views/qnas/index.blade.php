@@ -24,7 +24,7 @@
 			@foreach($qnas as $i => $qna)
 
 				<tr>
-					<td>{{ $i++ }}</td>
+					<td>{{ $i+1 }}</td>
 					<td>{{ $qna->exam_id }}</td>
 					<td>{{ $qna->user_id }}</td>
 					<td>{{ $qna->question }}</td>
