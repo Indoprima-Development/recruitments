@@ -60,7 +60,7 @@ class QnasController extends Controller
 		$qna->answer5_img = $request->input('answer5_img');
         $qna->save();
 
-        return to_route('qnas.index');
+        return redirect()->back();
     }
 
     /**
