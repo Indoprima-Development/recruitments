@@ -13,7 +13,11 @@
                     <h4 class="fw-semibold mb-8">Ranking Test</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="text-muted " href="./index.html">{{$data['exam']->exam_name}}</a></li>
+                            <li class="breadcrumb-item">
+                                <a class="text-muted " href="#">
+                                    {{$data['project']->project_name ?? 'All Project'}}
+                                </a>
+                            </li>
                         </ol>
                     </nav>
                 </div>
@@ -27,6 +31,21 @@
     <section class="datatables">
         <!-- basic table -->
         <div class="row">
+            <div class="col-12 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <label>Filter By Exam</label>
+                        <select id="filterByExam" class="form-select" name="exam_id">
+                            <option selected disabled>Choose</option>
+                            <option value="0">All</option>
+                            @foreach($data[exams] as $e)
+                            <option value="{{DecryptData($e->id)}}">{{$e->exam_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -37,11 +56,12 @@
                             Hasil recruitment bersifat mutlak keputusan dari <code> PT.Indoprima Gemilang</code>.
                         </p>
                         <div class="table-responsive">
-                            <table id="zero_config" class="table border table-bordered text-nowrap">
+                            <table id="file_export" class="table border table-striped table-bordered display text-nowrap">
                                 <thead>
                                     <!-- start row -->
                                     <tr>
                                         <th class="text-center">Rank</th>
+                                        <th class="text-center">Exam</th>
                                         <th class="text-center">Name</th>
                                         <th class="text-center">KTP</th>
                                         <th class="text-center">Score</th>
@@ -53,6 +73,7 @@
                                     @foreach($data['examTransaction'] as $i => $d)
                                     <tr>
                                         <td class="text-center">{{$i+1}}</td>
+                                        <td class="text-center">{{$d->exam->exam_name}}</td>
                                         <td class="text-center">{{$d->user->name}}</td>
                                         <td class="text-center">{{EncryptKTP($d->user->ktp)}}</td>
                                         <td class="text-center">{{$d->score}}</td>
@@ -79,6 +100,28 @@
 
 @section('addJs')
 <script src="{{asset('package/dist/libs/datatables.net/js/jquery.dataTables.min.js')}}"></script>
-
 <script src="{{asset('package/dist/js/datatable/datatable-basic.init.js')}}"></script>
+
+<script src="{{asset('package/dist/libs/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+<script src="{{asset('package/dist/js/datatable/datatable-advanced.init.js')}}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#filterByExam').change(function() {
+            var value = $(this).val();
+            if (value == 0) {
+                window.location = "{{url('rank-test-by-project')}}/" + "{{DecryptData($data['exams'][0]->project_id ?? '')}}"
+            } else {
+                window.location = "{{url('rank-test')}}/" + value
+            }
+        });
+    });
+</script>
 @endsection

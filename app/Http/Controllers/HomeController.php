@@ -73,7 +73,7 @@ class HomeController extends Controller
             ->where('exam_id', $exam_id)
             ->with('qnaTransaction')
             ->get();
-        
+
         $data['qna'] = collect($data['qna'])->shuffle()->values();
 
         $data['exam'] = Exam::findOrFail($exam_id);
@@ -146,14 +146,32 @@ class HomeController extends Controller
         return view('home.submitTest', compact('data'));
     }
 
+    public function rankTestByProjectId($project_id)
+    {
+        $project_id = DecryptData($project_id);
+        $data['project'] = Project::findOrFail($project_id);
+        $data['exams'] = Exam::where('project_id',$project_id)->get();
+
+        $data['examTransaction'] = Exam_transaction::select('exam_transactions.*')
+            ->join('exams','exams.id','exam_transactions.exam_id')
+            ->where('exams.project_id', $project_id)
+            ->orderBy('exam_transactions.score', 'DESC')
+            ->orderBy('exam_transactions.updated_at', 'ASC')
+            ->with('user','exam')
+            ->get();
+
+        return view('home.rankTest', compact('data'));
+    }
+
     public function rankTest($exam_id)
     {
         $exam_id = DecryptData($exam_id);
         $data['exam'] = Exam::findOrFail($exam_id);
+        $data['exams'] = Exam::where('project_id',$data['exam']->project_id)->get();
         $data['examTransaction'] = Exam_transaction::where('exam_id', $exam_id)
             ->orderBy('score', 'DESC')
             ->orderBy('updated_at', 'ASC')
-            ->with('user')
+            ->with('user','exam')
             ->get();
 
         return view('home.rankTest', compact('data'));

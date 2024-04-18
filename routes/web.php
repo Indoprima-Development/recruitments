@@ -38,6 +38,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/qna/{exam_id}', 'qna');
         Route::get('/qna-transaction/{code}', 'qnaTransaction');
         Route::get('/submit-test/{exam_id}', 'submitTest');
+        Route::get('/rank-test-by-project/{project_id}', 'rankTestByProjectId');
         Route::get('/rank-test/{exam_id}', 'rankTest');
         Route::get('/update-time-remaining/{exam_id}', 'updateTimeRemaining');
         Route::get('exam-histories', 'examHistories');
