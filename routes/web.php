@@ -33,6 +33,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index');
+        Route::get('/home', 'index');
         Route::get('/examination/{project_id}', 'examination');
         Route::get('/qna/{exam_id}', 'qna');
         Route::get('/qna-transaction/{code}', 'qnaTransaction');
