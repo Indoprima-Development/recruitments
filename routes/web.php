@@ -62,3 +62,36 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::post('/qnas-upload-image', 'qnaUploadImage');
     });
 });
+
+    use App\Http\Controllers\DivisionsController;
+    Route::resource('/divisions',DivisionsController::class);
+
+    use App\Http\Controllers\DepartmentsController;
+    Route::resource('/departments',DepartmentsController::class);
+
+    use App\Http\Controllers\SectionsController;
+    Route::resource('/sections',SectionsController::class);
+
+    use App\Http\Controllers\JobtitlesController;
+    Route::resource('/jobtitles',JobtitlesController::class);
+
+    use App\Http\Controllers\EducationController;
+    Route::resource('/educations',EducationController::class);
+
+    use App\Http\Controllers\MajorsController;
+    Route::resource('/majors',MajorsController::class);
+
+    use App\Http\Controllers\LocationsController;
+    Route::resource('/locations',LocationsController::class);
+
+    use App\Http\Controllers\FieldsController;
+    Route::resource('/fields',FieldsController::class);
+
+    use App\Http\Controllers\PtkformsController;
+    Route::resource('/ptkforms',PtkformsController::class);
+
+    use App\Http\Controllers\PtkfieldsController;
+    Route::resource('/ptkfields',PtkfieldsController::class);
+
+    use App\Http\Controllers\PtkformtransactionsController;
+    Route::resource('/ptkformtransactions',PtkformtransactionsController::class);

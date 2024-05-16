@@ -35,7 +35,7 @@
 
         <!-- Main wrapper -->
         <div class="body-wrapper">
-            @yield('content')
+            @yield('content2')
 
             <div class="container-fluid">
                 <section class="datatables">
@@ -45,7 +45,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        @yield('content2')
+                                        @yield('content')
                                     </div>
                                 </div>
                             </div>
