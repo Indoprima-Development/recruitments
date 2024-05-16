@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use App\Models\Section;
+use App\Models\Department;
 use App\Http\Requests\SectionRequest;
 
 class SectionsController extends Controller
@@ -27,7 +28,8 @@ class SectionsController extends Controller
      */
     public function create()
     {
-        return view('sections.create');
+        $departments = Department::all();
+        return view('sections.create',compact('departments'));
     }
 
     /**
@@ -67,7 +69,8 @@ class SectionsController extends Controller
     public function edit($id)
     {
         $section = Section::findOrFail($id);
-        return view('sections.edit',['section'=>$section]);
+        $departments = Department::all();
+        return view('sections.edit',compact('section','departments'));
     }
 
     /**
