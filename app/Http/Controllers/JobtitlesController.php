@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use App\Models\Jobtitle;
+use App\Models\Section;
 use App\Http\Requests\JobtitleRequest;
 
 class JobtitlesController extends Controller
@@ -27,7 +28,8 @@ class JobtitlesController extends Controller
      */
     public function create()
     {
-        return view('jobtitles.create');
+        $sections = Section::all();
+        return view('jobtitles.create',compact('sections'));
     }
 
     /**
@@ -67,7 +69,8 @@ class JobtitlesController extends Controller
     public function edit($id)
     {
         $jobtitle = Jobtitle::findOrFail($id);
-        return view('jobtitles.edit',['jobtitle'=>$jobtitle]);
+        $sections = Section::all();
+        return view('jobtitles.edit',compact('jobtitle','sections'));
     }
 
     /**

@@ -7,19 +7,19 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>id</th>
-				<th>section_id</th>
-				<th>jobtitle_name</th>
+				<th>No</th>
+				<th>Section</th>
+				<th>Jobtitle Name</th>
 
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($jobtitles as $jobtitle)
+			@foreach($jobtitles as $i => $jobtitle)
 
 				<tr>
-					<td>{{ $jobtitle->id }}</td>
-					<td>{{ $jobtitle->section_id }}</td>
+					<td>{{ $i+1 }}</td>
+					<td>{{ $jobtitle->section->section_name }}</td>
 					<td>{{ $jobtitle->jobtitle_name }}</td>
 
 					<td>

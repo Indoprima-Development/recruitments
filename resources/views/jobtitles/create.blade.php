@@ -14,7 +14,11 @@
 
 		<div class="mb-3">
 			{{ Form::label('section_id', 'Section_id', ['class'=>'form-label']) }}
-			{{ Form::text('section_id', null, array('class' => 'form-control')) }}
+            <select class="form-select" name="section_id">
+                @foreach($sections as $d)
+                <option value="{{$d->id}}">{{$d->section_name}}</option>
+                @endforeach
+            </select>
 		</div>
 		<div class="mb-3">
 			{{ Form::label('jobtitle_name', 'Jobtitle_name', ['class'=>'form-label']) }}
