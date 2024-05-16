@@ -13,7 +13,7 @@
 	{{ Form::model($field, array('route' => array('fields.update', $field->id), 'method' => 'PUT')) }}
 
 		<div class="mb-3">
-			{{ Form::label('field_name', 'Field_name', ['class'=>'form-label']) }}
+			{{ Form::label('field_name', 'Field Name', ['class'=>'form-label']) }}
 			{{ Form::textarea('field_name', null, array('class' => 'form-control')) }}
 		</div>
 

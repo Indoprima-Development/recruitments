@@ -13,7 +13,7 @@
 	{!! Form::open(['route' => 'locations.store']) !!}
 
 		<div class="mb-3">
-			{{ Form::label('location_name', 'Location_name', ['class'=>'form-label']) }}
+			{{ Form::label('location_name', 'Location Name', ['class'=>'form-label']) }}
 			{{ Form::textarea('location_name', null, array('class' => 'form-control')) }}
 		</div>
 

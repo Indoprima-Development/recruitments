@@ -7,17 +7,17 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>id</th>
-				<th>major_name</th>
+				<th>No</th>
+				<th>Major Name</th>
 
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($majors as $major)
+			@foreach($majors as $i => $major)
 
 				<tr>
-					<td>{{ $major->id }}</td>
+					<td>{{ $i+1 }}</td>
 					<td>{{ $major->major_name }}</td>
 
 					<td>

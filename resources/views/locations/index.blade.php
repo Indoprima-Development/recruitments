@@ -7,17 +7,17 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>id</th>
-				<th>location_name</th>
+				<th>No</th>
+				<th>Location Name</th>
 
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($locations as $location)
+			@foreach($locations as $i => $location)
 
 				<tr>
-					<td>{{ $location->id }}</td>
+					<td>{{ $i+1 }}</td>
 					<td>{{ $location->location_name }}</td>
 
 					<td>

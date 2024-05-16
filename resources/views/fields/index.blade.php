@@ -7,8 +7,8 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>id</th>
-				<th>field_name</th>
+				<th>No</th>
+				<th>Field Name</th>
 
 				<th>Action</th>
 			</tr>
