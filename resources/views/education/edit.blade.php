@@ -13,7 +13,7 @@
 	{{ Form::model($education, array('route' => array('education.update', $education->id), 'method' => 'PUT')) }}
 
 		<div class="mb-3">
-			{{ Form::label('education_name', 'Education_name', ['class'=>'form-label']) }}
+			{{ Form::label('education_name', 'Education Name', ['class'=>'form-label']) }}
 			{{ Form::textarea('education_name', null, array('class' => 'form-control')) }}
 		</div>
 

@@ -76,7 +76,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('/jobtitles',JobtitlesController::class);
 
     use App\Http\Controllers\EducationController;
-    Route::resource('/educations',EducationController::class);
+    Route::resource('/education',EducationController::class);
 
     use App\Http\Controllers\MajorsController;
     Route::resource('/majors',MajorsController::class);

@@ -7,17 +7,17 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>id</th>
-				<th>education_name</th>
+				<th>No</th>
+				<th>Education Name</th>
 
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($education as $education)
+			@foreach($education as $i => $education)
 
 				<tr>
-					<td>{{ $education->id }}</td>
+					<td>{{ $i+1 }}</td>
 					<td>{{ $education->education_name }}</td>
 
 					<td>
