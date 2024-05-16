@@ -7,19 +7,19 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>id</th>
-				<th>division_id</th>
-				<th>department_name</th>
+				<th>No</th>
+				<th>Division</th>
+				<th>Department Name</th>
 
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($departments as $department)
+			@foreach($departments as $i => $department)
 
 				<tr>
-					<td>{{ $department->id }}</td>
-					<td>{{ $department->division_id }}</td>
+					<td>{{ $i+1 }}</td>
+					<td>{{ $department->division->division_name }}</td>
 					<td>{{ $department->department_name }}</td>
 
 					<td>

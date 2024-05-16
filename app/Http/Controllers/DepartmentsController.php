@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use App\Models\Department;
+use App\Models\Division;
 use App\Http\Requests\DepartmentRequest;
 
 class DepartmentsController extends Controller
@@ -27,7 +28,8 @@ class DepartmentsController extends Controller
      */
     public function create()
     {
-        return view('departments.create');
+        $division = Division::all();
+        return view('departments.create', compact('division'));
     }
 
     /**
@@ -67,7 +69,8 @@ class DepartmentsController extends Controller
     public function edit($id)
     {
         $department = Department::findOrFail($id);
-        return view('departments.edit',['department'=>$department]);
+        $division = Division::all();
+        return view('departments.edit',compact('department','division'));
     }
 
     /**

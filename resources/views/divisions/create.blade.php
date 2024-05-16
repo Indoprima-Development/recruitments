@@ -13,8 +13,8 @@
 	{!! Form::open(['route' => 'divisions.store']) !!}
 
 		<div class="mb-3">
-			{{ Form::label('division_name', 'Division_name', ['class'=>'form-label']) }}
-			{{ Form::textarea('division_name', null, array('class' => 'form-control')) }}
+			{{ Form::label('division_name', 'Division Name', ['class'=>'form-label']) }}
+			{{ Form::text('division_name', null, array('class' => 'form-control')) }}
 		</div>
 
 

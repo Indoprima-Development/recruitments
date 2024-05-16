@@ -14,10 +14,15 @@
 
 		<div class="mb-3">
 			{{ Form::label('division_id', 'Division_id', ['class'=>'form-label']) }}
-			{{ Form::text('division_id', null, array('class' => 'form-control')) }}
+
+            <select name="division_id" class="form-select">
+                @foreach($division as $d)
+                    <option value="{{$d->id}}">{{$d->division_name}}</option>
+                @endforeach
+            </select>
 		</div>
 		<div class="mb-3">
-			{{ Form::label('department_name', 'Department_name', ['class'=>'form-label']) }}
+			{{ Form::label('department_name', 'Department Name', ['class'=>'form-label']) }}
 			{{ Form::textarea('department_name', null, array('class' => 'form-control')) }}
 		</div>
 

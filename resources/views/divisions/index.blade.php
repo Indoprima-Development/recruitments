@@ -7,17 +7,17 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>id</th>
-				<th>division_name</th>
+				<th>No</th>
+				<th>Division Name</th>
 
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($divisions as $division)
+			@foreach($divisions as $i => $division)
 
 				<tr>
-					<td>{{ $division->id }}</td>
+					<td>{{ $i+1 }}</td>
 					<td>{{ $division->division_name }}</td>
 
 					<td>
