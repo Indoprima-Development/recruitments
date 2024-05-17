@@ -7,6 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Ptkform;
 use App\Http\Requests\PtkformRequest;
 
+use App\Models\Division;
+use App\Models\Department;
+use App\Models\Section;
+use App\Models\Jobtitle;
+use App\Models\Education;
+use App\Models\Major;
+use App\Models\Field;
+use App\Models\Ptkformtransaction;
+use App\Models\Ptkfield;
+
 class PtkformsController extends Controller
 {
     /**
@@ -27,7 +37,15 @@ class PtkformsController extends Controller
      */
     public function create()
     {
-        return view('ptkforms.create');
+        $divisions = Division::all();
+        $departments = Department::all();
+        $sections = Section::all();
+        $jobtitles = Jobtitle::all();
+        $educations = Education::all();
+        $majors = Major::all();
+        $fields = Field::all();
+
+        return view('ptkforms.create',compact('divisions','departments','sections','jobtitles','educations','majors','fields'));
     }
 
     /**
@@ -57,6 +75,14 @@ class PtkformsController extends Controller
 		$ptkform->request_basis_for = $request->input('request_basis_for');
 		$ptkform->status = $request->input('status');
         $ptkform->save();
+
+        for ($i=0; $i < count($request->fields); $i++) {
+            Ptkfield::create([
+                "ptkform_id"    => $ptkform->id,
+                "field_id"      => $request->fields[$i],
+                "year"          => $request->tahun[$i]
+            ]);
+        }
 
         return to_route('ptkforms.index');
     }

@@ -7,50 +7,30 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>id</th>
-				<th>division_id</th>
-				<th>department_id</th>
-				<th>section_id</th>
-				<th>jobtitle_id</th>
-				<th>education_id</th>
-				<th>major_id</th>
-				<th>date_startwork</th>
-				<th>direct_superior</th>
-				<th>direct_junior</th>
-				<th>responsibility</th>
-				<th>gender</th>
-				<th>ipk</th>
-				<th>special_conditions</th>
-				<th>general_others</th>
-				<th>request_basis</th>
-				<th>request_basis_for</th>
-				<th>status</th>
+				<th>No</th>
+				<th>Division</th>
+				<th>Jobtitle</th>
+				<th>Startwork</th>
+				<th>Status</th>
 
 				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($ptkforms as $ptkform)
+			@foreach($ptkforms as $i => $ptkform)
 
 				<tr>
-					<td>{{ $ptkform->id }}</td>
-					<td>{{ $ptkform->division_id }}</td>
-					<td>{{ $ptkform->department_id }}</td>
-					<td>{{ $ptkform->section_id }}</td>
-					<td>{{ $ptkform->jobtitle_id }}</td>
-					<td>{{ $ptkform->education_id }}</td>
-					<td>{{ $ptkform->major_id }}</td>
+					<td>{{ $i+1 }}</td>
+					<td>{{ $ptkform->division->division_name }}</td>
+					<td>{{ $ptkform->jobtitle->jobtitle_name }}</td>
 					<td>{{ $ptkform->date_startwork }}</td>
-					<td>{{ $ptkform->direct_superior }}</td>
-					<td>{{ $ptkform->direct_junior }}</td>
-					<td>{{ $ptkform->responsibility }}</td>
-					<td>{{ $ptkform->gender }}</td>
-					<td>{{ $ptkform->ipk }}</td>
-					<td>{{ $ptkform->special_conditions }}</td>
-					<td>{{ $ptkform->general_others }}</td>
-					<td>{{ $ptkform->request_basis }}</td>
-					<td>{{ $ptkform->request_basis_for }}</td>
-					<td>{{ $ptkform->status }}</td>
+					<td>
+                        @if($ptkform->status == 0)
+                            <span class="badge bg-primary">Created</span>
+                        @else
+                            <span class="badge bg-success">Distujui</span>
+                        @endif
+                    </td>
 
 					<td>
 						<div class="d-flex gap-2">
