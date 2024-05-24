@@ -96,30 +96,29 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     use App\Http\Controllers\PtkformtransactionsController;
     Route::resource('/ptkformtransactions',PtkformtransactionsController::class);
 
-    use App\Http\Controllers\DatadiriController;
-    Route::resource('/datadiris',DatadiriController::class);
-    
-    use App\Http\Controllers\DatakesehatanController;
-    Route::resource('/datakesehatans',DatakesehatanController::class);
-    
-    use App\Http\Controllers\DatapendidikanformalController;
-    Route::resource('/datapendidikanformals',DatapendidikanformalController::class);
-    
-    use App\Http\Controllers\DatapendidikannonformalController;
-    Route::resource('/datapendidikannonformals',DatapendidikannonformalController::class);
-    
-    use App\Http\Controllers\DatakeluargaController;
-    Route::resource('/datakeluargas',DatakeluargaController::class);
-    
-    use App\Http\Controllers\DatapengalamankerjaController;
-    Route::resource('/datapengalamankerjas',DatapengalamankerjaController::class);
-    
-    use App\Http\Controllers\DatakemampuanController;
-    Route::resource('/datakemampuans',DatakemampuanController::class);
-    
-    use App\Http\Controllers\DataolahragaController;
-    Route::resource('/dataolahragas',DataolahragaController::class);
-    
-    use App\Http\Controllers\DatadetailController;
-    Route::resource('/datadetails',DatadetailController::class);
-    
+    use App\Http\Controllers\DatadirisController;
+    Route::resource('/datadiris',DatadirisController::class);
+
+    use App\Http\Controllers\DatakesehatansController;
+    Route::resource('/datakesehatans',DatakesehatansController::class);
+
+    use App\Http\Controllers\DatapendidikanformalsController;
+    Route::resource('/datapendidikanformals',DatapendidikanformalsController::class);
+
+    use App\Http\Controllers\DatapendidikannonformalsController;
+    Route::resource('/datapendidikannonformals',DatapendidikannonformalsController::class);
+
+    use App\Http\Controllers\DatakeluargasController;
+    Route::resource('/datakeluargas',DatakeluargasController::class);
+
+    use App\Http\Controllers\DatapengalamankerjasController;
+    Route::resource('/datapengalamankerjas',DatapengalamankerjasController::class);
+
+    use App\Http\Controllers\DatakemampuansController;
+    Route::resource('/datakemampuans',DatakemampuansController::class);
+
+    use App\Http\Controllers\DataolahragasController;
+    Route::resource('/dataolahragas',DataolahragasController::class);
+
+    use App\Http\Controllers\DatadetailsController;
+    Route::resource('/datadetails',DatadetailsController::class);
