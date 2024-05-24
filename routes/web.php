@@ -95,3 +95,31 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     use App\Http\Controllers\PtkformtransactionsController;
     Route::resource('/ptkformtransactions',PtkformtransactionsController::class);
+
+    use App\Http\Controllers\DatadiriController;
+    Route::resource('/datadiris',DatadiriController::class);
+    
+    use App\Http\Controllers\DatakesehatanController;
+    Route::resource('/datakesehatans',DatakesehatanController::class);
+    
+    use App\Http\Controllers\DatapendidikanformalController;
+    Route::resource('/datapendidikanformals',DatapendidikanformalController::class);
+    
+    use App\Http\Controllers\DatapendidikannonformalController;
+    Route::resource('/datapendidikannonformals',DatapendidikannonformalController::class);
+    
+    use App\Http\Controllers\DatakeluargaController;
+    Route::resource('/datakeluargas',DatakeluargaController::class);
+    
+    use App\Http\Controllers\DatapengalamankerjaController;
+    Route::resource('/datapengalamankerjas',DatapengalamankerjaController::class);
+    
+    use App\Http\Controllers\DatakemampuanController;
+    Route::resource('/datakemampuans',DatakemampuanController::class);
+    
+    use App\Http\Controllers\DataolahragaController;
+    Route::resource('/dataolahragas',DataolahragaController::class);
+    
+    use App\Http\Controllers\DatadetailController;
+    Route::resource('/datadetails',DatadetailController::class);
+    
