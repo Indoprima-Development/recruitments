@@ -6,6 +6,7 @@ use App\Http\Controllers\ExamsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\QnasController;
+use App\Http\Controllers\FormsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,11 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::controller(QnasController::class)->group(function () {
         Route::post('/qnas-upload-image', 'qnaUploadImage');
     });
+
+    // Formulir
+    Route::resource('/forms',FormsController::class);
 });
+
 
     use App\Http\Controllers\DivisionsController;
     Route::resource('/divisions',DivisionsController::class);
@@ -95,30 +100,3 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     use App\Http\Controllers\PtkformtransactionsController;
     Route::resource('/ptkformtransactions',PtkformtransactionsController::class);
-
-    use App\Http\Controllers\DatadirisController;
-    Route::resource('/datadiris',DatadirisController::class);
-
-    use App\Http\Controllers\DatakesehatansController;
-    Route::resource('/datakesehatans',DatakesehatansController::class);
-
-    use App\Http\Controllers\DatapendidikanformalsController;
-    Route::resource('/datapendidikanformals',DatapendidikanformalsController::class);
-
-    use App\Http\Controllers\DatapendidikannonformalsController;
-    Route::resource('/datapendidikannonformals',DatapendidikannonformalsController::class);
-
-    use App\Http\Controllers\DatakeluargasController;
-    Route::resource('/datakeluargas',DatakeluargasController::class);
-
-    use App\Http\Controllers\DatapengalamankerjasController;
-    Route::resource('/datapengalamankerjas',DatapengalamankerjasController::class);
-
-    use App\Http\Controllers\DatakemampuansController;
-    Route::resource('/datakemampuans',DatakemampuansController::class);
-
-    use App\Http\Controllers\DataolahragasController;
-    Route::resource('/dataolahragas',DataolahragasController::class);
-
-    use App\Http\Controllers\DatadetailsController;
-    Route::resource('/datadetails',DatadetailsController::class);
