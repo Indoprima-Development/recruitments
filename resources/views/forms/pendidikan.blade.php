@@ -1,163 +1,107 @@
-<div class="tab-pane fade show active" id="pills-bills" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
+<div class="tab-pane fade show" id="pills-pendidikan" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
     <div class="row">
         <div class="col-12">
-            <div class="card w-100 position-relative overflow-hidden mb-0">
+            <div class="card w-100 position-relative overflow-hidden mb-0 bg-white">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-semibold">Personal Details</h5>
+                    <h5 class="card-title fw-semibold">Pendidikan Formal</h5>
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                     <div class="row">
-                        {{ Form::model($datadiri, ['url' => ['datadiris/update', Auth::user()->id], 'method' => 'PUT']) }}
-                        <div class="mb-3 col-12">
-                            {{ Form::label('name', 'Nama Lengkap', ['class' => 'form-label']) }}
-                            {{ Form::text('name', null, ['class' => 'form-control']) }}
+                        <div class="d-flex justify-content-end mb-3"><a
+                                href="{{ url('datapendidikannonformals/create') }}" class="btn btn-info">Create</a>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Tingkat</th>
+                                    <th>Instansi</th>
+                                    <th>Jurusan</th>
+                                    <th>Lulus (tahun)</th>
+                                    <th>Nilai</th>
+
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($datapendidikanformals as $datapendidikanformal)
+                                    <tr>
+                                        <td>{{ $datapendidikanformal->id }}</td>
+                                        <td>{{ $datapendidikanformal->tingkat }}</td>
+                                        <td>{{ $datapendidikanformal->instansi }}</td>
+                                        <td>{{ $datapendidikanformal->jurusan }}</td>
+                                        <td>{{ $datapendidikanformal->lulus_tahun }}</td>
+                                        <td>{{ $datapendidikanformal->nilai }}</td>
+
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('datapendidikanformals.edit', [$datapendidikanformal->id]) }}"
+                                                    class="btn btn-primary">Edit</a>
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datapendidikanformals.destroy', $datapendidikanformal->id]]) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                {!! Form::close() !!}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3 card w-100 position-relative overflow-hidden mb-0 bg-white">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold">Pendidikan Non Formal</h5>
+                    <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
+                    <div class="row">
+                        <div class="d-flex justify-content-end mb-3"><a
+                                href="{{ url('datapendidikannonformals/create') }}" class="btn btn-info">Create</a>
                         </div>
 
-                        <div class="mb-3 col-sm-12 col-md-6">
-                            {{ Form::label('ktp', 'KTP', ['class' => 'form-label']) }}
-                            {{ Form::text('ktp', null, ['class' => 'form-control']) }}
-                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Jenis</th>
+                                    <th>Tingkat</th>
+                                    <th>Instansi</th>
+                                    <th>Jurusan</th>
+                                    <th>Mulai</th>
+                                    <th>Selesai</th>
 
-                        <div class="mb-3 col-sm-12 col-md-6">
-                            {{ Form::label('agama', 'Agama', ['class' => 'form-label']) }}
-                            <select class="form-select" name="agama">
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen">Kristen</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Budha">Budha</option>
-                                <option value="Konghucu">Konghucu</option>
-                            </select>
-                        </div>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($datapendidikannonformals as $datapendidikannonformal)
+                                    <tr>
+                                        <td>{{ $datapendidikannonformal->id }}</td>
+                                        <td>{{ $datapendidikannonformal->jenis }}</td>
+                                        <td>{{ $datapendidikannonformal->tingkat }}</td>
+                                        <td>{{ $datapendidikannonformal->instansi }}</td>
+                                        <td>{{ $datapendidikannonformal->jurusan }}</td>
+                                        <td>{{ $datapendidikannonformal->date_start }}</td>
+                                        <td>{{ $datapendidikannonformal->date_end }}</td>
 
-                        <div class="mb-3 col-sm-12 col-md-4">
-                            {{ Form::label('gender', 'Gender', ['class' => 'form-label']) }}
-                            <select class="form-select" name="gender">
-                                <option value="1">Laki - laki</option>
-                                <option value="0">Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 col-sm-12 col-md-4">
-                            {{ Form::label('tempat_lahir', 'Tempat Lahir', ['class' => 'form-label']) }}
-                            {{ Form::text('tempat_lahir', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3 col-sm-12 col-md-4">
-                            {{ Form::label('tanggal_lahir', 'Tanggal Lahir', ['class' => 'form-label']) }}
-                            {{ Form::date('tanggal_lahir', null, ['class' => 'form-control']) }}
-                        </div>
-
-                        <div class="mb-3 col-sm-12 col-md-6">
-                            {{ Form::label('no_hp', 'No. HP', ['class' => 'form-label']) }}
-                            {{ Form::text('no_hp', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3 col-sm-12 col-md-6">
-                            {{ Form::label('no_wa', 'No. WA', ['class' => 'form-label']) }}
-                            {{ Form::text('no_wa', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3 col-12">
-                            {{ Form::label('alamat', 'Alamat', ['class' => 'form-label']) }}
-                            {{ Form::textarea('alamat', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ Form::label('status_rumah', 'Status Tempat Tinggal', ['class' => 'form-label']) }}
-                            <select class="form-select" name="status_rumah">
-                                <option value="Milik Pribadi">Milik Pribadi</option>
-                                <option value="Milik Orang Tua">Milik Orang Tua</option>
-                                <option value="Kost">Kost</option>
-                                <option value="Kontrak">Kontrak</option>
-                                <option value="Apartment">Apartment</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 col-sm-12 col-md-4">
-                            {{ Form::label('golongan_darah', 'Golongan Darah', ['class' => 'form-label']) }}
-                            <select class="form-select" name="golongan_darah">
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="AB">AB</option>
-                                <option value="O">O</option>
-                            </select>
-                        </div>
-                        <div class="mb-3 col-sm-12 col-md-4">
-                            {{ Form::label('tinggi_badan', 'Tinggi Badan', ['class' => 'form-label']) }}
-                            {{ Form::number('tinggi_badan', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3 col-sm-12 col-md-4">
-                            {{ Form::label('berat_badan', 'Berat Badan', ['class' => 'form-label']) }}
-                            {{ Form::number('berat_badan', null, ['class' => 'form-control']) }}
-                        </div>
-
-                        <div class="mb-3 col-sm-12 col-md-6">
-                            {{ Form::label('kendaraan', 'Kendaraan', ['class' => 'form-label']) }}
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="customCheck1">
-                                <label class="form-check-label" for="customCheck1">Roda Dua</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="customCheck2">
-                                <label class="form-check-label" for="customCheck2">Roda Empat</label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3 col-sm-12 col-md-6">
-                            {{ Form::label('sim', 'SIM (Surat Izin Mengemudi)', ['class' => 'form-label']) }}
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim1">
-                                <label class="form-check-label" for="sim1">A</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim2">
-                                <label class="form-check-label" for="sim2">B1</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim3">
-                                <label class="form-check-label" for="sim3">B2</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim4">
-                                <label class="form-check-label" for="sim4">C</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim5">
-                                <label class="form-check-label" for="sim5">D</label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            {{ Form::label('ekspektasi_gaji', 'Ekspektasi_gaji', ['class' => 'form-label']) }}
-                            {{ Form::text('ekspektasi_gaji', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ Form::label('fasilitas_harapan', 'Fasilitas_harapan', ['class' => 'form-label']) }}
-                            {{ Form::textarea('fasilitas_harapan', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ Form::label('kesediaan_penempatan', 'Kesediaan_penempatan', ['class' => 'form-label']) }}
-                            {{ Form::textarea('kesediaan_penempatan', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ Form::label('kesediaan_mulai_bekerja', 'Kesediaan_mulai_bekerja', ['class' => 'form-label']) }}
-                            {{ Form::textarea('kesediaan_mulai_bekerja', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ Form::label('image_jabatan_terakhir', 'Image_jabatan_terakhir', ['class' => 'form-label']) }}
-                            {{ Form::textarea('image_jabatan_terakhir', null, ['class' => 'form-control']) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ Form::label('keterangan_jabatan_terakhir', 'Keterangan_jabatan_terakhir', ['class' => 'form-label']) }}
-                            {{ Form::textarea('keterangan_jabatan_terakhir', null, ['class' => 'form-control']) }}
-                        </div>
-
-                        {{ Form::submit('Edit', ['class' => 'btn btn-primary']) }}
-
-                        {{ Form::close() }}
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('datapendidikannonformals.edit', [$datapendidikannonformal->id]) }}"
+                                                    class="btn btn-primary">Edit</a>
+                                                {!! Form::open([
+                                                    'method' => 'DELETE',
+                                                    'route' => ['datapendidikannonformals.destroy', $datapendidikannonformal->id],
+                                                ]) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                {!! Form::close() !!}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

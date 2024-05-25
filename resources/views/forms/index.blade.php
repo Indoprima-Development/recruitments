@@ -34,15 +34,33 @@
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-notifications-tab" data-bs-toggle="pill" data-bs-target="#pills-notifications" type="button" role="tab" aria-controls="pills-notifications" aria-selected="false">
+                <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-pendidikan-tab" data-bs-toggle="pill" data-bs-target="#pills-pendidikan" type="button" role="tab" aria-controls="pills-pendidikan" aria-selected="false">
                     <i class="ti ti-bell me-2 fs-6"></i>
                     <span class="d-none d-md-block">Pendidikan</span>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-bills-tab" data-bs-toggle="pill" data-bs-target="#pills-bills" type="button" role="tab" aria-controls="pills-bills" aria-selected="false">
+                <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-keluarga-tab" data-bs-toggle="pill" data-bs-target="#pills-keluarga" type="button" role="tab" aria-controls="pills-keluarga" aria-selected="false">
+                    <i class="ti ti-article me-2 fs-6"></i>
+                    <span class="d-none d-md-block">Keluarga</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-pengalaman-tab" data-bs-toggle="pill" data-bs-target="#pills-pengalaman" type="button" role="tab" aria-controls="pills-pengalaman" aria-selected="false">
                     <i class="ti ti-article me-2 fs-6"></i>
                     <span class="d-none d-md-block">Pengalaman</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-kemampuan-tab" data-bs-toggle="pill" data-bs-target="#pills-kemampuan" type="button" role="tab" aria-controls="pills-kemampuan" aria-selected="false">
+                    <i class="ti ti-article me-2 fs-6"></i>
+                    <span class="d-none d-md-block">Kemampuan</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-bills-tab" data-bs-toggle="pill" data-bs-target="#pills-bills" type="button" role="tab" aria-controls="pills-bills" aria-selected="false">
+                    <i class="ti ti-article me-2 fs-6"></i>
+                    <span class="d-none d-md-block">Organisasi</span>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -55,8 +73,10 @@
         <div class="card-body bg-light-info">
             <div class="tab-content" id="pills-tabContent">
                 @include('forms.datadiri')
-                @include('forms.kepegawaian')
                 @include('forms.pendidikan')
+                @include('forms.keluarga')
+                @include('forms.pengalaman')
+                @include('forms.kemampuan')
             </div>
         </div>
     </div>

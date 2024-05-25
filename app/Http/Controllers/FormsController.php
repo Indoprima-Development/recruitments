@@ -24,15 +24,15 @@ class FormsController extends Controller
     {
         $datadiri = Datadiri::where("user_id",Auth::user()->id)->first();
         $data["kesehatan"] = Datakesehatan::where("user_id",Auth::user()->id)->get();
-        $data["pendidikanformal"] = Datapendidikanformal::where("user_id",Auth::user()->id)->get();
-        $data["pendidikannonformal"] = Datapendidikannonformal::where("user_id",Auth::user()->id)->get();
-        $data["keluarga"] = Datakeluarga::where("user_id",Auth::user()->id)->get();
-        $data["pengalamankerja"] = Datapengalamankerja::where("user_id",Auth::user()->id)->get();
-        $data["kemampuan"] = Datakemampuan::where("user_id",Auth::user()->id)->get();
+        $datapendidikanformals = Datapendidikanformal::where("user_id",Auth::user()->id)->get();
+        $datapendidikannonformals = Datapendidikannonformal::where("user_id",Auth::user()->id)->get();
+        $datakeluargas = Datakeluarga::where("user_id",Auth::user()->id)->get();
+        $datapengalamankerjas = Datapengalamankerja::where("user_id",Auth::user()->id)->get();
+        $datakemampuans = Datakemampuan::where("user_id",Auth::user()->id)->get();
         $data["olahraga"] = Dataolahraga::where("user_id",Auth::user()->id)->get();
         $data["detail"] = Datadetail::where("user_id",Auth::user()->id)->get();
 
-        return view("forms.index",compact("data","datadiri"));
+        return view("forms.index",compact("data","datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans"));
     }
 
     /**

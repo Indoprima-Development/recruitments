@@ -1,0 +1,50 @@
+<div class="tab-pane fade show" id="pills-kemampuan" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
+    <div class="row">
+        <div class="col-12">
+            <div class="card w-100 position-relative overflow-hidden mb-0 bg-white">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-semibold">Kemampuan</h5>
+                    <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
+                    <div class="row">
+                        <div class="d-flex justify-content-end mb-3"><a href="{{ url('datakemampuans/create') }}"
+                                class="btn btn-info">Create</a></div>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kemampuan</th>
+                                    <th>Level</th>
+
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($datakemampuans as $datakemampuan)
+                                    <tr>
+                                        <td>{{ $datakemampuan->id }}</td>
+                                        <td>{{ $datakemampuan->user_id }}</td>
+                                        <td>{{ $datakemampuan->kemampuan }}</td>
+                                        <td>{{ $datakemampuan->level }}</td>
+
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('datakemampuans.show', [$datakemampuan->id]) }}"
+                                                    class="btn btn-info">Show</a>
+                                                <a href="{{ route('datakemampuans.edit', [$datakemampuan->id]) }}"
+                                                    class="btn btn-primary">Edit</a>
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datakemampuans.destroy', $datakemampuan->id]]) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                {!! Form::close() !!}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
