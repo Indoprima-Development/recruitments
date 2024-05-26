@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datapendidikanformal;
 use App\Http\Requests\DatapendidikanformalRequest;
+use Illuminate\Support\Facades\Auth;
 
 class DatapendidikanformalsController extends Controller
 {
@@ -39,7 +40,7 @@ class DatapendidikanformalsController extends Controller
     public function store(DatapendidikanformalRequest $request)
     {
         $datapendidikanformal = new Datapendidikanformal;
-		$datapendidikanformal->user_id = $request->input('user_id');
+		$datapendidikanformal->user_id = Auth::user()->id;
 		$datapendidikanformal->tingkat = $request->input('tingkat');
 		$datapendidikanformal->instansi = $request->input('instansi');
 		$datapendidikanformal->jurusan = $request->input('jurusan');
@@ -47,7 +48,7 @@ class DatapendidikanformalsController extends Controller
 		$datapendidikanformal->nilai = $request->input('nilai');
         $datapendidikanformal->save();
 
-        return to_route('datapendidikanformals.index');
+        return redirect('forms');
     }
 
     /**

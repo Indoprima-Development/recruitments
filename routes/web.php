@@ -8,7 +8,7 @@ use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\QnasController;
 use App\Http\Controllers\FormsController;
 use App\Http\Controllers\DatadirisController;
-use App\Models\Datadiri;
+use App\Http\Controllers\DatapendidikanformalsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +68,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     // Formulir
     Route::resource('/forms',FormsController::class);
     Route::post('/datadiris/store/{id}',[DatadirisController::class, 'store']);
+    Route::resource('datapendidikanformals',DatapendidikanformalsController::class);
 });
 
 

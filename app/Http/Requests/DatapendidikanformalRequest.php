@@ -25,7 +25,6 @@ class DatapendidikanformalRequest extends FormRequest
     {
         return
         [
-			'user_id' => 'required',
 			'tingkat' => 'required',
 			'instansi' => 'required',
 			'jurusan' => 'required',

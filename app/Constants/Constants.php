@@ -20,3 +20,7 @@ class DatadiriConst{
     const SIM = ["A","B1","B2","C","D"];
     const Kendaraan = ["Roda Dua","Roda Empat"];
 }
+
+class DataPendidikanConst{
+    const Tingkat = ["SD","SMP","SMA","S1","S2","S3"];
+}
