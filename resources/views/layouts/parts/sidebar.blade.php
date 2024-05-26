@@ -86,6 +86,27 @@
                     </ul>
                 </li>
 
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Profile</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-archive"></i>
+                        </span>
+                        <span class="hide-menu">Account</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a href="{{url('forms')}}" class="sidebar-link">
+                                <i class="ti ti-calendar"></i>
+                                <span class="hide-menu">CV</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 @if(false)
                 <!-- ============================= -->
                 <!-- PAGES -->

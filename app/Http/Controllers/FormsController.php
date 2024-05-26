@@ -29,8 +29,8 @@ class FormsController extends Controller
         $datakeluargas = Datakeluarga::where("user_id",Auth::user()->id)->get();
         $datapengalamankerjas = Datapengalamankerja::where("user_id",Auth::user()->id)->get();
         $datakemampuans = Datakemampuan::where("user_id",Auth::user()->id)->get();
-        $data["olahraga"] = Dataolahraga::where("user_id",Auth::user()->id)->get();
-        $data["detail"] = Datadetail::where("user_id",Auth::user()->id)->get();
+        $dataolahragas = Dataolahraga::where("user_id",Auth::user()->id)->get();
+        $datadetails = Datadetail::where("user_id",Auth::user()->id)->get();
 
         return view("forms.index",compact("data","datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans"));
     }

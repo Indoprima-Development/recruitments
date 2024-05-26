@@ -31,12 +31,12 @@ class CreateDatadirisTable extends Migration
 			$table->text('ktp');
 			$table->text('kendaraan');
 			$table->text('sim');
-			$table->integer('ekspektasi_gaji');
-			$table->text('fasilitas_harapan');
-			$table->text('kesediaan_penempatan');
-			$table->text('kesediaan_mulai_bekerja');
-			$table->text('image_jabatan_terakhir');
-			$table->text('keterangan_jabatan_terakhir');
+			$table->integer('ekspektasi_gaji')->nullable();;
+			$table->text('fasilitas_harapan')->nullable();;
+			$table->text('kesediaan_penempatan')->nullable();;
+			$table->text('kesediaan_mulai_bekerja')->nullable();;
+			$table->text('image_jabatan_terakhir')->nullable();;
+			$table->text('keterangan_jabatan_terakhir')->nullable();;
             $table->timestamps();
         });
     }

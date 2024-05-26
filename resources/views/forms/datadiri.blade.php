@@ -6,7 +6,7 @@
                     <h5 class="card-title fw-semibold">Personal Details</h5>
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
 
-                    {{ Form::model($datadiri, ['url' => ['datadiris/update', Auth::user()->id], 'method' => 'PUT']) }}
+                    {{ Form::model($datadiri, ['url' => ['datadiris/store', Auth::user()->id], 'method' => 'POST']) }}
                     <div class="row">
                         <div class="mb-3 col-12">
                             {{ Form::label('name', 'Nama Lengkap', ['class' => 'form-label']) }}
@@ -21,12 +21,10 @@
                         <div class="mb-3 col-sm-12 col-md-6">
                             {{ Form::label('agama', 'Agama', ['class' => 'form-label']) }}
                             <select class="form-select" name="agama">
-                                <option value="Islam">Islam</option>
-                                <option value="Kristen">Kristen</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Budha">Budha</option>
-                                <option value="Konghucu">Konghucu</option>
+                                @foreach (\App\Constants\DatadiriConst::Agama as $d)
+                                    <option value="{{ $d }}" {{ $datadiri->agama == $d ? 'selected' : '' }}>
+                                        {{ $d }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -61,20 +59,21 @@
                         <div class="mb-3">
                             {{ Form::label('status_rumah', 'Status Tempat Tinggal', ['class' => 'form-label']) }}
                             <select class="form-select" name="status_rumah">
-                                <option value="Milik Pribadi">Milik Pribadi</option>
-                                <option value="Milik Orang Tua">Milik Orang Tua</option>
-                                <option value="Kost">Kost</option>
-                                <option value="Kontrak">Kontrak</option>
-                                <option value="Apartment">Apartment</option>
+                                @foreach (\App\Constants\DatadiriConst::StatusRumah as $d)
+                                    <option value="{{ $d }}"
+                                        {{ $datadiri->status_rumah == $d ? 'selected' : '' }}>{{ $d }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3 col-sm-12 col-md-4">
                             {{ Form::label('golongan_darah', 'Golongan Darah', ['class' => 'form-label']) }}
                             <select class="form-select" name="golongan_darah">
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="AB">AB</option>
-                                <option value="O">O</option>
+                                @foreach (\App\Constants\DatadiriConst::GolonganDarah as $d)
+                                    <option value="{{ $d }}"
+                                        {{ $datadiri->golongan_darah == $d ? 'selected' : '' }}>{{ $d }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="mb-3 col-sm-12 col-md-4">
@@ -88,43 +87,24 @@
 
                         <div class="mb-3 col-sm-12 col-md-6">
                             {{ Form::label('kendaraan', 'Kendaraan', ['class' => 'form-label']) }}
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="customCheck1">
-                                <label class="form-check-label" for="customCheck1">Roda Dua</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="customCheck2">
-                                <label class="form-check-label" for="customCheck2">Roda Empat</label>
-                            </div>
+                            @foreach (\App\Constants\DatadiriConst::Kendaraan as $d)
+                                <div class="form-check">
+                                    <input name="sim[]" value="{{$d}}" type="checkbox" class="form-check-input"
+                                        id="sim{{$d}}" {{in_array($d, json_decode($datadiri->kendaraan)) ? "checked" : ""}}>
+                                    <label class="form-check-label" for="sim{{$d}}">{{$d}}</label>
+                                </div>
+                            @endforeach
                         </div>
 
                         <div class="mb-3 col-sm-12 col-md-6">
                             {{ Form::label('sim', 'SIM (Surat Izin Mengemudi)', ['class' => 'form-label']) }}
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim1">
-                                <label class="form-check-label" for="sim1">A</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim2">
-                                <label class="form-check-label" for="sim2">B1</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim3">
-                                <label class="form-check-label" for="sim3">B2</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim4">
-                                <label class="form-check-label" for="sim4">C</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="sim5">
-                                <label class="form-check-label" for="sim5">D</label>
-                            </div>
+                            @foreach (\App\Constants\DatadiriConst::SIM as $d)
+                                <div class="form-check">
+                                    <input name="sim[]" value="{{$d}}" type="checkbox" class="form-check-input"
+                                        id="sim{{$d}}" {{in_array($d, json_decode($datadiri->sim)) ? "checked" : ""}}>
+                                    <label class="form-check-label" for="sim{{$d}}">{{$d}}</label>
+                                </div>
+                            @endforeach
                         </div>
 
                         {{ Form::submit('Edit', ['class' => 'btn btn-primary']) }}
