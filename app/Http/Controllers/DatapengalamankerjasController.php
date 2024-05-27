@@ -48,10 +48,21 @@ class DatapengalamankerjasController extends Controller
 		$datapengalamankerja->date_start = $request->input('date_start');
 		$datapengalamankerja->date_end = $request->input('date_end');
 		$datapengalamankerja->alasan_keluar = $request->input('alasan_keluar');
-		$datapengalamankerja->surat_pengalaman = $request->input('surat_pengalaman');
+        $datapengalamankerja->surat_pengalaman = "-";
         $datapengalamankerja->save();
 
-        return to_route('datapengalamankerjas.index');
+        $file = $request->file('surat_pengalaman');
+        if ($file != null) {
+            $extension = $file->getClientOriginalExtension();
+            $filename = $datapengalamankerja->id.".".$extension;
+            UploadFile($file,"suratpengalaman",$filename);
+
+            $datapengalamankerja->update([
+                "surat_pengalaman" => "surat_pengalaman/".$filename,
+            ]);
+        }
+
+        return redirect('forms');
     }
 
     /**

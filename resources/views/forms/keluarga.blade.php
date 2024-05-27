@@ -34,12 +34,10 @@
 
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('datakeluargas.show', [$datakeluarga->id]) }}"
-                                                    class="btn btn-info">Show</a>
                                                 <a href="{{ route('datakeluargas.edit', [$datakeluarga->id]) }}"
-                                                    class="btn btn-primary">Edit</a>
+                                                    class="btn btn-sm btn-primary">Edit</a>
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['datakeluargas.destroy', $datakeluarga->id]]) !!}
-                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                                 {!! Form::close() !!}
                                             </div>
                                         </td>

@@ -34,7 +34,6 @@ class DatapengalamankerjaRequest extends FormRequest
 			'date_start' => 'required',
 			'date_end' => 'required',
 			'alasan_keluar' => 'required',
-			'surat_pengalaman' => 'required',
         ];
     }
 }

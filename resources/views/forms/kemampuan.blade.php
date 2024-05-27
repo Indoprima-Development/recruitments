@@ -20,21 +20,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($datakemampuans as $datakemampuan)
+                                @foreach ($datakemampuans as $i => $datakemampuan)
                                     <tr>
-                                        <td>{{ $datakemampuan->id }}</td>
-                                        <td>{{ $datakemampuan->user_id }}</td>
+                                        <td>{{ $i+1 }}</td>
                                         <td>{{ $datakemampuan->kemampuan }}</td>
                                         <td>{{ $datakemampuan->level }}</td>
 
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('datakemampuans.show', [$datakemampuan->id]) }}"
-                                                    class="btn btn-info">Show</a>
                                                 <a href="{{ route('datakemampuans.edit', [$datakemampuan->id]) }}"
-                                                    class="btn btn-primary">Edit</a>
+                                                    class="btn btn-sm btn-primary">Edit</a>
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['datakemampuans.destroy', $datakemampuan->id]]) !!}
-                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                                 {!! Form::close() !!}
                                             </div>
                                         </td>

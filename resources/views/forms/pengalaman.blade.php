@@ -5,9 +5,10 @@
                 <div class="card-body p-4">
                     <h5 class="card-title fw-semibold">Pengalaman</h5>
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
-                    <div class="row">
-                        <div class="d-flex justify-content-end mb-3"><a
-                                href="{{ url('datapengalamankerjas/create') }}" class="btn btn-info">Create</a></div>
+                    <div class="table-responsive">
+                        <div class="d-flex justify-content-end mb-3">
+                            <a href="{{ url('datapengalamankerjas/create') }}" class="btn btn-info">Create</a>
+                        </div>
 
                         <table class="table table-bordered">
                             <thead>
@@ -21,7 +22,7 @@
                                     <th>Mulai</th>
                                     <th>Akhir</th>
                                     <th>Alasan Keluar</th>
-                                    <th>Surat Pengalaman</th>
+                                    <th>Surat</th>
 
                                     <th>Action</th>
                                 </tr>
@@ -30,7 +31,6 @@
                                 @foreach ($datapengalamankerjas as $datapengalamankerja)
                                     <tr>
                                         <td>{{ $datapengalamankerja->id }}</td>
-                                        <td>{{ $datapengalamankerja->user_id }}</td>
                                         <td>{{ $datapengalamankerja->perusahaan }}</td>
                                         <td>{{ $datapengalamankerja->jabatan_awal }}</td>
                                         <td>{{ $datapengalamankerja->jabatan_terakhir }}</td>
@@ -39,16 +39,23 @@
                                         <td>{{ $datapengalamankerja->date_start }}</td>
                                         <td>{{ $datapengalamankerja->date_end }}</td>
                                         <td>{{ $datapengalamankerja->alasan_keluar }}</td>
-                                        <td>{{ $datapengalamankerja->surat_pengalaman }}</td>
+                                        <td>
+                                            @if ($datapengalamankerja->surat_pengalaman != '-')
+                                                <a class="btn btn-outline-success btn-sm" target="_blank"
+                                                    href="{{ url($datapengalamankerja->surat_pengalaman) }}">
+                                                    <i class="ti ti-file me-2 fs-6"></i>
+                                                </a>
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
 
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('datapengalamankerjas.show', [$datapengalamankerja->id]) }}"
-                                                    class="btn btn-info">Show</a>
                                                 <a href="{{ route('datapengalamankerjas.edit', [$datapengalamankerja->id]) }}"
-                                                    class="btn btn-primary">Edit</a>
+                                                    class="btn btn-sm btn-primary">Edit</a>
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['datapengalamankerjas.destroy', $datapengalamankerja->id]]) !!}
-                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                                 {!! Form::close() !!}
                                             </div>
                                         </td>

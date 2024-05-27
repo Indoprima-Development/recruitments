@@ -89,9 +89,9 @@
                             {{ Form::label('kendaraan', 'Kendaraan', ['class' => 'form-label']) }}
                             @foreach (\App\Constants\DatadiriConst::Kendaraan as $d)
                                 <div class="form-check">
-                                    <input name="sim[]" value="{{$d}}" type="checkbox" class="form-check-input"
-                                        id="sim{{$d}}" {{in_array($d, json_decode($datadiri->kendaraan)) ? "checked" : ""}}>
-                                    <label class="form-check-label" for="sim{{$d}}">{{$d}}</label>
+                                    <input name="kendaraan[]" value="{{$d}}" type="checkbox" class="form-check-input"
+                                        id="kendaraan{{$d}}" {{in_array($d, json_decode($datadiri->kendaraan)) ? "checked" : ""}}>
+                                    <label class="form-check-label" for="kendaraan{{$d}}">{{$d}}</label>
                                 </div>
                             @endforeach
                         </div>

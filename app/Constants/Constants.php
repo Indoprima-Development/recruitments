@@ -28,3 +28,7 @@ class DataPendidikanConst{
 class DataKeluargaConst{
     const StatusHubungan = ["Ayah","Ibu","Saudara","Istri/Suami","Anak","Mertua"];
 }
+
+class DataKemampuan{
+    const LevelKemampuan = ["Basic","Middle","Expert"];
+}
