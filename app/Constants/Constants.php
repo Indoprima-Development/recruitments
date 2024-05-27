@@ -24,3 +24,7 @@ class DatadiriConst{
 class DataPendidikanConst{
     const Tingkat = ["SD","SMP","SMA","S1","S2","S3"];
 }
+
+class DataKeluargaConst{
+    const StatusHubungan = ["Ayah","Ibu","Saudara","Istri/Suami","Anak","Mertua"];
+}

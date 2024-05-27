@@ -63,9 +63,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Jenis</th>
-                                    <th>Tingkat</th>
+                                    <th>Topik</th>
                                     <th>Instansi</th>
-                                    <th>Jurusan</th>
                                     <th>Mulai</th>
                                     <th>Selesai</th>
 
@@ -79,7 +78,6 @@
                                         <td>{{ $datapendidikannonformal->jenis }}</td>
                                         <td>{{ $datapendidikannonformal->tingkat }}</td>
                                         <td>{{ $datapendidikannonformal->instansi }}</td>
-                                        <td>{{ $datapendidikannonformal->jurusan }}</td>
                                         <td>{{ $datapendidikannonformal->date_start }}</td>
                                         <td>{{ $datapendidikannonformal->date_end }}</td>
 

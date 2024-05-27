@@ -23,14 +23,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($datakeluargas as $datakeluarga)
+                                @foreach ($datakeluargas as $i => $datakeluarga)
                                     <tr>
-                                        <td>{{ $datakeluarga->id }}</td>
-                                        <td>{{ $datakeluarga->user_id }}</td>
+                                        <td>{{ $i+1 }}</td>
                                         <td>{{ $datakeluarga->status_hubungan }}</td>
                                         <td>{{ $datakeluarga->nama_keluarga }}</td>
-                                        <td>{{ $datakeluarga->tempat_lahir_keluarga }}</td>
-                                        <td>{{ $datakeluarga->tanggal_lahir_keluarga }}</td>
+                                        <td>{{ $datakeluarga->tempat_lahir_keluarga }}, {{ $datakeluarga->tanggal_lahir_keluarga }}</td>
                                         <td>{{ $datakeluarga->pekerjaan }}</td>
                                         <td>{{ $datakeluarga->alamat }}</td>
 

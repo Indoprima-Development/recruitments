@@ -11,34 +11,31 @@
 	@endif
 
 	{!! Form::open(['route' => 'datapendidikannonformals.store']) !!}
-
-		<div class="mb-3">
-			{{ Form::label('user_id', 'User_id', ['class'=>'form-label']) }}
-			{{ Form::text('user_id', null, array('class' => 'form-control')) }}
-		</div>
+        {{ Form::hidden('user_id', Auth::user()->id, array()) }}
 		<div class="mb-3">
 			{{ Form::label('jenis', 'Jenis', ['class'=>'form-label']) }}
-			{{ Form::textarea('jenis', null, array('class' => 'form-control')) }}
+			<select class="form-select" name="jenis">
+                <option value="Kursus">Kursus</option>
+                <option value="Pelatihan">Pelatihan</option>
+                <option value="Sertifikasi">Sertifikasi</option>
+            </select>
 		</div>
 		<div class="mb-3">
-			{{ Form::label('tingkat', 'Tingkat', ['class'=>'form-label']) }}
-			{{ Form::textarea('tingkat', null, array('class' => 'form-control')) }}
+			{{ Form::label('tingkat', 'Topik', ['class'=>'form-label']) }}
+			{{ Form::text('tingkat', null, array('class' => 'form-control')) }}
 		</div>
 		<div class="mb-3">
 			{{ Form::label('instansi', 'Instansi', ['class'=>'form-label']) }}
-			{{ Form::textarea('instansi', null, array('class' => 'form-control')) }}
+			{{ Form::text('instansi', null, array('class' => 'form-control')) }}
+		</div>
+        {{ Form::hidden('jurusan', "-", array('class' => 'form-control')) }}
+		<div class="mb-3">
+			{{ Form::label('date_start', 'Date Start', ['class'=>'form-label']) }}
+			{{ Form::date('date_start', null, array('class' => 'form-control')) }}
 		</div>
 		<div class="mb-3">
-			{{ Form::label('jurusan', 'Jurusan', ['class'=>'form-label']) }}
-			{{ Form::textarea('jurusan', null, array('class' => 'form-control')) }}
-		</div>
-		<div class="mb-3">
-			{{ Form::label('date_start', 'Date_start', ['class'=>'form-label']) }}
-			{{ Form::textarea('date_start', null, array('class' => 'form-control')) }}
-		</div>
-		<div class="mb-3">
-			{{ Form::label('date_end', 'Date_end', ['class'=>'form-label']) }}
-			{{ Form::textarea('date_end', null, array('class' => 'form-control')) }}
+			{{ Form::label('date_end', 'Date End', ['class'=>'form-label']) }}
+			{{ Form::date('date_end', null, array('class' => 'form-control')) }}
 		</div>
 
 
