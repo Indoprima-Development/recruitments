@@ -12,6 +12,7 @@ use App\Models\Datapengalamankerja;
 use App\Models\Datakemampuan;
 use App\Models\Dataolahraga;
 use App\Models\Datadetail;
+use App\Models\Dataorganisasi;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -31,8 +32,9 @@ class FormsController extends Controller
         $datakemampuans = Datakemampuan::where("user_id",Auth::user()->id)->get();
         $dataolahragas = Dataolahraga::where("user_id",Auth::user()->id)->get();
         $datadetails = Datadetail::where("user_id",Auth::user()->id)->get();
+        $dataorganisasis = Dataorganisasi::where("user_id",Auth::user()->id)->get();
 
-        return view("forms.index",compact("data","datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans"));
+        return view("forms.index",compact("data","datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis"));
     }
 
     /**

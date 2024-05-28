@@ -35,9 +35,9 @@
                                         <td>
                                             <div class="d-flex gap-2">
                                                 <a href="{{ route('datapendidikanformals.edit', [$datapendidikanformal->id]) }}"
-                                                    class="btn btn-primary">Edit</a>
+                                                    class="btn btn-sm btn-primary">Edit</a>
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['datapendidikanformals.destroy', $datapendidikanformal->id]]) !!}
-                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                                 {!! Form::close() !!}
                                             </div>
                                         </td>

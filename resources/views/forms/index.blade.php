@@ -6,7 +6,7 @@
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h4 class="fw-semibold mb-8">Account Information</h4>
+                    <h4 class="fw-semibold mb-8">Curriculum Vitae</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -35,6 +35,7 @@
                 @include('forms.keluarga')
                 @include('forms.pengalaman')
                 @include('forms.kemampuan')
+                @include('forms.organisasi')
             </div>
         </div>
     </div>

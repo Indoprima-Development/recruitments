@@ -32,3 +32,7 @@ class DataKeluargaConst{
 class DataKemampuan{
     const LevelKemampuan = ["Basic","Middle","Expert"];
 }
+
+class DataOrganisasi{
+    const TingkatOrganisasi = ["Jurusan","Kampus","Nasional","Lainnya"];
+}

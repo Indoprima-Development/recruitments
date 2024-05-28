@@ -13,6 +13,7 @@ use App\Http\Controllers\DatapendidikannonformalsController;
 use App\Http\Controllers\DatakeluargasController;
 use App\Http\Controllers\DatakemampuansController;
 use App\Http\Controllers\DatapengalamankerjasController;
+use App\Http\Controllers\DataorganisasisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +78,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('datakeluargas',DatakeluargasController::class);
     Route::resource('datapengalamankerjas',DatapengalamankerjasController::class);
     Route::resource('datakemampuans',DatakemampuansController::class);
+    Route::resource('dataorganisasis',DataorganisasisController::class);
+
 });
 
 
