@@ -1,5 +1,5 @@
 <!-- Header Start -->
-<header class="app-header">
+<header class="app-header bg-primary-subtle">
     <nav class="navbar navbar-expand-xl navbar-light container-fluid px-0">
         <ul class="navbar-nav">
             <li class="nav-item d-block d-xl-none">

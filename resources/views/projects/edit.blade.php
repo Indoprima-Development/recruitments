@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('content2')
+@section('content')
 
 @if($errors->any())
 <div class="alert alert-danger">
