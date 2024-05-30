@@ -44,7 +44,7 @@ class DataolahragasController extends Controller
 		$dataolahraga->level = $request->input('level');
         $dataolahraga->save();
 
-        return to_route('dataolahragas.index');
+        return redirect('forms');
     }
 
     /**

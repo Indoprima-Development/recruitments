@@ -1,26 +1,21 @@
 @extends('default')
 
 @section('content')
-<div class="container-fluid">
-    <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
-        <div class="card-body px-4 py-3">
-            <div class="row align-items-center">
-                <div class="col-9">
-                    <h4 class="fw-semibold mb-8">Curriculum Vitae</h4>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a class="text-muted text-decoration-none" href="{{url('dashboard')}}">Home</a>
-                            </li>
-                            <li class="breadcrumb-item" aria-current="page">Account Information</li>
-                        </ol>
-                    </nav>
+    <div class="card bg-primary text-white w-100 card-hover">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <i class="ti ti-user display-6"></i>
+                <div class="ms-auto">
+                    <i class="ti ti-setting fs-8"></i>
                 </div>
-                <div class="col-3">
-                    <div class="text-center mb-n5">
-                        <img src="../assets/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4" />
-                    </div>
-                </div>
+            </div>
+            <div class="mt-4">
+                <h4 class="card-title mb-1 text-white">
+                    CV
+                </h4>
+                <h6 class="card-text fw-normal text-white-50">
+                    Sesuaikan CV anda disini
+                </h6>
             </div>
         </div>
     </div>
@@ -36,12 +31,12 @@
                 @include('forms.pengalaman')
                 @include('forms.kemampuan')
                 @include('forms.organisasi')
+                @include('forms.lain')
             </div>
         </div>
     </div>
-</div>
 @stop
 
 @section('addJs')
-<script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 @stop

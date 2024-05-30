@@ -7,7 +7,7 @@
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                     <div class="row">
                         <div class="d-flex justify-content-end mb-3"><a
-                                href="{{ url('datapendidikanformals/create') }}" class="btn btn-info">Create</a>
+                                href="{{ url('datapendidikanformals/create') }}" class="btn btn-info">Tambah</a>
                         </div>
                         <table class="table table-bordered">
                             <thead>
@@ -55,7 +55,7 @@
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                     <div class="row">
                         <div class="d-flex justify-content-end mb-3"><a
-                                href="{{ url('datapendidikannonformals/create') }}" class="btn btn-info">Create</a>
+                                href="{{ url('datapendidikannonformals/create') }}" class="btn btn-info">Tambah</a>
                         </div>
 
                         <table class="table table-bordered">

@@ -24,7 +24,7 @@ class FormsController extends Controller
     public function index()
     {
         $datadiri = Datadiri::where("user_id",Auth::user()->id)->first();
-        $data["kesehatan"] = Datakesehatan::where("user_id",Auth::user()->id)->get();
+        $datakesehatans = Datakesehatan::where("user_id",Auth::user()->id)->get();
         $datapendidikanformals = Datapendidikanformal::where("user_id",Auth::user()->id)->get();
         $datapendidikannonformals = Datapendidikannonformal::where("user_id",Auth::user()->id)->get();
         $datakeluargas = Datakeluarga::where("user_id",Auth::user()->id)->get();
@@ -34,7 +34,7 @@ class FormsController extends Controller
         $datadetails = Datadetail::where("user_id",Auth::user()->id)->get();
         $dataorganisasis = Dataorganisasi::where("user_id",Auth::user()->id)->get();
 
-        return view("forms.index",compact("data","datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis"));
+        return view("forms.index",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans"));
     }
 
     /**

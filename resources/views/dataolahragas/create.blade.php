@@ -2,33 +2,34 @@
 
 @section('content')
 
-	@if($errors->any())
-		<div class="alert alert-danger">
-			@foreach ($errors->all() as $error)
-				{{ $error }} <br>
-			@endforeach
-		</div>
-	@endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                {{ $error }} <br>
+            @endforeach
+        </div>
+    @endif
 
-	{!! Form::open(['route' => 'dataolahragas.store']) !!}
+    {!! Form::open(['route' => 'dataolahragas.store']) !!}
+    {{ Form::hidden('user_id', Auth::user()->id, ['class' => 'form-control']) }}
 
-		<div class="mb-3">
-			{{ Form::label('user_id', 'User_id', ['class'=>'form-label']) }}
-			{{ Form::text('user_id', null, array('class' => 'form-control')) }}
-		</div>
-		<div class="mb-3">
-			{{ Form::label('olahraga', 'Olahraga', ['class'=>'form-label']) }}
-			{{ Form::textarea('olahraga', null, array('class' => 'form-control')) }}
-		</div>
-		<div class="mb-3">
-			{{ Form::label('level', 'Level', ['class'=>'form-label']) }}
-			{{ Form::textarea('level', null, array('class' => 'form-control')) }}
-		</div>
+    <div class="mb-3">
+        {{ Form::label('olahraga', 'Olahraga', ['class' => 'form-label']) }}
+        {{ Form::text('olahraga', null, ['class' => 'form-control']) }}
+    </div>
+    <div class="mb-3">
+        {{ Form::label('level', 'Level', ['class' => 'form-label']) }}
+        <select class="form-select" name="level">
+            @foreach(\App\Constants\DataKemampuan::LevelKemampuan as $d)
+                <option value="{{$d}}">{{$d}}</option>
+            @endforeach
+        </select>
+    </div>
 
 
-		{{ Form::submit('Create', array('class' => 'btn btn-primary')) }}
+    {{ Form::submit('Create', ['class' => 'btn btn-primary']) }}
 
-	{{ Form::close() }}
+    {{ Form::close() }}
 
 
 @stop

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\DatadetailsController;
 use App\Http\Controllers\ExamsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectsController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\DatapendidikanformalsController;
 use App\Http\Controllers\DatapendidikannonformalsController;
 use App\Http\Controllers\DatakeluargasController;
 use App\Http\Controllers\DatakemampuansController;
+use App\Http\Controllers\DatakesehatansController;
+use App\Http\Controllers\DataolahragasController;
 use App\Http\Controllers\DatapengalamankerjasController;
 use App\Http\Controllers\DataorganisasisController;
 
@@ -79,7 +82,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('datapengalamankerjas',DatapengalamankerjasController::class);
     Route::resource('datakemampuans',DatakemampuansController::class);
     Route::resource('dataorganisasis',DataorganisasisController::class);
-
+    Route::resource('dataolahragas',DataolahragasController::class);
+    Route::resource('datadetails',DatadetailsController::class);
+    Route::resource('datakesehatans',DatakesehatansController::class);
 });
 
 

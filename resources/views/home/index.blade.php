@@ -59,14 +59,14 @@
             </div>
 
             <div class="col-xl-12 col-12 d-flex align-items-strech">
-                <div class="card bg-warning w-100">
+                <div class="card bg-primary-subtle w-100">
                     <div class="card-body p-4">
-                        <h3 class="text-white">Test Open</h3>
-                        <p class="card-subtitle mb-3 text-white">Choose the selection you want to take.</p>
+                        <h3 class="text-dark">Test Open</h3>
+                        <p class="card-subtitle mb-3 text-dark">Choose the selection you want to take.</p>
                         <div class="row">
                             @forelse ($data['projects'] as $d)
                                 <div class="co-sm-6 col-md-3">
-                                    <div class="card overflow-hidden mb-4 mb-md-0 shadow-none border bg-white card-hover">
+                                    <div class="card overflow-hidden mb-4 mb-md-0 shadow-none border bg-light-info card-hover">
                                         <div class="p-9 text-center">
                                             <div class="d-flex align-items-center mt-3 justify-content-center">
                                                 <h5 class="mb-0">

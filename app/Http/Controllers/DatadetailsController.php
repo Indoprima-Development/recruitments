@@ -16,7 +16,7 @@ class DatadetailsController extends Controller
      */
     public function index()
     {
-        $datadetails= Datadetail::all();
+        $datadetails = Datadetail::all();
         return view('datadetails.index', ['datadetails'=>$datadetails]);
     }
 
@@ -46,7 +46,7 @@ class DatadetailsController extends Controller
 		$datadetail->hubungan = $request->input('hubungan');
         $datadetail->save();
 
-        return to_route('datadetails.index');
+        return redirect('forms');
     }
 
     /**
