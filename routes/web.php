@@ -93,8 +93,12 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('/majors', MajorsController::class);
     Route::resource('/locations', LocationsController::class);
     Route::resource('/fields', FieldsController::class);
-    
+
     Route::resource('/ptkforms', PtkformsController::class);
+    Route::controller(PtkformsController::class)->group(function () {
+        Route::get('/ptkforms/change-status/{id}', 'changeStatus');
+    });
+
     Route::resource('/ptkfields', PtkfieldsController::class);
     Route::resource('/ptkformtransactions', PtkformtransactionsController::class);
 

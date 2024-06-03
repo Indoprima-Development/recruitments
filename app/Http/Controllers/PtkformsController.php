@@ -156,4 +156,12 @@ class PtkformsController extends Controller
 
         return to_route('ptkforms.index');
     }
+
+    public function changeStatus($id){
+        Ptkform::where("id",$id)->update([
+            "status" => 1
+        ]);
+
+        return redirect("ptkforms/$id");
+    }
 }
