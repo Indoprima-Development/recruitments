@@ -41,4 +41,11 @@
             <span class="d-none d-md-block">Lainya</span>
         </button>
     </li>
+
+    <li class="nav-item" role="presentation">
+        <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-pernyataan-tab" data-bs-toggle="pill" data-bs-target="#pills-pernyataan" type="button" role="tab" aria-controls="pills-pernyataan" aria-selected="false">
+            <i class="ti ti-package me-2 fs-6"></i>
+            <span class="d-none d-md-block">Pernyataan</span>
+        </button>
+    </li>
 </ul>

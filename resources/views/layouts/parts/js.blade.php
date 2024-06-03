@@ -13,4 +13,7 @@
 <script src="{{asset('package/dist/libs/owl.carousel/dist/owl.carousel.min.js')}}"></script>
 <script src="{{asset('package/dist/js/dashboard.js')}}"></script>
 <script src="{{asset('package/dist/js/sweetalert2@11.js')}}"></script>
+
+<script src="{{asset('package/dist/libs/datatables.net/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('package/dist/js/datatable/datatable-basic.init.js')}}"></script>
 @yield('addJs')

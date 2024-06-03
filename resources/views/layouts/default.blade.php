@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css')}}">
     <!-- Core Css -->
     <link id="themeColors" rel="stylesheet" href="{{asset('package/dist/css/style.min.css')}}" />
+    <link rel="stylesheet" href="{{asset('package/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}">
     @yield('addCss')
 </head>
 
@@ -40,14 +41,10 @@
             <div class="container-fluid">
                 <section class="datatables">
                     <!-- basic table -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        @yield('content')
-                                    </div>
-                                </div>
+                    <div class="card">
+                        <div class="card-body @yield('cardClass')">
+                            <div class="table-responsive">
+                                @yield('content')
                             </div>
                         </div>
                     </div>

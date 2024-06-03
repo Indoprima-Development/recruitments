@@ -32,6 +32,7 @@
                 @include('forms.kemampuan')
                 @include('forms.organisasi')
                 @include('forms.lain')
+                @include('forms.pernyataan')
             </div>
         </div>
     </div>

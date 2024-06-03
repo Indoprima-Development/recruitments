@@ -14,12 +14,35 @@
         </div>
     @endif
 
+    <div class="card bg-primary shadow-none position-relative overflow-hidden">
+        <div class="card-body px-4 py-3">
+          <div class="row align-items-center">
+            <div class="col-9">
+              <h4 class="fw-semibold mb-8 text-white">Permintaan Tenaga Kerja</h4>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item text-white">Dashboard</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-3">
+              <div class="text-center mb-n5">
+                <img src="../../dist/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    @section('cardClass', "bg-light-info")
+
     {!! Form::open(['route' => 'ptkforms.store']) !!}
-    <h4>Jabatan</h4>
+
+    <h3>Jabatan</h3>
     <div class="row">
         <div class="mb-3 col-6">
             {{ Form::label('division_id', 'Division', ['class' => 'form-label']) }}
-            <select id="division" class="form-select" name="division_id">
+            <select id="division" class="form-select bg-white" name="division_id">
                 <option disabled selected>Pilih</option>
                 @foreach ($divisions as $d)
                     <option value="{{ $d->id }}">{{ $d->division_name }}</option>
@@ -28,7 +51,7 @@
         </div>
         <div class="mb-3 col-6">
             {{ Form::label('department_id', 'Department', ['class' => 'form-label']) }}
-            <select id="department" class="form-select" name="department_id">
+            <select id="department" class="form-select bg-white" name="department_id">
                 <option disabled selected>Pilih</option>
                 @foreach ($departments as $d)
                     <option class="adjustdivision division_{{ $d->division_id }}" value="{{ $d->id }}">
@@ -38,7 +61,7 @@
         </div>
         <div class="mb-3 col-6">
             {{ Form::label('section_id', 'Section', ['class' => 'form-label']) }}
-            <select id="section" class="form-select" name="section_id">
+            <select id="section" class="form-select bg-white" name="section_id">
                 <option disabled selected>Pilih</option>
                 @foreach ($sections as $d)
                     <option class="adjustdepartment department_{{ $d->department_id }}" value="{{ $d->id }}">{{ $d->section_name }}</option>
@@ -47,7 +70,7 @@
         </div>
         <div class="mb-3 col-6">
             {{ Form::label('jobtitle_id', 'Jobtitle', ['class' => 'form-label']) }}
-            <select class="form-select" name="jobtitle_id">
+            <select class="form-select bg-white" name="jobtitle_id">
                 <option disabled selected>Pilih</option>
                 @foreach ($jobtitles as $d)
                     <option class="adjustsection section_{{ $d->section_id }}" value="{{ $d->id }}">{{ $d->jobtitle_name }}</option>
@@ -58,28 +81,28 @@
 
     <div class="mb-3">
         {{ Form::label('date_startwork', 'Tanggal Mulai Kerja', ['class' => 'form-label']) }}
-        {{ Form::date('date_startwork', null, ['class' => 'form-control']) }}
+        {{ Form::date('date_startwork', null, ['class' => 'form-control bg-white']) }}
     </div>
 
-    <h4>Uraian Tugas dan Pekerjaan</h4>
+    <h3 class="mt-5">Uraian Tugas dan Pekerjaan</h3>
     <div class="mb-3">
         {{ Form::label('direct_superior', 'Atasan Langsung', ['class' => 'form-label']) }}
-        {{ Form::text('direct_superior', null, ['class' => 'form-control']) }}
+        {{ Form::text('direct_superior', null, ['class' => 'form-control bg-white']) }}
     </div>
     <div class="mb-3">
         {{ Form::label('direct_junior', 'Bawahan Langsung', ['class' => 'form-label']) }}
-        {{ Form::text('direct_junior', null, ['class' => 'form-control']) }}
+        {{ Form::text('direct_junior', null, ['class' => 'form-control bg-white']) }}
     </div>
     <div class="mb-3">
         {{ Form::label('responsibility', 'Responsibility', ['class' => 'form-label']) }}
         {{ Form::hidden('responsibility', null, ['id' => 'responsibility']) }}
-        <div class="responsibility"></div>
+        <div class="responsibility bg-white"></div>
     </div>
 
-    <h4 class="mt-2">Persyaratan</h4>
+    <h4 class="mt-5">Persyaratan</h4>
     <div class="mb-3">
         {{ Form::label('gender', 'Gender', ['class' => 'form-label']) }}
-        <select class="form-select" name="gender">
+        <select class="form-select bg-white" name="gender">
             <option value="0">Semua</option>
             <option value="1">Laki-laki</option>
             <option value="2">Perempuan</option>
@@ -88,7 +111,7 @@
     <div class="row">
         <div class="mb-3 col-4">
             {{ Form::label('education_id', 'Education', ['class' => 'form-label']) }}
-            <select class="form-select" name="education_id">
+            <select class="form-select bg-white" name="education_id">
                 @foreach ($educations as $d)
                     <option value="{{ $d->id }}">{{ $d->education_name }}</option>
                 @endforeach
@@ -97,7 +120,7 @@
 
         <div class="mb-3 col-4">
             {{ Form::label('major_id', 'Major', ['class' => 'form-label']) }}
-            <select class="form-select" name="major_id">
+            <select class="form-select bg-white" name="major_id">
                 @foreach ($majors as $d)
                     <option value="{{ $d->id }}">{{ $d->major_name }}</option>
                 @endforeach
@@ -105,7 +128,7 @@
         </div>
         <div class="mb-3 col-4">
             {{ Form::label('ipk', 'IPK', ['class' => 'form-label']) }}
-            {{ Form::number('ipk', null, ['class' => 'form-control']) }}
+            {{ Form::number('ipk', null, ['class' => 'form-control bg-white']) }}
         </div>
     </div>
 
@@ -122,23 +145,23 @@
     <div class="mb-3">
         {{ Form::label('special_conditions', 'Persyaratan Khusus', ['class' => 'form-label']) }}
         {{ Form::hidden('special_conditions', null, ['id' => 'special_conditions']) }}
-        <div class="special_conditions"></div>
+        <div class="special_conditions bg-white"></div>
     </div>
     <div class="mb-3">
         {{ Form::label('general_others', 'Lain-lain', ['class' => 'form-label']) }}
         {{ Form::hidden('general_others', null, ['id' => 'general_others']) }}
-        <div class="general_others"></div>
+        <div class="general_others bg-white"></div>
     </div>
     <div class="mb-3">
         {{ Form::label('request_basis', 'Dasar Permintaan', ['class' => 'form-label']) }}
-        <select class="form-select" name="request_basis">
+        <select class="form-select bg-white" name="request_basis">
             <option value="Peningkatan Volume Kerja">Peningkatan Volume Kerja</option>
             <option value="Pengembangan Struktur Organisasi">Pengembangan Struktur Organisasi</option>
         </select>
     </div>
     <div class="mb-3">
         {{ Form::label('request_basis_for', 'Keperluan Permintaan', ['class' => 'form-label']) }}
-        <select class="form-select" name="request_basis_for">
+        <select class="form-select bg-white" name="request_basis_for">
             <option value="Resign">Resign</option>
             <option value="Mutasi">Mutasi</option>
             <option value="Mutasi">Promosi</option>
@@ -146,7 +169,7 @@
         </select>
     </div>
     <div class="mb-3">
-        {{ Form::hidden('status', 0, ['class' => 'form-control']) }}
+        {{ Form::hidden('status', 0, ['class' => 'form-control bg-white']) }}
     </div>
 
 
@@ -194,7 +217,7 @@
                 <div class="row mb-3">
                     <div class="col-5">
                         <label for="field" class="form-label">Bidang</label>
-                        <select class="form-select" name="fields[]">
+                        <select class="form-select bg-white" name="fields[]">
                             @foreach ($fields as $d)
                             <option value="{{ $d->id }}">{{ $d->field_name }}</option>
                             @endforeach
@@ -202,7 +225,7 @@
                     </div>
                     <div class="col-5">
                         <label for="tahun" class="form-label">Lama (Tahun)</label>
-                        <input type="number" name="tahun[]" class="form-control">
+                        <input type="number" name="tahun[]" class="form-control bg-white">
                     </div>
                     <div class="col-2 d-flex align-items-end">
                         <button type="button" class="btn btn-danger btn-sm deletePengalaman">Delete</button>
