@@ -29,7 +29,7 @@
                             </div>
                             <div class="col-sm-5">
                                 <div class="welcome-bg-img mb-n7 text-end">
-                                    <img src="{{ asset('package/dist/images/backgrounds/welcome-bg.svg') }}" alt=""
+                                    <img src="{{ asset('package/dist/images/backgrounds/welcome-bg2.png') }}" alt=""
                                         class="img-fluid">
                                 </div>
                             </div>
@@ -37,58 +37,78 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 d-flex align-items-stretch">
-                <div class="card bg-secondary text-white w-100 card-hover">
+
+            <div class="col-md-4">
+                <div class="card bg-dark-subtle hover-img">
+                    <div class="card-body p-4 text-center border-bottom">
+                        <img src="{{ asset('package/dist/images/profile/user-1.jpg') }}" alt=""
+                            class="rounded-circle mb-3" width="80" height="80">
+                        <h5 class="fw-semibold mb-0 fs-5 text-white">{{ Auth::user()->name }}</h5>
+                        <span class="text-dark fs-2">{{Auth::user()->ktp}}</span>
+                    </div>
+                    <a href="{{url('forms')}}" class="px-2 py-2 list-unstyled d-flex align-items-center justify-content-center mb-0">
+
+                        <h6 class="card-text fw-normal text-white">
+                            Manage your curriculum vitae
+                        </h6>
+
+                        <i class="ti ti-arrow-right fs-8 text-white"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-xl-12 col-md-12 d-flex align-items-strech">
+                <div class="card w-100 bg-light-primary">
                     <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <i class="ti ti-user display-6"></i>
-                            <div class="ms-auto">
-                                <i class="ti ti-arrow-right fs-8"></i>
+                        <div class="d-sm-flex d-block align-items-center justify-content-between mb-7">
+                            <div class="mb-3 mb-sm-0">
+                                <h5 class="card-title fw-semibold">Top Performers</h5>
+                                <p class="card-subtitle mb-0">Best Employees</p>
+                            </div>
+                            <div>
+                                <select class="form-select">
+                                    <option value="1">March 2023</option>
+                                    <option value="2">April 2023</option>
+                                    <option value="3">May 2023</option>
+                                    <option value="4">June 2023</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="mt-4">
-                            <h4 class="card-title mb-1 text-white">
-                                CV
-                            </h4>
-                            <h6 class="card-text fw-normal text-white-50">
-                                Manage your curriculum vitae
-                            </h6>
+                        <div class="table-responsive">
+                            <table class="table align-middle text-nowrap mb-0">
+                                <thead>
+                                    <tr class="text-muted fw-semibold text-center">
+                                        <th scope="col" class="ps-0">Assigned</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="border-top">
+                                    @forelse ($data['projects'] as $d)
+                                        <tr>
+                                            <td class="text-center">
+                                                <div class="align-items-center">
+                                                    <div>
+                                                        <h6 class="fw-semibold mb-1">{{ $d->project_name }}</h6>
+                                                        <p class="text-muted">Web Designer</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <button projectId="{{ EncryptData($d->id) }}"
+                                                    class="btn btn-outline-primary text-primary mt-3 btnConfirm">Take
+                                                    Test</button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xl-12 col-12 d-flex align-items-strech">
-                <div class="card bg-primary-subtle w-100">
-                    <div class="card-body p-4">
-                        <h3 class="text-dark">Test Open</h3>
-                        <p class="card-subtitle mb-3 text-dark">Choose the selection you want to take.</p>
-                        <div class="row">
-                            @forelse ($data['projects'] as $d)
-                                <div class="co-sm-6 col-md-3">
-                                    <div class="card overflow-hidden mb-4 mb-md-0 shadow-none border bg-light-info card-hover">
-                                        <div class="p-9 text-center">
-                                            <div class="d-flex align-items-center mt-3 justify-content-center">
-                                                <h5 class="mb-0">
-                                                    <span class="text-primary fw-bold">{{ $d->project_name }}</span>
-                                                </h5>
-                                            </div>
-                                            <button projectId="{{ EncryptData($d->id) }}"
-                                                class="btn btn-outline-primary text-primary w-100 mt-3 btnConfirm">Take Test</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            @empty
-                            <div class="co-sm-12 col-md-12">
-                                <div class="card overflow-hidden mb-4 mb-md-0 shadow-none border bg-light-primary text-center">
-                                    <h5 class="mb-2 mt-2 text-warning">There is no test open</h5>
-                                </div>
-                            </div>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 @endsection

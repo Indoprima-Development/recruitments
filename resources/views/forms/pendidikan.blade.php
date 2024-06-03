@@ -1,14 +1,48 @@
 <div class="tab-pane fade show" id="pills-pendidikan" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
     <div class="row">
+        <div class="col-md-6 d-flex align-items-stretch">
+            <a href="{{ url('datapendidikanformals/create') }}" class="card bg-success text-white w-100 card-hover">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="ti ti-school display-6"></i>
+                        <div class="ms-auto">
+                            <i class="ti ti-arrow-right fs-8"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="card-title mb-1 text-white">Formal</h4>
+                        <h6 class="card-text fw-normal text-white-50">
+                            Tambahkan data pendidikan formal
+                        </h6>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6 d-flex align-items-stretch">
+            <a href="{{ url('datapendidikannonformals/create') }}" class="card bg-warning text-white w-100 card-hover">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="ti ti-diamond display-6"></i>
+                        <div class="ms-auto">
+                            <i class="ti ti-arrow-right fs-8"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="card-title mb-1 text-white">Non Formal</h4>
+                        <h6 class="card-text fw-normal text-white-50">
+                            Tambahkan data pendidikan non formal
+                        </h6>
+                    </div>
+                </div>
+            </a>
+        </div>
         <div class="col-12">
             <div class="card w-100 position-relative overflow-hidden mb-0 bg-white">
                 <div class="card-body p-4">
                     <h5 class="card-title fw-semibold">Pendidikan Formal</h5>
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                     <div class="row">
-                        <div class="d-flex justify-content-end mb-3"><a
-                                href="{{ url('datapendidikanformals/create') }}" class="btn btn-info">Tambah</a>
-                        </div>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -54,10 +88,6 @@
                     <h5 class="card-title fw-semibold">Pendidikan Non Formal</h5>
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                     <div class="row">
-                        <div class="d-flex justify-content-end mb-3"><a
-                                href="{{ url('datapendidikannonformals/create') }}" class="btn btn-info">Tambah</a>
-                        </div>
-
                         <table class="table table-bordered">
                             <thead>
                                 <tr>

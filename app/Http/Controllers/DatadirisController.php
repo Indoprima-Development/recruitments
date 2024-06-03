@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datadiri;
 use App\Http\Requests\DatadiriRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DatadirisController extends Controller
@@ -17,8 +18,8 @@ class DatadirisController extends Controller
      */
     public function index()
     {
-        $datadiris= Datadiri::all();
-        return view('datadiris.index', ['datadiris'=>$datadiris]);
+        $datadiris = Datadiri::all();
+        return view('datadiris.index', ['datadiris' => $datadiris]);
     }
 
     /**
@@ -40,20 +41,20 @@ class DatadirisController extends Controller
     public function store(DatadiriRequest $request)
     {
         $dataRequest = [];
-		$dataRequest["user_id"] = Auth::user()->id;
-		$dataRequest["name"] = $request->input('name');
-		$dataRequest["gender"] = $request->input('gender');
-		$dataRequest["tempat_lahir"] = $request->input('tempat_lahir');
-		$dataRequest["tanggal_lahir"] = $request->input('tanggal_lahir');
-		$dataRequest["agama"] = $request->input('agama');
-		$dataRequest["alamat"] = $request->input('alamat');
-		$dataRequest["no_hp"] = $request->input('no_hp');
-		$dataRequest["no_wa"] = $request->input('no_wa');
-		$dataRequest["status_rumah"] = $request->input('status_rumah');
-		$dataRequest["golongan_darah"] = $request->input('golongan_darah');
-		$dataRequest["tinggi_badan"] = $request->input('tinggi_badan');
-		$dataRequest["berat_badan"] = $request->input('berat_badan');
-		$dataRequest["ktp"] = $request->input('ktp');
+        $dataRequest["user_id"] = Auth::user()->id;
+        $dataRequest["name"] = $request->input('name');
+        $dataRequest["gender"] = $request->input('gender');
+        $dataRequest["tempat_lahir"] = $request->input('tempat_lahir');
+        $dataRequest["tanggal_lahir"] = $request->input('tanggal_lahir');
+        $dataRequest["agama"] = $request->input('agama');
+        $dataRequest["alamat"] = $request->input('alamat');
+        $dataRequest["no_hp"] = $request->input('no_hp');
+        $dataRequest["no_wa"] = $request->input('no_wa');
+        $dataRequest["status_rumah"] = $request->input('status_rumah');
+        $dataRequest["golongan_darah"] = $request->input('golongan_darah');
+        $dataRequest["tinggi_badan"] = $request->input('tinggi_badan');
+        $dataRequest["berat_badan"] = $request->input('berat_badan');
+        $dataRequest["ktp"] = $request->input('ktp');
 
         $kendaraan = [];
         if ($request->input('kendaraan') != null) {
@@ -65,13 +66,13 @@ class DatadirisController extends Controller
             $sim = $request->input('sim');
         }
 
-		$dataRequest["kendaraan"] = json_encode($kendaraan);
-		$dataRequest["sim"] = json_encode($sim);
+        $dataRequest["kendaraan"] = json_encode($kendaraan);
+        $dataRequest["sim"] = json_encode($sim);
 
-        $datadiri = Datadiri::where('user_id',Auth::user()->id)->first();
+        $datadiri = Datadiri::where('user_id', Auth::user()->id)->first();
         if (empty($datadiri)) {
             Datadiri::create($dataRequest);
-        }else{
+        } else {
             $datadiri->update($dataRequest);
         }
 
@@ -87,7 +88,7 @@ class DatadirisController extends Controller
     public function show($id)
     {
         $datadiri = Datadiri::findOrFail($id);
-        return view('datadiris.show',['datadiri'=>$datadiri]);
+        return view('datadiris.show', ['datadiri' => $datadiri]);
     }
 
     /**
@@ -99,7 +100,7 @@ class DatadirisController extends Controller
     public function edit($id)
     {
         $datadiri = Datadiri::findOrFail($id);
-        return view('datadiris.edit',['datadiri'=>$datadiri]);
+        return view('datadiris.edit', ['datadiri' => $datadiri]);
     }
 
     /**
@@ -112,31 +113,51 @@ class DatadirisController extends Controller
     public function update(DatadiriRequest $request, $id)
     {
         $datadiri = Datadiri::findOrFail($id);
-		$datadiri->user_id = $request->input('user_id');
-		$datadiri->name = $request->input('name');
-		$datadiri->gender = $request->input('gender');
-		$datadiri->tempat_lahir = $request->input('tempat_lahir');
-		$datadiri->tanggal_lahir = $request->input('tanggal_lahir');
-		$datadiri->agama = $request->input('agama');
-		$datadiri->alamat = $request->input('alamat');
-		$datadiri->no_hp = $request->input('no_hp');
-		$datadiri->no_wa = $request->input('no_wa');
-		$datadiri->status_rumah = $request->input('status_rumah');
-		$datadiri->golongan_darah = $request->input('golongan_darah');
-		$datadiri->tinggi_badan = $request->input('tinggi_badan');
-		$datadiri->berat_badan = $request->input('berat_badan');
-		$datadiri->ktp = $request->input('ktp');
-		$datadiri->kendaraan = $request->input('kendaraan');
-		$datadiri->sim = $request->input('sim');
-		$datadiri->ekspektasi_gaji = $request->input('ekspektasi_gaji');
-		$datadiri->fasilitas_harapan = $request->input('fasilitas_harapan');
-		$datadiri->kesediaan_penempatan = $request->input('kesediaan_penempatan');
-		$datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');
-		$datadiri->image_jabatan_terakhir = $request->input('image_jabatan_terakhir');
-		$datadiri->keterangan_jabatan_terakhir = $request->input('keterangan_jabatan_terakhir');
+        $datadiri->user_id = $request->input('user_id');
+        $datadiri->name = $request->input('name');
+        $datadiri->gender = $request->input('gender');
+        $datadiri->tempat_lahir = $request->input('tempat_lahir');
+        $datadiri->tanggal_lahir = $request->input('tanggal_lahir');
+        $datadiri->agama = $request->input('agama');
+        $datadiri->alamat = $request->input('alamat');
+        $datadiri->no_hp = $request->input('no_hp');
+        $datadiri->no_wa = $request->input('no_wa');
+        $datadiri->status_rumah = $request->input('status_rumah');
+        $datadiri->golongan_darah = $request->input('golongan_darah');
+        $datadiri->tinggi_badan = $request->input('tinggi_badan');
+        $datadiri->berat_badan = $request->input('berat_badan');
+        $datadiri->ktp = $request->input('ktp');
+        $datadiri->kendaraan = $request->input('kendaraan');
+        $datadiri->sim = $request->input('sim');
+        $datadiri->ekspektasi_gaji = $request->input('ekspektasi_gaji');
+        $datadiri->fasilitas_harapan = $request->input('fasilitas_harapan');
+        $datadiri->kesediaan_penempatan = $request->input('kesediaan_penempatan');
+        $datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');
+        $datadiri->image_jabatan_terakhir = $request->input('image_jabatan_terakhir');
+        $datadiri->keterangan_jabatan_terakhir = $request->input('keterangan_jabatan_terakhir');
         $datadiri->save();
 
         return to_route('datadiris.index');
+    }
+
+    public function pernyataan(Request $request, $id)
+    {
+        $datadiri = Datadiri::findOrFail(Auth::user()->id);
+        $datadiri->ekspektasi_gaji = $request->input('ekspektasi_gaji');
+        $datadiri->fasilitas_harapan = $request->input('fasilitas_harapan');
+        $datadiri->kesediaan_penempatan = $request->input('kesediaan_penempatan');
+        $datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');
+        $datadiri->keterangan_jabatan_terakhir = $request->input('keterangan_jabatan_terakhir');
+
+        if (!empty($request->image_jabatan_terakhir)) {
+            $filename = $id . ".png";
+            $pathUpload = "jabatan";
+            UploadFile($request->image_jabatan_terakhir, $pathUpload, $filename);
+            $datadiri->image_jabatan_terakhir = $pathUpload."/"."$filename";
+        }
+        $datadiri->save();
+
+        return redirect('forms');
     }
 
     /**

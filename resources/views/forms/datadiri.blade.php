@@ -1,15 +1,17 @@
 <div class="tab-pane fade show active" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
     <div class="card w-100 position-relative overflow-hidden mb-0">
         <div class="card-body p-4">
-            <h5 class="card-title fw-semibold">Data Diri</h5>
-            <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
-
             {{ Form::model($datadiri, ['url' => ['datadiris/store', Auth::user()->id], 'method' => 'POST']) }}
             <div class="row">
-                <div class="mb-3 col-12 text-end">
-                    {{ Form::submit('Simpan Perubahan', ['class' => 'btn btn-primary']) }}
+                <div class="col-sm-12 col-md-8">
+                    <h5 class="card-title fw-semibold">Data Diri</h5>
+                    <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                 </div>
-
+                <div class="col-sm-12 col-md-4 text-end">
+                    {{ Form::submit('Simpan Data Diri', ['class' => 'btn btn-primary']) }}
+                </div>
+            </div>
+            <div class="row">
                 <div class="mb-3 col-12">
                     {{ Form::label('name', 'Nama Lengkap', ['class' => 'form-label']) }}
                     {{ Form::text('name', null, ['class' => 'form-control']) }}

@@ -76,6 +76,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     // Formulir
     Route::resource('/forms',FormsController::class);
     Route::post('/datadiris/store/{id}',[DatadirisController::class, 'store']);
+    Route::post('/datadiris/pernyataan/{id}',[DatadirisController::class, 'pernyataan']);
+
     Route::resource('datapendidikanformals',DatapendidikanformalsController::class);
     Route::resource('datapendidikannonformals',DatapendidikannonformalsController::class);
     Route::resource('datakeluargas',DatakeluargasController::class);
@@ -85,6 +87,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('dataolahragas',DataolahragasController::class);
     Route::resource('datadetails',DatadetailsController::class);
     Route::resource('datakesehatans',DatakesehatansController::class);
+
+
 });
 
 
