@@ -36,9 +36,8 @@
 
         <!-- Main wrapper -->
         <div class="body-wrapper">
-            @yield('content2')
-
             <div class="container-fluid">
+                @yield('content2')
                 <section class="datatables">
                     <!-- basic table -->
                     <div class="card">
