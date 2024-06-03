@@ -77,6 +77,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('/forms',FormsController::class);
     Route::post('/datadiris/store/{id}',[DatadirisController::class, 'store']);
     Route::post('/datadiris/pernyataan/{id}',[DatadirisController::class, 'pernyataan']);
+    Route::post('/datadiris/photo',[DatadirisController::class, 'photo']);
 
     Route::resource('datapendidikanformals',DatapendidikanformalsController::class);
     Route::resource('datapendidikannonformals',DatapendidikannonformalsController::class);

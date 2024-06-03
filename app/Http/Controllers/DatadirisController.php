@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datadiri;
 use App\Http\Requests\DatadiriRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -154,6 +155,21 @@ class DatadirisController extends Controller
             $pathUpload = "jabatan";
             UploadFile($request->image_jabatan_terakhir, $pathUpload, $filename);
             $datadiri->image_jabatan_terakhir = $pathUpload."/"."$filename";
+        }
+        $datadiri->save();
+
+        return redirect('forms');
+    }
+
+    public function photo(Request $request)
+    {
+        $datadiri = User::findOrFail(Auth::user()->id);
+
+        if (!empty($request->photo)) {
+            $filename = $datadiri->id . ".png";
+            $pathUpload = "photo";
+            UploadFile($request->photo, $pathUpload, $filename);
+            $datadiri->photo = $pathUpload."/"."$filename";
         }
         $datadiri->save();
 

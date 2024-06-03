@@ -9,11 +9,7 @@
                         <div class="row">
                             <div class="col-sm-7">
                                 <div class="d-flex align-items-center mb-7">
-                                    <div class="rounded-circle overflow-hidden me-6">
-                                        <img src="{{ asset('package/dist/images/profile/user-1.jpg') }}" alt=""
-                                            width="40" height="40">
-                                    </div>
-                                    <h5 class="fw-semibold mb-0 fs-5 text-white">Recruitment PT. Indoprima Gemilang</h5>
+                                    <h5 class="fw-semibold mb-0 fs-6 text-white">Recruitment PT. Indoprima Gemilang</h5>
                                 </div>
                                 <div class="d-flex align-items-center">
                                     <div class="border-end pe-4 border-muted border-opacity-10">
@@ -41,8 +37,13 @@
             <div class="col-md-4">
                 <div class="card bg-dark-subtle hover-img">
                     <div class="card-body p-4 text-center border-bottom">
+                        @if (Auth::user()->photo != "")
+                        <img src="{{ asset(Auth::user()->photo) }}" alt=""
+                            class="rounded-circle mb-3" width="80" height="80">
+                        @else
                         <img src="{{ asset('package/dist/images/profile/user-1.jpg') }}" alt=""
                             class="rounded-circle mb-3" width="80" height="80">
+                        @endif
                         <h5 class="fw-semibold mb-0 fs-5 text-white">{{ Auth::user()->name }}</h5>
                         <span class="text-dark fs-2">{{Auth::user()->ktp}}</span>
                     </div>
@@ -62,16 +63,8 @@
                     <div class="card-body">
                         <div class="d-sm-flex d-block align-items-center justify-content-between mb-7">
                             <div class="mb-3 mb-sm-0">
-                                <h5 class="card-title fw-semibold">Top Performers</h5>
-                                <p class="card-subtitle mb-0">Best Employees</p>
-                            </div>
-                            <div>
-                                <select class="form-select">
-                                    <option value="1">March 2023</option>
-                                    <option value="2">April 2023</option>
-                                    <option value="3">May 2023</option>
-                                    <option value="4">June 2023</option>
-                                </select>
+                                <h5 class="card-title fw-semibold">Data Pilihan Recruitment</h5>
+                                <p class="card-subtitle mb-0">Pilih salah satu test recruitment yang ingin anda ikuti</p>
                             </div>
                         </div>
                         <div class="table-responsive">
