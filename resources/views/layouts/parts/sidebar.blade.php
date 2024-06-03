@@ -67,6 +67,100 @@
 
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Master Data</span>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-home-2"></i>
+                        </span>
+                        <span class="hide-menu">Master Data</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a href="{{url('divisions')}}" class="sidebar-link">
+                                <i class="ti ti-shopping-cart"></i>
+                                <span class="hide-menu">Divisi</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('departments')}}" class="sidebar-link">
+                                <i class="ti ti-currency-dollar"></i>
+                                <span class="hide-menu">Department</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('sections')}}" class="sidebar-link">
+                                <i class="ti ti-cpu"></i>
+                                <span class="hide-menu">Sections</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('jobtitles')}}" class="sidebar-link">
+                                <i class="ti ti-activity-heartbeat"></i>
+                                <span class="hide-menu">Jobtitles</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('education')}}" class="sidebar-link">
+                                <i class="ti ti-playlist"></i>
+                                <span class="hide-menu">Education</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{{url('majors')}}" class="sidebar-link">
+                                <i class="ti ti-activity-heartbeat"></i>
+                                <span class="hide-menu">Majors</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('locations')}}" class="sidebar-link">
+                                <i class="ti ti-playlist"></i>
+                                <span class="hide-menu">Locations</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('fields')}}" class="sidebar-link">
+                                <i class="ti ti-activity-heartbeat"></i>
+                                <span class="hide-menu">Fields</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-home-2"></i>
+                        </span>
+                        <span class="hide-menu">Master Quiz</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse first-level">
+                        <li class="sidebar-item">
+                            <a href="{{url('projects')}}" class="sidebar-link">
+                                <i class="ti ti-shopping-cart"></i>
+                                <span class="hide-menu">Project</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('exams')}}" class="sidebar-link">
+                                <i class="ti ti-currency-dollar"></i>
+                                <span class="hide-menu">Exam</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('qnas')}}" class="sidebar-link">
+                                <i class="ti ti-cpu"></i>
+                                <span class="hide-menu">QnA</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">History</span>
                 </li>
                 <li class="sidebar-item">

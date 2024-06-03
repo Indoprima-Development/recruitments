@@ -17,6 +17,17 @@ use App\Http\Controllers\DatakesehatansController;
 use App\Http\Controllers\DataolahragasController;
 use App\Http\Controllers\DatapengalamankerjasController;
 use App\Http\Controllers\DataorganisasisController;
+use App\Http\Controllers\DivisionsController;
+use App\Http\Controllers\DepartmentsController;
+use App\Http\Controllers\SectionsController;
+use App\Http\Controllers\JobtitlesController;
+use App\Http\Controllers\EducationController;
+use App\Http\Controllers\MajorsController;
+use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\FieldsController;
+use App\Http\Controllers\PtkformsController;
+use App\Http\Controllers\PtkfieldsController;
+use App\Http\Controllers\PtkformtransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,72 +67,50 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     });
 
     //PROJECT
-    Route::resource('/projects',ProjectsController::class);
+    Route::resource('/projects', ProjectsController::class);
     Route::controller(ProjectsController::class)->group(function () {
         Route::get('/projects/{id}/exams', 'examsByProjectId');
     });
 
     //EXAM
-    Route::resource('/exams',ExamsController::class);
+    Route::resource('/exams', ExamsController::class);
     Route::controller(ExamsController::class)->group(function () {
         Route::get('/exams/{id}/qnas', 'qnasByExamId');
     });
 
     //QNA
-    Route::resource('/qnas',QnasController::class);
+    Route::resource('/qnas', QnasController::class);
     Route::controller(QnasController::class)->group(function () {
         Route::post('/qnas-upload-image', 'qnaUploadImage');
     });
 
+    //ADMIN
+    Route::resource('/divisions', DivisionsController::class);
+    Route::resource('/departments', DepartmentsController::class);
+    Route::resource('/sections', SectionsController::class);
+    Route::resource('/jobtitles', JobtitlesController::class);
+    Route::resource('/education', EducationController::class);
+    Route::resource('/majors', MajorsController::class);
+    Route::resource('/locations', LocationsController::class);
+    Route::resource('/fields', FieldsController::class);
+    
+    Route::resource('/ptkforms', PtkformsController::class);
+    Route::resource('/ptkfields', PtkfieldsController::class);
+    Route::resource('/ptkformtransactions', PtkformtransactionsController::class);
+
     // Formulir
-    Route::resource('/forms',FormsController::class);
-    Route::post('/datadiris/store/{id}',[DatadirisController::class, 'store']);
-    Route::post('/datadiris/pernyataan/{id}',[DatadirisController::class, 'pernyataan']);
-    Route::post('/datadiris/photo',[DatadirisController::class, 'photo']);
+    Route::resource('/forms', FormsController::class);
+    Route::post('/datadiris/store/{id}', [DatadirisController::class, 'store']);
+    Route::post('/datadiris/pernyataan/{id}', [DatadirisController::class, 'pernyataan']);
+    Route::post('/datadiris/photo', [DatadirisController::class, 'photo']);
 
-    Route::resource('datapendidikanformals',DatapendidikanformalsController::class);
-    Route::resource('datapendidikannonformals',DatapendidikannonformalsController::class);
-    Route::resource('datakeluargas',DatakeluargasController::class);
-    Route::resource('datapengalamankerjas',DatapengalamankerjasController::class);
-    Route::resource('datakemampuans',DatakemampuansController::class);
-    Route::resource('dataorganisasis',DataorganisasisController::class);
-    Route::resource('dataolahragas',DataolahragasController::class);
-    Route::resource('datadetails',DatadetailsController::class);
-    Route::resource('datakesehatans',DatakesehatansController::class);
-
-
+    Route::resource('datapendidikanformals', DatapendidikanformalsController::class);
+    Route::resource('datapendidikannonformals', DatapendidikannonformalsController::class);
+    Route::resource('datakeluargas', DatakeluargasController::class);
+    Route::resource('datapengalamankerjas', DatapengalamankerjasController::class);
+    Route::resource('datakemampuans', DatakemampuansController::class);
+    Route::resource('dataorganisasis', DataorganisasisController::class);
+    Route::resource('dataolahragas', DataolahragasController::class);
+    Route::resource('datadetails', DatadetailsController::class);
+    Route::resource('datakesehatans', DatakesehatansController::class);
 });
-
-
-    use App\Http\Controllers\DivisionsController;
-    Route::resource('/divisions',DivisionsController::class);
-
-    use App\Http\Controllers\DepartmentsController;
-    Route::resource('/departments',DepartmentsController::class);
-
-    use App\Http\Controllers\SectionsController;
-    Route::resource('/sections',SectionsController::class);
-
-    use App\Http\Controllers\JobtitlesController;
-    Route::resource('/jobtitles',JobtitlesController::class);
-
-    use App\Http\Controllers\EducationController;
-    Route::resource('/education',EducationController::class);
-
-    use App\Http\Controllers\MajorsController;
-    Route::resource('/majors',MajorsController::class);
-
-    use App\Http\Controllers\LocationsController;
-    Route::resource('/locations',LocationsController::class);
-
-    use App\Http\Controllers\FieldsController;
-    Route::resource('/fields',FieldsController::class);
-
-    use App\Http\Controllers\PtkformsController;
-    Route::resource('/ptkforms',PtkformsController::class);
-
-    use App\Http\Controllers\PtkfieldsController;
-    Route::resource('/ptkfields',PtkfieldsController::class);
-
-    use App\Http\Controllers\PtkformtransactionsController;
-    Route::resource('/ptkformtransactions',PtkformtransactionsController::class);
