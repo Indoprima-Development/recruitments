@@ -26,8 +26,8 @@ class PtkformsController extends Controller
      */
     public function index()
     {
-        $ptkforms= Ptkform::all();
-        return view('ptkforms.index', ['ptkforms'=>$ptkforms]);
+        $ptkforms = Ptkform::all();
+        return view('ptkforms.index', ['ptkforms' => $ptkforms]);
     }
 
     /**
@@ -45,7 +45,7 @@ class PtkformsController extends Controller
         $majors = Major::all();
         $fields = Field::all();
 
-        return view('ptkforms.create',compact('divisions','departments','sections','jobtitles','educations','majors','fields'));
+        return view('ptkforms.create', compact('divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields'));
     }
 
     /**
@@ -57,31 +57,34 @@ class PtkformsController extends Controller
     public function store(PtkformRequest $request)
     {
         $ptkform = new Ptkform;
-		$ptkform->division_id = $request->input('division_id');
-		$ptkform->department_id = $request->input('department_id');
-		$ptkform->section_id = $request->input('section_id');
-		$ptkform->jobtitle_id = $request->input('jobtitle_id');
-		$ptkform->education_id = $request->input('education_id');
-		$ptkform->major_id = $request->input('major_id');
-		$ptkform->date_startwork = $request->input('date_startwork');
-		$ptkform->direct_superior = $request->input('direct_superior');
-		$ptkform->direct_junior = $request->input('direct_junior');
-		$ptkform->responsibility = $request->input('responsibility');
-		$ptkform->gender = $request->input('gender');
-		$ptkform->ipk = $request->input('ipk');
-		$ptkform->special_conditions = $request->input('special_conditions');
-		$ptkform->general_others = $request->input('general_others');
-		$ptkform->request_basis = $request->input('request_basis');
-		$ptkform->request_basis_for = $request->input('request_basis_for');
-		$ptkform->status = $request->input('status');
+        $ptkform->division_id = $request->input('division_id');
+        $ptkform->department_id = $request->input('department_id');
+        $ptkform->section_id = $request->input('section_id');
+        $ptkform->jobtitle_id = $request->input('jobtitle_id');
+        $ptkform->education_id = $request->input('education_id');
+        $ptkform->major_id = $request->input('major_id');
+        $ptkform->date_startwork = $request->input('date_startwork');
+        $ptkform->direct_superior = $request->input('direct_superior');
+        $ptkform->direct_junior = $request->input('direct_junior');
+        $ptkform->responsibility = $request->input('responsibility');
+        $ptkform->gender = $request->input('gender');
+        $ptkform->ipk = $request->input('ipk');
+        $ptkform->special_conditions = $request->input('special_conditions');
+        $ptkform->general_others = $request->input('general_others');
+        $ptkform->request_basis = $request->input('request_basis');
+        $ptkform->request_basis_for = $request->input('request_basis_for');
+        $ptkform->status_pegawai = $request->input('status_pegawai');
+        $ptkform->status = 0;
         $ptkform->save();
 
-        for ($i=0; $i < count($request->fields); $i++) {
-            Ptkfield::create([
-                "ptkform_id"    => $ptkform->id,
-                "field_id"      => $request->fields[$i],
-                "year"          => $request->tahun[$i]
-            ]);
+        if ($request->fields != null) {
+            for ($i = 0; $i < count($request->fields); $i++) {
+                Ptkfield::create([
+                    "ptkform_id"    => $ptkform->id,
+                    "field_id"      => $request->fields[$i],
+                    "year"          => $request->tahun[$i]
+                ]);
+            }
         }
 
         return to_route('ptkforms.index');
@@ -96,7 +99,7 @@ class PtkformsController extends Controller
     public function show($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        return view('ptkforms.show',['ptkform'=>$ptkform]);
+        return view('ptkforms.show', ['ptkform' => $ptkform]);
     }
 
     /**
@@ -108,7 +111,7 @@ class PtkformsController extends Controller
     public function edit($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        return view('ptkforms.edit',['ptkform'=>$ptkform]);
+        return view('ptkforms.edit', ['ptkform' => $ptkform]);
     }
 
     /**
@@ -121,23 +124,23 @@ class PtkformsController extends Controller
     public function update(PtkformRequest $request, $id)
     {
         $ptkform = Ptkform::findOrFail($id);
-		$ptkform->division_id = $request->input('division_id');
-		$ptkform->department_id = $request->input('department_id');
-		$ptkform->section_id = $request->input('section_id');
-		$ptkform->jobtitle_id = $request->input('jobtitle_id');
-		$ptkform->education_id = $request->input('education_id');
-		$ptkform->major_id = $request->input('major_id');
-		$ptkform->date_startwork = $request->input('date_startwork');
-		$ptkform->direct_superior = $request->input('direct_superior');
-		$ptkform->direct_junior = $request->input('direct_junior');
-		$ptkform->responsibility = $request->input('responsibility');
-		$ptkform->gender = $request->input('gender');
-		$ptkform->ipk = $request->input('ipk');
-		$ptkform->special_conditions = $request->input('special_conditions');
-		$ptkform->general_others = $request->input('general_others');
-		$ptkform->request_basis = $request->input('request_basis');
-		$ptkform->request_basis_for = $request->input('request_basis_for');
-		$ptkform->status = $request->input('status');
+        $ptkform->division_id = $request->input('division_id');
+        $ptkform->department_id = $request->input('department_id');
+        $ptkform->section_id = $request->input('section_id');
+        $ptkform->jobtitle_id = $request->input('jobtitle_id');
+        $ptkform->education_id = $request->input('education_id');
+        $ptkform->major_id = $request->input('major_id');
+        $ptkform->date_startwork = $request->input('date_startwork');
+        $ptkform->direct_superior = $request->input('direct_superior');
+        $ptkform->direct_junior = $request->input('direct_junior');
+        $ptkform->responsibility = $request->input('responsibility');
+        $ptkform->gender = $request->input('gender');
+        $ptkform->ipk = $request->input('ipk');
+        $ptkform->special_conditions = $request->input('special_conditions');
+        $ptkform->general_others = $request->input('general_others');
+        $ptkform->request_basis = $request->input('request_basis');
+        $ptkform->request_basis_for = $request->input('request_basis_for');
+        $ptkform->status = $request->input('status');
         $ptkform->save();
 
         return to_route('ptkforms.index');
@@ -157,8 +160,9 @@ class PtkformsController extends Controller
         return to_route('ptkforms.index');
     }
 
-    public function changeStatus($id){
-        Ptkform::where("id",$id)->update([
+    public function changeStatus($id)
+    {
+        Ptkform::where("id", $id)->update([
             "status" => 1
         ]);
 

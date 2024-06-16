@@ -104,6 +104,10 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     // Formulir
     Route::resource('/forms', FormsController::class);
+    Route::controller(FormsController::class)->group(function () {
+        Route::get('/forms/show/{id}', 'show');
+    });
+
     Route::post('/datadiris/store/{id}', [DatadirisController::class, 'store']);
     Route::post('/datadiris/pernyataan/{id}', [DatadirisController::class, 'pernyataan']);
     Route::post('/datadiris/photo', [DatadirisController::class, 'photo']);

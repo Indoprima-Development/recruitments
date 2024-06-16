@@ -7,12 +7,11 @@
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h4 class="fw-semibold mb-8">Notes</h4>
+                    <h4 class="fw-semibold mb-8">PTK</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a class="text-muted text-decoration-none"
-                                    href="./index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Notes</li>
+                                    href="./index.html">Permintaan Tenaga Kerja</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -57,7 +56,7 @@
               "
                 id="note-business">
                 <i class="ti ti-briefcase fill-white me-0 me-md-1"></i>
-                <span class="d-none d-md-block font-weight-medium">Business</span>
+                <span class="d-none d-md-block font-weight-medium">Plant 1</span>
             </a>
         </li>
         <li class="nav-item">
@@ -74,7 +73,7 @@
               "
                 id="note-social">
                 <i class="ti ti-share fill-white me-0 me-md-1"></i>
-                <span class="d-none d-md-block font-weight-medium">Social</span>
+                <span class="d-none d-md-block font-weight-medium">Plant 2</span>
             </a>
         </li>
         <li class="nav-item">
@@ -91,7 +90,7 @@
               "
                 id="note-important">
                 <i class="ti ti-star fill-white me-0 me-md-1"></i>
-                <span class="d-none d-md-block font-weight-medium">Important</span>
+                <span class="d-none d-md-block font-weight-medium">Plant 5</span>
             </a>
         </li>
         <li class="nav-item ms-auto">

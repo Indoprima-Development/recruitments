@@ -32,13 +32,14 @@ class LoginRegisterController extends Controller
         $request->validate([
             'name' => 'required|string|max:250',
             'email' => 'required|email|max:250|unique:users',
-            'password' => 'required|min:8|confirmed'
+            'password' => 'required|min:6'
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'ktp'      => $request->ktp
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -56,37 +57,20 @@ class LoginRegisterController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-            'ktp' => 'required',
-            'nohp' => 'required'
+            'email' => 'required',
+            'password' => 'required'
         ]);
 
         // $user = User::where('ktp', $request->ktp)->orWhere('nohp', $request->nohp)->first();
-        $user = User::where('nohp', $request->nohp)->first();
+        $user = User::where('email', $request->email)->first();
         if (!empty($user)) {
-            SaveSession('user', $user);
-            Auth::login($user);
-            $user->update([
-                'name' => $request->name,
-                'ktp' => $request->ktp,
-                'nohp' => $request->nohp
-            ]);
-            $request->session()->regenerate();
-            return redirect('/')->withSuccess('You have successfully logged in!');
+            if (Hash::check($request->password, $user->password)) {
+                Auth::attempt($credentials);
+                $request->session()->regenerate();
+                return redirect()->route('dashboard')
+                    ->withSuccess('You have successfully registered & logged in!');
+            }
         }
-        //  else {
-        //     $user = User::create([
-        //         'name' => $request->name,
-        //         'email' => $request->ktp."@mail.com",
-        //         'ktp' => $request->ktp,
-        //         'nohp' => $request->nohp,
-        //         'role' => 'user',
-        //     ]);
-
-        //     SaveSession('user', $user);
-        //     Auth::login($user);
-        //     $request->session()->regenerate();
-        //     return redirect('/')->withSuccess('You have successfully logged in!');
-        // }
 
         Alert::error('Failed!', 'Your provided credentials do not match in our records.');
 

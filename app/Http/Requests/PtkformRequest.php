@@ -41,7 +41,7 @@ class PtkformRequest extends FormRequest
 			'general_others' => 'required',
 			'request_basis' => 'required',
 			'request_basis_for' => 'required',
-			'status' => 'required',
+			'status_pegawai' => 'required',
         ];
     }
 }

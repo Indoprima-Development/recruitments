@@ -49,11 +49,19 @@
                                     <p class="mb-0 fs-4 px-3 d-inline-block bg-white text-dark z-index-5 position-relative">Please insert the form below</p>
                                     <span class="border-top w-100 position-absolute top-50 start-50 translate-middle"></span>
                                 </div>
-                                <form action="{{ route('authenticate') }}" method="POST">
+                                <form action="{{ route('store') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="ktp" class="form-label">Email</label>
                                         <input type="email" name="email" class="form-control" aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ktp" class="form-label">Name</label>
+                                        <input type="name" name="name" class="form-control" aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ktp" class="form-label">NIK</label>
+                                        <input type="ktp" name="ktp" class="form-control" aria-describedby="emailHelp">
                                     </div>
                                     <div class="mb-3">
                                         <label for="ktp" class="form-label">Password</label>

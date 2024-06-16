@@ -30,8 +30,8 @@
                     {{ Form::label('kesediaan_penempatan', 'Kesediaan Penempatan', ['class' => 'form-label']) }}
                     <br><small class="text-danger">Apakah bersedia ditempatkan di seluruh unit bisnis PT. Indoprima Gelimang ?</small>
                     <select name="kesediaan_penempatan" class="form-select">
-                        <option {{$datadiri->kesediaan_penempatan == 1 ? "selected" : ""}} value="1">Ya</option>
-                        <option {{$datadiri->kesediaan_penempatan == 0 ? "selected" : ""}} value="0">Tidak</option>
+                        <option {{$datadiri && $datadiri->kesediaan_penempatan == 1 ? "selected" : ""}} value="1">Ya</option>
+                        <option {{ $datadiri && $datadiri->kesediaan_penempatan == 0 ? "selected" : ""}} value="0">Tidak</option>
                     </select>
                 </div>
                 <div class="mb-3 col-sm-12 col-md-6">
@@ -45,7 +45,7 @@
                     <br><small class="text-danger">Gambarkan struktur organisasi anda di perusahaan terakhir</small>
                     <input type="file" class="form-control" name="image_jabatan_terakhir" />
 
-                    @if($datadiri->image_jabatan_terakhir != "-")
+                    @if($datadiri && $datadiri->image_jabatan_terakhir != "-")
                     <img class="w-100 mt-2" src="{{asset($datadiri->image_jabatan_terakhir)}}" />
                     @endif
                 </div>

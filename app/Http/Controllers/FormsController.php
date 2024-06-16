@@ -13,6 +13,7 @@ use App\Models\Datakemampuan;
 use App\Models\Dataolahraga;
 use App\Models\Datadetail;
 use App\Models\Dataorganisasi;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -58,7 +59,20 @@ class FormsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $datadiri = Datadiri::where("user_id",$id)->first();
+        $datakesehatans = Datakesehatan::where("user_id",$id)->get();
+        $datapendidikanformals = Datapendidikanformal::where("user_id",$id)->get();
+        $datapendidikannonformals = Datapendidikannonformal::where("user_id",$id)->get();
+        $datakeluargas = Datakeluarga::where("user_id",$id)->get();
+        $datapengalamankerjas = Datapengalamankerja::where("user_id",$id)->get();
+        $datakemampuans = Datakemampuan::where("user_id",$id)->get();
+        $dataolahragas = Dataolahraga::where("user_id",$id)->get();
+        $datadetails = Datadetail::where("user_id",$id)->get();
+        $dataorganisasis = Dataorganisasi::where("user_id",$id)->get();
+        $users = User::find($id);
+
+        return view("forms.show",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","users"));
+
     }
 
     /**

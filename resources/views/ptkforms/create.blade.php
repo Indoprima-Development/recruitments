@@ -48,6 +48,15 @@
             <section>
                 <h5>Jabatan</h5>
                 <div class="row">
+                    <div class="mb-3 col-12">
+                        {{ Form::label('status_pegawai', 'Status Pegawai', ['class' => 'form-label']) }}
+                        <select class="form-select bg-white" name="status_pegawai">
+                            <option value="Staff" >Staff</option>
+                            <option value="Non Staff" >Non Staff</option>
+                            <option value="Internship" >Internship</option>
+                        </select>
+                    </div>
+
                     <div class="mb-3 col-6">
                         {{ Form::label('division_id', 'Division', ['class' => 'form-label']) }}
                         <select id="division" class="form-select bg-white" name="division_id">
@@ -103,12 +112,12 @@
                 <div class="row">
                     <h5>Uraian Tugas dan Pekerjaan</h5>
                     <div class="mb-3 col-6">
-                        {{ Form::label('direct_superior', 'Atasan Langsung', ['class' => 'form-label']) }}
+                        {{ Form::label('direct_superior', 'Nama Atasan Langsung', ['class' => 'form-label']) }}
                         {{ Form::text('direct_superior', null, ['class' => 'form-control bg-white']) }}
                     </div>
                     <div class="mb-3 col-6">
-                        {{ Form::label('direct_junior', 'Bawahan Langsung', ['class' => 'form-label']) }}
-                        {{ Form::text('direct_junior', null, ['class' => 'form-control bg-white']) }}
+                        {{ Form::label('direct_junior', 'Jumlah Bawahan Langsung', ['class' => 'form-label']) }}
+                        {{ Form::number('direct_junior', null, ['class' => 'form-control bg-white']) }}
                     </div>
                     <div class="mb-3 col-12">
                         {{ Form::label('responsibility', 'Tanggung Jawab', ['class' => 'form-label']) }}
