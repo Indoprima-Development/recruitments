@@ -11,14 +11,15 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a class="text-muted text-decoration-none" href="./index.html">
-                                    Permintaan Tenaga Kerja
-                                </a></li>
+                                        Permintaan Tenaga Kerja
+                                    </a></li>
                             </ol>
                         </nav>
                     </div>
                     <div class="col-3">
                         <div class="text-center mb-n5">
-                            <img src="{{asset('package/dist/images/breadcrumb/ChatBc.png')}}" alt="" class="img-fluid mb-n4">
+                            <img src="{{ asset('package/dist/images/breadcrumb/ChatBc.png') }}" alt=""
+                                class="img-fluid mb-n4">
                         </div>
                     </div>
                 </div>
@@ -26,12 +27,14 @@
         </div>
         <div class="card rounded-2 overflow-hidden">
             <div class="position-relative">
-                <a href="javascript:void(0)"><img src="{{asset('package/dist/images/blog/blog-img5.jpg')}}" class="card-img-top rounded-0 object-fit-cover" alt="..." height="200"></a>
-                <span class="badge bg-white text-dark fs-5 rounded-4 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">
-                    {{$ptkform->status == 0 ? "Dibuat" : "Disetujui"}}
+                <a href="javascript:void(0)"><img src="{{ asset('package/dist/images/blog/blog-img5.jpg') }}"
+                        class="card-img-top rounded-0 object-fit-cover" alt="..." height="200"></a>
+                <span
+                    class="badge bg-white text-dark fs-5 rounded-4 lh-sm mb-9 me-9 py-1 px-2 fw-semibold position-absolute bottom-0 end-0">
+                    {{ $ptkform->status == 0 ? 'Dibuat' : 'Disetujui' }}
                 </span>
 
-                <img src="{{asset('package/dist/images/profile/user-5.jpg')}}" alt=""
+                <img src="{{ asset('package/dist/images/profile/user-5.jpg') }}" alt=""
                     class="img-fluid rounded-circle position-absolute bottom-0 start-0 mb-n9 ms-9" width="40"
                     height="40" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Esther Lindsey">
             </div>
@@ -56,16 +59,16 @@
                         Mulai Bekerja :
                         {{ $ptkform->date_startwork }}
                     </div>
-                    
+
                     <div class="d-flex align-items-center fs-2 ms-auto">
-                        @if($ptkform->status == 0)
-                        <a class="btn btn-primary" href="{{url("ptkforms/change-status", $ptkform->id)}}">
-                            <i class="ti ti-pencil"></i> Approve
-                        </a>
+                        @if ($ptkform->status == 0)
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="ti ti-pencil"></i> Approve
+                            </button>
                         @else
-                        <a class="btn btn-success" href="#">
-                            <i class="ti ti-pencil"></i> Disetujui
-                        </a>
+                            <a class="btn btn-success" href="#">
+                                <i class="ti ti-pencil"></i> Disetujui
+                            </a>
                         @endif
                     </div>
                 </div>
@@ -74,17 +77,17 @@
                 <h3 class="fw-semibold mb-3">Tugas dan Pekerjaan</h3>
                 <p class="text-dark mb-0"><strong>Atasan Langsung</strong></p>
                 <p class="mb-3">
-                    {{$ptkform->direct_superior}}
+                    {{ $ptkform->direct_superior }}
                 </p>
 
                 <p class="text-dark mb-0"><strong>Bawahan Langsung</strong></p>
                 <p class="mb-3">
-                    {{$ptkform->direct_junior}}
+                    {{ $ptkform->direct_junior }}
                 </p>
 
                 <p class="text-dark mb-0"><strong>Tanggung Jawab</strong></p>
                 <p class="mb-3">
-                    {{$ptkform->responsibility}}
+                    {{ $ptkform->responsibility }}
                 </p>
 
                 <div class="border-top mt-7 pt-7">
@@ -126,4 +129,31 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Persetujuan PTK</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{ url('ptkforms/change-status', $ptkform->id) }}">
+                    @csrf
+                    <div class="modal-body">
+                        <p>Dengan mengisi ini saya <b class="text-danger">{{ Auth::user()->name }}</b> menyetujui form ptk
+                            berikut</p>
+                        <label>Date Start Vacancy</label>
+                        <input type="date" name="date_start" class="form-control mb-3" />
+
+                        <label>Date End Vacancy</label>
+                        <input type="date" name="date_end" class="form-control" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Setujui</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @stop

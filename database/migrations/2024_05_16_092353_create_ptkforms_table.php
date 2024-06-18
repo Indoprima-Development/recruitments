@@ -32,6 +32,9 @@ class CreatePtkformsTable extends Migration
 			$table->text('request_basis');
 			$table->text('request_basis_for');
 			$table->integer('status');
+            $table->string('status_pegawai')->nullable();
+            $table->datetime('date_open_vacancy')->nullable();
+            $table->string('date_closed_vacancy')->nullable();
             $table->timestamps();
         });
     }

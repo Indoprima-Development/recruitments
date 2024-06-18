@@ -15,6 +15,11 @@ use App\Repository\ProjectRepository;
 
 class HomeController extends Controller
 {
+    public function landingPage()
+    {
+        return view('landingpage');
+    }
+
     public function index()
     {
         $data['projects'] = Project::where('is_open', true)->get();
@@ -150,14 +155,14 @@ class HomeController extends Controller
     {
         $project_id = DecryptData($project_id);
         $data['project'] = Project::findOrFail($project_id);
-        $data['exams'] = Exam::where('project_id',$project_id)->get();
+        $data['exams'] = Exam::where('project_id', $project_id)->get();
 
         $data['examTransaction'] = Exam_transaction::select('exam_transactions.*')
-            ->join('exams','exams.id','exam_transactions.exam_id')
+            ->join('exams', 'exams.id', 'exam_transactions.exam_id')
             ->where('exams.project_id', $project_id)
             ->orderBy('exam_transactions.score', 'DESC')
             ->orderBy('exam_transactions.updated_at', 'ASC')
-            ->with('user','exam')
+            ->with('user', 'exam')
             ->get();
 
         return view('home.rankTest', compact('data'));
@@ -167,11 +172,11 @@ class HomeController extends Controller
     {
         $exam_id = DecryptData($exam_id);
         $data['exam'] = Exam::findOrFail($exam_id);
-        $data['exams'] = Exam::where('project_id',$data['exam']->project_id)->get();
+        $data['exams'] = Exam::where('project_id', $data['exam']->project_id)->get();
         $data['examTransaction'] = Exam_transaction::where('exam_id', $exam_id)
             ->orderBy('score', 'DESC')
             ->orderBy('updated_at', 'ASC')
-            ->with('user','exam')
+            ->with('user', 'exam')
             ->get();
 
         return view('home.rankTest', compact('data'));

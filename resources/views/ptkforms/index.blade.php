@@ -94,7 +94,8 @@
             </a>
         </li>
         <li class="nav-item ms-auto">
-            <a href="{{ url('ptkforms/create') }}" class="btn btn-primary d-flex align-items-center px-3" id="add-notes">
+            <a href="{{ url('ptkforms/create') }}" class="btn btn-primary d-flex align-items-center px-3"
+                id="add-notes">
                 <i class="ti ti-file me-0 me-md-1 fs-4"></i>
                 <span class="d-none d-md-block font-weight-medium fs-3">+ Form PTK</span>
             </a>
@@ -113,7 +114,7 @@
                         <div class="note-content">
                             <p class="note-inner-content"
                                 data-noteContent="Blandit tempus porttitor aasfs. Integer posuere erat a ante venenatis.">
-                                {{$ptkform->request_basis}}</p>
+                                {{ $ptkform->request_basis }}</p>
                         </div>
                         <div class="d-flex align-items-center">
                             @if ($ptkform->status == 0)
@@ -135,7 +136,8 @@
                                         </div>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right category-menu">
-                                        <a class="dropdown-item position-relative category-social d-flex align-items-center" href="{{ route('ptkforms.show', [$ptkform->id]) }}">Show</a>
+                                        <a class="dropdown-item position-relative category-social d-flex align-items-center"
+                                            href="{{ route('ptkforms.show', [$ptkform->id]) }}">Show</a>
 
                                         <a class="
                             note-social
@@ -147,15 +149,17 @@
                             align-items-center
                           "
                                             href="{{ route('ptkforms.edit', [$ptkform->id]) }}"> Edit</a>
-                                            {!! Form::open(['method' => 'DELETE', 'route' => ['ptkforms.destroy', $ptkform->id]]) !!}
-                        {!! Form::submit('Delete', ['class' => 'note-important
-                        badge-group-item badge-important
-                        dropdown-item
-                        position-relative
-                        category-important
-                        d-flex
-                        align-items-center']) !!}
-                        {!! Form::close() !!}
+                                        {!! Form::open(['method' => 'DELETE', 'route' => ['ptkforms.destroy', $ptkform->id]]) !!}
+                                        {!! Form::submit('Delete', [
+                                            'class' => 'note-important
+                                                                badge-group-item badge-important
+                                                                dropdown-item
+                                                                position-relative
+                                                                category-important
+                                                                d-flex
+                                                                align-items-center',
+                                        ]) !!}
+                                        {!! Form::close() !!}
                                     </div>
                                 </div>
                             </div>

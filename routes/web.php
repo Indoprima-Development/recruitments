@@ -49,12 +49,13 @@ Route::prefix('auth')->group(function () {
     });
 });
 
+Route::get('/', [HomeController::class, 'landingPage']);
+
 Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
 
     Route::controller(HomeController::class)->group(function () {
-        Route::get('/', 'index');
         Route::get('/home', 'index');
         Route::get('/examination/{project_id}', 'examination');
         Route::get('/qna/{exam_id}', 'qna');
@@ -96,7 +97,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::resource('/ptkforms', PtkformsController::class);
     Route::controller(PtkformsController::class)->group(function () {
-        Route::get('/ptkforms/change-status/{id}', 'changeStatus');
+        Route::post('/ptkforms/change-status/{id}', 'changeStatus');
     });
 
     Route::resource('/ptkfields', PtkfieldsController::class);

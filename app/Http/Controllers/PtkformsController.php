@@ -16,6 +16,7 @@ use App\Models\Major;
 use App\Models\Field;
 use App\Models\Ptkformtransaction;
 use App\Models\Ptkfield;
+use Illuminate\Http\Request;
 
 class PtkformsController extends Controller
 {
@@ -160,10 +161,12 @@ class PtkformsController extends Controller
         return to_route('ptkforms.index');
     }
 
-    public function changeStatus($id)
+    public function changeStatus(Request $request, $id)
     {
         Ptkform::where("id", $id)->update([
-            "status" => 1
+            "status" => 1,
+            "date_open_vacancy"=> $request->date_open_vacancy,
+            "date_closed_vacancy"=> $request->date_closed_vacancy,
         ]);
 
         return redirect("ptkforms/$id");
