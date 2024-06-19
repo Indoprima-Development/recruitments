@@ -7,17 +7,48 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
 use App\Models\Exam;
 use App\Models\Exam_transaction;
+use App\Models\Ptkform;
+use App\Models\Ptkformtransaction;
 use App\Models\Qna;
 use App\Models\Qna_transaction;
-//
-use App\Repository\QnaRepository;
-use App\Repository\ProjectRepository;
+use DB;
 
 class HomeController extends Controller
 {
     public function landingPage()
     {
         return view('landingpage');
+    }
+
+    public function openingJobs()
+    {
+        $date = date("Y-m-d");
+        $jobs = Ptkform::where("status", 1)
+            ->whereDate('date_open_vacancy', '<=', $date)
+            ->whereDate('date_closed_vacancy', '>=', $date)
+            ->get();
+
+        return view('openingjobs', compact("jobs"));
+    }
+
+    public function openingJobsDetail($id)
+    {
+        $job = Ptkform::find($id);
+        return view('openingjobsdetail', compact('job'));
+    }
+
+    public function home(){
+        $data = Ptkformtransaction::select(DB::raw('count(id) as jumlah, status'))
+        ->orderBy('status','ASC')
+        ->groupBy('status')
+        ->get();
+
+        $dataResults = [0,0,0,0,0,0,0,0];
+        foreach ($data as $key => $d) {
+            $dataResults[$d->status] = $d->jumlah;
+        }
+
+        return view("home.home",compact("dataResults"));
     }
 
     public function index()

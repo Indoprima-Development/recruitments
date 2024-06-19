@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Ptkformtransaction;
 use App\Http\Requests\PtkformtransactionRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PtkformtransactionsController extends Controller
 {
@@ -40,8 +41,8 @@ class PtkformtransactionsController extends Controller
     {
         $ptkformtransaction = new Ptkformtransaction;
 		$ptkformtransaction->ptkform_id = $request->input('ptkform_id');
-		$ptkformtransaction->status = $request->input('status');
-		$ptkformtransaction->user_id = $request->input('user_id');
+		$ptkformtransaction->status = 0;
+		$ptkformtransaction->user_id = Auth::user()->id;
         $ptkformtransaction->save();
 
         return to_route('ptkformtransactions.index');
@@ -101,5 +102,15 @@ class PtkformtransactionsController extends Controller
         $ptkformtransaction->delete();
 
         return to_route('ptkformtransactions.index');
+    }
+
+    public function dataByStatus($status){
+        $ptkformtransactions = Ptkformtransaction::select("*");
+        if ($status != "all") {
+            $ptkformtransactions->where("status",$status);
+        }
+        $ptkformtransactions->get();
+        
+        return view('ptkformtransactions.data',compact('ptkformtransactions'));
     }
 }

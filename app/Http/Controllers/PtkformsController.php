@@ -165,8 +165,8 @@ class PtkformsController extends Controller
     {
         Ptkform::where("id", $id)->update([
             "status" => 1,
-            "date_open_vacancy"=> $request->date_open_vacancy,
-            "date_closed_vacancy"=> $request->date_closed_vacancy,
+            "date_open_vacancy"=> $request->date_start,
+            "date_closed_vacancy"=> $request->date_end,
         ]);
 
         return redirect("ptkforms/$id");

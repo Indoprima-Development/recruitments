@@ -8,8 +8,8 @@ class Constants
 
     const ApiPegawaiBaseUrl = '127.0.0.1:8000';
 
-    const StatusPerjadins = [
-        "Created","Approved"
+    const StatusForm = [
+        "Applicant","Interview HC","Psikotest","Interview User","Interview Direksi","Finalisasi","MCU","Join"
     ];
 }
 

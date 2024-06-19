@@ -50,13 +50,15 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('/', [HomeController::class, 'landingPage']);
+Route::get('/opening-jobs',         [HomeController::class, 'openingJobs']);
+Route::get('/opening-jobs/{id}',    [HomeController::class, 'openingJobsDetail']);
 
 Route::group(['middleware' => ['web', 'auth']], function () {
-    Route::get('/dashboard', [LoginRegisterController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
 
     Route::controller(HomeController::class)->group(function () {
-        Route::get('/home', 'index');
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/home', 'home');
         Route::get('/examination/{project_id}', 'examination');
         Route::get('/qna/{exam_id}', 'qna');
         Route::get('/qna-transaction/{code}', 'qnaTransaction');
@@ -102,6 +104,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::resource('/ptkfields', PtkfieldsController::class);
     Route::resource('/ptkformtransactions', PtkformtransactionsController::class);
+    Route::controller(PtkformtransactionsController::class)->group(function () {
+        Route::get('/ptkformtransactions/{status}/data', 'dataByStatus');
+    });
 
     // Formulir
     Route::resource('/forms', FormsController::class);

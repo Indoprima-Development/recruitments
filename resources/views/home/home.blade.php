@@ -1,0 +1,98 @@
+@extends('layouts.default')
+
+@section('content')
+    <div class="card bg-light-info shadow-none position-relative overflow-hidden">
+        <div class="card-body px-4 py-3">
+            <div class="row align-items-center">
+                <div class="col-9">
+                    <h4 class="fw-semibold mb-8">Data Recruitment</h4>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="text-muted " href="./index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item" aria-current="page">Data Recruitment</li>
+                        </ol>
+                    </nav>
+                </div>
+
+                <div class="col-3 text-end">
+                    <a href="{{ url('ptkformtransactions', "all") }}/data" class="btn btn-primary">All Data</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-lg-3 col-xl-2">
+            <a href="{{ url('ptkformtransactions', 0) }}/data"
+                class="p-4 text-center bg-light-primary card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-user-male.svg') }}" width="50" height="50"
+                    class="mb-6 mx-auto" alt="">
+                <p class="fw-semibold text-primary mb-1">Applicant</p>
+                <h4 class="fw-semibold text-primary mb-0">{{ $dataResults[0] }}</h4>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3 col-xl-2">
+            <a href="{{ url('ptkformtransactions', 1) }}/data"
+                class="p-4 text-center bg-light-warning card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-briefcase.svg') }}" width="50" height="50"
+                    class="mb-6 mx-auto" alt="">
+                <p class="fw-semibold text-warning mb-1">Interview HC</p>
+                <h4 class="fw-semibold text-warning mb-0">{{ $dataResults[1] }}</h4>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3 col-xl-2">
+            <a href="{{ url('ptkformtransactions', 2) }}/data"
+                class="p-4 text-center bg-light-info card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-mailbox.svg') }}" width="50" height="50"
+                    class="mb-6 mx-auto" alt="">
+                <p class="fw-semibold text-info mb-1">Psikotes</p>
+                <h4 class="fw-semibold text-info mb-0">{{ $dataResults[2] }}</h4>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3 col-xl-2">
+            <a href="{{ url('ptkformtransactions', 3) }}/data"
+                class="p-4 text-center bg-light-danger card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-favorites.svg') }}" width="50" height="50"
+                    class="mb-6 mx-auto" alt="">
+                <p class="fw-semibold text-danger mb-1">Interview User</p>
+                <h4 class="fw-semibold text-danger mb-0">{{ $dataResults[3] }}</h4>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3 col-xl-2">
+            <a href="{{ url('ptkformtransactions', 4) }}/data"
+                class="p-4 text-center bg-light-success card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-speech-bubble.svg') }}" width="50" height="50"
+                    class="mb-6 mx-auto" alt="">
+                <p class="fw-semibold text-success mb-1">Interview Direksi</p>
+                <h4 class="fw-semibold text-success mb-0">{{ $dataResults[4] }}</h4>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3 col-xl-2">
+            <a href="{{ url('ptkformtransactions', 5) }}/data"
+                class="p-4 text-center bg-light-info card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-connect.svg') }}" width="50" height="50"
+                    class="mb-6 mx-auto" alt="">
+                <p class="fw-semibold text-info mb-1">Finalisasi</p>
+                <h4 class="fw-semibold text-info mb-0">{{ $dataResults[5] }}</h4>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3 col-xl-2">
+            <a href="{{ url('ptkformtransactions', 6) }}/data"
+                class="p-4 text-center bg-light-info card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-connect.svg') }}" width="50" height="50"
+                    class="mb-6 mx-auto" alt="">
+                <p class="fw-semibold text-info mb-1">MCU</p>
+                <h4 class="fw-semibold text-info mb-0">{{ $dataResults[6] }}</h4>
+            </a>
+        </div>
+        <div class="col-sm-6 col-lg-3 col-xl-2">
+            <a href="{{ url('ptkformtransactions', 7) }}/data"
+                class="p-4 text-center bg-light-info card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-connect.svg') }}" width="50" height="50"
+                    class="mb-6 mx-auto" alt="">
+                <p class="fw-semibold text-info mb-1">Join</p>
+                <h4 class="fw-semibold text-info mb-0">{{ $dataResults[7] }}</h4>
+            </a>
+        </div>
+    </div>
+@endsection

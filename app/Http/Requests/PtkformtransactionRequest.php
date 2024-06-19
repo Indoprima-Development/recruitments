@@ -26,8 +26,6 @@ class PtkformtransactionRequest extends FormRequest
         return
         [
 			'ptkform_id' => 'required',
-			'status' => 'required',
-			'user_id' => 'required',
         ];
     }
 }
