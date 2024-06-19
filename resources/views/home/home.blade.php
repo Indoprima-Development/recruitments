@@ -69,29 +69,29 @@
         </div>
         <div class="col-sm-6 col-lg-3 col-xl-2">
             <a href="{{ url('ptkformtransactions', 5) }}/data"
-                class="p-4 text-center bg-light-info card shadow-none rounded-2">
-                <img src="{{ asset('package/dist/images/svgs/icon-connect.svg') }}" width="50" height="50"
+                class="p-4 text-center bg-light-primary card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-dd-message-box.svg') }}" width="50" height="50"
                     class="mb-6 mx-auto" alt="">
-                <p class="fw-semibold text-info mb-1">Finalisasi</p>
-                <h4 class="fw-semibold text-info mb-0">{{ $dataResults[5] }}</h4>
+                <p class="fw-semibold text-primary mb-1">Finalisasi</p>
+                <h4 class="fw-semibold text-primary mb-0">{{ $dataResults[5] }}</h4>
             </a>
         </div>
         <div class="col-sm-6 col-lg-3 col-xl-2">
             <a href="{{ url('ptkformtransactions', 6) }}/data"
-                class="p-4 text-center bg-light-info card shadow-none rounded-2">
-                <img src="{{ asset('package/dist/images/svgs/icon-connect.svg') }}" width="50" height="50"
+                class="p-4 text-center bg-light-danger card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/icon-office-bag.svg') }}" width="50" height="50"
                     class="mb-6 mx-auto" alt="">
-                <p class="fw-semibold text-info mb-1">MCU</p>
-                <h4 class="fw-semibold text-info mb-0">{{ $dataResults[6] }}</h4>
+                <p class="fw-semibold text-danger mb-1">MCU</p>
+                <h4 class="fw-semibold text-danger mb-0">{{ $dataResults[6] }}</h4>
             </a>
         </div>
         <div class="col-sm-6 col-lg-3 col-xl-2">
             <a href="{{ url('ptkformtransactions', 7) }}/data"
-                class="p-4 text-center bg-light-info card shadow-none rounded-2">
-                <img src="{{ asset('package/dist/images/svgs/icon-connect.svg') }}" width="50" height="50"
+                class="p-4 text-center bg-light-success card shadow-none rounded-2">
+                <img src="{{ asset('package/dist/images/svgs/success.svg') }}" width="50" height="50"
                     class="mb-6 mx-auto" alt="">
-                <p class="fw-semibold text-info mb-1">Join</p>
-                <h4 class="fw-semibold text-info mb-0">{{ $dataResults[7] }}</h4>
+                <p class="fw-semibold text-success mb-1">Join</p>
+                <h4 class="fw-semibold text-success mb-0">{{ $dataResults[7] }}</h4>
             </a>
         </div>
     </div>
