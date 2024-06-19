@@ -14,7 +14,7 @@
     {{ Form::hidden('user_id', Auth::user()->id, ['class' => 'form-control']) }}
 
     <div class="mb-3">
-        {{ Form::label('olahraga', 'Olahraga', ['class' => 'form-label']) }}
+        {{ Form::label('olahraga', 'Hobi', ['class' => 'form-label']) }}
         {{ Form::text('olahraga', null, ['class' => 'form-control']) }}
     </div>
     <div class="mb-3">

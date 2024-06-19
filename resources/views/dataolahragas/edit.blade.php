@@ -13,11 +13,10 @@
 	{{ Form::model($dataolahraga, array('route' => array('dataolahragas.update', $dataolahraga->id), 'method' => 'PUT')) }}
 
 		<div class="mb-3">
-			{{ Form::label('user_id', 'User_id', ['class'=>'form-label']) }}
-			{{ Form::text('user_id', null, array('class' => 'form-control')) }}
+			{{ Form::hidden('user_id', Auth::user()->id, array('class' => 'form-control')) }}
 		</div>
 		<div class="mb-3">
-			{{ Form::label('olahraga', 'Olahraga', ['class'=>'form-label']) }}
+			{{ Form::label('olahraga', 'Hobi', ['class'=>'form-label']) }}
 			{{ Form::textarea('olahraga', null, array('class' => 'form-control')) }}
 		</div>
 		<div class="mb-3">

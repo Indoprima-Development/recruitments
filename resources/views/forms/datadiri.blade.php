@@ -26,7 +26,8 @@
                     {{ Form::label('agama', 'Agama', ['class' => 'form-label']) }}
                     <select class="form-select" name="agama">
                         @foreach (\App\Constants\DatadiriConst::Agama as $d)
-                            <option value="{{ $d }}" {{ $datadiri && $datadiri->agama == $d ? 'selected' : '' }}>
+                            <option value="{{ $d }}"
+                                {{ $datadiri && $datadiri->agama == $d ? 'selected' : '' }}>
                                 {{ $d }}</option>
                         @endforeach
                     </select>
@@ -56,26 +57,41 @@
                     {{ Form::label('no_wa', 'No. WA', ['class' => 'form-label']) }}
                     {{ Form::text('no_wa', null, ['class' => 'form-control']) }}
                 </div>
-                <div class="mb-3 col-12">
+                <div class="mb-3 col-4">
                     {{ Form::label('alamat', 'Alamat', ['class' => 'form-label']) }}
                     {{ Form::textarea('alamat', null, ['class' => 'form-control']) }}
                 </div>
-                <div class="mb-3">
-                    {{ Form::label('status_rumah', 'Status Tempat Tinggal', ['class' => 'form-label']) }}
-                    <select class="form-select" name="status_rumah">
-                        @foreach (\App\Constants\DatadiriConst::StatusRumah as $d)
-                            <option value="{{ $d }}" {{ $datadiri && $datadiri->status_rumah == $d ? 'selected' : '' }}>
-                                {{ $d }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="col-8">
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            {{ Form::label('provinsi', 'Provinsi', ['class' => 'form-label']) }}
+                            {{ Form::text('provinsi', null, ['class' => 'form-control']) }}
+                        </div>
+                        <div class="mb-3 col-6">
+                            {{ Form::label('kota', 'Kota', ['class' => 'form-label']) }}
+                            {{ Form::text('kota', null, ['class' => 'form-control']) }}
+                        </div>
+                        <div class="mb-3 col-12">
+                            {{ Form::label('status_rumah', 'Status Tempat Tinggal', ['class' => 'form-label']) }}
+                            <select class="form-select" name="status_rumah">
+                                @foreach (\App\Constants\DatadiriConst::StatusRumah as $d)
+                                    <option value="{{ $d }}"
+                                        {{ $datadiri && $datadiri->status_rumah == $d ? 'selected' : '' }}>
+                                        {{ $d }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="mb-3 col-sm-12 col-md-4">
                     {{ Form::label('golongan_darah', 'Golongan Darah', ['class' => 'form-label']) }}
                     <select class="form-select" name="golongan_darah">
                         @foreach (\App\Constants\DatadiriConst::GolonganDarah as $d)
                             <option value="{{ $d }}"
-                                {{ $datadiri && $datadiri->golongan_darah == $d ? 'selected' : '' }}>{{ $d }}
+                                {{ $datadiri && $datadiri->golongan_darah == $d ? 'selected' : '' }}>
+                                {{ $d }}
                             </option>
                         @endforeach
                     </select>

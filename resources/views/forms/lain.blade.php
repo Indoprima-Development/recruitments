@@ -10,7 +10,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <h4 class="card-title mb-1 text-white">Olahraga</h4>
+                        <h4 class="card-title mb-1 text-white">Hobi</h4>
 
                     </div>
                 </div>
@@ -54,12 +54,12 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <h4>Olahraga</h4>
+                <h4>Hobi</h4>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Olahraga</th>
+                            <th>Hobi</th>
                             <th>Level</th>
 
                             <th>Action</th>
