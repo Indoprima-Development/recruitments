@@ -45,4 +45,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function datapendidikanformal()
+	{
+		return $this->hasMany('App\Models\Datapendidikanformal',"user_id","id");
+	}
 }

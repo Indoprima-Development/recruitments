@@ -107,10 +107,10 @@ class PtkformtransactionsController extends Controller
     public function dataByStatus($status){
         $ptkformtransactions = Ptkformtransaction::select("*");
         if ($status != "all") {
-            $ptkformtransactions->where("status",$status);
+            $ptkformtransactions = $ptkformtransactions->where("status",$status);
         }
-        $ptkformtransactions->get();
-        
+        $ptkformtransactions = $ptkformtransactions->get();
+
         return view('ptkformtransactions.data',compact('ptkformtransactions'));
     }
 }

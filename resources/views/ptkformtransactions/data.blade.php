@@ -48,8 +48,20 @@
                         <td>{{ $i + 1 }}</td>
                         <td>{{ $ptkformtransaction->user->name }}</td>
                         <td>{{ $ptkformtransaction->ptkform->jobtitle->jobtitle_name }}</td>
-                        <td>-</td>
-                        <td>-</td>
+
+                            <?php
+                                $a = $ptkformtransaction->user->datapendidikanformal;
+                            ?>
+
+                            @if (count($a) > 0)
+                            <td> {{$ptkformtransaction->user->datapendidikanformal[count($a)-1]->instansi}}
+                            </td>
+                            <td> {{$ptkformtransaction->user->datapendidikanformal[count($a)-1]->jurusan}}
+                            </td>
+                            @else
+                            <td> - </td>
+                            <td> - </td>
+                            @endif
                         <td>{{ \App\Constants\Constants::StatusForm[$ptkformtransaction->status] }}</td>
                         <td>{{ $ptkformtransaction->applied ?? '-' }}</td>
                         <td>{{ $ptkformtransaction->interview_hc ?? '-' }}</td>
