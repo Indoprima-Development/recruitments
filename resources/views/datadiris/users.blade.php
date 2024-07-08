@@ -10,7 +10,7 @@
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
                 <div class="col-9">
-                    <h4 class="fw-semibold mb-8">Data Recruitment</h4>
+                    <h4 class="fw-semibold mb-8">Data Users</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a class="text-muted " href="./index.html">Dashboard</a></li>
@@ -23,52 +23,32 @@
     </div>
 
     <div class="table-responsive">
-        <table id="example" class="table border table-striped table-bordered display nowrap dataTable no-footer">
+        <table id="example2" class="table table-striped ">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Nama</th>
-                    <th>Posisi</th>
                     <th>Kampus</th>
                     <th>Jurusan</th>
-                    <th>Status</th>
-                    <th>HC Interview</th>
-                    <th>Psikotest</th>
-                    <th>User Interview</th>
-                    <th>Direktor Interview</th>
-                    <th>Finalisasi</th>
-                    <th>MCU</th>
-                    <th>Join</th>
+                    <th>IPK</th>
+                    <th>Bidang yang Diminati</th>
+                    <th>Option</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($ptkformtransactions as $i => $ptkformtransaction)
+                @foreach ($users as $i => $u)
                     <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td>{{ $ptkformtransaction->user->name }}</td>
-                        <td>{{ $ptkformtransaction->ptkform->jobtitle->jobtitle_name }}</td>
-
-                            <?php
-                                $a = $ptkformtransaction->user->datapendidikanformal;
-                            ?>
-
-                            @if (count($a) > 0)
-                            <td> {{$ptkformtransaction->user->datapendidikanformal[count($a)-1]->instansi}}
-                            </td>
-                            <td> {{$ptkformtransaction->user->datapendidikanformal[count($a)-1]->jurusan}}
-                            </td>
-                            @else
-                            <td> - </td>
-                            <td> - </td>
-                            @endif
-                        <td>{{ \App\Constants\Constants::StatusForm[$ptkformtransaction->status] }}</td>
-                        <td>{{ $ptkformtransaction->interview_hc ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->psikotest ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->interview_user ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->interview_direksi ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->finalisasi ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->mcu ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->join ?? '-' }}</td>
+                        <td>{{$i+1}}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{url('datadiris/data-users',$u->user_id)}}">
+                                Detail
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

@@ -44,7 +44,7 @@ class DatakemampuansController extends Controller
 		$datakemampuan->level = $request->input('level');
         $datakemampuan->save();
 
-        return redirect('forms');
+        return redirect('forms?section=organisasi');
     }
 
     /**

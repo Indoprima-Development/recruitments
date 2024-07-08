@@ -8,7 +8,10 @@
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                 </div>
                 <div class="col-sm-12 col-md-4 text-end">
-                    {{ Form::submit('Simpan Pernyataan', ['class' => 'btn btn-primary']) }}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        Simpan Pernyataan
+                    </button>
                 </div>
             </div>
 
@@ -45,7 +48,7 @@
                     </select>
                 </div>
 
-                {{ Form::hidden('keterangan_jabatan_terakhir', "-", ['class' => 'form-control']) }}
+                {{ Form::hidden('keterangan_jabatan_terakhir', '-', ['class' => 'form-control']) }}
 
                 <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('image_jabatan_terakhir', 'Struktur Organisasi', ['class' => 'form-label']) }}
@@ -56,6 +59,29 @@
                     @if ($datadiri && $datadiri->image_jabatan_terakhir != '-')
                         <img class="w-100 mt-2" src="{{ asset($datadiri->image_jabatan_terakhir) }}" />
                     @endif
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Pernyataan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Demikian keterangan-keterangan tersebut, saya berikan dengan sebenar-benarnya. Apabila
+                            keterangan
+                            tersebut menyimpang dari keadaan yang sebenarnya, saya bersedia melepaskan kesempatan saya
+                            untuk
+                            menjalani tahapan seleksi selanjutnya atau diberhentikan setelah diterima kerja.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Setuju</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             {{ Form::close() }}

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Ptkformtransaction;
 use App\Http\Requests\PtkformtransactionRequest;
+use App\Models\Datadiri;
 use Illuminate\Support\Facades\Auth;
 
 class PtkformtransactionsController extends Controller

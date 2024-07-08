@@ -48,7 +48,7 @@ class DatakeluargasController extends Controller
 		$datakeluarga->alamat = $request->input('alamat');
         $datakeluarga->save();
 
-        return to_route('datakeluargas.index');
+        return redirect('forms?section=pengalaman');
     }
 
     /**

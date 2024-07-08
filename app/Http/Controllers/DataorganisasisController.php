@@ -46,7 +46,7 @@ class DataorganisasisController extends Controller
 		$dataorganisasi->end_date = $request->input('end_date');
         $dataorganisasi->save();
 
-        return to_route('dataorganisasis.index');
+        return redirect('forms?section=pernyataan');
     }
 
     /**

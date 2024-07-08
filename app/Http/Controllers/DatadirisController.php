@@ -6,6 +6,15 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datadiri;
 use App\Http\Requests\DatadiriRequest;
+use App\Models\Datadetail;
+use App\Models\Datakeluarga;
+use App\Models\Datakemampuan;
+use App\Models\Datakesehatan;
+use App\Models\Dataolahraga;
+use App\Models\Dataorganisasi;
+use App\Models\Datapendidikanformal;
+use App\Models\Datapendidikannonformal;
+use App\Models\Datapengalamankerja;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,7 +86,7 @@ class DatadirisController extends Controller
             $datadiri->update($dataRequest);
         }
 
-        return redirect('forms');
+        return redirect('forms?section=pendidikan');
     }
 
     /**
@@ -158,7 +167,11 @@ class DatadirisController extends Controller
         }
         $datadiri->save();
 
-        return redirect('forms');
+        if ($request->input('ekspektasi_gaji') == "" || $request->input('fasilitas_harapan') == "" || $request->input('kesediaan_penempatan') == "" || $request->input('kesediaan_mulai_bekerja') == "" || $request->input('keterangan_jabatan_terakhir') == "") {
+            return redirect('forms?section=pernyataan');
+        }
+
+        return redirect('opening-jobs');
     }
 
     public function photo(Request $request)
@@ -188,5 +201,27 @@ class DatadirisController extends Controller
         $datadiri->delete();
 
         return to_route('datadiris.index');
+    }
+
+    public function dataAllUsers(){
+        $users = Datadiri::select("*")->get();
+        return view('datadiris.users',compact('users'));
+    }
+
+    public function dataUserById($id){
+        $datadiri = Datadiri::where("user_id",$id)->first();
+        $datakesehatans = Datakesehatan::where("user_id",$id)->get();
+        $datapendidikanformals = Datapendidikanformal::where("user_id",$id)->get();
+        $datapendidikannonformals = Datapendidikannonformal::where("user_id",$id)->get();
+        $datakeluargas = Datakeluarga::where("user_id",$id)->get();
+        $datapengalamankerjas = Datapengalamankerja::where("user_id",$id)->get();
+        $datakemampuans = Datakemampuan::where("user_id",$id)->get();
+        $dataolahragas = Dataolahraga::where("user_id",$id)->get();
+        $datadetails = Datadetail::where("user_id",$id)->get();
+        $dataorganisasis = Dataorganisasi::where("user_id",$id)->get();
+        $users = User::find($id);
+
+        return view("forms.show",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","users"));
+
     }
 }

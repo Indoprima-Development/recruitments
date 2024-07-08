@@ -62,7 +62,7 @@ class DatapengalamankerjasController extends Controller
             ]);
         }
 
-        return redirect('forms');
+        return redirect('forms?section=kemampuan');
     }
 
     /**

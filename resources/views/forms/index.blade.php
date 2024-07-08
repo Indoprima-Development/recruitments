@@ -66,4 +66,11 @@
 
 @section('addJs')
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const searchParams = new URLSearchParams(window.location.search);
+            var ids = searchParams.get('section')
+            $('#pills-'+ids+'-tab').trigger('click');
+        });
+    </script>
 @stop

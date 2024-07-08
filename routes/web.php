@@ -114,9 +114,11 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/forms/show/{id}', 'show');
     });
 
+    Route::get('/datadiris/data-all-users', [DatadirisController::class, 'dataAllUsers']);
     Route::post('/datadiris/store/{id}', [DatadirisController::class, 'store']);
     Route::post('/datadiris/pernyataan/{id}', [DatadirisController::class, 'pernyataan']);
     Route::post('/datadiris/photo', [DatadirisController::class, 'photo']);
+    Route::get('/datadiris/data-users/{id}', [DatadirisController::class, 'dataUserById']);
 
     Route::resource('datapendidikanformals', DatapendidikanformalsController::class);
     Route::resource('datapendidikannonformals', DatapendidikannonformalsController::class);

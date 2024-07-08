@@ -25,19 +25,19 @@ class DatadiriRequest extends FormRequest
     {
         return
         [
-			// 'name' => 'required',
-			// 'gender' => 'required',
-			// 'tempat_lahir' => 'required',
-			// 'tanggal_lahir' => 'required',
-			// 'agama' => 'required',
-			// 'alamat' => 'required',
-			// 'no_hp' => 'required',
-			// 'no_wa' => 'required',
+			'name' => 'required',
+			'gender' => 'required',
+			'tempat_lahir' => 'required',
+			'tanggal_lahir' => 'required',
+			'agama' => 'required',
+			'alamat' => 'required',
+			'no_hp' => 'required',
+			'no_wa' => 'required',
 			// 'status_rumah' => 'required',
 			// 'golongan_darah' => 'required',
 			// 'tinggi_badan' => 'required',
 			// 'berat_badan' => 'required',
-			// 'ktp' => 'required',
+			'ktp' => 'required',
 			// 'kendaraan' => 'required',
 			// 'sim' => 'required',
         ];

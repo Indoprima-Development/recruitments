@@ -29,12 +29,6 @@ class LoginRegisterController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:250',
-            'email' => 'required|email|max:250|unique:users',
-            'password' => 'required|min:6'
-        ]);
-
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -45,6 +39,8 @@ class LoginRegisterController extends Controller
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
+
+        Alert::success('Success', 'Akun berhasil dibuat.');
         return redirect()->route('dashboard')
             ->withSuccess('You have successfully registered & logged in!');
     }
