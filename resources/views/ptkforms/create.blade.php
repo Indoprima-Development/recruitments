@@ -48,13 +48,18 @@
             <section>
                 <h5>Jabatan</h5>
                 <div class="row">
-                    <div class="mb-3 col-12">
+                    <div class="mb-3 col-6">
                         {{ Form::label('status_pegawai', 'Status Pegawai', ['class' => 'form-label']) }}
                         <select class="form-select bg-white" name="status_pegawai">
                             <option value="Staff" >Staff</option>
                             <option value="Non Staff" >Non Staff</option>
                             <option value="Internship" >Internship</option>
                         </select>
+                    </div>
+
+                    <div class="mb-3 col-6">
+                        {{ Form::label('jumlah_kebutuhan_pegawai', 'Jumlah Kebutuhan Pegawai', ['class' => 'form-label']) }}
+                        {{ Form::number('jumlah_kebutuhan_pegawai', null, ['class' => 'form-control bg-white']) }}
                     </div>
 
                     <div class="mb-3 col-6">

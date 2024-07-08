@@ -33,8 +33,8 @@ class HomeController extends Controller
 
     public function openingJobsDetail($id)
     {
-        $job = Ptkform::find($id);
-        return view('openingjobsdetail', compact('job'));
+        $ptkform = Ptkform::findOrFail($id);
+        return view('ptkforms.show', ['ptkform' => $ptkform]);
     }
 
     public function home(){

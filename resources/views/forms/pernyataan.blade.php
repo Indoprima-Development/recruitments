@@ -1,7 +1,7 @@
 <div class="tab-pane fade" id="pills-pernyataan" role="tabpanel" aria-labelledby="pills-security-tab" tabindex="0">
     <div class="card">
         <div class="card-body p-4">
-            {{ Form::model($datadiri, ['url' => ['datadiris/pernyataan', Auth::user()->id], 'method' => 'POST',  'enctype'=>'multipart/form-data']) }}
+            {{ Form::model($datadiri, ['url' => ['datadiris/pernyataan', Auth::user()->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
             <div class="row">
                 <div class="col-sm-12 col-md-8">
                     <h5 class="card-title fw-semibold">Pernyataan</h5>
@@ -13,6 +13,13 @@
             </div>
 
             <div class="row">
+                <div class="mb-3 col-sm-12 col-md-6">
+                    {{ Form::label('kesediaan_penempatan', 'Bidang yang Diminati', ['class' => 'form-label']) }}
+                    <select name="kesediaan_penempatan" class="form-select">
+                        <option value="1">HC</option>
+                        <option value="0">IT</option>
+                    </select>
+                </div>
                 <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('ekspektasi_gaji', 'Ekspektasi Gaji', ['class' => 'form-label']) }}
                     {{ Form::number('ekspektasi_gaji', null, ['class' => 'form-control']) }}
@@ -28,29 +35,72 @@
                 </div>
                 <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('kesediaan_penempatan', 'Kesediaan Penempatan', ['class' => 'form-label']) }}
-                    <br><small class="text-danger">Apakah bersedia ditempatkan di seluruh unit bisnis PT. Indoprima Gelimang ?</small>
+                    <br><small class="text-danger">Apakah bersedia ditempatkan di seluruh unit bisnis PT. Indoprima
+                        Gelimang ?</small>
                     <select name="kesediaan_penempatan" class="form-select">
-                        <option {{$datadiri && $datadiri->kesediaan_penempatan == 1 ? "selected" : ""}} value="1">Ya</option>
-                        <option {{ $datadiri && $datadiri->kesediaan_penempatan == 0 ? "selected" : ""}} value="0">Tidak</option>
+                        <option {{ $datadiri && $datadiri->kesediaan_penempatan == 1 ? 'selected' : '' }}
+                            value="1">Ya</option>
+                        <option {{ $datadiri && $datadiri->kesediaan_penempatan == 0 ? 'selected' : '' }}
+                            value="0">Tidak</option>
                     </select>
                 </div>
-                <div class="mb-3 col-sm-12 col-md-6">
-                    {{ Form::label('keterangan_jabatan_terakhir', 'Keterangan Jabatan Terakhir', ['class' => 'form-label']) }}
-                    <br><small class="text-danger">Terangkan struktur organisasi anda di perusahaan terakhir</small>
-                    {{ Form::textarea('keterangan_jabatan_terakhir', null, ['class' => 'form-control']) }}
-                </div>
+
+                {{ Form::hidden('keterangan_jabatan_terakhir', "-", ['class' => 'form-control']) }}
 
                 <div class="mb-3 col-sm-12 col-md-6">
-                    {{ Form::label('image_jabatan_terakhir', 'Image Jabatan Terakhir', ['class' => 'form-label']) }}
-                    <br><small class="text-danger">Gambarkan struktur organisasi anda di perusahaan terakhir</small>
+                    {{ Form::label('image_jabatan_terakhir', 'Struktur Organisasi', ['class' => 'form-label']) }}
+                    <br><small class="text-danger">(Optional) Gambarkan struktur organisasi anda di perusahaan
+                        terakhir</small>
                     <input type="file" class="form-control" name="image_jabatan_terakhir" />
 
-                    @if($datadiri && $datadiri->image_jabatan_terakhir != "-")
-                    <img class="w-100 mt-2" src="{{asset($datadiri->image_jabatan_terakhir)}}" />
+                    @if ($datadiri && $datadiri->image_jabatan_terakhir != '-')
+                        <img class="w-100 mt-2" src="{{ asset($datadiri->image_jabatan_terakhir) }}" />
                     @endif
                 </div>
             </div>
             {{ Form::close() }}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <h4>Referensi dan Rekomendasi</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tipe</th>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Hubungan</th>
+
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($datadetails as $i => $datadetail)
+                            <tr>
+                                <td>{{ $i + 1 }}</td>
+                                <td>{{ $datadetail->tipe }}</td>
+                                <td>{{ $datadetail->nama }}</td>
+                                <td>{{ $datadetail->jabatan }}</td>
+                                <td>{{ $datadetail->hubungan }}</td>
+
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('datadetails.edit', [$datadetail->id]) }}"
+                                            class="btn btn-sm btn-primary">Edit</a>
+                                        {!! Form::open(['method' => 'DELETE', 'route' => ['datadetails.destroy', $datadetail->id]]) !!}
+                                        {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
+                                        {!! Form::close() !!}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

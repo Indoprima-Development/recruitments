@@ -3,28 +3,6 @@
 @section('content')
 
     <div class="container-fluid">
-        <div class="card bg-light-info shadow-none position-relative overflow-hidden">
-            <div class="card-body px-4 py-3">
-                <div class="row align-items-center">
-                    <div class="col-9">
-                        <h4 class="fw-semibold mb-8">Form PTK</h4>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a class="text-muted text-decoration-none" href="./index.html">
-                                        Permintaan Tenaga Kerja
-                                    </a></li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <div class="col-3">
-                        <div class="text-center mb-n5">
-                            <img src="{{ asset('package/dist/images/breadcrumb/ChatBc.png') }}" alt=""
-                                class="img-fluid mb-n4">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="card rounded-2 overflow-hidden">
             <div class="position-relative">
                 <a href="javascript:void(0)"><img src="{{ asset('package/dist/images/blog/blog-img5.jpg') }}"
@@ -61,70 +39,188 @@
                     </div>
 
                     <div class="d-flex align-items-center fs-2 ms-auto">
-                        @if ($ptkform->status == 0)
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <i class="ti ti-pencil"></i> Approve
+                        @if (Auth::user()->role == 'Admin')
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                <i class="ti ti-pencil"></i> Approve PM/GM
                             </button>
-                        @else
-                            <a class="btn btn-success" href="#">
-                                <i class="ti ti-pencil"></i> Disetujui
-                            </a>
+                            &nbsp;
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                <i class="ti ti-pencil"></i> Approve Director
+                            </button>
+                            &nbsp;
+                            @if ($ptkform->status == 0)
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    <i class="ti ti-pencil"></i> Approve
+                                </button>
+                            @else
+                                <a class="btn btn-success" href="#">
+                                    <i class="ti ti-pencil"></i> Disetujui
+                                </a>
+                            @endif
                         @endif
                     </div>
                 </div>
             </div>
             <div class="card-body border-top p-4">
-                <h3 class="fw-semibold mb-3">Tugas dan Pekerjaan</h3>
-                <p class="text-dark mb-0"><strong>Atasan Langsung</strong></p>
-                <p class="mb-3">
-                    {{ $ptkform->direct_superior }}
-                </p>
+                <h3 class="fw-semibold mb-3">Jabatan</h3>
+                <div class="row">
+                    <div class="col-3">
+                        <p class="text-dark mb-0"><strong>Divisi</strong></p>
+                        <p class="mb-3">
+                            {{ $ptkform->division->division_name }}
+                        </p>
+                    </div>
 
-                <p class="text-dark mb-0"><strong>Bawahan Langsung</strong></p>
-                <p class="mb-3">
-                    {{ $ptkform->direct_junior }}
-                </p>
+                    <div class="col-3">
+                        <p class="text-dark mb-0"><strong>Departement</strong></p>
+                        <p class="mb-3">
+                            {{ $ptkform->department->department_name }}
+                        </p>
+                    </div>
 
-                <p class="text-dark mb-0"><strong>Tanggung Jawab</strong></p>
-                <p class="mb-3">
-                    {{ $ptkform->responsibility }}
-                </p>
+                    <div class="col-3">
+                        <p class="text-dark mb-0"><strong>Section</strong></p>
+                        <p class="mb-3">
+                            {{ $ptkform->section->section_name }}
+                        </p>
+                    </div>
 
-                <div class="border-top mt-7 pt-7">
-                    <h3 class="fw-semibold">Pendidikan dan Pengalaman</h3>
-                    <ul class="my-3 ps-4 text-dark">
-                        <li class="d-flex align-items-center gap-2"><span class="p-1 bg-dark rounded-circle"></span> Gigure
-                            out what it is or</li>
-                        <li class="d-flex align-items-center gap-2"><span class="p-1 bg-dark rounded-circle"></span> The
-                            links it currently</li>
-                        <li class="d-flex align-items-center gap-2"><span class="p-1 bg-dark rounded-circle"></span> It
-                            allows you to start your bid</li>
-                        <li class="d-flex align-items-center gap-2"><span class="p-1 bg-dark rounded-circle"></span> Gigure
-                            out what it is or</li>
-                        <li class="d-flex align-items-center gap-2"><span class="p-1 bg-dark rounded-circle"></span> The
-                            links it currently</li>
-                        <li class="d-flex align-items-center gap-2"><span class="p-1 bg-dark rounded-circle"></span> It
-                            allows you to start your bid</li>
-                    </ul>
-                </div>
-                <div class="border-top mt-7 pt-7">
-                    <h3 class="fw-semibold">Syarat Khusus</h3>
-                    <ol class="my-3 text-dark">
-                        <li>Gigure out what it is or</li>
-                        <li>The links it currently</li>
-                        <li>It allows you to start your bid</li>
-                        <li>Gigure out what it is or</li>
-                        <li>The links it currently</li>
-                        <li>It allows you to start your bid</li>
-                    </ol>
-                </div>
-                <div class="border-top mt-7 pt-7">
-                    <h3 class="fw-semibold">Lain-lain</h3>
-                    <div class="p-3">
-                        <h6 class="mb-0 fs-4 fw-semibold"><i class="ti ti-quote fs-7"></i>Life is short, Smile while you
-                            still have teeth!</h6>
+                    <div class="col-3">
+                        <p class="text-dark mb-0"><strong>Jobtitle</strong></p>
+                        <p class="mb-3">
+                            {{ $ptkform->jobtitle->jobtitle_name }}
+                        </p>
+                    </div>
+
+                    <div class="col-3 mt-2">
+                        <p class="text-dark mb-0"><strong>Dipekerjakan Tanggal</strong></p>
+                        <p class="mb-3">
+                            {{ $ptkform->date_startwork }}
+                        </p>
                     </div>
                 </div>
+
+                <div class="border-top mt-7 pt-7">
+                    <h3 class="fw-semibold">Uraian Tugas dan Pekerjaan</h3>
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="text-dark mb-0"><strong>Atasan Langsung</strong></p>
+                            <p class="mb-3">
+                                {{ $ptkform->direct_superior }}
+                            </p>
+                        </div>
+
+                        <div class="col-6">
+                            <p class="text-dark mb-0"><strong>Jumlah Bawahan Langsung</strong></p>
+                            <p class="mb-3">
+                                {{ $ptkform->direct_junior }}
+                            </p>
+                        </div>
+
+                        <div class="col-8">
+                            <p class="text-dark mb-0"><strong>Tanggung Jawab</strong></p>
+                            <p class="mb-3">
+                                <?php echo $ptkform->responsibility; ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-top mt-7 pt-7">
+                    <h3 class="fw-semibold">Persyaratan</h3>
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="text-dark mb-0"><strong>Jenis Kelamin</strong></p>
+                            <p class="mb-3">
+                                @if ($ptkform->gender == 0)
+                                    Laki-laki/Perempuan
+                                @elseif($ptkform->gender == 1)
+                                    Laki-laki
+                                @else
+                                    Perempuan
+                                @endif
+                            </p>
+                        </div>
+
+                        <div class="col-4">
+                            <p class="text-dark mb-0"><strong>Pendidikan</strong></p>
+                            <p class="mb-3">
+                                {{ $ptkform->education->education_name }}
+                            </p>
+                        </div>
+
+                        <div class="col-4">
+                            <p class="text-dark mb-0"><strong>Jurusan</strong></p>
+                            <p class="mb-3">
+                                {{ $ptkform->major->major_name }}
+                            </p>
+                        </div>
+
+                        <div class="col-4">
+                            <p class="text-dark mb-0"><strong>Pengalaman</strong></p>
+                            <?php echo $ptkform->responsibility; ?>
+                        </div>
+
+                        <div class="col-4">
+                            <p class="text-dark mb-0"><strong>Persyaratan Khusus</strong></p>
+                            <?php echo $ptkform->special_conditions; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-top mt-7 pt-7">
+                    <h3 class="fw-semibold">Dasar Permintaan Tenaga Kerja</h3>
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-4">
+                                <p class="text-dark mb-0"><strong>Dasar Permintaan</strong></p>
+                                <p class="mb-3">
+                                    {{ $ptkform->request_basis }}
+                                </p>
+                            </div>
+
+                            <div class="col-4">
+                                <p class="text-dark mb-0"><strong>Keperluan Permintaan</strong></p>
+                                <p class="mb-3">
+                                    {{ $ptkform->request_basis_for }}
+                                </p>
+                            </div>
+
+                            <div class="col-4">
+                                <p class="text-dark mb-0"><strong>Lain-lain</strong></p>
+                                <?php echo $ptkform->general_others; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Auth::user()->role == 'Admin')
+                    <div class="border-top mt-7 pt-7">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                Surabaya, {{ date('d M Y') }}
+                            </div>
+                            <div class="col-6">
+                                Diketahui <br><br><br><br><br><br><br><br>
+
+
+                                PM/GM
+                                <p>{{ date('Y-m-d') }}</p>
+                            </div>
+
+                            <div class="col-6">
+                                Disetujui <br><br><br><br><br><br><br><br>
+
+
+                                Director
+                                <p>{{ date('Y-m-d') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -144,9 +240,7 @@
                             berikut</p>
                         <label>Date Start Vacancy</label>
                         <input type="date" name="date_start" class="form-control mb-3" />
-
-                        <label>Date End Vacancy</label>
-                        <input type="date" name="date_end" class="form-control" />
+                        <input type="hidden" name="date_end" value="31-12-2099" class="form-control" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
