@@ -48,7 +48,7 @@ class DatapendidikanformalsController extends Controller
 		$datapendidikanformal->nilai = $request->input('nilai');
         $datapendidikanformal->save();
 
-        return redirect('forms?section=keluarga');
+        return redirect('forms?section=pendidikan');
     }
 
     /**

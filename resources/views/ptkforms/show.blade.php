@@ -61,6 +61,12 @@
                                 </a>
                             @endif
                         @endif
+
+                        <form method="POST" action="{{url('ptkformtransactions')}}">
+                            @csrf
+                            <input type="hidden" name="ptkform_id" value="{{$ptkform->id}}">
+                            <button type="submit" class="btn btn-primary">Lamar</button>
+                        </form>
                     </div>
                 </div>
             </div>

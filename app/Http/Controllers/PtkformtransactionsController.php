@@ -46,7 +46,7 @@ class PtkformtransactionsController extends Controller
 		$ptkformtransaction->user_id = Auth::user()->id;
         $ptkformtransaction->save();
 
-        return to_route('ptkformtransactions.index');
+        return redirect('opening-jobs');
     }
 
     /**
