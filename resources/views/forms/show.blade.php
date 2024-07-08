@@ -84,23 +84,25 @@
                     <div class="card-body row">
                         <h4>Data Diri</h4>
                         <div class="col-6">
-                            <p>Tempat, Tanggal Lahir :</p>
-                            <p>Alamat :</p>
-                            <p>Telepon : </p>
-                            <p>Golongan Darah :</p>
-                            <p>NIK :</p>
-                            <p>Jabatan yang Dilamar : </p>
-                            <p>Kendaraan yang Dipakai :</p>
-                            <p>Riwayat Kesehatan</p>
+
+
+                            <p>Tempat, Tanggal Lahir : {{$datadiri->tempat_lahir}}, {{$datadiri->tanggal_lahir}}</p>
+                            <p>Alamat : {{$datadiri->alamat}}</p>
+                            <p>Telepon : {{$datadiri->no_hp}} </p>
+                            <p>Golongan Darah : {{$datadiri->golongan_darah}}</p>
+                            <p>NIK : {{$datadiri->ktp}}</p>
+                            <p>Jabatan yang Dilamar : -</p>
+                            <p>Kendaraan yang Dipakai : {{$datadiri->kendaraan}}</p>
+                            <p>Riwayat Kesehatan : -</p>
                         </div>
                         <div class="col-6">
-                            <p>Jenis Kelamin</p>
-                            <p>Status Rumah</p>
-                            <p>No. Wa</p>
-                            <p>Agama :</p>
-                            <p>Tinggi Badan</p>
-                            <p>Berat Badan</p>
-                            <p>SIM : </p>
+                            <p>Jenis Kelamin : {{$datadiri->gender == 1 ? 'Laki-laki' : 'Perempuan'}}</p>
+                            <p>Status Rumah : {{$datadiri->status_rumah}}</p>
+                            <p>No. Wa : {{$datadiri->no_wa}}</p>
+                            <p>Agama : {{$datadiri->agama}}</p>
+                            <p>Tinggi Badan : {{$datadiri->tinggi_badan}}</p>
+                            <p>Berat Badan : {{$datadiri->berat_badan}}</p>
+                            <p>SIM : {{$datadiri->sim}}</p>
                         </div>
                     </div>
                 </div>
@@ -110,6 +112,29 @@
                 <div class="card shadow-none border">
                     <div class="card-body row">
                         <h4>Pendidikan Formal</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>tingkat</th>
+                                    <th>instansi</th>
+                                    <th>jurusan</th>
+                                    <th>lulus_tahun</th>
+                                    <th>nilai</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($datapendidikanformals as $datapendidikanformal)
+                                    <tr>
+                                        <td>{{ $datapendidikanformal->tingkat }}</td>
+                                        <td>{{ $datapendidikanformal->instansi }}</td>
+                                        <td>{{ $datapendidikanformal->jurusan }}</td>
+                                        <td>{{ $datapendidikanformal->lulus_tahun }}</td>
+                                        <td>{{ $datapendidikanformal->nilai }}</td>
+                                    </tr>
+
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -118,6 +143,32 @@
                 <div class="card shadow-none border">
                     <div class="card-body row">
                         <h4>Pendidikan Informal</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>jenis</th>
+                                    <th>tingkat</th>
+                                    <th>instansi</th>
+                                    <th>jurusan</th>
+                                    <th>date_start</th>
+                                    <th>date_end</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($datapendidikannonformals as $datapendidikannonformal)
+
+                                    <tr>
+                                        <td>{{ $datapendidikannonformal->jenis }}</td>
+                                        <td>{{ $datapendidikannonformal->tingkat }}</td>
+                                        <td>{{ $datapendidikannonformal->instansi }}</td>
+                                        <td>{{ $datapendidikannonformal->jurusan }}</td>
+                                        <td>{{ $datapendidikannonformal->date_start }}</td>
+                                        <td>{{ $datapendidikannonformal->date_end }}</td>
+                                    </tr>
+
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -126,6 +177,28 @@
                 <div class="card shadow-none border">
                     <div class="card-body row">
                         <h4>Keluarga</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Hubungan</th>
+                                    <th>Nama</th>
+                                    <th>Tempat,Tanggal Lahir</th>
+                                    <th>Pekerjaan</th>
+                                    <th>Alamat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($datakeluargas as $i => $datakeluarga)
+                                    <tr>
+                                        <td>{{ $datakeluarga->status_hubungan }}</td>
+                                        <td>{{ $datakeluarga->nama_keluarga }}</td>
+                                        <td>{{ $datakeluarga->tempat_lahir_keluarga }}, {{ $datakeluarga->tanggal_lahir_keluarga }}</td>
+                                        <td>{{ $datakeluarga->pekerjaan }}</td>
+                                        <td>{{ $datakeluarga->alamat }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -134,12 +207,74 @@
                 <div class="card shadow-none border">
                     <div class="card-body row">
                         <h4>Pengalaman Kerja</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Instansi</th>
+                                    <th>Jabatan Awal</th>
+                                    <th>Jabatan Akhir</th>
+                                    <th>Gaji Awal</th>
+                                    <th>Gaji Akhir</th>
+                                    <th>Mulai</th>
+                                    <th>Akhir</th>
+                                    <th>Alasan Keluar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($datapengalamankerjas as $datapengalamankerja)
+                                    <tr>
+                                        <td>{{ $datapengalamankerja->perusahaan }}</td>
+                                        <td>{{ $datapengalamankerja->jabatan_awal }}</td>
+                                        <td>{{ $datapengalamankerja->jabatan_terakhir }}</td>
+                                        <td>{{ $datapengalamankerja->gaji_awal }}</td>
+                                        <td>{{ $datapengalamankerja->gaji_akhir }}</td>
+                                        <td>{{ $datapengalamankerja->date_start }}</td>
+                                        <td>{{ $datapengalamankerja->date_end }}</td>
+                                        <td>{{ $datapengalamankerja->alasan_keluar }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <div class="card shadow-none border">
                     <div class="card-body row">
                         <h4>Kemampuan dan Hobi</h4>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Kemampuan</th>
+                                    <th>Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($datakemampuans as $i => $datakemampuan)
+                                    <tr>
+                                        <td>{{ $datakemampuan->kemampuan }}</td>
+                                        <td>{{ $datakemampuan->level }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Hobi</th>
+                                    <th>Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($dataolahragas as $i => $dataolahraga)
+                                    <tr>
+                                        <td>{{ $dataolahraga->olahraga }}</td>
+                                        <td>{{ $dataolahraga->level }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
