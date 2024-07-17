@@ -1,4 +1,19 @@
 <div class="tab-pane fade show active" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
+    <div class="row mb-2 text-end">
+        <div class="col-6"></div>
+        <div class="col-3 d-flex align-items-stretch">
+            <a href="{{ route('dataolahragas.create') }}" class="btn btn-success text-white w-100 card-hover">
+                <h6 class="text-white mb-2">+ Hobi</h6>
+            </a>
+        </div>
+
+        <div class="col-3 d-flex align-items-stretch">
+            <a href="{{ route('datakesehatans.create') }}" class="btn btn-danger text-white w-100 card-hover">
+                <h6 class="text-white mb-2">+ Riwayat Kesehatan</h6>
+            </a>
+        </div>
+    </div>
+
     <div class="card w-100 position-relative overflow-hidden mb-0">
         <div class="card-body p-4">
             @if ($errors->any())
@@ -70,11 +85,18 @@
                     <div class="row">
                         <div class="mb-3 col-6">
                             {{ Form::label('provinsi', 'Provinsi', ['class' => 'form-label']) }}
-                            {{ Form::text('provinsi', null, ['class' => 'form-control']) }}
+                            <select id="provinces" class="form-select">
+                                <option idProv="" value="{{ $datadiri->provinces ?? '-' }}">
+                                    {{ $datadiri->provinces ?? '-' }}</option>
+                            </select>
+                            <input type="hidden" name="provinces" id="dataProvince"
+                                value="{{ $datadiri->provinces ?? '-' }}">
                         </div>
                         <div class="mb-3 col-6">
                             {{ Form::label('kota', 'Kota', ['class' => 'form-label']) }}
-                            {{ Form::text('kota', null, ['class' => 'form-control']) }}
+                            <select name="cities" id="cities" class="form-select">
+                                <option value="{{ $datadiri->cities ?? '-' }}">{{ $datadiri->cities ?? '-' }}</option>
+                            </select>
                         </div>
                         <div class="mb-3 col-12">
                             {{ Form::label('status_rumah', 'Status Tempat Tinggal', ['class' => 'form-label']) }}
@@ -140,42 +162,6 @@
                 </div>
             </div>
             {{ Form::close() }}
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col-md-4 d-flex align-items-stretch">
-            <a href="{{ route('dataolahragas.create') }}" class="card bg-success text-white w-100 card-hover">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <i class="ti ti-ball-baseball display-6"></i>
-                        <div class="ms-auto">
-                            <i class="ti ti-plus fs-8"></i>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <h4 class="card-title mb-1 text-white">Hobi</h4>
-
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-stretch">
-            <a href="{{ route('datakesehatans.create') }}" class="card bg-danger text-white w-100 card-hover">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <i class="ti ti-first-aid-kit display-6"></i>
-                        <div class="ms-auto">
-                            <i class="ti ti-plus fs-8"></i>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <h4 class="card-title mb-1 text-white">Riwayat Kesehatan</h4>
-
-                    </div>
-                </div>
-            </a>
         </div>
     </div>
 
@@ -250,7 +236,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card mt-2">
         <div class="card-body">
             <div class="row">
                 <h4>Riwayat Kesehatan</h4>
@@ -291,4 +277,52 @@
     </div>
 </div>
 
+<script>
+    var dataProvince = [];
+    $(document).ready(function() {
+        // Fetch provinces
+        $.getJSON('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json', function(data) {
+            // console.log(data)
+            dataProvince = data
+            var provincesDropdown = $('#provinces');
 
+            $.each(data, function(index, province) {
+                var option = $('<option></option>')
+                    .attr('value', index)
+                    .text(province.name);
+                $('#provinces').append(option);
+            });
+        });
+
+        // Handle province selection
+        $('#provinces').change(function() {
+            var index = $(this).val();
+            var provinceId = dataProvince[index].id
+            $('#dataProvince').val(dataProvince[index].name)
+            if (provinceId) {
+                // Fetch cities based on selected province
+                $.getJSON(
+                    `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
+                    function(data) {
+                        var citiesDropdown = $('#cities');
+                        citiesDropdown.empty(); // Clear previous options
+                        citiesDropdown.append($('<option>', {
+                            value: '',
+                            text: 'Select City'
+                        }));
+                        $.each(data, function(index, city) {
+                            citiesDropdown.append($('<option>', {
+                                value: city.name,
+                                text: city.name
+                            }));
+                        });
+                    });
+            } else {
+                $('#cities').empty().append($('<option>', {
+                    value: '',
+                    text: 'Select City'
+                })); // Reset cities dropdown
+            }
+        });
+    });
+</script>

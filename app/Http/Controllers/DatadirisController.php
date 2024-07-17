@@ -65,6 +65,8 @@ class DatadirisController extends Controller
         $dataRequest["tinggi_badan"] = $request->input('tinggi_badan');
         $dataRequest["berat_badan"] = $request->input('berat_badan');
         $dataRequest["ktp"] = $request->input('ktp');
+        $dataRequest["provinces"] = $request->input('provinces');
+        $dataRequest["cities"] = $request->input('cities');
 
         $kendaraan = [];
         if ($request->input('kendaraan') != null) {
@@ -145,6 +147,8 @@ class DatadirisController extends Controller
         $datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');
         $datadiri->image_jabatan_terakhir = $request->input('image_jabatan_terakhir');
         $datadiri->keterangan_jabatan_terakhir = $request->input('keterangan_jabatan_terakhir');
+        $datadiri->provinces = $request->input('provinces');
+        $datadiri->cities = $request->input('cities');
         $datadiri->save();
 
         return to_route('datadiris.index');

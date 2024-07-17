@@ -29,6 +29,15 @@ class LoginRegisterController extends Controller
 
     public function store(Request $request)
     {
+        $user = User::where("email",$request->email)
+        ->orWhere("ktp",$request->ktp)
+        ->first();
+
+        if (!empty($user)) {
+            Alert::error('Error', 'Email atau KTP sudah terdaftar');
+            return redirect()->back();
+        }
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,

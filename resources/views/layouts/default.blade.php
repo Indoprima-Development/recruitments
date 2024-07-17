@@ -21,6 +21,7 @@
     <link id="themeColors" rel="stylesheet" href="{{asset('package/dist/css/style.min.css')}}" />
     <link rel="stylesheet" href="{{asset('package/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}">
     @yield('addCss')
+    <script src="{{asset('package/dist/libs/jquery/dist/jquery.min.js')}}"></script>
 </head>
 
 <body>

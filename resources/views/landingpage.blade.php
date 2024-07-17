@@ -264,7 +264,7 @@
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-archive text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Isi CV</h5>
+                                <h5 class="fs-5 fw-semibold mt-8">Lengkapi Data Diri</h5>
                                 <p class="mb-0 text-dark">
                                     Lengkapi data diri,pengalaman, dan data lain sebelum melakukan pendaftaran
                                 </p>
@@ -289,15 +289,7 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
-                            data-aos-duration="1000">
-                            <div class="text-center mb-5">
-                                <i class="d-block ti ti-diamond text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Psikologi Test</h5>
-                                <p class="mb-0 text-dark">Lots of Icon Fonts are included here in the package of
-                                    Elegant Admin.</p>
-                            </div>
-                        </div>
+
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
@@ -307,6 +299,17 @@
                                     widely tested.</p>
                             </div>
                         </div>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
+                            data-aos-duration="1000">
+                            <div class="text-center mb-5">
+                                <i class="d-block ti ti-diamond text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Psikologi Test</h5>
+                                <p class="mb-0 text-dark">Lots of Icon Fonts are included here in the package of
+                                    Elegant Admin.</p>
+                            </div>
+                        </div>
+
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">

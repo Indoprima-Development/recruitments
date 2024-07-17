@@ -1,5 +1,5 @@
 <!-- Import Js Files -->
-<script src="{{asset('package/dist/libs/jquery/dist/jquery.min.js')}}"></script>
+
 <script src="{{asset('package/dist/libs/simplebar/dist/simplebar.min.js')}}"></script>
 <script src="{{asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>
 <!-- core files -->
