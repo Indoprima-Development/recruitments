@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ptkformtransaction extends Model
+class Datapeminatan extends Model
 {
     use HasFactory;
-    protected $guarded = [];
 
-	public function ptkform()
+	public function field()
 	{
-		return $this->belongsTo('App\Models\Ptkform');
+		return $this->belongsTo('App\Models\Field');
 	}
 
 	public function user()

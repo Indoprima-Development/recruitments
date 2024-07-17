@@ -9,6 +9,6 @@ function AlertInfo($title,$message){
     return Alert::info($title, $message);
 }
 
-function AlertDanger($title,$message){
-    return Alert::danger($title, $message);
+function AlertError($title,$message){
+    return Alert::error($title, $message);
 }

@@ -25,6 +25,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <!-- Preloader -->
     <div class="preloader">
         <img src="{{asset('package/dist/images/logos/favicon.ico')}}" alt="loader" class="lds-ripple img-fluid" />

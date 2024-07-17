@@ -17,6 +17,7 @@ use App\Http\Controllers\DatakesehatansController;
 use App\Http\Controllers\DataolahragasController;
 use App\Http\Controllers\DatapengalamankerjasController;
 use App\Http\Controllers\DataorganisasisController;
+use App\Http\Controllers\DatapeminatansController;
 use App\Http\Controllers\DivisionsController;
 use App\Http\Controllers\DepartmentsController;
 use App\Http\Controllers\SectionsController;
@@ -106,6 +107,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('/ptkformtransactions', PtkformtransactionsController::class);
     Route::controller(PtkformtransactionsController::class)->group(function () {
         Route::get('/ptkformtransactions/{status}/data', 'dataByStatus');
+        Route::post('/ptkformtransactions/change-status', 'changeStatus');
     });
 
     // Formulir
@@ -129,4 +131,5 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('dataolahragas', DataolahragasController::class);
     Route::resource('datadetails', DatadetailsController::class);
     Route::resource('datakesehatans', DatakesehatansController::class);
+    Route::resource('datapeminatans', DatapeminatansController::class);
 });

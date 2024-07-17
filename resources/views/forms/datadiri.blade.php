@@ -1,15 +1,17 @@
 <div class="tab-pane fade show active" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
     <div class="row mb-2 text-end">
         <div class="col-6"></div>
-        <div class="col-3 d-flex align-items-stretch">
-            <a href="{{ route('dataolahragas.create') }}" class="btn btn-success text-white w-100 card-hover">
+        <div class="col-6 text-end">
+            <a href="{{ route('dataolahragas.create') }}" class="btn btn-success text-white card-hover">
                 <h6 class="text-white mb-2">+ Hobi</h6>
             </a>
-        </div>
 
-        <div class="col-3 d-flex align-items-stretch">
-            <a href="{{ route('datakesehatans.create') }}" class="btn btn-danger text-white w-100 card-hover">
+            <a href="{{ route('datakesehatans.create') }}" class="btn btn-primary text-white card-hover">
                 <h6 class="text-white mb-2">+ Riwayat Kesehatan</h6>
+            </a>
+
+            <a href="{{ route('datapeminatans.create') }}" class="btn btn-danger text-white card-hover">
+                <h6 class="text-white mb-2">+ Department Peminatan</h6>
             </a>
         </div>
     </div>
@@ -273,6 +275,42 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <div class="card mt-2">
+        <div class="card-body">
+            <h4>Data Peminatan</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Field</th>
+
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($datapeminatans as $i => $datapeminatan)
+
+                        <tr>
+                            <td>{{ $i+1 }}</td>
+                            <td>{{ $datapeminatan->field->field_name }}</td>
+
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('datapeminatans.show', [$datapeminatan->id]) }}" class="btn btn-info">Show</a>
+                                    <a href="{{ route('datapeminatans.edit', [$datapeminatan->id]) }}" class="btn btn-primary">Edit</a>
+                                    {!! Form::open(['method' => 'DELETE','route' => ['datapeminatans.destroy', $datapeminatan->id]]) !!}
+                                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                    {!! Form::close() !!}
+                                </div>
+                            </td>
+                        </tr>
+
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

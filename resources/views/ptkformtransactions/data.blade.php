@@ -31,7 +31,8 @@
                     <th>Posisi</th>
                     <th>Kampus</th>
                     <th>Jurusan</th>
-                    <th>Status</th>
+                    <th>PIC</th>
+                    <th>CV Review</th>
                     <th>HC Interview</th>
                     <th>Psikotest</th>
                     <th>User Interview</th>
@@ -48,31 +49,145 @@
                         <td>{{ $ptkformtransaction->user->name }}</td>
                         <td>{{ $ptkformtransaction->ptkform->jobtitle->jobtitle_name }}</td>
 
-                            <?php
-                                $a = $ptkformtransaction->user->datapendidikanformal;
-                            ?>
+                        <?php
+                        $a = $ptkformtransaction->user->datapendidikanformal;
+                        ?>
 
-                            @if (count($a) > 0)
-                            <td> {{$ptkformtransaction->user->datapendidikanformal[count($a)-1]->instansi}}
+                        @if (count($a) > 0)
+                            <td> {{ $ptkformtransaction->user->datapendidikanformal[count($a) - 1]->instansi }}
                             </td>
-                            <td> {{$ptkformtransaction->user->datapendidikanformal[count($a)-1]->jurusan}}
+                            <td> {{ $ptkformtransaction->user->datapendidikanformal[count($a) - 1]->jurusan }}
                             </td>
+                        @else
+                            <td> - </td>
+                            <td> - </td>
+                        @endif
+                        <td>{{$ptkformtransaction->pic}}</td>
+                        <td>
+                            @if ($ptkformtransaction->status == 0)
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="0" type="button" types="cv_review" class="btnEditStatus btn btn-sm btn-outline-primary">
+                                    <span class="badge bg-success">OK</span>
+                                    <span class="badge bg-danger">NOT OK</span>
+                                </button>
                             @else
-                            <td> - </td>
-                            <td> - </td>
+                                {{ $ptkformtransaction->cv_review != null ? substr($ptkformtransaction->cv_review,0,10) : '-' }}
                             @endif
-                        <td>{{ \App\Constants\Constants::StatusForm[$ptkformtransaction->status] }}</td>
-                        <td>{{ $ptkformtransaction->interview_hc ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->psikotest ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->interview_user ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->interview_direksi ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->finalisasi ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->mcu ?? '-' }}</td>
-                        <td>{{ $ptkformtransaction->join ?? '-' }}</td>
+                        </td>
+                        <td>
+                            @if ($ptkformtransaction->status == 1)
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="1" type="button" types="interview_hc" class="btnEditStatus btn btn-sm btn-outline-primary">
+                                    <span class="badge bg-success">OK</span>
+                                    <span class="badge bg-danger">NOT OK</span>
+                                </button>
+                            @else
+                            {{ $ptkformtransaction->interview_hc != null ? substr($ptkformtransaction->interview_hc,0,10) : '-' }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($ptkformtransaction->status == 2)
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="2" type="button" types="psikotest" class="btnEditStatus btn btn-sm btn-outline-primary">
+                                    <span class="badge bg-success">OK</span>
+                                    <span class="badge bg-danger">NOT OK</span>
+                                </button>
+                            @else
+                                {{ $ptkformtransaction->psikotest != null ? substr($ptkformtransaction->psikotest,0,10) : '-' }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($ptkformtransaction->status == 3)
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="3" type="button" types="interview_user" class="btnEditStatus btn btn-sm btn-outline-primary">
+                                    <span class="badge bg-success">OK</span>
+                                    <span class="badge bg-danger">NOT OK</span>
+                                </button>
+                            @else
+                                {{ $ptkformtransaction->interview_user != null ? substr($ptkformtransaction->interview_user,0,10) : '-' }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($ptkformtransaction->status == 4)
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="4" type="button" types="interview_direksi" class="btnEditStatus btn btn-sm btn-outline-primary">
+                                    <span class="badge bg-success">OK</span>
+                                    <span class="badge bg-danger">NOT OK</span>
+                                </button>
+                            @else
+                                {{ $ptkformtransaction->interview_direksi != null ? substr($ptkformtransaction->interview_direksi,0,10) : '-' }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($ptkformtransaction->status == 5)
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="5" type="button" types="finalisasi" class="btnEditStatus btn btn-sm btn-outline-primary">
+                                    <span class="badge bg-success">OK</span>
+                                    <span class="badge bg-danger">NOT OK</span>
+                                </button>
+                            @else
+                                {{ $ptkformtransaction->finalisasi != null ? substr($ptkformtransaction->finalisasi,0,10) : '-' }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($ptkformtransaction->status == 6)
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="6" type="button" types="mcu" class="btnEditStatus btn btn-sm btn-outline-primary">
+                                    <span class="badge bg-success">OK</span>
+                                    <span class="badge bg-danger">NOT OK</span>
+                                </button>
+                            @else
+                                {{ $ptkformtransaction->mcu != null ? substr($ptkformtransaction->mcu,0,10) : '-' }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($ptkformtransaction->status == 7)
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="7" type="button" types="join" class="btnEditStatus btn btn-sm btn-outline-primary">
+                                    <span class="badge bg-success">OK</span>
+                                    <span class="badge bg-danger">NOT OK</span>
+                                </button>
+                            @else
+                                {{ $ptkformtransaction->join != null ? substr($ptkformtransaction->join,0,10) : '-' }}
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalEditStatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{{ url('ptkformtransactions/change-status') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="ptkformtrid" id="ptkformtridModalEditStatus">
+                        <input type="hidden" name="status" id="statusModalEditStatus">
+                        <input type="hidden" name="type" id="typeModalEditStatus">
+                        <div class="form-group">
+                            <label for="">Status</label>
+                            <select name="statusokornot" class="form-select">
+                                <option value="OK">Pilih Status</option>
+                                <option value="OK">OK</option>
+                                <option value="NOT OK">NOT OK</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-1">
+                            <label for="">Score</label>
+                            <input type="number" value="0" name="score" class="form-control">
+                        </div>
+
+                        <div class="form-group mt-1">
+                            <label for="">Keterangan</label>
+                            <textarea class="form-control" name="keterangan" cols="2" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 @stop
 
@@ -94,6 +209,13 @@
                     buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
                 }
             }
+        });
+
+        $(".btnEditStatus").on("click", function() {
+            $('#typeModalEditStatus').val($(this).attr('types'))
+            $('#ptkformtridModalEditStatus').val($(this).attr('ptkformtrid'))
+            $('#statusModalEditStatus').val($(this).attr('status'))
+            $('#modalEditStatus').modal('show')
         });
     </script>
 @endsection

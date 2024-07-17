@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Ptkformtransaction;
 use App\Http\Requests\PtkformtransactionRequest;
 use App\Models\Datadiri;
+use App\Models\Ptkformactivity;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PtkformtransactionsController extends Controller
@@ -113,5 +115,32 @@ class PtkformtransactionsController extends Controller
         $ptkformtransactions = $ptkformtransactions->get();
 
         return view('ptkformtransactions.data',compact('ptkformtransactions'));
+    }
+
+    public function changeStatus(Request $request){
+        $status = 9;
+        if ($request->statusokornot == 'OK') {
+            $status = $request->status + 1;
+        }
+
+        $data = Ptkformtransaction::where("id",$request->ptkformtrid)->first();
+        if ($data->pic == "") {
+            $update["pic"] = Auth::user()->name;
+        }
+
+        $update["status"] = $status;
+        $update[$request->type] = date("Y-m-d");
+        $update["score_".$request->type] = $request->score;
+
+        $data->update($update);
+
+        Ptkformactivity::create([
+            "user_id" => Auth::user()->id,
+            "ptkformtransaction_id"  => $request->ptkformtrid,
+            "keterangan"    => $request->keterangan
+        ]);
+
+        AlertSuccess("Success","Status berhasil diubah");
+        return redirect()->back();
     }
 }
