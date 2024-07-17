@@ -38,6 +38,7 @@
                         {{ $ptkform->date_startwork }}
                     </div>
 
+                    @if(Auth::check())
                     <div class="d-flex align-items-center fs-2 ms-auto">
                         @if (Auth::user()->role == 'Admin')
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -68,6 +69,7 @@
                             <button type="submit" class="btn btn-primary">Lamar</button>
                         </form>
                     </div>
+                    @endif
                 </div>
             </div>
             <div class="card-body border-top p-4">
@@ -203,6 +205,7 @@
                     </div>
                 </div>
 
+                @if(Auth::check())
                 @if (Auth::user()->role == 'Admin')
                     <div class="border-top mt-7 pt-7">
                         <div class="row">
@@ -227,11 +230,13 @@
                         </div>
                     </div>
                 @endif
+                @endif
             </div>
         </div>
     </div>
 
     <!-- Modal -->
+    @if(Auth::check())
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -256,4 +261,5 @@
             </div>
         </div>
     </div>
+    @endif
 @stop

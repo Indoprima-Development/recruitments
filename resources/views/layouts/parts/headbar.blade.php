@@ -1,4 +1,5 @@
 <!-- Header Start -->
+@if(Auth::check())
 <header class="app-header bg-primary-subtle">
     <nav class="navbar navbar-expand-xl navbar-light container-fluid px-0">
         <ul class="navbar-nav">
@@ -219,4 +220,5 @@
         </div>
     </nav>
 </header>
+@endif
 <!-- Header End -->

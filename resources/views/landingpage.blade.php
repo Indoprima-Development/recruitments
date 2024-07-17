@@ -39,10 +39,12 @@
                                 <a class="btn btn-outline-success fs-3 rounded btn-hover-shadow px-3 py-2"
                                     href="#">Opening Jobs</a>
                             </li>
+                            @if(!Auth::check())
                             <li class="nav-item ms-2">
                                 <a class="btn btn-primary fs-3 rounded btn-hover-shadow px-3 py-2"
                                     href="{{url('auth/login')}}">Login</a>
                             </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
@@ -65,10 +67,15 @@
                                     Temukan Pekerjaan anda di <b class="text-danger">PT. Indoprima Gemilang</b>
                                 </p>
                                 <div class="d-sm-flex align-items-center gap-3">
+                                    @if(!Auth::check())
                                     <a class="btn btn-primary px-5 btn-hover-shadow d-block mb-3 mb-sm-0"
-                                        href="{{url('auth/login')}}">Login</a>
+                                        href="{{url('auth/login')}}">Masuk</a>
                                     <a class="btn btn-outline-primary d-block scroll-link"
-                                        href="{{url('auth/register')}}">Register</a>
+                                        href="{{url('auth/register')}}">Daftar</a>
+                                    @else
+                                    <a class="btn btn-primary px-5 btn-hover-shadow d-block mb-3 mb-sm-0"
+                                        href="{{url('home')}}">Masuk</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -223,7 +230,7 @@
                         </div>
                     </div>
                     <div class="w-100 text-center mt-5">
-                        <a href="#" class="btn btn-sm btn-primary">Show All Jobs Opening</a>
+                        <a href="{{url('opening-jobs')}}" class="btn btn-sm btn-primary">Show All Jobs Opening</a>
                     </div>
                 </div>
             </section>
