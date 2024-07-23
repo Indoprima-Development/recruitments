@@ -26,7 +26,7 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-4" id="pills-kemampuan-tab" data-bs-toggle="pill" data-bs-target="#pills-kemampuan" type="button" role="tab" aria-controls="pills-kemampuan" aria-selected="false">
             <i class="ti ti-tag me-2 fs-6"></i>
-            <span class="d-none d-md-block">Kemampuan</span>
+            <span class="d-none d-md-block">Ketrampilan</span>
         </button>
     </li>
     <li class="nav-item" role="presentation">

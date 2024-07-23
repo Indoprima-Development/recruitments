@@ -38,37 +38,67 @@
                         {{ $ptkform->date_startwork }}
                     </div>
 
-                    @if(Auth::check())
-                    <div class="d-flex align-items-center fs-2 ms-auto">
-                        @if (Auth::user()->role == 'Admin')
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <i class="ti ti-pencil"></i> Approve PM/GM
-                            </button>
-                            &nbsp;
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <i class="ti ti-pencil"></i> Approve Director
-                            </button>
-                            &nbsp;
-                            @if ($ptkform->status == 0)
+                    @if (Auth::check())
+                        <div class="d-flex align-items-center fs-2 ms-auto">
+                            @if (Auth::user()->role == 'Admin')
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">
-                                    <i class="ti ti-pencil"></i> Approve
+                                    <i class="ti ti-pencil"></i> Approve PM/GM
                                 </button>
-                            @else
-                                <a class="btn btn-success" href="#">
-                                    <i class="ti ti-pencil"></i> Disetujui
-                                </a>
+                                &nbsp;
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    <i class="ti ti-pencil"></i> Approve Director
+                                </button>
+                                &nbsp;
+                                @if ($ptkform->status == 0)
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                        <i class="ti ti-pencil"></i> Approve
+                                    </button>
+                                @else
+                                    <a class="btn btn-success" href="#">
+                                        <i class="ti ti-pencil"></i> Disetujui
+                                    </a>
+                                @endif
                             @endif
-                        @endif
 
-                        <form method="POST" action="{{url('ptkformtransactions')}}">
-                            @csrf
-                            <input type="hidden" name="ptkform_id" value="{{$ptkform->id}}">
-                            <button type="submit" class="btn btn-primary">Lamar</button>
-                        </form>
-                    </div>
+                            @if(!$isApplied)
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                Lamar
+                            </button>
+                            @else
+                            <button type="button" class="btn btn-secondary" disabled>
+                                Dilamar
+                            </button>
+                            @endif
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Persetujuan</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Saya <b>{{Auth::user()->name}}</b> bersedia untuk mengikuti seluruh rangkaian seleksi sesuai dengan kebijakan perusahaan.
+                                        </div>
+                                        <div class="modal-footer">
+
+                                            <form method="POST" action="{{ url('ptkformtransactions') }}">
+                                                @csrf
+                                                <input type="hidden" name="ptkform_id" value="{{ $ptkform->id }}">
+                                                <button type="submit" class="btn btn-primary">Setuju</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -205,61 +235,63 @@
                     </div>
                 </div>
 
-                @if(Auth::check())
-                @if (Auth::user()->role == 'Admin')
-                    <div class="border-top mt-7 pt-7">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                Surabaya, {{ date('d M Y') }}
-                            </div>
-                            <div class="col-6">
-                                Diketahui <br><br><br><br><br><br><br><br>
+                @if (Auth::check())
+                    @if (Auth::user()->role == 'Admin')
+                        <div class="border-top mt-7 pt-7">
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    Surabaya, {{ date('d M Y') }}
+                                </div>
+                                <div class="col-6">
+                                    Diketahui <br><br><br><br><br><br><br><br>
 
 
-                                PM/GM
-                                <p>{{ date('Y-m-d') }}</p>
-                            </div>
+                                    PM/GM
+                                    <p>{{ date('Y-m-d') }}</p>
+                                </div>
 
-                            <div class="col-6">
-                                Disetujui <br><br><br><br><br><br><br><br>
+                                <div class="col-6">
+                                    Disetujui <br><br><br><br><br><br><br><br>
 
 
-                                Director
-                                <p>{{ date('Y-m-d') }}</p>
+                                    Director
+                                    <p>{{ date('Y-m-d') }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
                 @endif
             </div>
         </div>
     </div>
 
     <!-- Modal -->
-    @if(Auth::check())
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Form Persetujuan PTK</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    @if (Auth::check())
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Form Persetujuan PTK</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="{{ url('ptkforms/change-status', $ptkform->id) }}">
+                        @csrf
+                        <div class="modal-body">
+                            <p>Dengan mengisi ini saya <b class="text-danger">{{ Auth::user()->name }}</b> menyetujui form
+                                ptk
+                                berikut</p>
+                            <label>Date Start Vacancy</label>
+                            <input type="date" name="date_start" class="form-control mb-3" />
+                            <input type="hidden" name="date_end" value="31-12-2099" class="form-control" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Setujui</button>
+                        </div>
+                    </form>
                 </div>
-                <form method="POST" action="{{ url('ptkforms/change-status', $ptkform->id) }}">
-                    @csrf
-                    <div class="modal-body">
-                        <p>Dengan mengisi ini saya <b class="text-danger">{{ Auth::user()->name }}</b> menyetujui form ptk
-                            berikut</p>
-                        <label>Date Start Vacancy</label>
-                        <input type="date" name="date_start" class="form-control mb-3" />
-                        <input type="hidden" name="date_end" value="31-12-2099" class="form-control" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Setujui</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
     @endif
 @stop

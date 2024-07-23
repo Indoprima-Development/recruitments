@@ -42,6 +42,7 @@ class DataorganisasisController extends Controller
 		$dataorganisasi->user_id = $request->input('user_id');
 		$dataorganisasi->nama_organisasi = $request->input('nama_organisasi');
 		$dataorganisasi->tingkat = $request->input('tingkat');
+        $dataorganisasi->jabatan = $request->input('jabatan');
 		$dataorganisasi->start_date = $request->input('start_date');
 		$dataorganisasi->end_date = $request->input('end_date');
         $dataorganisasi->save();
@@ -86,6 +87,7 @@ class DataorganisasisController extends Controller
 		$dataorganisasi->user_id = $request->input('user_id');
 		$dataorganisasi->nama_organisasi = $request->input('nama_organisasi');
 		$dataorganisasi->tingkat = $request->input('tingkat');
+        $dataorganisasi->jabatan = $request->input('jabatan');
 		$dataorganisasi->start_date = $request->input('start_date');
 		$dataorganisasi->end_date = $request->input('end_date');
         $dataorganisasi->save();

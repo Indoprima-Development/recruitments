@@ -7,7 +7,7 @@
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                     <div class="row">
                         <div class="d-flex justify-content-end mb-3"><a href="{{ url('datakemampuans/create') }}"
-                                class="btn btn-info">Create</a></div>
+                                class="btn btn-info">+ Tambah Data</a></div>
 
                         <table class="table table-bordered">
                             <thead>

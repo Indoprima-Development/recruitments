@@ -11,7 +11,7 @@ use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
 use App\Models\Qna;
 use App\Models\Qna_transaction;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -34,7 +34,14 @@ class HomeController extends Controller
     public function openingJobsDetail($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        return view('ptkforms.show', ['ptkform' => $ptkform]);
+        $trs = Ptkformtransaction::where('ptkform_id',$id)->where('user_id',Auth::user()->id)->first();
+
+        $isApplied = false;
+        if (!empty($trs)) {
+            $isApplied = true;
+        }
+
+        return view('ptkforms.show', compact('ptkform','isApplied'));
     }
 
     public function home(){

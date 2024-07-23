@@ -20,6 +20,10 @@
 			{{ Form::label('nama_organisasi', 'Nama_organisasi', ['class'=>'form-label']) }}
 			{{ Form::text('nama_organisasi', null, array('class' => 'form-control')) }}
 		</div>
+        <div class="mb-3">
+			{{ Form::label('jabatan', 'Jabatan', ['class'=>'form-label']) }}
+			{{ Form::text('jabatan', null, array('class' => 'form-control')) }}
+		</div>
 		<div class="mb-3">
 			{{ Form::label('tingkat', 'Tingkat', ['class'=>'form-label']) }}
 			{{ Form::textarea('tingkat', null, array('class' => 'form-control')) }}

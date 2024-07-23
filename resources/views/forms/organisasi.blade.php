@@ -7,7 +7,7 @@
                     <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                     <div class="row">
                         <div class="d-flex justify-content-end mb-3"><a href="{{ route('dataorganisasis.create') }}"
-                                class="btn btn-info">Create</a></div>
+                                class="btn btn-info">+ Tambah Data</a></div>
 
                         <table class="table table-bordered">
                             <thead>
@@ -15,6 +15,7 @@
                                     <th>No</th>
                                     <th>Nama</th>
                                     <th>Tingkat</th>
+                                    <th>Jabatan</th>
                                     <th>Mulai</th>
                                     <th>Akhir</th>
 
@@ -27,6 +28,7 @@
                                         <td>{{ $i+1 }}</td>
                                         <td>{{ $dataorganisasi->nama_organisasi }}</td>
                                         <td>{{ $dataorganisasi->tingkat }}</td>
+                                        <td>{{ $dataorganisasi->jabatan }}</td>
                                         <td>{{ $dataorganisasi->start_date }}</td>
                                         <td>{{ $dataorganisasi->end_date }}</td>
 

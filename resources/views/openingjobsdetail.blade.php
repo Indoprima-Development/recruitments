@@ -1731,11 +1731,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{url('ptkformtransactions')}}">
+                <form method="POST" action="{{ url('ptkformtransactions') }}">
                     @csrf
                     <div class="modal-body">
-                        Saya {{Auth::user()->name}} melamar {{ $job->jobtitle->jobtitle_name }} di PT. Indoprima Gemilang
-                        <input type="hidden" name="ptkform_id" value="{{$job->id}}" />
+                        Saya {{ Auth::user()->name }} melamar {{ $job->jobtitle->jobtitle_name }} di PT. Indoprima
+                        Gemilang
+                        <input type="hidden" name="ptkform_id" value="{{ $job->id }}" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

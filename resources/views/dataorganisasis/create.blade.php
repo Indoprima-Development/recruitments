@@ -24,6 +24,10 @@
                 @endforeach
             </select>
 		</div>
+        <div class="mb-3">
+			{{ Form::label('jabatan', 'Jabatan', ['class'=>'form-label']) }}
+			{{ Form::text('jabatan', null, array('class' => 'form-control')) }}
+		</div>
 		<div class="mb-3">
 			{{ Form::label('start_date', 'Mulai', ['class'=>'form-label']) }}
 			{{ Form::date('start_date', null, array('class' => 'form-control')) }}

@@ -17,13 +17,6 @@
 
             <div class="row">
                 <div class="mb-3 col-sm-12 col-md-6">
-                    {{ Form::label('kesediaan_penempatan', 'Bidang yang Diminati', ['class' => 'form-label']) }}
-                    <select name="kesediaan_penempatan" class="form-select">
-                        <option value="1">HC</option>
-                        <option value="0">IT</option>
-                    </select>
-                </div>
-                <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('ekspektasi_gaji', 'Ekspektasi Gaji', ['class' => 'form-label']) }}
                     {{ Form::number('ekspektasi_gaji', null, ['class' => 'form-control']) }}
                 </div>
@@ -38,8 +31,7 @@
                 </div>
                 <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('kesediaan_penempatan', 'Kesediaan Penempatan', ['class' => 'form-label']) }}
-                    <br><small class="text-danger">Apakah bersedia ditempatkan di seluruh unit bisnis PT. Indoprima
-                        Gelimang ?</small>
+                    <br><small class="text-danger">Apakah bersedia ditempatkan di seluruh unit bisnis PT Indoprima Gelimang</small>
                     <select name="kesediaan_penempatan" class="form-select">
                         <option {{ $datadiri && $datadiri->kesediaan_penempatan == 1 ? 'selected' : '' }}
                             value="1">Ya</option>
