@@ -35,8 +35,8 @@
         {{ Form::number('lulus_tahun', null, ['class' => 'form-control']) }}
     </div>
     <div class="mb-3">
-        {{ Form::label('nilai', 'Nilai', ['class' => 'form-label']) }}
-        <small class="text-danger">(NEM/IPK)</small>
+        {{ Form::label('nilai', 'Nilai (NEM/IPK)', ['class' => 'form-label']) }}
+        <small class="text-danger">Gunakan tanda "," untuk menulis desimal. Ex: 3,77</small>
         {{ Form::number('nilai', null, ['class' => 'form-control',"step"=> "any"]) }}
     </div>
 

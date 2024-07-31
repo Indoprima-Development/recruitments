@@ -85,7 +85,6 @@ class DatapendidikanformalsController extends Controller
     public function update(DatapendidikanformalRequest $request, $id)
     {
         $datapendidikanformal = Datapendidikanformal::findOrFail($id);
-		$datapendidikanformal->user_id = $request->input('user_id');
 		$datapendidikanformal->tingkat = $request->input('tingkat');
 		$datapendidikanformal->instansi = $request->input('instansi');
 		$datapendidikanformal->jurusan = $request->input('jurusan');
@@ -93,7 +92,7 @@ class DatapendidikanformalsController extends Controller
 		$datapendidikanformal->nilai = $request->input('nilai');
         $datapendidikanformal->save();
 
-        return to_route('datapendidikanformals.index');
+        return redirect('forms?section=pendidikan');
     }
 
     /**

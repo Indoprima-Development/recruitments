@@ -111,7 +111,7 @@ class DatapengalamankerjasController extends Controller
 		$datapengalamankerja->surat_pengalaman = $request->input('surat_pengalaman');
         $datapengalamankerja->save();
 
-        return to_route('datapengalamankerjas.index');
+        return redirect('forms?section=pengalaman');
     }
 
     /**

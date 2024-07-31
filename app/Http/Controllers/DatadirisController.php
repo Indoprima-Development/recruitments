@@ -88,7 +88,7 @@ class DatadirisController extends Controller
             $datadiri->update($dataRequest);
         }
 
-        return redirect('forms?section=pendidikan');
+        return redirect('forms');
     }
 
     /**

@@ -27,7 +27,7 @@
     <div class="mb-3">
         {{ Form::label('jurusan', 'Jurusan', ['class' => 'form-label']) }}
         <small class="text-danger">(Berikan tanda "-" apabila tidak ada jurusan)</small>
-        {{ Form::text('jurusan', "-", ['class' => 'form-control']) }}
+        {{ Form::text('jurusan', null, ['class' => 'form-control']) }}
     </div>
     <div class="mb-3">
         {{ Form::label('lulus_tahun', 'Lulus', ['class' => 'form-label']) }}

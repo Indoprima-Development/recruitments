@@ -48,7 +48,7 @@ class DatapendidikannonformalsController extends Controller
 		$datapendidikannonformal->date_end = $request->input('date_end');
         $datapendidikannonformal->save();
 
-        return redirect("forms");
+        return redirect('forms?section=pendidikan');
     }
 
     /**
@@ -94,7 +94,7 @@ class DatapendidikannonformalsController extends Controller
 		$datapendidikannonformal->date_end = $request->input('date_end');
         $datapendidikannonformal->save();
 
-        return to_route('datapendidikannonformals.index');
+        return redirect('forms?section=pendidikan');
     }
 
     /**

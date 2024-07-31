@@ -60,6 +60,10 @@
                 @include('forms.lain')
                 @include('forms.pernyataan')
             </div>
+
+            <div class="w-100 text-end">
+                <button class="btn btn-primary">Selanjutnya</button>
+            </div>
         </div>
     </div>
 @stop

@@ -279,6 +279,7 @@
         <div class="card-body">
             <div class="col text-start">
                 <h4>Data Peminatan</h4>
+                <small>Maksimal data adalah 3</small>
             </div>
             <div class="col text-end">
                 <a href="{{ route('datapeminatans.create') }}" class="btn btn-primary text-white card-hover">
@@ -303,7 +304,6 @@
 
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('datapeminatans.show', [$datapeminatan->id]) }}" class="btn btn-info">Show</a>
                                     <a href="{{ route('datapeminatans.edit', [$datapeminatan->id]) }}" class="btn btn-primary">Edit</a>
                                     {!! Form::open(['method' => 'DELETE','route' => ['datapeminatans.destroy', $datapeminatan->id]]) !!}
                                         {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}

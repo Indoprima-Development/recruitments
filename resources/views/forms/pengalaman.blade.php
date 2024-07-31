@@ -34,8 +34,8 @@
                                         <td>{{ $datapengalamankerja->perusahaan }}</td>
                                         <td>{{ $datapengalamankerja->jabatan_awal }}</td>
                                         <td>{{ $datapengalamankerja->jabatan_terakhir }}</td>
-                                        <td>{{ $datapengalamankerja->gaji_awal }}</td>
-                                        <td>{{ $datapengalamankerja->gaji_akhir }}</td>
+                                        <td>{{ FormatNumberWithDots($datapengalamankerja->gaji_awal) }}</td>
+                                        <td>{{ FormatNumberWithDots($datapengalamankerja->gaji_akhir) }}</td>
                                         <td>{{ $datapengalamankerja->date_start }}</td>
                                         <td>{{ $datapengalamankerja->date_end }}</td>
                                         <td>{{ $datapengalamankerja->alasan_keluar }}</td>

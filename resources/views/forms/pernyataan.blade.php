@@ -46,7 +46,7 @@
                     {{ Form::label('image_jabatan_terakhir', 'Struktur Organisasi', ['class' => 'form-label']) }}
                     <br><small class="text-danger">(Optional) Gambarkan struktur organisasi anda di perusahaan
                         terakhir</small>
-                    <input type="file" class="form-control" name="image_jabatan_terakhir" />
+                    <input type="file" class="form-control" name="image_jabatan_terakhir" accept="image/*" />
 
                     @if ($datadiri && $datadiri->image_jabatan_terakhir != '-')
                         <img class="w-100 mt-2" src="{{ asset($datadiri->image_jabatan_terakhir) }}" />
@@ -83,7 +83,17 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <h4>Referensi dan Rekomendasi</h4>
+                <div class="col-sm-12 col-md-8">
+                    <h5 class="card-title fw-semibold">Referensi dan Rekomendasi</h5>
+                    <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
+                </div>
+                <div class="col-sm-12 col-md-4 text-end">
+                    <a href="#" class="btn btn-primary" >
+                        + Rekomendasi
+                    </a>
+                </div>
+            </div>
+            <div class="row">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
