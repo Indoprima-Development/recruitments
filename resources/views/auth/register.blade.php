@@ -53,27 +53,47 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="ktp" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" aria-describedby="emailHelp">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="ktp" class="form-label">Name</label>
-                                        <input type="name" name="name" class="form-control" aria-describedby="emailHelp">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="ktp" class="form-label">NIK</label>
-                                        <input type="ktp" name="ktp" class="form-control" aria-describedby="emailHelp">
+                                        <input type="email" name="email" class="form-control" aria-describedby="emailHelp" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="ktp" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" aria-describedby="emailHelp">
+                                        <input type="password" name="password" class="form-control" aria-describedby="emailHelp" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ktp" class="form-label">Nama Lengkap</label>
+                                        <input type="text" name="name" class="form-control" aria-describedby="emailHelp" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ktp" class="form-label">NIK</label>
+                                        <input type="text" name="ktp" class="form-control" aria-describedby="emailHelp" required>
                                     </div>
 
-                                    <button id="btnSubmit" type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</button>
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <p class="fs-4 mb-0 fw-medium">Don't have an account ?
-                                            <a class="text-primary" href="{{url("auth/register")}}">Create account</a>
-                                        </p>
+                                    <div class="mb-3">
+                                        <label for="ktp" class="form-label">No. Whatsapp</label>
+                                        <input type="text" name="no_wa" class="form-control" aria-describedby="emailHelp" required>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label for="ktp" class="form-label">Pendidikan Terkahir</label>
+                                        <select name="pendidikan_terakhir" class="form-select" required>
+                                            <option value="" selected disabled>Pilih</option>
+                                            <option value="D4">D4</option>
+                                            <option value="S1">S1</option>
+                                            <option value="S2">S2</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ktp" class="form-label">Asal Instansi</label>
+                                        <input type="text" name="asal_instansi" class="form-control" aria-describedby="emailHelp" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ktp" class="form-label">Jurusan</label>
+                                        <input type="ktp" name="jurusan" class="form-control" aria-describedby="emailHelp" required>
+                                    </div>
+
+                                    <button id="btnSubmit" type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Register</button>
                                 </form>
                             </div>
                         </div>

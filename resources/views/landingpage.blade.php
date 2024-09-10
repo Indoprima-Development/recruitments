@@ -241,7 +241,6 @@
                         <div class="col-lg-6">
                             <div class="text-center" data-aos="fade-up" data-aos-delay="600"
                                 data-aos-duration="1000">
-                                <small class="text-primary fw-bold mb-2 d-block fs-3">ALMOST COVERED EVERYTHING</small>
                                 <h2 class="fs-9 text-center mb-4 mb-lg-9 fw-bolder">
                                     Alur Recruitment
                                 </h2>
@@ -254,7 +253,6 @@
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-wand text-primary fs-10"></i>
                                 <h5 class="fs-5 fw-semibold mt-8">Register</h5>
-                                <p class="mb-0 text-dark">Daftarkan diri anda jika belum memiliki akun</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
@@ -262,75 +260,50 @@
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-layout-sidebar text-primary fs-10"></i>
                                 <h5 class="fs-5 fw-semibold mt-8">Login</h5>
-                                <p class="mb-0 text-dark">
-                                    Masukan username dan password yang sudah dibuat untuk masuk dalam sistem
-                                </p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-archive text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Lengkapi Data Diri</h5>
-                                <p class="mb-0 text-dark">
-                                    Lengkapi data diri,pengalaman, dan data lain sebelum melakukan pendaftaran
-                                </p>
+                                <h5 class="fs-5 fw-semibold mt-8">Apply Vacancy</h5>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
+                            data-aos-duration="1000">
+                            <div class="text-center mb-5">
+                                <i class="d-block ti ti-archive text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Technical Test</h5>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
+                            data-aos-duration="1000">
+                            <div class="text-center mb-5">
+                                <i class="d-block ti ti-archive text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">HC Interview</h5>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-adjustments text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Lamar</h5>
-                                <p class="mb-0 text-dark">
-                                    Lamar pekerjaan yang sesuai dengan anda
-                                </p>
+                                <h5 class="fs-5 fw-semibold mt-8">Psikotes</h5>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-tag text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Technical Test</h5>
-                                <p class="mb-0 text-dark">Its been made with Bootstrap 5 and full responsive layout.
-                                </p>
+                                <h5 class="fs-5 fw-semibold mt-8">Final Interview</h5>
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
-                            data-aos-duration="1000">
-                            <div class="text-center mb-5">
-                                <i class="d-block ti ti-device-desktop text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Interview 1</h5>
-                                <p class="mb-0 text-dark">All the layout of Modernize Admin is Fully Responsive and
-                                    widely tested.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
-                            data-aos-duration="1000">
-                            <div class="text-center mb-5">
-                                <i class="d-block ti ti-diamond text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Psikologi Test</h5>
-                                <p class="mb-0 text-dark">Lots of Icon Fonts are included here in the package of
-                                    Elegant Admin.</p>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
-                            data-aos-duration="1000">
-                            <div class="text-center mb-5">
-                                <i class="d-block ti ti-users text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Interview 2</h5>
-                                <p class="mb-0 text-dark">Our Css is written Sass Base to make your life easier.</p>
-                            </div>
-                        </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1200"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-arrows-shuffle text-primary fs-10"></i>
                                 <h5 class="fs-5 fw-semibold mt-8">Medical Checkup</h5>
-                                <p class="mb-0 text-dark">Customization will be easy as we understand your pain.</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1200"
@@ -338,8 +311,6 @@
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-chart-pie text-primary fs-10"></i>
                                 <h5 class="fs-5 fw-semibold mt-8">Offering</h5>
-                                <p class="mb-0 text-dark">You name it and we have it, Yes lots of variations for
-                                    Charts.</p>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1200"
@@ -347,7 +318,6 @@
                             <div class="text-center mb-5">
                                 <i class="d-block ti ti-layers-intersect text-primary fs-10"></i>
                                 <h5 class="fs-5 fw-semibold mt-8">Join with us</h5>
-                                <p class="mb-0 text-dark">Data Tables are initial requirement and we added them.</p>
                             </div>
                         </div>
                     </div>

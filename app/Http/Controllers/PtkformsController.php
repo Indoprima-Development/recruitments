@@ -17,6 +17,7 @@ use App\Models\Field;
 use App\Models\Ptkformtransaction;
 use App\Models\Ptkfield;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PtkformsController extends Controller
 {
@@ -76,6 +77,14 @@ class PtkformsController extends Controller
         $ptkform->request_basis_for = $request->input('request_basis_for');
         $ptkform->status_pegawai = $request->input('status_pegawai');
         $ptkform->status = 0;
+
+        //if create by admin, by pass to approved status
+        if (Auth::user()->role == 'ADMIN') {
+            $ptkform->status = 1;
+            $ptkform->date_open_vacancy   = '2000-01-01 00:00';
+            $ptkform->date_closed_vacancy = '2030-12-31 23:59';
+        }
+
         $ptkform->save();
 
         if ($request->fields != null) {

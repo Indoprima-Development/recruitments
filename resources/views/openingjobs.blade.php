@@ -543,7 +543,7 @@
                     <div class="card-body px-4 py-3">
                         <div class="row align-items-center">
                             <div class="col-9">
-                                <h4 class="fw-semibold mb-8 text-white">Opening Jobs</h4>
+                                <h4 class="fw-semibold mb-8 text-white">Job Vacancy</h4>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item">
@@ -563,78 +563,94 @@
                     </div>
                 </div>
 
-                <ul class="nav nav-pills p-3 mb-3 rounded align-items-center card flex-row bg-light-primary">
-                    <li class="nav-item">
-                        <a href="javascript:void(0)"
-                            class="
-                      nav-link
+                <div class="row">
+                    <div class="col-sm-9">
+                        <ul class="nav nav-pills p-3 mb-3 rounded align-items-center  flex-row">
+                            <li class="nav-item">
+                                <a href="javascript:void(0)"
+                                    class="
+                              nav-link
 
-                      note-link
-                      d-flex
-                      align-items-center
-                      justify-content-center
-                      active
-                      px-3 px-md-3
-                      me-0 me-md-2 text-body-color
-                    "
-                            id="all-category">
-                            <i class="ti ti-list fill-white me-0 me-md-1"></i>
-                            <span class="d-none d-md-block font-weight-medium">All Jobs</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)"
-                            class="
-                      nav-link
+                              note-link
+                              d-flex
+                              align-items-center
+                              justify-content-center
+                              active
+                              px-3 px-md-3
+                              me-0 me-md-2 text-body-color
+                            "
+                                    id="all-category">
+                                    <i class="ti ti-list fill-white me-0 me-md-1"></i>
+                                    <span class="d-none d-md-block font-weight-medium">All Jobs</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)"
+                                    class="
+                              nav-link
 
-                      note-link
-                      d-flex
-                      align-items-center
-                      justify-content-center
-                      px-3 px-md-3
-                      me-0 me-md-2 text-body-color
-                    "
-                            id="note-business">
-                            <i class="ti ti-briefcase fill-white me-0 me-md-1"></i>
-                            <span class="d-none d-md-block font-weight-medium">Staff</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)"
-                            class="
-                      nav-link
+                              note-link
+                              d-flex
+                              align-items-center
+                              justify-content-center
+                              px-3 px-md-3
+                              me-0 me-md-2 text-body-color
+                            "
+                                    id="note-business">
+                                    <i class="ti ti-briefcase fill-white me-0 me-md-1"></i>
+                                    <span class="d-none d-md-block font-weight-medium">Staff</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)"
+                                    class="
+                              nav-link
 
-                      note-link
-                      d-flex
-                      align-items-center
-                      justify-content-center
-                      px-3 px-md-3
-                      me-0 me-md-2 text-body-color
-                    "
-                            id="note-social">
-                            <i class="ti ti-share fill-white me-0 me-md-1"></i>
-                            <span class="d-none d-md-block font-weight-medium">Non Staff</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="javascript:void(0)"
-                            class="
-                      nav-link
+                              note-link
+                              d-flex
+                              align-items-center
+                              justify-content-center
+                              px-3 px-md-3
+                              me-0 me-md-2 text-body-color
+                            "
+                                    id="note-social">
+                                    <i class="ti ti-share fill-white me-0 me-md-1"></i>
+                                    <span class="d-none d-md-block font-weight-medium">Non Staff</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="javascript:void(0)"
+                                    class="
+                              nav-link
 
-                      note-link
-                      d-flex
-                      align-items-center
-                      justify-content-center
-                      px-3 px-md-3
-                      me-0 me-md-2 text-body-color
-                    "
-                            id="note-important">
-                            <i class="ti ti-star fill-white me-0 me-md-1"></i>
-                            <span class="d-none d-md-block font-weight-medium">Internship</span>
-                        </a>
-                    </li>
-                </ul>
+                              note-link
+                              d-flex
+                              align-items-center
+                              justify-content-center
+                              px-3 px-md-3
+                              me-0 me-md-2 text-body-color
+                            "
+                                    id="note-important">
+                                    <i class="ti ti-star fill-white me-0 me-md-1"></i>
+                                    <span class="d-none d-md-block font-weight-medium">Internship</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
+                    @if(Auth::user()->role == 'ADMIN')
+                    <div class="col-sm-3">
+                        <div class="card border-1 border-primary">
+                            <div class="card-body text-end">
+                                <a href="{{url('ptkforms/create')}}" class="btn btn-primary w-100">
+                                    New Vacancy
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                <hr>
                 <div class="tab-content">
                     <div id="note-full-container" class="note-has-grid row">
                         @foreach ($jobs as $job)

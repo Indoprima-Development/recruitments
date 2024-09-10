@@ -37,12 +37,16 @@ class LoginRegisterController extends Controller
             Alert::error('Error', 'Email atau KTP sudah terdaftar');
             return redirect()->back();
         }
-
+        // dd($request);
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'ktp'      => $request->ktp
+            'ktp'      => $request->ktp,
+            'no_wa'    => $request->no_wa,
+            'pendidikan_terakhir' => $request->pendidikan_terakhir,
+            'asal_instansi'       => $request->asal_instansi,
+            'jurusan'             => $request->jurusan,
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -50,8 +54,7 @@ class LoginRegisterController extends Controller
         $request->session()->regenerate();
 
         Alert::success('Success', 'Akun berhasil dibuat.');
-        return redirect()->route('dashboard')
-            ->withSuccess('You have successfully registered & logged in!');
+        return redirect('opening-jobs');
     }
 
     public function login()
@@ -72,8 +75,7 @@ class LoginRegisterController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 Auth::attempt($credentials);
                 $request->session()->regenerate();
-                return redirect()->route('dashboard')
-                    ->withSuccess('You have successfully registered & logged in!');
+                return redirect('opening-jobs');
             }
         }
 

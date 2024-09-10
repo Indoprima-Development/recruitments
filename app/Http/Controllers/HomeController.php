@@ -22,10 +22,13 @@ class HomeController extends Controller
 
     public function openingJobs()
     {
+        //get date today
         $date = date("Y-m-d");
+
+        //find from ptk which has status = 1
         $jobs = Ptkform::where("status", 1)
-            ->whereDate('date_open_vacancy', '<=', $date)
-            ->whereDate('date_closed_vacancy', '>=', $date)
+            ->whereDate('date_open_vacancy', '<=', $date.' 00:00')
+            ->whereDate('date_closed_vacancy', '>=', $date.' 23:59')
             ->get();
 
         return view('openingjobs', compact("jobs"));
@@ -73,11 +76,6 @@ class HomeController extends Controller
             ->join('exams', 'exams.id', 'exam_transactions.exam_id')
             ->where('exams.project_id', $project_id)
             ->first();
-
-        // $data['examTransaction'] = Exam_transaction::select('*')
-        //     ->where('user_id', Auth::user()->id)
-        //     ->where('is_open', true)
-        //     ->first();
 
         if (!empty($data['examTransaction'])) {
             return redirect('qna/' . EncryptData($data['examTransaction']->exam_id));

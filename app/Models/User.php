@@ -24,6 +24,11 @@ class User extends Authenticatable
         'ktp',
         'role',
         'nohp',
+
+        'no_wa',
+        'pendidikan_terakhir',
+        'asal_instansi',
+        'jurusan',
     ];
 
     /**
