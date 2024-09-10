@@ -24,10 +24,9 @@
 
 					<td>
 						<div class="d-flex gap-2">
-                            <a href="{{ route('jobtitles.show', [$jobtitle->id]) }}" class="btn btn-info">Show</a>
-                            <a href="{{ route('jobtitles.edit', [$jobtitle->id]) }}" class="btn btn-primary">Edit</a>
+                            <a href="{{ route('jobtitles.edit', [$jobtitle->id]) }}" class="btn btn-primary btn-sm">Edit</a>
                             {!! Form::open(['method' => 'DELETE','route' => ['jobtitles.destroy', $jobtitle->id]]) !!}
-                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
                             {!! Form::close() !!}
                         </div>
 					</td>

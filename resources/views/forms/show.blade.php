@@ -84,8 +84,6 @@
                     <div class="card-body row">
                         <h4>Data Diri</h4>
                         <div class="col-6">
-
-
                             <p>Tempat, Tanggal Lahir : {{$datadiri->tempat_lahir}}, {{$datadiri->tanggal_lahir}}</p>
                             <p>Alamat : {{$datadiri->alamat}}</p>
                             <p>Telepon : {{$datadiri->no_hp}} </p>

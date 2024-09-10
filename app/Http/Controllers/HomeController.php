@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
 use App\Models\Exam;
 use App\Models\Exam_transaction;
+use App\Models\Jobtitle;
 use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
 use App\Models\Qna;
@@ -37,14 +38,18 @@ class HomeController extends Controller
     public function openingJobsDetail($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        $trs = Ptkformtransaction::where('ptkform_id',$id)->where('user_id',Auth::user()->id)->first();
+        $trs = Ptkformtransaction::where('ptkform_id',$id)
+        ->where('user_id',Auth::user()->id)
+        ->first();
+
+        $jobtitle = Jobtitle::findOrFail($ptkform->jobtitle_id);
 
         $isApplied = false;
         if (!empty($trs)) {
             $isApplied = true;
         }
 
-        return view('ptkforms.show', compact('ptkform','isApplied'));
+        return view('ptkforms.show', compact('ptkform','isApplied','jobtitle'));
     }
 
     public function home(){

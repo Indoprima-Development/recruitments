@@ -63,15 +63,15 @@
                                 @endif
                             @endif
 
-                            @if(!$isApplied)
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                Lamar
-                            </button>
+                            @if (!$isApplied)
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Lamar
+                                </button>
                             @else
-                            <button type="button" class="btn btn-secondary" disabled>
-                                Dilamar
-                            </button>
+                                <button type="button" class="btn btn-secondary" disabled>
+                                    Dilamar
+                                </button>
                             @endif
 
                             <!-- Modal -->
@@ -85,7 +85,46 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            Saya <b>{{Auth::user()->name}}</b> bersedia untuk mengikuti seluruh rangkaian seleksi sesuai dengan kebijakan perusahaan.
+                                            <?php
+                                            $dts = json_decode($jobtitle->questions);
+                                            ?>
+
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Pertanyaan</th>
+                                                        <th>Jawaban</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($dts->pertanyaan as $index => $d)
+                                                    <tr>
+                                                        <td>{{$index+1}}</td>
+                                                        <td>{{ $dts->pertanyaan[$index] }}</td>
+                                                        <td>
+                                                            @if($dts->type[$index] == 'Rating')
+                                                            <select name="" class="form-select">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                            </select>
+                                                            @else
+                                                            <select name="" class="form-select">
+                                                                <option value="Ya">Ya</option>
+                                                                <option value="Tidak">Tidak</option>
+                                                            </select>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+
+                                            Saya <b>{{ Auth::user()->name }}</b> bersedia untuk mengikuti seluruh rangkaian
+                                            seleksi sesuai dengan kebijakan perusahaan.
                                         </div>
                                         <div class="modal-footer">
 

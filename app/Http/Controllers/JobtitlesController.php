@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Jobtitle;
 use App\Models\Section;
 use App\Http\Requests\JobtitleRequest;
+use Illuminate\Http\Request;
 
 class JobtitlesController extends Controller
 {
@@ -17,8 +18,8 @@ class JobtitlesController extends Controller
      */
     public function index()
     {
-        $jobtitles= Jobtitle::all();
-        return view('jobtitles.index', ['jobtitles'=>$jobtitles]);
+        $jobtitles = Jobtitle::all();
+        return view('jobtitles.index', ['jobtitles' => $jobtitles]);
     }
 
     /**
@@ -29,7 +30,7 @@ class JobtitlesController extends Controller
     public function create()
     {
         $sections = Section::all();
-        return view('jobtitles.create',compact('sections'));
+        return view('jobtitles.create', compact('sections'));
     }
 
     /**
@@ -38,11 +39,23 @@ class JobtitlesController extends Controller
      * @param  JobtitleRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(JobtitleRequest $request)
+    public function store(Request $request)
     {
         $jobtitle = new Jobtitle;
-		$jobtitle->section_id = $request->input('section_id');
-		$jobtitle->jobtitle_name = $request->input('jobtitle_name');
+        $jobtitle->section_id = $request->input('section_id');
+        $jobtitle->jobtitle_name = $request->input('jobtitle_name');
+
+        //data from form question
+        if ($request->input('pertanyaan') != null) {
+            $dataQuestion = [
+                'type'      => $request->input('type'),
+                'pertanyaan' => $request->input('pertanyaan'),
+                'jawaban'   => $request->input('jawaban'),
+                'score'     => $request->input('score'),
+            ];
+            $jobtitle->questions = json_encode($dataQuestion);
+        }
+
         $jobtitle->save();
 
         return to_route('jobtitles.index');
@@ -57,7 +70,7 @@ class JobtitlesController extends Controller
     public function show($id)
     {
         $jobtitle = Jobtitle::findOrFail($id);
-        return view('jobtitles.show',['jobtitle'=>$jobtitle]);
+        return view('jobtitles.show', ['jobtitle' => $jobtitle]);
     }
 
     /**
@@ -70,7 +83,7 @@ class JobtitlesController extends Controller
     {
         $jobtitle = Jobtitle::findOrFail($id);
         $sections = Section::all();
-        return view('jobtitles.edit',compact('jobtitle','sections'));
+        return view('jobtitles.edit', compact('jobtitle', 'sections'));
     }
 
     /**
@@ -83,8 +96,17 @@ class JobtitlesController extends Controller
     public function update(JobtitleRequest $request, $id)
     {
         $jobtitle = Jobtitle::findOrFail($id);
-		$jobtitle->section_id = $request->input('section_id');
-		$jobtitle->jobtitle_name = $request->input('jobtitle_name');
+        $jobtitle->section_id = $request->input('section_id');
+        $jobtitle->jobtitle_name = $request->input('jobtitle_name');
+        if ($request->input('pertanyaan') != null) {
+            $dataQuestion = [
+                'type'      => $request->input('type'),
+                'pertanyaan' => $request->input('pertanyaan'),
+                'jawaban'   => $request->input('jawaban'),
+                'score'     => $request->input('score'),
+            ];
+            $jobtitle->questions = json_encode($dataQuestion);
+        }
         $jobtitle->save();
 
         return to_route('jobtitles.index');
