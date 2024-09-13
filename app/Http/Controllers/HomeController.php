@@ -16,42 +16,6 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    public function landingPage()
-    {
-        return view('landingpage');
-    }
-
-    public function openingJobs()
-    {
-        //get date today
-        $date = date("Y-m-d");
-
-        //find from ptk which has status = 1
-        $jobs = Ptkform::where("status", 1)
-            ->whereDate('date_open_vacancy', '<=', $date.' 00:00')
-            ->whereDate('date_closed_vacancy', '>=', $date.' 23:59')
-            ->get();
-
-        return view('openingjobs', compact("jobs"));
-    }
-
-    public function openingJobsDetail($id)
-    {
-        $ptkform = Ptkform::findOrFail($id);
-        $trs = Ptkformtransaction::where('ptkform_id',$id)
-        ->where('user_id',Auth::user()->id)
-        ->first();
-
-        $jobtitle = Jobtitle::findOrFail($ptkform->jobtitle_id);
-
-        $isApplied = false;
-        if (!empty($trs)) {
-            $isApplied = true;
-        }
-
-        return view('ptkforms.show', compact('ptkform','isApplied','jobtitle'));
-    }
-
     public function home(){
         $data = Ptkformtransaction::select(DB::raw('count(id) as jumlah, status'))
         ->orderBy('status','ASC')

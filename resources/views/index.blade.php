@@ -36,13 +36,13 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav align-items-center mb-2 mb-lg-0 ms-auto">
                             <li class="nav-item ms-2">
-                                <a class="btn btn-outline-success fs-3 rounded btn-hover-shadow px-3 py-2"
-                                    href="#">Opening Jobs</a>
+                                <a class="btn btn-outline-primary fs-3 rounded btn-hover-shadow px-3 py-2"
+                                    href="{{url('opening-jobs')}}">Lowongan</a>
                             </li>
                             @if(!Auth::check())
                             <li class="nav-item ms-2">
                                 <a class="btn btn-primary fs-3 rounded btn-hover-shadow px-3 py-2"
-                                    href="{{url('auth/login')}}">Login</a>
+                                    href="{{url('auth/login')}}">Masuk</a>
                             </li>
                             @endif
                         </ul>
@@ -59,12 +59,12 @@
                             <div class="hero-content my-11 my-xl-0">
                                 <h6 class="d-flex align-items-center gap-2 fs-4 fw-semibold mb-3" data-aos="fade-up"
                                     data-aos-delay="200" data-aos-duration="1000"><i
-                                        class="ti ti-rocket text-secondary fs-6"></i>Start your career</h6>
+                                        class="ti ti-rocket text-secondary fs-6"></i>Mari bergabung</h6>
                                 <h1 class="fw-bolder mb-8 fs-13" data-aos="fade-up" data-aos-delay="400"
                                     data-aos-duration="1000">Smart<span class="text-primary"> <br>Recruitment</span>
                                     System</h1>
                                 <p class="fs-5 mb-3 text-dark fw-normal">
-                                    Temukan Pekerjaan anda di <b class="text-danger">PT. Indoprima Gemilang</b>
+                                    Temukan Pekerjaan anda di <b class="text-primary">PT. Indoprima Gemilang</b>
                                 </p>
                                 <div class="d-sm-flex align-items-center gap-3">
                                     @if(!Auth::check())
@@ -114,7 +114,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <h2 class="fs-9 text-center mb-lg-5 fw-bolder" data-aos="fade-up" data-aos-delay="200"
-                                data-aos-duration="1000">Opening Jobs</h2>
+                                data-aos-duration="1000">Lowongan</h2>
                         </div>
                     </div>
                     <div class="review-slider" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
@@ -230,7 +230,7 @@
                         </div>
                     </div>
                     <div class="w-100 text-center mt-5">
-                        <a href="{{url('opening-jobs')}}" class="btn btn-sm btn-primary">Show All Jobs Opening</a>
+                        <a href="{{url('opening-jobs')}}" class="btn btn-sm btn-primary">Buka Semua Lowongan</a>
                     </div>
                 </div>
             </section>

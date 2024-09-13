@@ -19,8 +19,8 @@
 
 				<tr>
 					<td>{{ $i+1 }}</td>
-					<td>{{ $jobtitle->section->section_name }}</td>
-					<td>{{ $jobtitle->jobtitle_name }}</td>
+					<td>{{ $jobtitle->section->section_name ?? "-" }}</td>
+					<td>{{ $jobtitle->jobtitle_name ?? "-" }}</td>
 
 					<td>
 						<div class="d-flex gap-2">

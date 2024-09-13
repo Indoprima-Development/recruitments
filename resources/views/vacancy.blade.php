@@ -58,10 +58,10 @@
                         </a>
                     </li>
                     <li class="nav-item d-none d-xl-block">
-                        <a href="index.html" class="text-nowrap nav-link">
-                            <img src="{{ asset('package/dist/images/logos/dark-logo.svg') }}" class="dark-logo"
+                        <a href="{{url('/')}}" class="text-nowrap nav-link">
+                            <img src="{{ asset('package/dist/images/logos/logo.png') }}" class="dark-logo"
                                 width="180" alt="" />
-                            <img src="{{ asset('package/dist/images/logos/light-logo.svg') }}" class="light-logo"
+                            <img src="{{ asset('package/dist/images/logos/logo.png') }}" class="light-logo"
                                 width="180" alt="" />
                         </a>
                     </li>
@@ -275,7 +275,7 @@
                 </ul>
                 <div class="d-block d-xl-none">
                     <a href="index.html" class="text-nowrap nav-link">
-                        <img src="{{ asset('package/dist/images/logos/dark-logo.svg') }}" width="180"
+                        <img src="{{ asset('package/dist/images/logos/logo.png') }}" width="180"
                             alt="" />
                     </a>
                 </div>
@@ -581,7 +581,7 @@
                             "
                                     id="all-category">
                                     <i class="ti ti-list fill-white me-0 me-md-1"></i>
-                                    <span class="d-none d-md-block font-weight-medium">All Jobs</span>
+                                    <span class="d-none d-md-block font-weight-medium">All Vacancies</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -638,15 +638,12 @@
                         </ul>
                     </div>
 
-                    @if(Auth::user()->role == 'ADMIN')
-                    <div class="col-sm-3">
-                        <div class="card border-1 border-primary">
-                            <div class="card-body text-end">
-                                <a href="{{url('ptkforms/create')}}" class="btn btn-primary w-100">
-                                    New Vacancy
-                                </a>
-                            </div>
-                        </div>
+
+                    @if(Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia2@gmail.com'))
+                    <div class="col-sm-3 text-end">
+                        <a href="{{url('ptkforms/create')}}" class="btn btn-outline-primary w-100">
+                            <b> Vacancy</b> <i class="ti ti-plus"></i>
+                        </a>
                     </div>
                     @endif
                 </div>
@@ -655,16 +652,16 @@
                     <div id="note-full-container" class="note-has-grid row">
                         @foreach ($jobs as $job)
                         <div class="col-md-4 single-note-item all-category hover-img">
-                            <div class="card card-body bg-light-primary">
+                            <div class="card card-body border-1 border-primary">
                                 <span class="side-stick"></span>
                                 <h6 class="note-title text-truncate w-75 mb-0"
-                                    data-noteHeading="Book a Ticket for Movie">{{$job->jobtitle->jobtitle_name}}</h6>
+                                    data-noteHeading="Book a Ticket for Movie">{{$job->jobtitle->jobtitle_name ?? "-"}}</h6>
                                 <p class="note-date fs-2">Plant 5 Gresik</p>
                                 <div class="note-content">
                                     <p>
-                                        <i class="ti ti-edit btn btn-sm btn-dark"></i> {{$job->education->education_name}}
+                                        <i class="ti ti-edit btn btn-sm btn-outline-dark"></i> {{$job->education->education_name}}
                                         &nbsp;&nbsp;&nbsp;
-                                        <i class="ti ti-user btn btn-sm btn-dark"></i>
+                                        <i class="ti ti-user btn btn-sm btn-outline-dark"></i>
                                         @if ($job->gender == 1)
                                         Laki-laki
                                         @elseif ($job->gender == 2)
@@ -673,20 +670,21 @@
                                         Laki-laki/Perempuan
                                         @endif
                                     </p>
-                                    <i class="mb-1">Startwork : {{$job->date_startwork}}</i>&nbsp;
+                                    <p>Mulai Bekerja : {{$job->date_startwork}}</p>
                                 </div>
+                                <hr>
                                 <div class="d-flex align-items-center mt-2">
-                                    <a href="javascript:void(0)" class="btn bg-success btn-sm text-white">
-                                        {{$job->status_pegawai}}
+                                    <a href="javascript:void(0)" class="btn btn-outline-success border-2 btn-sm">
+                                        <i class="ti ti-medal"></i>{{$job->status_pegawai}}
                                     </a>
 
                                     <div class="ms-auto">
                                         <div class="category-selector btn-group">
-                                            <a class="btn btn-primary btn-sm"
+                                            <a class="btn btn-outline-primary border-2 btn-sm"
                                                  href="{{url('opening-jobs',$job->id)}}" >
                                                 <div class="category">
-                                                    <span class="more-options text-white">
-                                                        <i class="ti ti-edit"></i> Show & Apply
+                                                    <span class="more-options">
+                                                        Lamar <i class="ti ti-arrow-big-right-line"></i>
                                                     </span>
                                                 </div>
                                             </a>

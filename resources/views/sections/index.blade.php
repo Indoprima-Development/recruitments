@@ -19,8 +19,8 @@
 
 				<tr>
 					<td>{{ $i+1 }}</td>
-					<td>{{ $section->department->department_name }}</td>
-					<td>{{ $section->section_name }}</td>
+					<td>{{ $section->department->department_name ?? "-" }}</td>
+					<td>{{ $section->section_name ?? "-" }}</td>
 
 					<td>
 						<div class="d-flex gap-2">

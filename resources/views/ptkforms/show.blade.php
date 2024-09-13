@@ -19,17 +19,17 @@
 
             <div class="card-body p-4">
                 <span class="badge bg-light-primary text-dark fs-2 rounded-4 py-1 px-2 lh-sm  mt-3">
-                    {{ $ptkform->division->division_name }}
+                    {{ $ptkform->division->division_name ?? "-" }}
                 </span>
                 <span class="badge bg-light-success text-dark fs-2 rounded-4 py-1 px-2 lh-sm  mt-3">
-                    {{ $ptkform->department->department_name }}
+                    {{ $ptkform->department->department_name ?? "-"  }}
                 </span>
                 <span class="badge bg-light-warning text-dark fs-2 rounded-4 py-1 px-2 lh-sm  mt-3">
-                    {{ $ptkform->section->section_name }}
+                    {{ $ptkform->section->section_name ?? "-"  }}
                 </span>
 
                 <h2 class="fs-9 fw-semibold my-4">
-                    {{ $ptkform->jobtitle->jobtitle_name }}
+                    {{ $ptkform->jobtitle->jobtitle_name ?? "-"  }}
                 </h2>
                 <div class="d-flex align-items-center gap-4">
                     <div class="d-flex align-items-center gap-2">
@@ -87,6 +87,7 @@
                                         <div class="modal-body">
                                             <?php
                                             $dts = json_decode($jobtitle->questions);
+                                            
                                             ?>
 
                                             <table class="table">

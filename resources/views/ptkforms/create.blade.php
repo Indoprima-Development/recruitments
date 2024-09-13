@@ -117,7 +117,7 @@
                 <div class="row">
                     <h5>Uraian Tugas dan Pekerjaan</h5>
                     <div class="mb-3 col-6">
-                        {{ Form::label('direct_superior', 'Nama Atasan Langsung', ['class' => 'form-label']) }}
+                        {{ Form::label('direct_superior', 'Atasan Langsung', ['class' => 'form-label']) }}
                         {{ Form::text('direct_superior', null, ['class' => 'form-control bg-white']) }}
                     </div>
                     <div class="mb-3 col-6">

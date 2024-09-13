@@ -108,9 +108,9 @@
                     <div class="card card-body">
                         <span class="side-stick"></span>
                         <h6 class="note-title text-truncate w-75 mb-0" data-noteHeading="Book a Ticket for Movie">
-                            {{ $ptkform->jobtitle->jobtitle_name }}
+                            {{ $ptkform->jobtitle->jobtitle_name ?? "-" }}
                         </h6>
-                        <p class="note-date fs-2">{{ $ptkform->division->division_name }}</p>
+                        <p class="note-date fs-2">{{ $ptkform->division->division_name ?? "-" }}</p>
                         <div class="note-content">
                             <p class="note-inner-content"
                                 data-noteContent="Blandit tempus porttitor aasfs. Integer posuere erat a ante venenatis.">

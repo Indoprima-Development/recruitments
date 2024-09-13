@@ -75,7 +75,7 @@ class LoginRegisterController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 Auth::attempt($credentials);
                 $request->session()->regenerate();
-                return redirect('opening-jobs');
+                return redirect('vacancies');
             }
         }
 

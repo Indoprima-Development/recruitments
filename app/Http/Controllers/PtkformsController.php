@@ -109,7 +109,17 @@ class PtkformsController extends Controller
     public function show($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        return view('ptkforms.show', ['ptkform' => $ptkform]);
+        $trs = Ptkformtransaction::where('ptkform_id',$id)
+        ->where('user_id',Auth::user()->id)
+        ->first();
+
+        $jobtitle = Jobtitle::findOrFail($ptkform->jobtitle_id);
+
+        $isApplied = false;
+        if (!empty($trs)) {
+            $isApplied = true;
+        }
+        return view('ptkforms.show', compact('isApplied','ptkform','jobtitle'));
     }
 
     /**

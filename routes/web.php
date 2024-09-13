@@ -26,6 +26,7 @@ use App\Http\Controllers\EducationController;
 use App\Http\Controllers\MajorsController;
 use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\FieldsController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\PtkformsController;
 use App\Http\Controllers\PtkfieldsController;
 use App\Http\Controllers\PtkformtransactionsController;
@@ -50,9 +51,9 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-Route::get('/', [HomeController::class, 'landingPage']);
-Route::get('/opening-jobs',         [HomeController::class, 'openingJobs']);
-Route::get('/opening-jobs/{id}',    [HomeController::class, 'openingJobsDetail']);
+Route::get('/',                 [MainController::class, 'index']);
+Route::get('/vacancies',        [MainController::class, 'vacancy']);
+Route::get('/vacancies/{id}',   [MainController::class, 'showVacancy']);
 
 Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
