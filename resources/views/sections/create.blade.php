@@ -16,7 +16,7 @@
 			{{ Form::label('department_id', 'Department', ['class'=>'form-label']) }}
 			<select class="form-select" name="department_id">
                 @foreach($departments as $d)
-                <option value="{{$d->id}}">{{$d->department_name}} - {{$d->division->divison_name}}</option>
+                <option value="{{$d->id}}">{{$d->department_name}} - {{$d->division->division_name}}</option>
                 @endforeach
             </select>
 		</div>
