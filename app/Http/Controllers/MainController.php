@@ -22,8 +22,8 @@ class MainController extends Controller
 
         //find from ptk which has status = 1
         $jobs = Ptkform::where("status", 1)
-            ->whereDate('date_open_vacancy', '<=', $date.' 00:00')
-            ->whereDate('date_closed_vacancy', '>=', $date.' 23:59')
+            ->whereDate('date_open_vacancy', '<=', $date . ' 00:00')
+            ->whereDate('date_closed_vacancy', '>=', $date . ' 23:59')
             ->get();
 
         return view('vacancy', compact("jobs"));
@@ -31,22 +31,21 @@ class MainController extends Controller
 
     public function showVacancy($id)
     {
-        if (!Auth::check()) {
-            return redirect('auth/login');
-        }
-
         $ptkform = Ptkform::findOrFail($id);
-        $trs = Ptkformtransaction::where('ptkform_id',$id)
-        ->where('user_id',Auth::user()->id)
-        ->first();
+
+        $isApplied = false;
+        if (Auth::check()) {
+            $trs = Ptkformtransaction::where('ptkform_id', $id)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+
+            if (!empty($trs)) {
+                $isApplied = true;
+            }
+        }
 
         $jobtitle = Jobtitle::findOrFail($ptkform->jobtitle_id);
 
-        $isApplied = false;
-        if (!empty($trs)) {
-            $isApplied = true;
-        }
-
-        return view('ptkforms.show', compact('ptkform','isApplied','jobtitle'));
+        return view('ptkforms.show', compact('ptkform', 'isApplied', 'jobtitle'));
     }
 }
