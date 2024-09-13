@@ -539,16 +539,16 @@
 
         <div class="body-wrapper">
             <div class="container-fluid note-has-grid">
-                <div class="card bg-primary shadow-none position-relative overflow-hidden">
+                <div class="card border-primary border-2 shadow-none position-relative overflow-hidden">
                     <div class="card-body px-4 py-3">
                         <div class="row align-items-center">
                             <div class="col-9">
-                                <h4 class="fw-semibold mb-8 text-white">Job Vacancy</h4>
+                                <h4 class="fw-semibold mb-8 ">Job Vacancy</h4>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item">
-                                            <a class="text-white "
-                                                href="./index.html">Daftarkan segera diri anda</a>
+                                            <a class="text-muted"
+                                                href="#">Daftarkan segera diri anda</a>
                                         </li>
                                     </ol>
                                 </nav>
@@ -1130,7 +1130,7 @@
                                 onclick="toggleTheme('{{ asset('package/dist/css/style.min.css') }}')"
                                 data-color="blue_theme" data-bs-toggle="tooltip" data-bs-placement="top"
                                 data-bs-title="BLUE_THEME"><i
-                                    class="ti ti-check text-white d-flex align-items-center justify-content-center fs-5"></i></a>
+                                    class="ti ti-check  d-flex align-items-center justify-content-center fs-5"></i></a>
                         </li>
                         <li
                             class="rounded-2 p-9 customizer-box hover-img d-flex align-items-center justify-content-center">
@@ -1139,7 +1139,7 @@
                                 onclick="toggleTheme('{{ asset('package/dist/css/style-aqua.min.css') }}')"
                                 data-color="aqua_theme" data-bs-toggle="tooltip" data-bs-placement="top"
                                 data-bs-title="AQUA_THEME"><i
-                                    class="ti ti-check  text-white d-flex align-items-center justify-content-center fs-5"></i></a>
+                                    class="ti ti-check   d-flex align-items-center justify-content-center fs-5"></i></a>
                         </li>
                         <li
                             class="rounded-2 p-9 customizer-box hover-img d-flex align-items-center justify-content-center">
@@ -1148,7 +1148,7 @@
                                 onclick="toggleTheme('{{ asset('package/dist/css/style-purple.min.css') }}')"
                                 data-color="purple_theme" data-bs-toggle="tooltip" data-bs-placement="top"
                                 data-bs-title="PURPLE_THEME"><i
-                                    class="ti ti-check  text-white d-flex align-items-center justify-content-center fs-5"></i></a>
+                                    class="ti ti-check   d-flex align-items-center justify-content-center fs-5"></i></a>
                         </li>
                         <li
                             class="rounded-2 p-9 customizer-box hover-img d-flex align-items-center justify-content-center">
@@ -1156,7 +1156,7 @@
                                 class="rounded-circle position-relative d-block customizer-bgcolor skin4-greentheme-primary"
                                 onclick="toggleTheme('{{ asset('package/dist/css/style-green.min.css') }}')"
                                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GREEN_THEME"><i
-                                    class="ti ti-check  text-white d-flex align-items-center justify-content-center fs-5"></i></a>
+                                    class="ti ti-check   d-flex align-items-center justify-content-center fs-5"></i></a>
                         </li>
                         <li
                             class="rounded-2 p-9 customizer-box hover-img d-flex align-items-center justify-content-center">
@@ -1164,7 +1164,7 @@
                                 class="rounded-circle position-relative d-block customizer-bgcolor skin5-cyantheme-primary"
                                 onclick="toggleTheme('{{ asset('package/dist/css/style-cyan.min.css') }}')"
                                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CYAN_THEME"><i
-                                    class="ti ti-check  text-white d-flex align-items-center justify-content-center fs-5"></i></a>
+                                    class="ti ti-check   d-flex align-items-center justify-content-center fs-5"></i></a>
                         </li>
                         <li
                             class="rounded-2 p-9 customizer-box hover-img d-flex align-items-center justify-content-center">
@@ -1172,7 +1172,7 @@
                                 class="rounded-circle position-relative d-block customizer-bgcolor skin6-orangetheme-primary"
                                 onclick="toggleTheme('{{ asset('package/dist/css/style-orange.min.css') }}')"
                                 data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ORANGE_THEME"><i
-                                    class="ti ti-check  text-white d-flex align-items-center justify-content-center fs-5"></i></a>
+                                    class="ti ti-check   d-flex align-items-center justify-content-center fs-5"></i></a>
                         </li>
                     </ul>
                 </div>

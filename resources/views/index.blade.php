@@ -37,7 +37,7 @@
                         <ul class="navbar-nav align-items-center mb-2 mb-lg-0 ms-auto">
                             <li class="nav-item ms-2">
                                 <a class="btn btn-outline-primary fs-3 rounded btn-hover-shadow px-3 py-2"
-                                    href="{{url('opening-jobs')}}">Lowongan</a>
+                                    href="{{url('vacancies')}}">Lowongan</a>
                             </li>
                             @if(!Auth::check())
                             <li class="nav-item ms-2">
@@ -230,7 +230,7 @@
                         </div>
                     </div>
                     <div class="w-100 text-center mt-5">
-                        <a href="{{url('opening-jobs')}}" class="btn btn-sm btn-primary">Buka Semua Lowongan</a>
+                        <a href="{{url('vacancies')}}" class="btn btn-sm btn-primary">Buka Semua Lowongan</a>
                     </div>
                 </div>
             </section>
