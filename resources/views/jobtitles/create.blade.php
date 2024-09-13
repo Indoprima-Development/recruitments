@@ -18,8 +18,8 @@
                 <div class="mb-3 col-sm-6">
                     {{ Form::label('section_id', 'Section', ['class' => 'form-label']) }}
                     <select class="form-select" name="section_id" required>
+                        <option value="" disabled selected>Pilih</option>
                         @foreach ($sections as $d)
-                            <option value="" disabled selected>Pilih</option>
                             <option value="{{ $d->id }}">{{ $d->section_name }}</option>
                         @endforeach
                     </select>

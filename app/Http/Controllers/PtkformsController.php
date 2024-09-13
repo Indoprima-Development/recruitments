@@ -176,8 +176,8 @@ class PtkformsController extends Controller
     {
         $ptkform = Ptkform::findOrFail($id);
         $ptkform->delete();
-
-        return to_route('ptkforms.index');
+        AlertSuccess("Deleted","Data successfully deleted");
+        return redirect()->back();
     }
 
     public function changeStatus(Request $request, $id)

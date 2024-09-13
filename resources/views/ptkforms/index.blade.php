@@ -139,27 +139,11 @@
                                         <a class="dropdown-item position-relative category-social d-flex align-items-center"
                                             href="{{ route('ptkforms.show', [$ptkform->id]) }}">Show</a>
 
-                                        <a class="
-                            note-social
-                            badge-group-item badge-social
-                            dropdown-item
-                            position-relative
-                            category-social
-                            d-flex
-                            align-items-center
-                          "
-                                            href="{{ route('ptkforms.edit', [$ptkform->id]) }}"> Edit</a>
-                                        {!! Form::open(['method' => 'DELETE', 'route' => ['ptkforms.destroy', $ptkform->id]]) !!}
-                                        {!! Form::submit('Delete', [
-                                            'class' => 'note-important
-                                                                badge-group-item badge-important
-                                                                dropdown-item
-                                                                position-relative
-                                                                category-important
-                                                                d-flex
-                                                                align-items-center',
-                                        ]) !!}
-                                        {!! Form::close() !!}
+                                            <a class="dropdown-item position-relative category-social d-flex align-items-center"
+                                            href="{{ route('ptkforms.edit', [$ptkform->id]) }}">Edit</a>
+
+                                            <a class="dropdown-item position-relative category-social d-flex align-items-center"
+                                            href="{{ url('ptkforms/destroy', [$ptkform->id]) }}">Delete</a>
                                     </div>
                                 </div>
                             </div>

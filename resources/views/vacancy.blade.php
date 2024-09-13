@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li class="nav-item d-none d-xl-block">
-                        <a href="{{url('/')}}" class="text-nowrap nav-link">
+                        <a href="{{ url('/') }}" class="text-nowrap nav-link">
                             <img src="{{ asset('package/dist/images/logos/logo.png') }}" class="dark-logo"
                                 width="180" alt="" />
                             <img src="{{ asset('package/dist/images/logos/logo.png') }}" class="light-logo"
@@ -639,60 +639,74 @@
                     </div>
 
 
-                    @if(Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia2@gmail.com'))
-                    <div class="col-sm-3 text-end">
-                        <a href="{{url('ptkforms/create')}}" class="btn btn-outline-primary w-100">
-                            <b> Vacancy</b> <i class="ti ti-plus"></i>
-                        </a>
-                    </div>
+                    @if (Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia2@gmail.com'))
+                        <div class="col-sm-3 text-end">
+                            <a href="{{ url('ptkforms/create') }}" class="btn btn-outline-primary w-100">
+                                <b> Vacancy</b> <i class="ti ti-plus"></i>
+                            </a>
+                        </div>
                     @endif
                 </div>
                 <hr>
                 <div class="tab-content">
                     <div id="note-full-container" class="note-has-grid row">
                         @foreach ($jobs as $job)
-                        <div class="col-md-4 single-note-item all-category hover-img">
-                            <div class="card card-body border-1 border-primary">
-                                <span class="side-stick"></span>
-                                <h6 class="note-title text-truncate w-75 mb-0"
-                                    data-noteHeading="Book a Ticket for Movie">{{$job->jobtitle->jobtitle_name ?? "-"}}</h6>
-                                <p class="note-date fs-2">Plant 5 Gresik</p>
-                                <div class="note-content">
-                                    <p>
-                                        <i class="ti ti-edit btn btn-sm btn-outline-dark"></i> {{$job->education->education_name}}
-                                        &nbsp;&nbsp;&nbsp;
-                                        <i class="ti ti-user btn btn-sm btn-outline-dark"></i>
-                                        @if ($job->gender == 1)
-                                        Laki-laki
-                                        @elseif ($job->gender == 2)
-                                        Perempuan
-                                        @else
-                                        Laki-laki/Perempuan
-                                        @endif
-                                    </p>
-                                    <p>Mulai Bekerja : {{$job->date_startwork}}</p>
-                                </div>
-                                <hr>
-                                <div class="d-flex align-items-center mt-2">
-                                    <a href="javascript:void(0)" class="btn btn-outline-success border-2 btn-sm">
-                                        <i class="ti ti-medal"></i>{{$job->status_pegawai}}
-                                    </a>
+                            <div class="col-md-4 single-note-item all-category hover-img">
+                                <div class="card card-body border-1 border-primary">
+                                    <span class="side-stick"></span>
+                                    <h6 class="note-title text-truncate w-75 mb-0"
+                                        data-noteHeading="Book a Ticket for Movie">
+                                        {{ $job->jobtitle->jobtitle_name ?? '-' }}</h6>
+                                    <p class="note-date fs-2">{{ $job->division->division_name ?? '-' }}</p>
+                                    <div class="note-content">
+                                        <p>
+                                            <i class="ti ti-edit btn btn-sm btn-outline-dark"></i>
+                                            {{ $job->education->education_name }}
+                                            &nbsp;&nbsp;&nbsp;
+                                            <i class="ti ti-user btn btn-sm btn-outline-dark"></i>
+                                            @if ($job->gender == 1)
+                                                Laki-laki
+                                            @elseif ($job->gender == 2)
+                                                Perempuan
+                                            @else
+                                                Laki-laki/Perempuan
+                                            @endif
+                                        </p>
+                                        <p>Mulai Bekerja : {{ $job->date_startwork }}</p>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <a href="javascript:void(0)" class="btn btn-outline-success border-2 btn-sm">
+                                            <i class="ti ti-medal"></i>{{ $job->status_pegawai }}
+                                        </a>
 
-                                    <div class="ms-auto">
-                                        <div class="category-selector btn-group">
-                                            <a class="btn btn-outline-primary border-2 btn-sm"
-                                                 href="{{url('vacancies',$job->id)}}" >
-                                                <div class="category">
-                                                    <span class="more-options">
-                                                        Lamar <i class="ti ti-arrow-big-right-line"></i>
-                                                    </span>
-                                                </div>
-                                            </a>
+
+                                        <div class="ms-auto">
+                                            <div class="category-selector btn-group">
+                                                @if (Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia@gmail.com'))
+                                                    <a class="btn btn-outline-danger border-2 btn-sm"
+                                                        href="{{ url('vacancies', $job->id) }}">
+                                                        <div class="category">
+                                                            <span class="more-options">
+                                                                Delete <i class="ti ti-trash"></i>
+                                                            </span>
+                                                        </div>
+                                                    </a>
+                                                    &nbsp;
+                                                @endif
+                                                <a class="btn btn-outline-primary border-2 btn-sm"
+                                                    href="{{ url('vacancies', $job->id) }}">
+                                                    <div class="category">
+                                                        <span class="more-options">
+                                                            Lamar <i class="ti ti-arrow-big-right-line"></i>
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
                     </div>
                 </div>
