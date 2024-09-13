@@ -1,7 +1,34 @@
 @extends('default')
 
-@section('content')
+@section('addCss')
+<style>
+    .star-rating {
+      direction: rtl;
+      display: inline-flex;
+    }
 
+    .star-rating input[type="radio"] {
+      display: none;
+    }
+
+    .star-rating label {
+      font-size: 2rem;
+      color: #ddd;
+      cursor: pointer;
+    }
+
+    .star-rating input[type="radio"]:checked ~ label {
+      color: #ffc107;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: #ffc107;
+    }
+  </style>
+@endsection
+
+@section('content')
     <div class="container-fluid">
         <div class="card rounded-2 overflow-hidden">
             <div class="position-relative">
@@ -80,14 +107,15 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Persetujuan</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">
+                                                <b>Persetujuan</b>
+                                            </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <?php
                                             $dts = json_decode($jobtitle->questions);
-                                            
                                             ?>
 
                                             <table class="table">
@@ -105,13 +133,24 @@
                                                         <td>{{ $dts->pertanyaan[$index] }}</td>
                                                         <td>
                                                             @if($dts->type[$index] == 'Rating')
-                                                            <select name="" class="form-select">
-                                                                <option value="1">1</option>
-                                                                <option value="2">2</option>
-                                                                <option value="3">3</option>
-                                                                <option value="4">4</option>
-                                                                <option value="5">5</option>
-                                                            </select>
+                                                            <div>
+                                                                <div class="star-rating">
+                                                                  <input type="radio" id="5-stars" name="rating" value="5">
+                                                                  <label for="5-stars" class="bi bi-star-fill">★</label>
+
+                                                                  <input type="radio" id="4-stars" name="rating" value="4">
+                                                                  <label for="4-stars" class="bi bi-star-fill">★</label>
+
+                                                                  <input type="radio" id="3-stars" name="rating" value="3">
+                                                                  <label for="3-stars" class="bi bi-star-fill">★</label>
+
+                                                                  <input type="radio" id="2-stars" name="rating" value="2">
+                                                                  <label for="2-stars" class="bi bi-star-fill">★</label>
+
+                                                                  <input type="radio" id="1-star" name="rating" value="1">
+                                                                  <label for="1-star" class="bi bi-star-fill">★</label>
+                                                                </div>
+                                                              </div>
                                                             @else
                                                             <select name="" class="form-select">
                                                                 <option value="Ya">Ya</option>
@@ -335,3 +374,7 @@
         </div>
     @endif
 @stop
+
+@section('addJs')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+@endsection

@@ -26,7 +26,7 @@
 		</div>
 
 
-		{{ Form::submit('Create', array('class' => 'btn btn-primary')) }}
+		{{ Form::submit('Create', array('class' => 'btn btn-primary rounded-pill')) }}
 
 	{{ Form::close() }}
 

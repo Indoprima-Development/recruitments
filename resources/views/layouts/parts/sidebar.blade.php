@@ -70,7 +70,7 @@
                     <span class="hide-menu">Job Vacancy</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{url('opening-jobs')}}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{url('vacancies')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-home-2"></i>
                         </span>

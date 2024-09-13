@@ -681,7 +681,7 @@
                                     <div class="ms-auto">
                                         <div class="category-selector btn-group">
                                             <a class="btn btn-outline-primary border-2 btn-sm"
-                                                 href="{{url('opening-jobs',$job->id)}}" >
+                                                 href="{{url('vacancies',$job->id)}}" >
                                                 <div class="category">
                                                     <span class="more-options">
                                                         Lamar <i class="ti ti-arrow-big-right-line"></i>
