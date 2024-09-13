@@ -102,6 +102,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('/ptkforms', PtkformsController::class);
     Route::controller(PtkformsController::class)->group(function () {
         Route::post('/ptkforms/change-status/{id}', 'changeStatus');
+        Route::get('/ptkforms/destroy/{id}', 'destroy');
     });
 
     Route::resource('/ptkfields', PtkfieldsController::class);

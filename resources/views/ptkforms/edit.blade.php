@@ -54,11 +54,11 @@
 		</div>
 		<div class="mb-3">
 			{{ Form::label('gender', 'Gender', ['class'=>'form-label']) }}
-			{{ Form::string('gender', null, array('class' => 'form-control')) }}
+			{{ Form::text('gender', null, array('class' => 'form-control')) }}
 		</div>
 		<div class="mb-3">
 			{{ Form::label('ipk', 'Ipk', ['class'=>'form-label']) }}
-			{{ Form::string('ipk', null, array('class' => 'form-control')) }}
+			{{ Form::text('ipk', null, array('class' => 'form-control')) }}
 		</div>
 		<div class="mb-3">
 			{{ Form::label('special_conditions', 'Special_conditions', ['class'=>'form-label']) }}
