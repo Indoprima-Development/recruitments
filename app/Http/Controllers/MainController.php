@@ -31,6 +31,10 @@ class MainController extends Controller
 
     public function showVacancy($id)
     {
+        if (!Auth::check()) {
+            return redirect('auth/login');
+        }
+
         $ptkform = Ptkform::findOrFail($id);
         $trs = Ptkformtransaction::where('ptkform_id',$id)
         ->where('user_id',Auth::user()->id)
