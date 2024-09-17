@@ -74,7 +74,7 @@
                                         href="{{url('auth/register')}}">Daftar</a>
                                     @else
                                     <a class="btn btn-primary px-5 btn-hover-shadow d-block mb-3 mb-sm-0"
-                                        href="{{url('home')}}">Masuk</a>
+                                        href="{{url('vacancies')}}">Masuk</a>
                                     @endif
                                 </div>
                             </div>

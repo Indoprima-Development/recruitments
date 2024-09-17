@@ -19,49 +19,24 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="{{url('/')}}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-home-2"></i>
+                            <i class="ti ti-layout-dashboard"></i>
                         </span>
                         <span class="hide-menu">Dashboard</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="{{url('/')}}" class="sidebar-link">
-                                <i class="ti ti-aperture"></i>
+                                <i class="ti ti-helicopter-landing"></i>
+                                <span class="hide-menu">Landing Page</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a href="{{url('home')}}" class="sidebar-link">
+                                <i class="ti ti-home"></i>
                                 <span class="hide-menu">Home</span>
                             </a>
                         </li>
-                        @if(false)
-                        <li class="sidebar-item">
-                            <a href="./index2.html" class="sidebar-link">
-                                <i class="ti ti-shopping-cart"></i>
-                                <span class="hide-menu">eCommerce</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="index3.html" class="sidebar-link">
-                                <i class="ti ti-currency-dollar"></i>
-                                <span class="hide-menu">NFT</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="index4.html" class="sidebar-link">
-                                <i class="ti ti-cpu"></i>
-                                <span class="hide-menu">Crypto</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="index5.html" class="sidebar-link">
-                                <i class="ti ti-activity-heartbeat"></i>
-                                <span class="hide-menu">General</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="index6.html" class="sidebar-link">
-                                <i class="ti ti-playlist"></i>
-                                <span class="hide-menu">Music</span>
-                            </a>
-                        </li>
-                        @endif
                     </ul>
                 </li>
 
@@ -72,71 +47,71 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{url('vacancies')}}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-home-2"></i>
+                            <i class="ti ti-briefcase"></i>
                         </span>
                         <span class="hide-menu">Job Vacancy</span>
                     </a>
                 </li>
 
                 <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <i class="ti ti-brand-databricks nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Master Data</span>
                 </li>
 
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
                         <span>
-                            <i class="ti ti-home-2"></i>
+                            <i class="ti ti-database"></i>
                         </span>
                         <span class="hide-menu">Master Data</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="{{url('divisions')}}" class="sidebar-link">
-                                <i class="ti ti-shopping-cart"></i>
+                                <i class="ti ti-building"></i>
                                 <span class="hide-menu">Divisi</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('departments')}}" class="sidebar-link">
-                                <i class="ti ti-currency-dollar"></i>
+                                <i class="ti ti-building-skyscraper"></i>
                                 <span class="hide-menu">Department</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('sections')}}" class="sidebar-link">
-                                <i class="ti ti-cpu"></i>
+                                <i class="ti ti-building-warehouse"></i>
                                 <span class="hide-menu">Sections</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('jobtitles')}}" class="sidebar-link">
-                                <i class="ti ti-activity-heartbeat"></i>
+                                <i class="ti ti-tool"></i>
                                 <span class="hide-menu">Jobtitles</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('education')}}" class="sidebar-link">
-                                <i class="ti ti-playlist"></i>
+                                <i class="ti ti-medal"></i>
                                 <span class="hide-menu">Education</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item">
                             <a href="{{url('majors')}}" class="sidebar-link">
-                                <i class="ti ti-activity-heartbeat"></i>
+                                <i class="ti ti-medal-2"></i>
                                 <span class="hide-menu">Majors</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('locations')}}" class="sidebar-link">
-                                <i class="ti ti-playlist"></i>
+                                <i class="ti ti-map-pin"></i>
                                 <span class="hide-menu">Locations</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('fields')}}" class="sidebar-link">
-                                <i class="ti ti-activity-heartbeat"></i>
+                                <i class="ti ti-radar-2"></i>
                                 <span class="hide-menu">Fields</span>
                             </a>
                         </li>
@@ -146,26 +121,26 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
                         <span>
-                            <i class="ti ti-home-2"></i>
+                            <i class="ti ti-flask-2"></i>
                         </span>
                         <span class="hide-menu">Master Quiz</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="{{url('projects')}}" class="sidebar-link">
-                                <i class="ti ti-shopping-cart"></i>
+                                <i class="ti ti-brand-dribbble"></i>
                                 <span class="hide-menu">Project</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('exams')}}" class="sidebar-link">
-                                <i class="ti ti-currency-dollar"></i>
+                                <i class="ti ti-presentation"></i>
                                 <span class="hide-menu">Exam</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('qnas')}}" class="sidebar-link">
-                                <i class="ti ti-cpu"></i>
+                                <i class="ti ti-brand-superhuman"></i>
                                 <span class="hide-menu">QnA</span>
                             </a>
                         </li>
@@ -179,14 +154,14 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <span>
-                            <i class="ti ti-archive"></i>
+                            <i class="ti ti-mailbox"></i>
                         </span>
                         <span class="hide-menu">History</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="{{url('exam-histories')}}" class="sidebar-link">
-                                <i class="ti ti-calendar"></i>
+                                <i class="ti ti-presentation"></i>
                                 <span class="hide-menu">Exams</span>
                             </a>
                         </li>
@@ -200,14 +175,14 @@
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <span>
-                            <i class="ti ti-archive"></i>
+                            <i class="ti ti-users"></i>
                         </span>
                         <span class="hide-menu">Account</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="{{url('forms')}}" class="sidebar-link">
-                                <i class="ti ti-calendar"></i>
+                                <i class="ti ti-device-cctv"></i>
                                 <span class="hide-menu">CV</span>
                             </a>
                         </li>

@@ -42,8 +42,8 @@
                 @yield('content2')
                 <section class="datatables">
                     <!-- basic table -->
-                    <div class="card">
-                        <div class="card-body @yield('cardClass')">
+                    <div class="card @yield('cardClass')">
+                        <div class="card-body">
                             <div class="table-responsive">
                                 @yield('content')
                             </div>
