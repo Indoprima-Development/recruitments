@@ -32,11 +32,11 @@
     <div class="container-fluid">
         <div class="card rounded-2 overflow-hidden">
             <div class="position-relative">
-                <a href="javascript:void(0)"><img src="{{ asset('photo/3.svg') }}"
+                <a href="javascript:void(0)"><img src="{{ asset('photo/header.png') }}"
                         class="card-img-top rounded-0 object-fit-cover" alt="..." height="260vh"></a>
                 <span
-                    class="badge bg-light-primary text-dark fs-5 rounded-1 lh-sm mb-9 me-9 py-1 px-2 position-absolute bottom-0 end-0">
-                    <b>{{ $ptkform->status == 0 ? 'DIBUAT' : 'DISETUJUI' }}</b>
+                    class="btn btn-xs btn-outline-primary bg-white text-dark fs-5 rounded-1 lh-sm mb-9 me-9 py-1 px-2 position-absolute bottom-0 end-0">
+                    <b>{{ $ptkform->status == 0 ? 'CLOSED' : 'OPEN' }}</b>
                 </span>
 
                 <img src="{{ asset('package/dist/images/profile/user-5.jpg') }}" alt=""
