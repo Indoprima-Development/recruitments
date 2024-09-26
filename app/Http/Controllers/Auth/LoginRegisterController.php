@@ -47,6 +47,8 @@ class LoginRegisterController extends Controller
             'pendidikan_terakhir' => $request->pendidikan_terakhir,
             'asal_instansi'       => $request->asal_instansi,
             'jurusan'             => $request->jurusan,
+            'berat_badan'         => $request->berat_badan,
+            'tinggi_badan'        => $request->tinggi_badan,
         ]);
 
         $credentials = $request->only('email', 'password');
