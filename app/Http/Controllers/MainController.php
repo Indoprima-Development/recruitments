@@ -12,7 +12,14 @@ class MainController extends Controller
 {
     public function index()
     {
-        return view('index');
+        $date = date("Y-m-d");
+
+        $jobs = Ptkform::where("status", 1)
+            ->whereDate('date_open_vacancy', '<=', $date . ' 00:00')
+            ->whereDate('date_closed_vacancy', '>=', $date . ' 23:59')
+            ->get()->take(4);
+
+        return view('index',compact("jobs"));
     }
 
     public function vacancy()

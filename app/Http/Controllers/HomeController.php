@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     public function home(){
+        if (Auth::user()->role != 'ADMIN') {
+            return redirect('vacancies');
+        }
+
         $data = Ptkformtransaction::select(DB::raw('count(id) as jumlah, status'))
         ->orderBy('status','ASC')
         ->groupBy('status')
@@ -212,5 +216,14 @@ class HomeController extends Controller
             ->get();
 
         return view('home.examHistories', compact('data'));
+    }
+
+    public function offVacancy($id){
+        Ptkform::where('id',$id)->update([
+            'status' => 9
+        ]);
+
+        AlertSuccess("Deleted", "Vacancy is set to off");
+        return redirect()->back();
     }
 }

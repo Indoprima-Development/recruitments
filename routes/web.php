@@ -69,6 +69,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/rank-test/{exam_id}', 'rankTest');
         Route::get('/update-time-remaining/{exam_id}', 'updateTimeRemaining');
         Route::get('exam-histories', 'examHistories');
+        Route::get('off-vacancy/{id}', 'offVacancy');
     });
 
     //PROJECT

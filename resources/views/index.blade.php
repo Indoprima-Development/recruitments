@@ -37,13 +37,13 @@
                         <ul class="navbar-nav align-items-center mb-2 mb-lg-0 ms-auto">
                             <li class="nav-item ms-2">
                                 <a class="btn btn-outline-primary fs-3 rounded btn-hover-shadow px-3 py-2"
-                                    href="{{url('vacancies')}}">Lowongan</a>
+                                    href="{{ url('vacancies') }}">Lowongan</a>
                             </li>
-                            @if(!Auth::check())
-                            <li class="nav-item ms-2">
-                                <a class="btn btn-primary fs-3 rounded btn-hover-shadow px-3 py-2"
-                                    href="{{url('auth/login')}}">Masuk</a>
-                            </li>
+                            @if (!Auth::check())
+                                <li class="nav-item ms-2">
+                                    <a class="btn btn-primary fs-3 rounded btn-hover-shadow px-3 py-2"
+                                        href="{{ url('auth/login') }}">Masuk</a>
+                                </li>
                             @endif
                         </ul>
                     </div>
@@ -61,29 +61,30 @@
                                     data-aos-delay="200" data-aos-duration="1000"><i
                                         class="ti ti-rocket text-secondary fs-6"></i>Mari bergabung</h6>
                                 <h1 class="fw-bolder mb-8 fs-13" data-aos="fade-up" data-aos-delay="400"
-                                    data-aos-duration="1000">Smart<span class="text-primary"> <br>Recruitment</span> <br>
+                                    data-aos-duration="1000">Smart<span class="text-primary"> <br>Recruitment</span>
+                                    <br>
                                     System</h1>
                                 <p class="fs-5 mb-3 text-dark fw-normal">
                                     Temukan Pekerjaan anda di <b class="text-primary">PT. Indoprima Gemilang</b>
                                 </p>
                                 <div class="d-sm-flex align-items-center gap-3">
-                                    @if(!Auth::check())
-                                    <a class="btn btn-primary px-5 btn-hover-shadow d-block mb-3 mb-sm-0"
-                                        href="{{url('auth/login')}}">Masuk</a>
-                                    <a class="btn btn-outline-primary d-block scroll-link"
-                                        href="{{url('auth/register')}}">Daftar</a>
+                                    @if (!Auth::check())
+                                        <a class="btn btn-primary px-5 btn-hover-shadow d-block mb-3 mb-sm-0"
+                                            href="{{ url('auth/login') }}">Masuk</a>
+                                        <a class="btn btn-outline-primary d-block scroll-link"
+                                            href="{{ url('auth/register') }}">Daftar</a>
                                     @else
-                                    <a class="btn btn-primary px-5 btn-hover-shadow d-block mb-3 mb-sm-0"
-                                        href="{{url('vacancies')}}">Masuk</a>
+                                        <a class="btn btn-primary px-5 btn-hover-shadow d-block mb-3 mb-sm-0"
+                                            href="{{ url('vacancies') }}">Masuk</a>
                                     @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-6 col-sm-6" style="height: 90vh; width:100wh;">
-                            <div class="hero-img-slide" >
+                            <div class="hero-img-slide">
                                 <div class="banner-img-1 slideup">
-                                    <img src="{{ asset('photo/landing.png') }}"
-                                        alt="" style="width:30%" class="rounded">
+                                    <img src="{{ asset('photo/landing.png') }}" alt="" style="width:30%"
+                                        class="rounded">
                                 </div>
                             </div>
                         </div>
@@ -96,123 +97,64 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <h2 class="fs-9 text-center mb-lg-5 fw-bolder" data-aos="fade-up" data-aos-delay="200"
-                                data-aos-duration="1000">Lowongan</h2>
+                                data-aos-duration="1000">Lowongan Terbaru</h2>
                         </div>
                     </div>
                     <div class="review-slider" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
                         <div class="owl-carousel owl-theme">
-                            <div class="item">
-                                <div class="card">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <h6 class="fs-4 mb-1 fw-semibold">Jenny Wilson</h6>
-                                                    <p class="mb-0 text-dark">Features avaibility</p>
+                            @foreach ($jobs as $job)
+                                <div class="item">
+                                    <div class="card card-body border-1 border-primary">
+                                        <span class="side-stick"></span>
+                                        <h6 class="note-title text-truncate w-75 mb-0"
+                                            data-noteHeading="Book a Ticket for Movie">
+                                            {{ $job->jobtitle->jobtitle_name ?? '-' }}</h6>
+                                        <p class="note-date fs-2">{{ $job->division->division_name ?? '-' }}</p>
+                                        <div class="note-content">
+                                            <p>
+                                                <i class="ti ti-school btn btn-sm btn-outline-dark"></i>
+                                                {{ $job->education->education_name }}
+                                                &nbsp;&nbsp;&nbsp;
+                                                <i class="ti ti-gender-bigender btn btn-sm btn-outline-dark"></i>
+                                                @if ($job->gender == 1)
+                                                    Laki-laki
+                                                @elseif ($job->gender == 2)
+                                                    Perempuan
+                                                @else
+                                                    Laki-laki/Perempuan
+                                                @endif
+                                            </p>
+                                            <p>Mulai Bekerja : {{ $job->date_startwork }}</p>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex align-items-center mt-2">
+                                            <a href="javascript:void(0)"
+                                                class="btn btn-outline-success border-2 btn-sm">
+                                                <i class="ti ti-medal"></i>{{ $job->status_pegawai }}
+                                            </a>
+
+
+                                            <div class="ms-auto">
+                                                <div class="category-selector btn-group">
+                                                    
+                                                    <a class="btn btn-outline-primary border-2 btn-sm"
+                                                        href="{{ url('vacancies', $job->id) }}">
+                                                        <div class="category">
+                                                            <span class="more-options">
+                                                                Lamar <i class="ti ti-arrow-big-right-line"></i>
+                                                            </span>
+                                                        </div>
+                                                    </a>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <ul
-                                                    class="list-unstyled d-flex align-items-center justify-content-end gap-1 mb-0">
-                                                    <li>
-                                                        <span class="badge bg-primary">Staff</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </div>
-                                        <p class="fs-4 mb-0 text-dark">The dashboard template from adminmart has helped
-                                            me provide a clean
-                                            and sleek look to my dashboard and made it look exactly the way I wanted it
-                                            to, mainly without
-                                            having.</p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="item">
-                                <div class="card">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <h6 class="fs-4 mb-1 fw-semibold">Jenny Wilson</h6>
-                                                    <p class="mb-0 text-dark">Features avaibility</p>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <ul
-                                                    class="list-unstyled d-flex align-items-center justify-content-end gap-1 mb-0">
-                                                    <li>
-                                                        <span class="badge bg-danger">Non Staff</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <p class="fs-4 mb-0 text-dark">The dashboard template from adminmart has helped
-                                            me provide a clean
-                                            and sleek look to my dashboard and made it look exactly the way I wanted it
-                                            to, mainly without
-                                            having.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="card">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <h6 class="fs-4 mb-1 fw-semibold">Jenny Wilson</h6>
-                                                    <p class="mb-0 text-dark">Features avaibility</p>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <ul
-                                                    class="list-unstyled d-flex align-items-center justify-content-end gap-1 mb-0">
-                                                    <li>
-                                                        <span class="badge bg-warning">Internship</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <p class="fs-4 mb-0 text-dark">The dashboard template from adminmart has helped
-                                            me provide a clean
-                                            and sleek look to my dashboard and made it look exactly the way I wanted it
-                                            to, mainly without
-                                            having.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="card">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <h6 class="fs-4 mb-1 fw-semibold">Jenny Wilson</h6>
-                                                    <p class="mb-0 text-dark">Features avaibility</p>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <ul
-                                                    class="list-unstyled d-flex align-items-center justify-content-end gap-1 mb-0">
-                                                    <li>
-                                                        <span class="badge bg-primary">Staff</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <p class="fs-4 mb-0 text-dark">The dashboard template from adminmart has helped
-                                            me provide a clean
-                                            and sleek look to my dashboard and made it look exactly the way I wanted it
-                                            to, mainly without
-                                            having.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="w-100 text-center mt-5">
-                        <a href="{{url('vacancies')}}" class="btn btn-sm btn-primary">Buka Semua Lowongan</a>
+                        <a href="{{ url('vacancies') }}" class="btn btn-sm btn-primary">Buka Semua Lowongan</a>
                     </div>
                 </div>
             </section>
@@ -311,12 +253,13 @@
                 <div class="container">
                     <div class="row justify-content-between">
                         <div class="col-lg-7 col-xl-5 pt-lg-5 mb-5 mb-lg-0">
-                            <h2 class="fs-12 text-white text-center text-lg-start fw-bolder mb-8">Daftarkan Diri Anda Segera !</h2>
+                            <h2 class="fs-12 text-white text-center text-lg-start fw-bolder mb-8">Daftarkan Diri Anda
+                                Segera !</h2>
                             <div
                                 class="d-sm-flex align-items-center justify-content-center justify-content-lg-start gap-3">
-                                <a href="{{url('auth/login')}}"
+                                <a href="{{ url('auth/login') }}"
                                     class="btn bg-white text-primary fw-semibold d-block mb-3 mb-sm-0 btn-hover-shadow">Login</a>
-                                <a href="{{url('auth/register')}}"
+                                <a href="{{ url('auth/register') }}"
                                     class="btn border-white text-white fw-semibold btn-hover-white d-block">Register</a>
                             </div>
                         </div>
@@ -337,11 +280,11 @@
                     <div class="col-lg-4">
                         <div class="text-center">
                             <a href="index-new.html">
-                                <img src="{{ asset('package/dist/images/logos/logo.png') }}"
-                                    alt="" class="mb-3" height="30">
+                                <img src="{{ asset('package/dist/images/logos/logo.png') }}" alt=""
+                                    class="mb-3" height="30">
                             </a>
-                            <p class="mb-0 text-dark">All rights reserved by PT. Indoprima Gemilang. Designed & Developed by <a
-                                    class="text-dark text-hover-primary border-bottom border-primary"
+                            <p class="mb-0 text-dark">All rights reserved by PT. Indoprima Gemilang. Designed &
+                                Developed by <a class="text-dark text-hover-primary border-bottom border-primary"
                                     href="https://adminmart.com/">Information System</a></p>
                         </div>
                     </div>

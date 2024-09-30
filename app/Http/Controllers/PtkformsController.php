@@ -97,7 +97,8 @@ class PtkformsController extends Controller
             }
         }
 
-        return to_route('ptkforms.index');
+        AlertSuccess("Created","Data successfully created");
+        return redirect('vacancies');
     }
 
     /**
@@ -163,7 +164,8 @@ class PtkformsController extends Controller
         $ptkform->status = $request->input('status');
         $ptkform->save();
 
-        return to_route('ptkforms.index');
+        AlertSuccess("Edited","Data successfully Edited");
+        return redirect('vacancies');
     }
 
     /**

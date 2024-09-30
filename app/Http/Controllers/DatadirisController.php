@@ -213,6 +213,7 @@ class DatadirisController extends Controller
     }
 
     public function dataUserById($id){
+        $users = User::findOrFail($id);
         $datadiri = Datadiri::where("user_id",$id)->first();
         $datakesehatans = Datakesehatan::where("user_id",$id)->get();
         $datapendidikanformals = Datapendidikanformal::where("user_id",$id)->get();
@@ -223,9 +224,7 @@ class DatadirisController extends Controller
         $dataolahragas = Dataolahraga::where("user_id",$id)->get();
         $datadetails = Datadetail::where("user_id",$id)->get();
         $dataorganisasis = Dataorganisasi::where("user_id",$id)->get();
-        $users = User::find($id);
 
         return view("forms.show",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","users"));
-
     }
 }
