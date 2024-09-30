@@ -65,28 +65,28 @@
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <label for="ktp" class="form-label">Email</label>
-                                                    <div class="input-group border rounded-1">
+                                                    <div class="input-group border rounded-1 border-1 border-dark">
                                                         <span class="input-group-text bg-transparent px-6 border-0"
                                                             id="basic-addon1"><i class="ti ti-mail fs-6"></i></span>
                                                         <input name="email" type="email" class="form-control border-0 ps-2"
-                                                            placeholder="John Deo">
+                                                            placeholder="example@gmail.com">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <label for="ktp" class="form-label">Password</label>
-                                                    <div class="input-group border rounded-1">
+                                                    <div class="input-group border rounded-1 border-1 border-dark">
                                                         <span class="input-group-text bg-transparent px-6 border-0"
                                                             id="basic-addon1">
                                                             <i class="ti ti-key fs-6"></i>
                                                         </span>
                                                         <input name="password" type="password"
-                                                            class="form-control border-0 ps-2" placeholder="John Deo">
+                                                            class="form-control border-0 ps-2" placeholder="****">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12 mt-2">
                                                     <label for="ktp" class="form-label">Nama Lengkap</label>
 
-                                                    <div class="input-group border rounded-1">
+                                                    <div class="input-group border rounded-1 border-1 border-dark">
                                                         <span class="input-group-text bg-transparent px-6 border-0"
                                                             id="basic-addon1">
                                                             <i class="ti ti-user fs-6"></i>
@@ -98,10 +98,10 @@
 
                                                 <div class="col-sm-6 mt-2">
                                                     <label for="ktp" class="form-label">NIK</label>
-                                                    <div class="input-group border rounded-1">
+                                                    <div class="input-group border rounded-1 border-1 border-dark">
                                                         <span class="input-group-text bg-transparent px-6 border-0"
                                                             id="basic-addon1">
-                                                            <i class="ti ti-user fs-6"></i>
+                                                            <i class="ti ti-file fs-6"></i>
                                                         </span>
                                                         <input name="ktp" type="text"
                                                             class="form-control border-0 ps-2" placeholder="3577******">
@@ -110,7 +110,7 @@
 
                                                 <div class="col-sm-6 mt-2">
                                                     <label for="ktp" class="form-label">No. Whatsapp</label>
-                                                    <div class="input-group border rounded-1">
+                                                    <div class="input-group border rounded-1 border-1 border-dark">
                                                         <span class="input-group-text bg-transparent px-6 border-0"
                                                             id="basic-addon1">
                                                             <i class="ti ti-phone fs-6"></i>
@@ -120,12 +120,12 @@
                                                     </div>
                                                 </div>
 
-                                                <hr class="mt-2 text-primary border-3">
+                                                <hr class="mt-3 border-1">
 
                                                 <div class="col-sm-2">
-                                                    <label for="ktp" class="form-label">Pendidikan</label>
+                                                    <label for="ktp" class="form-label text-primary">Pendidikan</label>
                                                     <select name="pendidikan_terakhir"
-                                                        class="form-select border-2 border-primary" required>
+                                                        class="form-select border-1 border-primary" required>
                                                         <option value="" selected disabled>Pilih</option>
                                                         <option value="D4">D4</option>
                                                         <option value="S1">S1</option>
@@ -133,19 +133,32 @@
                                                     </select>
                                                 </div>
 
-
                                                 <div class="col-sm-5">
-                                                    <label for="ktp" class="form-label">Asal Instansi</label>
+                                                    <label for="ktp" class="form-label text-primary">Asal Instansi</label>
                                                     <input type="text" name="asal_instansi"
-                                                        class="form-control border-2 border-primary"
+                                                        class="form-control border-1 border-primary"
                                                         aria-describedby="emailHelp" required>
                                                 </div>
 
                                                 <div class="col-sm-5">
-                                                    <label for="ktp" class="form-label">Jurusan</label>
+                                                    <label for="ktp" class="form-label text-primary">Jurusan</label>
                                                     <input type="ktp" name="jurusan"
-                                                        class="form-control border-2 border-primary"
+                                                        class="form-control border-1 border-primary"
                                                         aria-describedby="emailHelp" required>
+                                                </div>
+
+                                                <hr class="mt-3 border-1">
+
+                                                <div class="col-sm-6">
+                                                    <label for="ktp" class="form-label text-success">Berat Badan (kg)</label>
+                                                    <input type="number" name="berat_badan"
+                                                        class="form-control border-1 border-success" required>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <label for="ktp" class="form-label text-success">Tinggi Badan (cm)</label>
+                                                    <input type="number" name="tinggi_badan"
+                                                        class="form-control border-1 border-success" required>
                                                 </div>
 
                                                 <div class="col-sm-12 mt-3 text-end">

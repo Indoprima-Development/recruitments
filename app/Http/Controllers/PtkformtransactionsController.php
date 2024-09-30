@@ -42,9 +42,23 @@ class PtkformtransactionsController extends Controller
      */
     public function store(PtkformtransactionRequest $request)
     {
+        $questions = json_decode($request->questions);
+        $score = 0;
+        for ($i=0; $i < count($questions->score); $i++){
+            $var = "jawaban_".$i;
+            if ($questions->type[$i] == 'Rating') {
+                $score += (int)$request->$var/5 * (int)$questions->score[$i];
+            }else{
+                if ($questions->jawaban[$i] == $request->$var) {
+                    $score += (int)$questions->score[$i];
+                }
+            }
+        }
+
         $ptkformtransaction = new Ptkformtransaction;
 		$ptkformtransaction->ptkform_id = $request->input('ptkform_id');
 		$ptkformtransaction->status = 0;
+        $ptkformtransaction->score_candidate = $score;
 		$ptkformtransaction->user_id = Auth::user()->id;
         $ptkformtransaction->save();
 

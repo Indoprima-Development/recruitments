@@ -6,7 +6,7 @@
     <div class="card bg-light-info shadow-none position-relative overflow-hidden">
         <div class="card-body px-4 py-3">
             <div class="row align-items-center">
-                <div class="col-9">
+                <div class="col-7">
                     <h4 class="fw-semibold mb-8">Data Recruitment</h4>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -16,8 +16,10 @@
                     </nav>
                 </div>
 
-                <div class="col-3 text-end">
-                    <a href="{{ url('ptkformtransactions', "all") }}/data" class="btn btn-outline-primary bg-white"><i class="ti ti-box"></i> All Data</a>
+                <div class="col-5 text-end">
+                    <a href="{{ url('ptkformtransactions', "all") }}/data" class="btn btn-outline-primary bg-white"><i class="ti ti-database"></i> All Data</a>
+
+                        <a href="{{ url('ptkformtransactions', 9) }}/data" class="btn btn-outline-danger bg-white"><i class="ti ti-x"></i> Cancel</a>
                 </div>
             </div>
         </div>

@@ -35,6 +35,7 @@
                     <th>Kampus</th>
                     <th>Jurusan</th>
                     <th>PIC</th>
+                    <th>Score Candidate</th>
                     <th>CV Review</th>
                     <th>HC Interview</th>
                     <th>Psikotest</th>
@@ -49,7 +50,11 @@
                 @foreach ($ptkformtransactions as $i => $ptkformtransaction)
                     <tr>
                         <td>{{ $i + 1 }}</td>
-                        <td>{{ $ptkformtransaction->user->name }}</td>
+                        <td>
+                            <a href="{{url('datadiris/data-users', $ptkformtransaction->user->id)}}">
+                                {{ $ptkformtransaction->user->name }}
+                            </a>
+                        </td>
                         <td>{{ $ptkformtransaction->ptkform->jobtitle->jobtitle_name ?? "-" }}</td>
 
                         <?php
@@ -66,6 +71,7 @@
                             <td> - </td>
                         @endif
                         <td>{{$ptkformtransaction->pic}}</td>
+                        <td>{{$ptkformtransaction->score_candidate ?? 0}}</td>
                         <td>
                             @if ($ptkformtransaction->status == 0)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="0" type="button" types="cv_review" class="btnEditStatus btn btn-sm btn-outline-primary" names="{{ $ptkformtransaction->user->name }}">

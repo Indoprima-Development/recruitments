@@ -113,77 +113,89 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <?php
-                                            $dts = json_decode($jobtitle->questions);
-                                            ?>
+                                        <form method="POST" action="{{ url('ptkformtransactions') }}">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <?php
+                                                $dts = json_decode($jobtitle->questions);
+                                                ?>
 
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Pertanyaan</th>
-                                                        <th>Jawaban</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($dts->pertanyaan as $index => $d)
+                                                <input type="hidden" name="questions" value="{{ $jobtitle->questions }}">
+
+                                                <table class="table">
+                                                    <thead>
                                                         <tr>
-                                                            <td>{{ $index + 1 }}</td>
-                                                            <td>{{ $dts->pertanyaan[$index] }}</td>
-                                                            <td>
-                                                                @if ($dts->type[$index] == 'Rating')
-                                                                    <div>
-                                                                        <div class="star-rating">
-                                                                            <input type="radio" id="5-stars"
-                                                                                name="rating" value="5">
-                                                                            <label for="5-stars"
-                                                                                class="bi bi-star-fill">★</label>
-
-                                                                            <input type="radio" id="4-stars"
-                                                                                name="rating" value="4">
-                                                                            <label for="4-stars"
-                                                                                class="bi bi-star-fill">★</label>
-
-                                                                            <input type="radio" id="3-stars"
-                                                                                name="rating" value="3">
-                                                                            <label for="3-stars"
-                                                                                class="bi bi-star-fill">★</label>
-
-                                                                            <input type="radio" id="2-stars"
-                                                                                name="rating" value="2">
-                                                                            <label for="2-stars"
-                                                                                class="bi bi-star-fill">★</label>
-
-                                                                            <input type="radio" id="1-star"
-                                                                                name="rating" value="1">
-                                                                            <label for="1-star"
-                                                                                class="bi bi-star-fill">★</label>
-                                                                        </div>
-                                                                    </div>
-                                                                @else
-                                                                    <select name="" class="form-select">
-                                                                        <option value="Ya">Ya</option>
-                                                                        <option value="Tidak">Tidak</option>
-                                                                    </select>
-                                                                @endif
-                                                            </td>
+                                                            <th>No</th>
+                                                            <th>Pertanyaan</th>
+                                                            <th>Jawaban</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($dts->pertanyaan as $index => $d)
+                                                            <tr>
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $dts->pertanyaan[$index] }}</td>
+                                                                <td>
+                                                                    @if ($dts->type[$index] == 'Rating')
+                                                                        <div>
+                                                                            <div class="star-rating">
+                                                                                <input type="radio"
+                                                                                    id="5-stars-{{ $index }}"
+                                                                                    name="jawaban_{{ $index }}"
+                                                                                    value="5">
+                                                                                <label for="5-stars-{{ $index }}"
+                                                                                    class="bi bi-star-fill">★</label>
 
-                                            Saya <b>{{ Auth::user()->name }}</b> bersedia untuk mengikuti seluruh rangkaian
-                                            seleksi sesuai dengan kebijakan perusahaan.
-                                        </div>
-                                        <div class="modal-footer">
+                                                                                <input type="radio"
+                                                                                    id="4-stars-{{ $index }}"
+                                                                                    name="jawaban_{{ $index }}"
+                                                                                    value="4">
+                                                                                <label for="4-stars-{{ $index }}"
+                                                                                    class="bi bi-star-fill">★</label>
 
-                                            <form method="POST" action="{{ url('ptkformtransactions') }}">
-                                                @csrf
+                                                                                <input type="radio"
+                                                                                    id="3-stars-{{ $index }}"
+                                                                                    name="jawaban_{{ $index }}"
+                                                                                    value="3">
+                                                                                <label for="3-stars-{{ $index }}"
+                                                                                    class="bi bi-star-fill">★</label>
+
+                                                                                <input type="radio"
+                                                                                    id="2-stars-{{ $index }}"
+                                                                                    name="jawaban_{{ $index }}"
+                                                                                    value="2">
+                                                                                <label for="2-stars-{{ $index }}"
+                                                                                    class="bi bi-star-fill">★</label>
+
+                                                                                <input type="radio"
+                                                                                    id="1-star-{{ $index }}"
+                                                                                    name="jawaban_{{ $index }}"
+                                                                                    value="1">
+                                                                                <label for="1-star-{{ $index }}"
+                                                                                    class="bi bi-star-fill">★</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    @else
+                                                                        <select name="jawaban_{{ $index }}" class="form-select">
+                                                                            <option value="Ya">Ya</option>
+                                                                            <option value="Tidak">Tidak</option>
+                                                                        </select>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+
+                                                Saya <b>{{ Auth::user()->name }}</b> bersedia untuk mengikuti seluruh
+                                                rangkaian
+                                                seleksi sesuai dengan kebijakan perusahaan.
+                                            </div>
+                                            <div class="modal-footer">
                                                 <input type="hidden" name="ptkform_id" value="{{ $ptkform->id }}">
                                                 <button type="submit" class="btn btn-primary">Setuju</button>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

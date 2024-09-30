@@ -1,27 +1,27 @@
 @extends('default')
 
-@section('content')
+@section('content2')
     <div class="container-fluid">
-        <div class="card overflow-hidden">
+        <div class="card overflow-hidden border-1 border-primary">
             <div class="card-body p-0">
-                <img src="{{ asset('package/dist/images/backgrounds/profilebg.jpg') }}" alt="" class="img-fluid">
+                <img src="{{ asset('photo/header.png') }}" alt="" class="img-fluid">
                 <div class="row align-items-center">
                     <div class="col-lg-4 order-lg-1 order-2">
                         <div class="d-flex align-items-center justify-content-around m-4">
-                            <div class="text-center">
-                                <i class="ti ti-file-description fs-6 d-block mb-2"></i>
+                            <div class="text-center text-primary">
+                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
                                 <h4 class="mb-0 fw-semibold lh-1">90</h4>
-                                <p class="mb-0 fs-4">Technical</p>
+                                <p class="mb-0 fs-4"><b>Score</b></p>
+                            </div>
+                            <div class="text-center text-primary">
+                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
+                                <h4 class="mb-0 fw-semibold lh-1">90</h4>
+                                <p class="mb-0 fs-4"><b>CV</b></p>
                             </div>
                             <div class="text-center">
-                                <i class="ti ti-user-circle fs-6 d-block mb-2"></i>
-                                <h4 class="mb-0 fw-semibold lh-1">90</h4>
-                                <p class="mb-0 fs-4">Psikotest</p>
-                            </div>
-                            <div class="text-center">
-                                <i class="ti ti-user-check fs-6 d-block mb-2"></i>
+                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
                                 <h4 class="mb-0 fw-semibold lh-1">OK</h4>
-                                <p class="mb-0 fs-4">Interview 1</p>
+                                <p class="mb-0 fs-4">HC</p>
                             </div>
                         </div>
                     </div>
@@ -32,96 +32,160 @@
                                     style="width: 110px; height: 110px;";>
                                     <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden"
                                         style="width: 100px; height: 100px;";>
-                                        <img src="{{ asset($users->photo) }}" alt="" class="w-100 h-100">
+                                        @if ($users->photo != null)
+                                            <img src="{{ asset($users->photo) }}" alt="" class="w-100 h-100">
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center">
                                 <h5 class="fs-5 mb-0 fw-semibold">{{ $users->name }}</h5>
-                                <p class="mb-0 fs-4">{{ $users->ktp }}</p>
+                                <p class="mb-0 fs-4">
+                                    <a target="_blank" href="wa.me/{{ $users->no_wa }}">
+                                        {{ $users->no_wa }}</a>
+                                </p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 order-last">
-                        <ul
-                            class="list-unstyled d-flex align-items-center justify-content-center justify-content-lg-start my-3 gap-3">
-                            <li class="position-relative">
-                                <a class="text-white d-flex align-items-center justify-content-center bg-primary p-2 fs-4 rounded-circle"
-                                    href="javascript:void(0)" width="30" height="30">
-                                    <i class="ti ti-brand-facebook"></i>
-                                </a>
-                            </li>
-                            <li class="position-relative">
-                                <a class="text-white bg-secondary d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle "
-                                    href="javascript:void(0)">
-                                    <i class="ti ti-brand-twitter"></i>
-                                </a>
-                            </li>
-                            <li class="position-relative">
-                                <a class="text-white bg-secondary d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle "
-                                    href="javascript:void(0)">
-                                    <i class="ti ti-brand-dribbble"></i>
-                                </a>
-                            </li>
-                            <li class="position-relative">
-                                <a class="text-white bg-danger d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle "
-                                    href="javascript:void(0)">
-                                    <i class="ti ti-brand-youtube"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <button class="btn btn-primary">Update Status</button>
-                            </li>
-                        </ul>
+                        <div class="d-flex align-items-center justify-content-around m-4">
+                            <div class="text-center">
+                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
+                                <h4 class="mb-0 fw-semibold lh-1">OK</h4>
+                                <p class="mb-0 fs-4">Psikotes</p>
+                            </div>
+                            <div class="text-center">
+                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
+                                <h4 class="mb-0 fw-semibold lh-1">90</h4>
+                                <p class="mb-0 fs-4">User</p>
+                            </div>
+                            <div class="text-center">
+                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
+                                <h4 class="mb-0 fw-semibold lh-1">90</h4>
+                                <p class="mb-0 fs-4">Director</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-12">
-                <div class="card shadow-none border">
-                    <div class="card-body row">
-                        <h4>Data Diri</h4>
-                        <div class="col-6">
-                            <p>Tempat, Tanggal Lahir : {{$datadiri->tempat_lahir}}, {{$datadiri->tanggal_lahir}}</p>
-                            <p>Alamat : {{$datadiri->alamat}}</p>
-                            <p>Telepon : {{$datadiri->no_hp}} </p>
-                            <p>Golongan Darah : {{$datadiri->golongan_darah}}</p>
-                            <p>NIK : {{$datadiri->ktp}}</p>
-                            <p>Jabatan yang Dilamar : -</p>
-                            <p>Kendaraan yang Dipakai : {{$datadiri->kendaraan}}</p>
-                            <p>Riwayat Kesehatan : -</p>
-                        </div>
-                        <div class="col-6">
-                            <p>Jenis Kelamin : {{$datadiri->gender == 1 ? 'Laki-laki' : 'Perempuan'}}</p>
-                            <p>Status Rumah : {{$datadiri->status_rumah}}</p>
-                            <p>No. Wa : {{$datadiri->no_wa}}</p>
-                            <p>Agama : {{$datadiri->agama}}</p>
-                            <p>Tinggi Badan : {{$datadiri->tinggi_badan}}</p>
-                            <p>Berat Badan : {{$datadiri->berat_badan}}</p>
-                            <p>SIM : {{$datadiri->sim}}</p>
-                        </div>
+            <div class="col-sm-12">
+                <div class="card shadow-none border-1 border-primary">
+                    <div class="card-body row text-center">
+                        <h5>Riwayat Lamaran</h5>
+                        <hr>
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Jobtitle</th>
+                                    <th>Score</th>
+                                    <th>CV</th>
+                                    <th>HC</th>
+                                    <th>Psikotes</th>
+                                    <th>User</th>
+                                    <th>Director</th>
+                                    <th>Finalisasi</th>
+                                    <th>MCU</th>
+                                    <th>Join</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-12">
-                <div class="card shadow-none border">
+            <div class="col-sm-12 col-md-6">
+                <div class="card shadow-none border-1 border-primary">
                     <div class="card-body row">
-                        <h4>Pendidikan Formal</h4>
-                        <table class="table table-bordered">
+                        <h5>Data Diri</h5>
+                        <hr>
+                        <table class="table table-sm">
+                            <tr>
+                                <td>Tempat, Tanggal Lahir</td>
+                                <td>{{ $datadiri->tempat_lahir ?? '-' }},
+                                    {{ $datadiri->tanggal_lahir ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Alamat</td>
+                                <td>{{ $datadiri->alamat ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Telepon</td>
+                                <td>{{ $datadiri->no_hp ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Golongan Darah</td>
+                                <td>{{ $datadiri->golongan_darah ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>NIK</td>
+                                <td>{{ $datadiri->ktp ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Kendaraan yang Dipakai</td>
+                                <td>{{ $datadiri->kendaraan ?? '-' }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Jenis Kelamin</td>
+                                <td>
+                                    @if ($datadiri)
+                                        {{ $datadiri->gender == 1 ? 'Laki-laki' : 'Perempuan' }}
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Status Rumah</td>
+                                <td>{{ $datadiri->status_rumah ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>No. Wa</td>
+                                <td>{{ $datadiri->no_wa ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Agama</td>
+                                <td>{{ $datadiri->agama ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tinggi Badan</td>
+                                <td>{{ $datadiri->tinggi_badan ?? '-' }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Berat Badan</td>
+                                <td>{{ $datadiri->berat_badan ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>SIM</td>
+                                <td>{{ $datadiri->sim ?? '-' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-6">
+
+                <div class="card shadow-none border-1 border-primary">
+                    <div class="card-body row">
+                        <h5>Pendidikan Formal</h5>
+                        <hr>
+                        <table class="table table-bordered table-sm">
                             <thead>
                                 <tr>
-                                    <th>tingkat</th>
-                                    <th>instansi</th>
-                                    <th>jurusan</th>
-                                    <th>lulus_tahun</th>
-                                    <th>nilai</th>
+                                    <th>Tingkat</th>
+                                    <th>Instansi</th>
+                                    <th>Jurusan</th>
+                                    <th>Lulus</th>
+                                    <th>Nilai</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($datapendidikanformals as $datapendidikanformal)
+                                @foreach ($datapendidikanformals as $datapendidikanformal)
                                     <tr>
                                         <td>{{ $datapendidikanformal->tingkat }}</td>
                                         <td>{{ $datapendidikanformal->instansi }}</td>
@@ -129,32 +193,28 @@
                                         <td>{{ $datapendidikanformal->lulus_tahun }}</td>
                                         <td>{{ $datapendidikanformal->nilai }}</td>
                                     </tr>
-
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-12">
-                <div class="card shadow-none border">
+                <div class="card shadow-none border-1 border-primary">
                     <div class="card-body row">
-                        <h4>Pendidikan Informal</h4>
-                        <table class="table table-bordered">
+                        <h5>Pendidikan Informal</h5>
+                        <table class="table table-bordered table-sm">
                             <thead>
                                 <tr>
-                                    <th>jenis</th>
-                                    <th>tingkat</th>
-                                    <th>instansi</th>
-                                    <th>jurusan</th>
-                                    <th>date_start</th>
-                                    <th>date_end</th>
+                                    <th>Jenis</th>
+                                    <th>Tingkat</th>
+                                    <th>Instansi</th>
+                                    <th>Jurusan</th>
+                                    <th>Mulai</th>
+                                    <th>Akhir</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($datapendidikannonformals as $datapendidikannonformal)
-
+                                @foreach ($datapendidikannonformals as $datapendidikannonformal)
                                     <tr>
                                         <td>{{ $datapendidikannonformal->jenis }}</td>
                                         <td>{{ $datapendidikannonformal->tingkat }}</td>
@@ -163,7 +223,36 @@
                                         <td>{{ $datapendidikannonformal->date_start }}</td>
                                         <td>{{ $datapendidikannonformal->date_end }}</td>
                                     </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
+                <div class="card shadow-none border-1 border-primary">
+                    <div class="card-body row">
+                        <h5>Kemampuan dan Hobi</h5>
+                        <hr>
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Jenis</th>
+                                    <th>Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($datakemampuans as $i => $datakemampuan)
+                                    <tr>
+                                        <td>{{ $datakemampuan->kemampuan }}</td>
+                                        <td>{{ $datakemampuan->level }}</td>
+                                    </tr>
+                                @endforeach
+
+                                @foreach ($dataolahragas as $i => $dataolahraga)
+                                    <tr>
+                                        <td>{{ $dataolahraga->olahraga }}</td>
+                                        <td>{{ $dataolahraga->level }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -172,10 +261,11 @@
             </div>
 
             <div class="col-lg-12">
-                <div class="card shadow-none border">
+                <div class="card shadow-none border-1 border-primary">
                     <div class="card-body row">
-                        <h4>Keluarga</h4>
-                        <table class="table table-bordered">
+                        <h5>Keluarga</h5>
+                        <hr>
+                        <table class="table table-bordered table-sm">
                             <thead>
                                 <tr>
                                     <th>Hubungan</th>
@@ -190,7 +280,8 @@
                                     <tr>
                                         <td>{{ $datakeluarga->status_hubungan }}</td>
                                         <td>{{ $datakeluarga->nama_keluarga }}</td>
-                                        <td>{{ $datakeluarga->tempat_lahir_keluarga }}, {{ $datakeluarga->tanggal_lahir_keluarga }}</td>
+                                        <td>{{ $datakeluarga->tempat_lahir_keluarga }},
+                                            {{ $datakeluarga->tanggal_lahir_keluarga }}</td>
                                         <td>{{ $datakeluarga->pekerjaan }}</td>
                                         <td>{{ $datakeluarga->alamat }}</td>
                                     </tr>
@@ -202,10 +293,11 @@
             </div>
 
             <div class="col-lg-12">
-                <div class="card shadow-none border">
+                <div class="card shadow-none border-1 border-primary">
                     <div class="card-body row">
-                        <h4>Pengalaman Kerja</h4>
-                        <table class="table table-bordered">
+                        <h5>Pengalaman Kerja</h5>
+                        <hr>
+                        <table class="table table-bordered table-sm">
                             <thead>
                                 <tr>
                                     <th>Instansi</th>
@@ -233,58 +325,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                </div>
-
-                <div class="card shadow-none border">
-                    <div class="card-body row">
-                        <h4>Kemampuan dan Hobi</h4>
-
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Kemampuan</th>
-                                    <th>Level</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datakemampuans as $i => $datakemampuan)
-                                    <tr>
-                                        <td>{{ $datakemampuan->kemampuan }}</td>
-                                        <td>{{ $datakemampuan->level }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Hobi</th>
-                                    <th>Level</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($dataolahragas as $i => $dataolahraga)
-                                    <tr>
-                                        <td>{{ $dataolahraga->olahraga }}</td>
-                                        <td>{{ $dataolahraga->level }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="card shadow-none border">
-                    <div class="card-body row">
-                        <h4>Bidang yang diminati</h4>
-                    </div>
-                </div>
-
-                <div class="card shadow-none border">
-                    <div class="card-body row">
-                        <h4>Gaji Dll</h4>
                     </div>
                 </div>
             </div>
