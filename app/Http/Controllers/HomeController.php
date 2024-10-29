@@ -227,29 +227,16 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
-    // public function examUsers(){
-    //     $lamarans = Ptkformtransaction::where('user_id',Auth::user()->id)->whereNull('score_technical_test')->get();
-    //     $ids = [];
+    public function examUsers(){
+        $lamarans = Ptkformtransaction::where('user_id',Auth::user()->id)->whereNull('score_technical_test')->get();
+        $ids = [];
 
-    //     foreach ($lamarans as $key => $d) {
-    //         array_push($ids,$d->ptkform_id);
-    //     }
-    //     $exams = Exam::whereIn('ptkform_id',$ids)->get();
+        foreach ($lamarans as $key => $d) {
+            array_push($ids,$d->ptkform_id);
+        }
+        $exams = Exam::whereIn('ptkform_id',$ids)->get();
 
-    //     $data['examTransaction'] = Exam_transaction::select('exam_transactions.*')
-    //         ->where('exam_transactions.user_id', Auth::user()->id)
-    //         ->join('exams', 'exams.id', 'exam_transactions.exam_id')
-    //         ->where('exams.project_id', $project_id)
-    //         ->first();
-
-    //     if (!empty($data['examTransaction'])) {
-    //         return redirect('qna/' . EncryptData($data['examTransaction']->exam_id));
-    //     }
-
-    //     $data['projects']   = Project::findOrFail($project_id);
-    //     $data['exam']       = Exam::where('project_id', $project_id)->get();
-    //     return view('home.examination', compact('data'));
-
-    //     return view('home.examUsers', compact('exams'));
-    // }
+        $data['exam']       = $exams;
+        return view('home.examination', compact('data','exams'));
+    }
 }

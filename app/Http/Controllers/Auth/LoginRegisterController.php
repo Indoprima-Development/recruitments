@@ -37,8 +37,8 @@ class LoginRegisterController extends Controller
             Alert::error('Error', 'Email atau KTP sudah terdaftar');
             return redirect()->back();
         }
-        // dd($request);
-        User::create([
+
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -47,6 +47,7 @@ class LoginRegisterController extends Controller
             'pendidikan_terakhir' => $request->pendidikan_terakhir,
             'asal_instansi'       => $request->asal_instansi,
             'jurusan'             => $request->jurusan,
+            'ipk'                 => $request->ipk,
             'berat_badan'         => $request->berat_badan,
             'tinggi_badan'        => $request->tinggi_badan,
         ]);

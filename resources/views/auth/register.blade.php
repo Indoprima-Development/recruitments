@@ -140,11 +140,17 @@
                                                         aria-describedby="emailHelp" required>
                                                 </div>
 
-                                                <div class="col-sm-5">
+                                                <div class="col-sm-3">
                                                     <label for="ktp" class="form-label text-primary">Jurusan</label>
                                                     <input type="ktp" name="jurusan"
                                                         class="form-control border-1 border-primary"
                                                         aria-describedby="emailHelp" required>
+                                                </div>
+
+                                                <div class="col-sm-2">
+                                                    <label for="ipk" class="form-label text-primary">IPK</label>
+                                                    <input type="text" name="ipk"
+                                                        class="form-control border-1 border-primary" required>
                                                 </div>
 
                                                 <hr class="mt-3 border-1">

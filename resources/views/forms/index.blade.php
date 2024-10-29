@@ -9,7 +9,11 @@
                         @csrf
                         <div class="row">
                             <div class="col text-start">
+                                @if(Auth::user()->cv != null)
                                 <a href="{{ url(Auth::user()->cv) }}" class="text-white"><i class="ti ti-file fs-8"></i></a>
+                                @else
+                                <a href="#" class="text-white"><i class="ti ti-x fs-8"></i></a>
+                                @endif
                             </div>
                             <div class="col text-end">
                                 <button type="submit" class="btn btn-sm btn-outline-primary bg-white">Upload CV</button>
