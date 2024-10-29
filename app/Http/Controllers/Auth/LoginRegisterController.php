@@ -56,7 +56,7 @@ class LoginRegisterController extends Controller
         $request->session()->regenerate();
 
         Alert::success('Success', 'Akun berhasil dibuat.');
-        return redirect('opening-jobs');
+        return redirect('vacancies');
     }
 
     public function login()

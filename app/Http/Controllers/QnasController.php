@@ -30,7 +30,7 @@ class QnasController extends Controller
      */
     public function create()
     {
-        $exams = Exam::with('exam')->get();
+        $exams = Exam::get();
         return view('qnas.create',compact('exams'));
     }
 
@@ -130,7 +130,7 @@ class QnasController extends Controller
         $filename = "$request->type.png";
         $pathUpload = "qna/$request->qna_id";
         UploadFile($request->file,$pathUpload,$filename);
-        
+
         Qna::where('id',$request->qna_id)->update([
             $request->type => $pathUpload.'/'.$filename
         ]);

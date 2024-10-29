@@ -193,6 +193,21 @@ class DatadirisController extends Controller
         return redirect('forms');
     }
 
+    public function cv(Request $request)
+    {
+        $datadiri = User::findOrFail(Auth::user()->id);
+
+        if (!empty($request->cv)) {
+            $filename = $datadiri->id . ".pdf";
+            $pathUpload = "cv";
+            UploadFile($request->cv, $pathUpload, $filename);
+            $datadiri->cv = $pathUpload."/"."$filename";
+        }
+        $datadiri->save();
+
+        return redirect('forms');
+    }
+
     /**
      * Remove the specified resource from storage.
      *

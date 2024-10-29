@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('content2')
+@section('content')
 
 @if($errors->any())
 <div class="alert alert-danger">
@@ -20,6 +20,16 @@
         @endforeach
     </select>
 </div>
+
+<div class="mb-3">
+    {{ Form::label('ptkform_id', 'PTK Form', ['class'=>'form-label']) }}
+    <select class="form-select" name="ptkform_id">
+        @foreach($ptkforms as $p)
+        <option value="{{ $p->id }}">{{ $p->division->division_name }} - {{ $p->jobtitle->jobtitle_name }}</option>
+        @endforeach
+    </select>
+</div>
+
 <div class="mb-3">
     {{ Form::label('exam_name', 'Exam name', ['class'=>'form-label']) }}
     {{ Form::text('exam_name', null, array('class' => 'form-control')) }}

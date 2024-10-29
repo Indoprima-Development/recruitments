@@ -15,7 +15,7 @@
                 </a>
             </li>
         </ul>
-        @if(Auth::user()->role == 'admin')
+        @if(Auth::user()->role == 'ADMIN')
         <ul class="navbar-nav quick-links d-none d-xl-flex">
             <li class="nav-item dropdown hover-dd d-none d-xl-block">
                 <a class="nav-link" href="javascript:void(0)" data-bs-toggle="dropdown">Apps<span class="mt-1"><i class="ti ti-chevron-down"></i></span></a>

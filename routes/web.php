@@ -70,6 +70,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::get('/update-time-remaining/{exam_id}', 'updateTimeRemaining');
         Route::get('exam-histories', 'examHistories');
         Route::get('off-vacancy/{id}', 'offVacancy');
+        Route::get('exam-users', 'examUsers');
     });
 
     //PROJECT
@@ -123,6 +124,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('/datadiris/store/{id}', [DatadirisController::class, 'store']);
     Route::post('/datadiris/pernyataan/{id}', [DatadirisController::class, 'pernyataan']);
     Route::post('/datadiris/photo', [DatadirisController::class, 'photo']);
+    Route::post('/datadiris/cv', [DatadirisController::class, 'cv']);
     Route::get('/datadiris/data-users/{id}', [DatadirisController::class, 'dataUserById']);
 
     Route::resource('datapendidikanformals', DatapendidikanformalsController::class);

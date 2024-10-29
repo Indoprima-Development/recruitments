@@ -52,7 +52,7 @@
                         <span class="hide-menu">Job Vacancy</span>
                     </a>
                 </li>
-
+                @if(Auth::user()->role == 'ADMIN')
                 <li class="nav-small-cap">
                     <i class="ti ti-brand-databricks nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Master Data</span>
@@ -146,21 +146,28 @@
                         </li>
                     </ul>
                 </li>
+                @endif
 
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">History</span>
+                    <span class="hide-menu">Exams</span>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <span>
                             <i class="ti ti-mailbox"></i>
                         </span>
-                        <span class="hide-menu">History</span>
+                        <span class="hide-menu">Exams</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="{{url('exam-histories')}}" class="sidebar-link">
+                                <i class="ti ti-presentation"></i>
+                                <span class="hide-menu">History</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{url('exam-users')}}" class="sidebar-link">
                                 <i class="ti ti-presentation"></i>
                                 <span class="hide-menu">Exams</span>
                             </a>
