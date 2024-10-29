@@ -226,4 +226,17 @@ class HomeController extends Controller
         AlertSuccess("Deleted", "Vacancy is set to off");
         return redirect()->back();
     }
+
+    public function examUsers(){
+        $lamarans = Ptkformtransaction::where('user_id',Auth::user()->id)->whereNull('score_technical_test')->get();
+        $ids = [];
+
+        foreach ($lamarans as $key => $d) {
+            array_push($ids,$d->ptkform_id);
+        }
+        $exams = Exam::whereIn('ptkform_id',$ids)->get();
+
+        $data['exam']       = $exams;
+        return view('home.examination', compact('data','exams'));
+    }
 }

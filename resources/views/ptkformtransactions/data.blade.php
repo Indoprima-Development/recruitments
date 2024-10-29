@@ -35,8 +35,14 @@
                     <th>Kampus</th>
                     <th>Jurusan</th>
                     <th>PIC</th>
+
+                    <th>IPK</th>
+                    <th>Berat Badan</th>
+                    <th>Tinggi Badan</th>
+
                     <th>Score Candidate</th>
                     <th>CV Review</th>
+                    <th>Technical Test</th>
                     <th>HC Interview</th>
                     <th>Psikotest</th>
                     <th>User Interview</th>
@@ -71,7 +77,12 @@
                             <td> - </td>
                         @endif
                         <td>{{$ptkformtransaction->pic}}</td>
+                        <td>{{ $ptkformtransaction->user->ipk ?? '-' }}</td>
+                        <td>{{ $ptkformtransaction->user->berat_badan ?? '-' }}</td>
+                        <td>{{ $ptkformtransaction->user->tinggi_badan ?? '-' }}</td>
+
                         <td>{{$ptkformtransaction->score_candidate ?? 0}}</td>
+
                         <td>
                             @if ($ptkformtransaction->status == 0)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="0" type="button" types="cv_review" class="btnEditStatus btn btn-sm btn-outline-primary" names="{{ $ptkformtransaction->user->name }}">
@@ -86,6 +97,7 @@
                                 {{ $ptkformtransaction->cv_review != null ? substr($ptkformtransaction->cv_review,0,10) : '-' }}
                             @endif
                         </td>
+                        <td>{{$ptkformtransaction->score_technical_test ?? "-"}}</td>
                         <td>
                             @if ($ptkformtransaction->status == 1)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="1" type="button" types="interview_hc" class="btnEditStatus btn btn-sm btn-outline-primary">

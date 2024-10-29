@@ -7,18 +7,13 @@
 @section('addJs')
 <script src="{{asset('package/dist/libs/datatables.net/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('package/dist/js/datatable/datatable-basic.init.js')}}"></script>
-<script>
-	new DataTable('#example', {
-		scrollX: true
-	});
-</script>
 @endsection
 
-@section('content2')
+@section('content')
 
 <div class="d-flex justify-content-end mb-3"><a href="{{ route('qnas.create') }}" class="btn btn-info">Create</a></div>
 
-<table id="example" class="table border table-bordered text-nowrap">
+<table id="zero_config" class="table border table-bordered text-nowrap">
 	<thead>
 		<tr>
 			<th>No</th>

@@ -9,7 +9,7 @@
 <script src="{{asset('package/dist/js/datatable/datatable-basic.init.js')}}"></script>
 @endsection
 
-@section('content2')
+@section('content')
 <div class="card bg-light-info shadow-none position-relative overflow-hidden">
 	<div class="card-body px-4 py-3">
 		<div class="row align-items-center">
@@ -21,7 +21,7 @@
 </div>
 <div class="d-flex justify-content-end mb-3"><a href="{{ route('exams.create') }}" class="btn btn-info">Create</a></div>
 
-<table id="zero_config" class="table border table-bordered text-nowrap">
+<table class="table border table-bordered text-nowrap">
 	<thead>
 		<tr>
 			<th>No</th>
@@ -43,7 +43,7 @@
 
 			<td>
 				<div class="d-flex gap-2">
-					<a href="{{ url('exams',EncryptData($exam->id)) }}/qnas" class="btn btn-sm btn-info">Show</a>
+					<a href="{{ url('exams',EncryptData($exam->id)) }}/qnas" class="btn btn-sm btn-info">Show QnA</a>
 					<a href="{{ route('exams.edit', [$exam->id]) }}" class="btn btn-sm btn-primary">Edit</a>
 					{!! Form::open(['method' => 'DELETE','route' => ['exams.destroy', $exam->id]]) !!}
 					{!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}

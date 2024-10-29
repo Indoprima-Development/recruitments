@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Exam;
 use App\Models\Qna;
 use App\Http\Requests\ExamRequest;
+use App\Models\Ptkform;
 
 class ExamsController extends Controller
 {
@@ -30,7 +31,8 @@ class ExamsController extends Controller
     public function create()
     {
         $projects= Project::all();
-        return view('exams.create',compact('projects'));
+        $ptkforms= Ptkform::all();
+        return view('exams.create',compact('projects','ptkforms'));
     }
 
     /**
@@ -47,6 +49,7 @@ class ExamsController extends Controller
 		$exam->exam_name = $request->input('exam_name');
 		$exam->date_start = $request->input('date_start');
 		$exam->date_end = $request->input('date_end');
+        $exam->ptkform_id = $request->input('ptkform_id');
         $exam->save();
 
         return to_route('exams.index');
@@ -73,8 +76,9 @@ class ExamsController extends Controller
     public function edit($id)
     {
         $projects= Project::all();
+        $ptkforms= Ptkform::all();
         $exam = Exam::findOrFail($id);
-        return view('exams.edit',compact('exam','projects'));
+        return view('exams.edit',compact('exam','projects','ptkforms'));
     }
 
     /**
@@ -92,6 +96,7 @@ class ExamsController extends Controller
 		$exam->exam_name = $request->input('exam_name');
 		$exam->date_start = $request->input('date_start');
 		$exam->date_end = $request->input('date_end');
+        $exam->ptkform_id = $request->input('ptkform_id');
         $exam->save();
 
         return to_route('exams.index');

@@ -29,6 +29,10 @@ class User extends Authenticatable
         'pendidikan_terakhir',
         'asal_instansi',
         'jurusan',
+
+        'ipk',
+        'berat_badan',
+        'tinggi_badan',
     ];
 
     /**

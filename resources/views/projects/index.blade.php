@@ -30,7 +30,7 @@
 
 				<td>
 					<div class="d-flex gap-2">
-						<a href="{{ url('projects', EncryptData($project->id)) }}/exams" class="btn btn-sm btn-info">Show</a>
+						<a href="{{ url('projects', EncryptData($project->id)) }}/exams" class="btn btn-sm btn-info">Show Exam</a>
 						<a href="{{ route('projects.edit', [$project->id]) }}" class="btn btn-sm btn-primary">Edit</a>
 						{!! Form::open(['method' => 'DELETE','route' => ['projects.destroy', $project->id]]) !!}
 						{!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
