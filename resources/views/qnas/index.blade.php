@@ -6,25 +6,25 @@
 
 @section('addJs')
 <script src="{{asset('package/dist/libs/datatables.net/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('package/dist/js/datatable/datatable-basic.init.js')}}"></script>
+
 @endsection
 
 @section('content')
 
 <div class="d-flex justify-content-end mb-3"><a href="{{ route('qnas.create') }}" class="btn btn-info">Create</a></div>
 
-<table id="zero_config" class="table border table-bordered text-nowrap">
+<table id="zero_config" class="table border table-bordered">
 	<thead>
 		<tr>
 			<th>No</th>
 			<th>Action</th>
-			<th>exam_id</th>
-			<th>question</th>
-			<th>answer1</th>
-			<th>answer2</th>
-			<th>answer3</th>
-			<th>answer4</th>
-			<th>answer5</th>
+			<th>Exam</th>
+			<th>Question</th>
+			<th>Answer1</th>
+			<th>Answer2</th>
+			<th>Answer3</th>
+			<th>Answer4</th>
+			<th>Answer5</th>
 			<th>key</th>
 		</tr>
 	</thead>
@@ -35,8 +35,7 @@
 			<td>{{ $i+1 }}</td>
 			<td>
 				<div class="d-flex gap-2">
-					<a href="{{ route('qnas.show', [$qna->id]) }}" class="btn btn-sm btn-info">Show</a>
-					<a href="{{ route('qnas.edit', [$qna->id]) }}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{{ route('qnas.edit', [$qna->id]) }}" class="btn btn-sm btn-primary">Edit</a>
 					{!! Form::open(['method' => 'DELETE','route' => ['qnas.destroy', $qna->id]]) !!}
 					{!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
 					{!! Form::close() !!}
