@@ -15,6 +15,7 @@ use App\Models\Dataorganisasi;
 use App\Models\Datapendidikanformal;
 use App\Models\Datapendidikannonformal;
 use App\Models\Datapengalamankerja;
+use App\Models\Ptkformtransaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -240,6 +241,9 @@ class DatadirisController extends Controller
         $datadetails = Datadetail::where("user_id",$id)->get();
         $dataorganisasis = Dataorganisasi::where("user_id",$id)->get();
 
-        return view("forms.show",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","users"));
+        $ptkformtransactions = Ptkformtransaction::where('user_id',$id)->orderBy('id','DESC')->get();
+        // dd($ptkformtransaction->ptkform);
+
+        return view("forms.show",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","users",'ptkformtransactions'));
     }
 }

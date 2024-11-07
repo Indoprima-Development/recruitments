@@ -1,27 +1,28 @@
 @extends('default')
 
+@section('addCss')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+@endsection
+
 @section('content2')
-    <div class="container-fluid">
+    <div class="container-fluid" id="contentToSave">
         <div class="card overflow-hidden border-1 border-primary">
             <div class="card-body p-0">
                 <img src="{{ asset('photo/header.png') }}" alt="" class="img-fluid">
                 <div class="row align-items-center">
                     <div class="col-lg-4 order-lg-1 order-2">
                         <div class="d-flex align-items-center justify-content-around m-4">
-                            <div class="text-center text-primary">
-                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
-                                <h4 class="mb-0 fw-semibold lh-1">90</h4>
-                                <p class="mb-0 fs-4"><b>Score</b></p>
+                            <div class="text-center text-muted">
+                                <i class="ti ti-file fs-6 d-block mb-2"></i>
+                                <p class="mb-0 fs-4">
+                                    <a class="btn btn-sm btn-primary" href="{{url($users->cv)}}">
+                                        CV
+                                    </a>
+                                </p>
                             </div>
-                            <div class="text-center text-primary">
+                            <div class="text-center text-muted">
                                 <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
-                                <h4 class="mb-0 fw-semibold lh-1">90</h4>
-                                <p class="mb-0 fs-4"><b>CV</b></p>
-                            </div>
-                            <div class="text-center">
-                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
-                                <h4 class="mb-0 fw-semibold lh-1">OK</h4>
-                                <p class="mb-0 fs-4">HC</p>
+                                <p class="mb-0 fs-4"><b>{{ $ptkformtransactions[0]->ptkform->jobtitle->jobtitle_name ?? "-" }}</b></p>
                             </div>
                         </div>
                     </div>
@@ -49,20 +50,38 @@
                     </div>
                     <div class="col-lg-4 order-last">
                         <div class="d-flex align-items-center justify-content-around m-4">
-                            <div class="text-center">
+                            <div class="text-center text-muted">
                                 <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
-                                <h4 class="mb-0 fw-semibold lh-1">OK</h4>
-                                <p class="mb-0 fs-4">Psikotes</p>
+                                <p class="mb-0 fs-4">
+                                    <b>
+                                        @if($ptkformtransactions[0]->join != null)
+                                        JOIN
+                                        @elseif($ptkformtransactions[0]->mcu)
+                                        MCU
+                                        @elseif($ptkformtransactions[0]->finalisasi != null)
+                                        FINALISASI
+                                        @elseif($ptkformtransactions[0]->interview_direksi != null)
+                                        INTERVIEW DIREKSI
+                                        @elseif($ptkformtransactions[0]->interview_user != null)
+                                        INTERVIEW USER
+                                        @elseif($ptkformtransactions[0]->psikotest != null)
+                                        PSIKOTEST
+                                        @elseif($ptkformtransactions[0]->interview_hc != null)
+                                        INTERVIEW HC
+                                        @elseif($ptkformtransactions[0]->cv_review != null)
+                                        CV REVIEW
+                                        @else
+                                        APPLY
+                                        @endif
+                                    </b>
+                                </p>
                             </div>
-                            <div class="text-center">
-                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
-                                <h4 class="mb-0 fw-semibold lh-1">90</h4>
-                                <p class="mb-0 fs-4">User</p>
-                            </div>
-                            <div class="text-center">
-                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
-                                <h4 class="mb-0 fw-semibold lh-1">90</h4>
-                                <p class="mb-0 fs-4">Director</p>
+
+                            <div class="text-center text-muted">
+                                <i class="ti ti-printer fs-6 d-block mb-2"></i>
+                                <p class="mb-0 fs-4">
+                                    <button class="btn btn-sm btn-primary" onclick="saveDivAsPDF()">Save as PDF</button>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -74,7 +93,7 @@
             <div class="col-sm-12">
                 <div class="card shadow-none border-1 border-primary">
                     <div class="card-body row text-center">
-                        <h5>Riwayat Lamaran</h5>
+                        <h5 class="text-primary"><b>Riwayat Lamaran</b></h5>
                         <hr>
                         <table class="table table-bordered table-sm">
                             <thead>
@@ -82,6 +101,7 @@
                                     <th>Jobtitle</th>
                                     <th>Score</th>
                                     <th>CV</th>
+                                    <th>Technical</th>
                                     <th>HC</th>
                                     <th>Psikotes</th>
                                     <th>User</th>
@@ -92,6 +112,21 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($ptkformtransactions as $ptkformtransaction)
+                                <tr>
+                                    <td>{{ $ptkformtransaction->ptkform->jobtitle->jobtitle_name ?? "-" }}</td>
+                                    <td>{{$ptkformtransaction->score_candidate ?? 0}}</td>
+                                    <td>{{ $ptkformtransaction->cv_review != null ? substr($ptkformtransaction->cv_review,0,10) : '-' }}</td>
+                                    <td>{{$ptkformtransaction->score_technical_test ?? "-"}}</td>
+                                    <td>{{ $ptkformtransaction->interview_hc != null ? substr($ptkformtransaction->interview_hc,0,10) : '-' }}</td>
+                                    <td>{{ $ptkformtransaction->psikotest != null ? substr($ptkformtransaction->psikotest,0,10) : '-' }}</td>
+                                    <td>{{ $ptkformtransaction->interview_user != null ? substr($ptkformtransaction->interview_user,0,10) : '-' }}</td>
+                                    <td>{{ $ptkformtransaction->interview_direksi != null ? substr($ptkformtransaction->interview_direksi,0,10) : '-' }}</td>
+                                    <td>{{ $ptkformtransaction->finalisasi != null ? substr($ptkformtransaction->finalisasi,0,10) : '-' }}</td>
+                                    <td>{{ $ptkformtransaction->mcu != null ? substr($ptkformtransaction->mcu,0,10) : '-' }}</td>
+                                    <td>{{ $ptkformtransaction->join != null ? substr($ptkformtransaction->join,0,10) : '-' }}</td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -331,3 +366,18 @@
         </div>
     </div>
 @stop
+
+@section('addJs')
+<script>
+    function saveDivAsPDF() {
+        const element = document.getElementById('contentToSave');
+        html2pdf(element, {
+            margin: 1,
+            filename: '{{ $users->name }}.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        });
+    }
+</script>
+@endsection
