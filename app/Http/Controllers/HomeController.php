@@ -157,6 +157,12 @@ class HomeController extends Controller
             "score"     => $score,
         ]);
 
+        $ptkFormId = $data['examTransaction']->exam->ptkform_id;
+        Ptkformtransaction::where('user_id',Auth::user()->id)->where('ptkform_id',$ptkFormId)->update([
+            'score_technical_test' => $score,
+            'technical_test'    => date('Y-m-d H:i:s'),
+        ]);
+
         return view('home.submitTest', compact('data'));
     }
 

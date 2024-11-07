@@ -81,17 +81,14 @@
                         <td>{{ $ptkformtransaction->user->berat_badan ?? '-' }}</td>
                         <td>{{ $ptkformtransaction->user->tinggi_badan ?? '-' }}</td>
 
-                        <td>{{$ptkformtransaction->score_candidate ?? 0}}</td>
+                        <td>
+                            {{$ptkformtransaction->score_candidate ?? 0}}
+                        </td>
 
                         <td>
                             @if ($ptkformtransaction->status == 0)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="0" type="button" types="cv_review" class="btnEditStatus btn btn-sm btn-outline-primary" names="{{ $ptkformtransaction->user->name }}">
-                                    <span class="badge bg-success">
-                                        <i class="ti ti-square-check"></i>
-                                    </span>
-                                    <span class="badge bg-danger">
-                                        <i class="ti ti-xbox-x"></i>
-                                    </span>
+                                    <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
                                 {{ $ptkformtransaction->cv_review != null ? substr($ptkformtransaction->cv_review,0,10) : '-' }}
@@ -101,12 +98,7 @@
                         <td>
                             @if ($ptkformtransaction->status == 1)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="1" type="button" types="interview_hc" class="btnEditStatus btn btn-sm btn-outline-primary">
-                                    <span class="badge bg-success">
-                                        <i class="ti ti-square-check"></i>
-                                    </span>
-                                    <span class="badge bg-danger">
-                                        <i class="ti ti-xbox-x"></i>
-                                    </span>
+                                    <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
                             {{ $ptkformtransaction->interview_hc != null ? substr($ptkformtransaction->interview_hc,0,10) : '-' }}
@@ -115,12 +107,7 @@
                         <td>
                             @if ($ptkformtransaction->status == 2)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="2" type="button" types="psikotest" class="btnEditStatus btn btn-sm btn-outline-primary">
-                                    <span class="badge bg-success">
-                                        <i class="ti ti-square-check"></i>
-                                    </span>
-                                    <span class="badge bg-danger">
-                                        <i class="ti ti-xbox-x"></i>
-                                    </span>
+                                    <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
                                 {{ $ptkformtransaction->psikotest != null ? substr($ptkformtransaction->psikotest,0,10) : '-' }}
@@ -129,12 +116,7 @@
                         <td>
                             @if ($ptkformtransaction->status == 3)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="3" type="button" types="interview_user" class="btnEditStatus btn btn-sm btn-outline-primary">
-                                    <span class="badge bg-success">
-                                        <i class="ti ti-square-check"></i>
-                                    </span>
-                                    <span class="badge bg-danger">
-                                        <i class="ti ti-xbox-x"></i>
-                                    </span>
+                                    <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
                                 {{ $ptkformtransaction->interview_user != null ? substr($ptkformtransaction->interview_user,0,10) : '-' }}
@@ -143,12 +125,7 @@
                         <td>
                             @if ($ptkformtransaction->status == 4)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="4" type="button" types="interview_direksi" class="btnEditStatus btn btn-sm btn-outline-primary">
-                                    <span class="badge bg-success">
-                                        <i class="ti ti-square-check"></i>
-                                    </span>
-                                    <span class="badge bg-danger">
-                                        <i class="ti ti-xbox-x"></i>
-                                    </span>
+                                    <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
                                 {{ $ptkformtransaction->interview_direksi != null ? substr($ptkformtransaction->interview_direksi,0,10) : '-' }}
@@ -157,12 +134,7 @@
                         <td>
                             @if ($ptkformtransaction->status == 5)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="5" type="button" types="finalisasi" class="btnEditStatus btn btn-sm btn-outline-primary">
-                                    <span class="badge bg-success">
-                                        <i class="ti ti-square-check"></i>
-                                    </span>
-                                    <span class="badge bg-danger">
-                                        <i class="ti ti-xbox-x"></i>
-                                    </span>
+                                    <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
                                 {{ $ptkformtransaction->finalisasi != null ? substr($ptkformtransaction->finalisasi,0,10) : '-' }}
@@ -171,12 +143,7 @@
                         <td>
                             @if ($ptkformtransaction->status == 6)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="6" type="button" types="mcu" class="btnEditStatus btn btn-sm btn-outline-primary">
-                                    <span class="badge bg-success">
-                                        <i class="ti ti-square-check"></i>
-                                    </span>
-                                    <span class="badge bg-danger">
-                                        <i class="ti ti-xbox-x"></i>
-                                    </span>
+                                    <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
                                 {{ $ptkformtransaction->mcu != null ? substr($ptkformtransaction->mcu,0,10) : '-' }}
@@ -185,12 +152,7 @@
                         <td>
                             @if ($ptkformtransaction->status == 7)
                                 <button ptkformtrid="{{$ptkformtransaction->id}}" status="7" type="button" types="join" class="btnEditStatus btn btn-sm btn-outline-primary">
-                                    <span class="badge bg-success">
-                                        <i class="ti ti-square-check"></i>
-                                    </span>
-                                    <span class="badge bg-danger">
-                                        <i class="ti ti-xbox-x"></i>
-                                    </span>
+                                    <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
                                 {{ $ptkformtransaction->join != null ? substr($ptkformtransaction->join,0,10) : '-' }}
@@ -207,7 +169,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="exampleModalLabel">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">
                         <b>Update Status</b>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
