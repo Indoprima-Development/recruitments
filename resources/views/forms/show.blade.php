@@ -15,9 +15,15 @@
                             <div class="text-center text-muted">
                                 <i class="ti ti-file fs-6 d-block mb-2"></i>
                                 <p class="mb-0 fs-4">
+                                    @if($users->cv != null)
                                     <a class="btn btn-sm btn-primary" href="{{url($users->cv)}}">
                                         CV
                                     </a>
+                                    @else
+                                    <a class="btn btn-sm btn-primary" href="3">
+                                        CV Not Uploaded
+                                    </a>
+                                    @endif
                                 </p>
                             </div>
                             <div class="text-center text-muted">
