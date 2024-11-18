@@ -97,7 +97,7 @@ class PtkformsController extends Controller
             }
         }
 
-        AlertSuccess("Created","Data successfully created");
+        AlertSuccess("Success","Data berhasil dibuat");
         return redirect('vacancies');
     }
 
@@ -164,7 +164,7 @@ class PtkformsController extends Controller
         $ptkform->status = $request->input('status');
         $ptkform->save();
 
-        AlertSuccess("Edited","Data successfully Edited");
+        AlertSuccess("Success","Data berhasil diubah");
         return redirect('vacancies');
     }
 
@@ -178,7 +178,7 @@ class PtkformsController extends Controller
     {
         $ptkform = Ptkform::findOrFail($id);
         $ptkform->delete();
-        AlertSuccess("Deleted","Data successfully deleted");
+        AlertSuccess("Terhapus","Data berhasil dihapus");
         return redirect()->back();
     }
 

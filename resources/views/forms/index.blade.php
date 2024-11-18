@@ -16,7 +16,7 @@
                                 @endif
                             </div>
                             <div class="col text-end">
-                                <button type="submit" class="btn btn-sm btn-outline-primary bg-white">Upload CV</button>
+                                <button type="submit" class="btn btn-sm btn-outline-primary bg-white">Unggah CV</button>
                             </div>
                         </div>
                         <div class="mt-4">
@@ -36,7 +36,7 @@
                         @csrf
                         <div class="row">
                             <div class="col text-end">
-                                <button type="submit" class="btn btn-sm btn-outline-primary bg-white">Upload Photo</button>
+                                <button type="submit" class="btn btn-sm btn-outline-primary bg-white">Unggah Foto</button>
                             </div>
                         </div>
                         <div class="mt-4">

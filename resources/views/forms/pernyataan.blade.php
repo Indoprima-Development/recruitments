@@ -5,7 +5,6 @@
             <div class="row">
                 <div class="col-sm-12 col-md-8">
                     <h5 class="card-title fw-semibold">Pernyataan</h5>
-                    <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                 </div>
                 <div class="col-sm-12 col-md-4 text-end">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -44,7 +43,7 @@
 
                 <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('image_jabatan_terakhir', 'Struktur Organisasi', ['class' => 'form-label']) }}
-                    <br><small class="text-danger">(Optional) Gambarkan struktur organisasi anda di perusahaan
+                    <br><small class="text-danger">(Opsional) Gambarkan struktur organisasi anda di perusahaan
                         terakhir</small>
                     <input type="file" class="form-control" name="image_jabatan_terakhir" accept="image/*" />
 
@@ -85,7 +84,6 @@
             <div class="row">
                 <div class="col-sm-12 col-md-8">
                     <h5 class="card-title fw-semibold">Referensi dan Rekomendasi</h5>
-                    <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
                 </div>
                 <div class="col-sm-12 col-md-4 text-end">
                     <a href="#" class="btn btn-primary" >

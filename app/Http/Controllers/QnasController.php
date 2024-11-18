@@ -135,7 +135,7 @@ class QnasController extends Controller
             $request->type => $pathUpload.'/'.$filename
         ]);
 
-        Alert::success('Success', 'Upload image success');
+        Alert::success('Success', 'Mengunggah gambar berhasil');
         return redirect()->back();
     }
 }

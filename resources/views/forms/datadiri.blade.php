@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-8">
                     <h5 class="card-title fw-semibold">Data Diri</h5>
-                    <p class="card-subtitle mb-4">(*) Required</p>
+                    <p class="card-subtitle mb-4">(*) Wajib diisi</p>
                 </div>
             </div>
             <div class="row">

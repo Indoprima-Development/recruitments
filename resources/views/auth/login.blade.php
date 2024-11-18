@@ -33,20 +33,20 @@
             <div class="position-relative z-index-5">
                 <div class="row">
                     <div class="col-xl-7 col-xxl-8">
-                        <a href="./index.html" class="text-nowrap logo-img d-block px-4 py-9 w-100">
+                        <a href="#" class="text-nowrap logo-img d-block px-4 py-9 w-100">
                             <img src="{{asset('package/dist/images/logos/logo.png')}}" width="300" alt="">
                         </a>
                         <div class="d-none d-xl-flex align-items-center justify-content-center" style="height: calc(100vh - 80px);">
-                            <img src="{{asset('package/dist/images/backgrounds/login-security.svg')}}" alt="" class="img-fluid" width="500">
+                            <img src="{{asset('photo/login.png')}}" alt="" class="img-fluid" width="100%">
                         </div>
                     </div>
                     <div class="col-xl-5 col-xxl-4">
                         <div class="authentication-login min-vh-100 bg-body row justify-content-center align-items-center p-4">
                             <div class="col-sm-8 col-md-6 col-xl-9">
-                                <h2 class="mb-3 fs-7 fw-bolder">Welcome to Recruitment</h2>
+                                <h2 class="mb-3 fs-7 fw-bolder">Halo Talenta Luar Biasa, Yuk Mulai!</h2>
                                 <p class=" mb-9">PT. Indoprima Gemilang</p>
                                 <div class="position-relative text-center my-4">
-                                    <p class="mb-0 fs-4 px-3 d-inline-block bg-white text-dark z-index-5 position-relative">Please insert the form below</p>
+                                    <p class="mb-0 fs-4 px-3 d-inline-block bg-white text-dark z-index-5 position-relative">Isikan form di bawah ini</p>
                                     <span class="border-top w-100 position-absolute top-50 start-50 translate-middle"></span>
                                 </div>
                                 <form action="{{ route('authenticate') }}" method="POST">
@@ -56,14 +56,14 @@
                                         <input type="email" name="email" class="form-control" aria-describedby="emailHelp">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="ktp" class="form-label">Password</label>
+                                        <label for="ktp" class="form-label">Kata Sandi</label>
                                         <input type="password" name="password" class="form-control" aria-describedby="emailHelp">
                                     </div>
 
-                                    <button id="btnSubmit" type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</button>
+                                    <button id="btnSubmit" type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Masuk</button>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <p class="fs-4 mb-0 fw-medium">Don't have an account ?
-                                            <a class="text-primary" href="{{url("auth/register")}}">Create account</a>
+                                        <p class="fs-4 mb-0 fw-medium">Belum memiliki akun?
+                                            <a class="text-primary" href="{{url("auth/register")}}"> Daftarkan disini!</a>
                                         </p>
                                     </div>
                                 </form>
