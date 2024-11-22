@@ -41,6 +41,18 @@ use App\Http\Controllers\PtkformtransactionsController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendEmail;
+Route::get('/send-email',function(){
+    $data = [
+        'name' => 'Syahrizal As',
+        'body' => 'Testing Kirim Email di Santri Koding'
+    ];
+
+    Mail::to('findryankpradana@gmail.com')->send(new SendEmail($data));
+
+    dd("Email Berhasil dikirim.");
+});
 
 Route::prefix('auth')->group(function () {
     Route::controller(LoginRegisterController::class)->group(function () {
