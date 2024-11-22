@@ -59,13 +59,13 @@
                             <div class="hero-content my-11 my-xl-0">
                                 <h6 class="d-flex align-items-center gap-2 fs-4 fw-semibold mb-3" data-aos="fade-up"
                                     data-aos-delay="200" data-aos-duration="1000"><i
-                                        class="ti ti-rocket text-secondary fs-6"></i>Mari bergabung</h6>
+                                        class="ti ti-rocket text-secondary fs-6"></i></h6>
                                 <h1 class="fw-bolder mb-8 fs-13" data-aos="fade-up" data-aos-delay="400"
-                                    data-aos-duration="1000">Smart<span class="text-primary"> <br>Recruitment</span>
+                                    data-aos-duration="1000">Indoprima Gemilang<span class="text-primary"> <br>Recruitment</span>
                                     <br>
                                     System</h1>
                                 <p class="fs-5 mb-3 text-dark fw-normal">
-                                    Temukan Pekerjaan anda di <b class="text-primary">PT. Indoprima Gemilang</b>
+                                    Empowering growth, fostering potential. <b class="text-primary">Your bright future starts here!</b>
                                 </p>
                                 <div class="d-sm-flex align-items-center gap-3">
                                     @if (!Auth::check())
@@ -136,7 +136,7 @@
 
                                             <div class="ms-auto">
                                                 <div class="category-selector btn-group">
-                                                    
+
                                                     <a class="btn btn-outline-primary border-2 btn-sm"
                                                         href="{{ url('vacancies', $job->id) }}">
                                                         <div class="category">
@@ -166,7 +166,7 @@
                             <div class="text-center" data-aos="fade-up" data-aos-delay="600"
                                 data-aos-duration="1000">
                                 <h2 class="fs-9 text-center mb-4 mb-lg-9 fw-bolder">
-                                    Alur Recruitment
+                                    Alur Rekrutmen
                                 </h2>
                             </div>
                         </div>
@@ -175,73 +175,73 @@
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-wand text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Register</h5>
+                                <i class="d-block ti ti-square-number-1 text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Buat Akun</h5>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-layout-sidebar text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Login</h5>
+                                <i class="d-block ti ti-square-number-2 text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Verifikasi</h5>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-archive text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Apply Vacancy</h5>
+                                <i class="d-block ti ti-square-number-3 text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Masuk</h5>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-archive text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Technical Test</h5>
+                                <i class="d-block ti ti-square-number-2 text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Lamar Lowongan</h5>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
+                            data-aos-duration="1000">
+                            <div class="text-center mb-5">
+                                <i class="d-block ti ti-square-number-5 text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Tes Teknis</h5>
                             </div>
                         </div>
 
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-archive text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">HC Interview</h5>
+                                <i class="d-block ti ti-square-number-6 text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Wawancara Human Capital</h5>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="800"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-adjustments text-primary fs-10"></i>
+                                <i class="d-block ti ti-square-number-7 text-primary fs-10"></i>
                                 <h5 class="fs-5 fw-semibold mt-8">Psikotes</h5>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1000"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-tag text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Final Interview</h5>
+                                <i class="d-block ti ti-square-number-8 text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Wawancara Akhir</h5>
                             </div>
                         </div>
 
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1200"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-arrows-shuffle text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Medical Checkup</h5>
+                                <i class="d-block ti ti-square-number-9 text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Pemeriksaan Kesehatan</h5>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1200"
                             data-aos-duration="1000">
                             <div class="text-center mb-5">
-                                <i class="d-block ti ti-chart-pie text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Offering</h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="1200"
-                            data-aos-duration="1000">
-                            <div class="text-center mb-5">
-                                <i class="d-block ti ti-layers-intersect text-primary fs-10"></i>
-                                <h5 class="fs-5 fw-semibold mt-8">Join with us</h5>
+                                <i class="d-block ti ti-heart-handshake text-primary fs-10"></i>
+                                <h5 class="fs-5 fw-semibold mt-8">Finalisasi</h5>
                             </div>
                         </div>
                     </div>
@@ -258,9 +258,9 @@
                             <div
                                 class="d-sm-flex align-items-center justify-content-center justify-content-lg-start gap-3">
                                 <a href="{{ url('auth/login') }}"
-                                    class="btn bg-white text-primary fw-semibold d-block mb-3 mb-sm-0 btn-hover-shadow">Login</a>
+                                    class="btn bg-white text-primary fw-semibold d-block mb-3 mb-sm-0 btn-hover-shadow">Masuk</a>
                                 <a href="{{ url('auth/register') }}"
-                                    class="btn border-white text-white fw-semibold btn-hover-white d-block">Register</a>
+                                    class="btn border-white text-white fw-semibold btn-hover-white d-block">Daftar</a>
                             </div>
                         </div>
                         <div class="col-lg-5 col-xl-5">
@@ -283,9 +283,8 @@
                                 <img src="{{ asset('package/dist/images/logos/logo.png') }}" alt=""
                                     class="mb-3" height="30">
                             </a>
-                            <p class="mb-0 text-dark">All rights reserved by PT. Indoprima Gemilang. Designed &
-                                Developed by <a class="text-dark text-hover-primary border-bottom border-primary"
-                                    href="https://adminmart.com/">Information System</a></p>
+                            <p class="mb-0 text-dark">Hak cipta dilindungi oleh PT. Indoprima Gemilang. Dirancang & Dikembangkan oleh <a class="text-dark text-hover-primary border-bottom border-primary"
+                                    href="https://indoprimagemilang.com">Information System</a></p>
                         </div>
                     </div>
                 </div>

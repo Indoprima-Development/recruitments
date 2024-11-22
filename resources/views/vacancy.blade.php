@@ -61,14 +61,7 @@
                     <div class="card-body px-4 py-3">
                         <div class="row align-items-center">
                             <div class="col-9">
-                                <h4 class="fw-semibold mb-8 ">Job Vacancy</h4>
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item">
-                                            <a class="text-muted" href="#">Daftarkan segera diri anda</a>
-                                        </li>
-                                    </ol>
-                                </nav>
+                                <h4 class="fw-semibold mb-8 ">Lowongan Pekerjaan</h4>
                             </div>
                             <div class="col-3">
                                 <div class="text-center mb-n5">
@@ -98,7 +91,7 @@
                             "
                                     id="all-category">
                                     <i class="ti ti-list fill-white me-0 me-md-1"></i>
-                                    <span class="d-none d-md-block font-weight-medium">All Vacancies</span>
+                                    <span class="d-none d-md-block font-weight-medium">Semua Lowongan</span>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -149,7 +142,7 @@
                             "
                                     id="note-important">
                                     <i class="ti ti-star fill-white me-0 me-md-1"></i>
-                                    <span class="d-none d-md-block font-weight-medium">Internship</span>
+                                    <span class="d-none d-md-block font-weight-medium">Magang</span>
                                 </a>
                             </li>
                         </ul>

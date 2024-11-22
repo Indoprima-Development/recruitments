@@ -25,13 +25,6 @@
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="{{url('/')}}" class="sidebar-link">
-                                <i class="ti ti-helicopter-landing"></i>
-                                <span class="hide-menu">Landing Page</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
                             <a href="{{url('home')}}" class="sidebar-link">
                                 <i class="ti ti-home"></i>
                                 <span class="hide-menu">Home</span>
@@ -42,20 +35,20 @@
 
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Job Vacancy</span>
+                    <span class="hide-menu">Lowongan Pekerjaan</span>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{url('vacancies')}}" aria-expanded="false">
                         <span>
                             <i class="ti ti-briefcase"></i>
                         </span>
-                        <span class="hide-menu">Job Vacancy</span>
+                        <span class="hide-menu">Lowongan Pekerjaan</span>
                     </a>
                 </li>
                 @if(Auth::user()->role == 'ADMIN')
                 <li class="nav-small-cap">
                     <i class="ti ti-brand-databricks nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Master Data</span>
+                    <span class="hide-menu">Data</span>
                 </li>
 
                 <li class="sidebar-item">
@@ -63,7 +56,7 @@
                         <span>
                             <i class="ti ti-database"></i>
                         </span>
-                        <span class="hide-menu">Master Data</span>
+                        <span class="hide-menu">Data</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
@@ -123,7 +116,7 @@
                         <span>
                             <i class="ti ti-flask-2"></i>
                         </span>
-                        <span class="hide-menu">Master Quiz</span>
+                        <span class="hide-menu">Tes Teknis</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
@@ -150,26 +143,26 @@
 
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Exams</span>
+                    <span class="hide-menu">Riwayat</span>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <span>
                             <i class="ti ti-mailbox"></i>
                         </span>
-                        <span class="hide-menu">Exams</span>
+                        <span class="hide-menu">Riwayat</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
                             <a href="{{url('exam-histories')}}" class="sidebar-link">
                                 <i class="ti ti-presentation"></i>
-                                <span class="hide-menu">History</span>
+                                <span class="hide-menu">Riwayat Tes</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('exam-users')}}" class="sidebar-link">
                                 <i class="ti ti-presentation"></i>
-                                <span class="hide-menu">Exams</span>
+                                <span class="hide-menu">Riwayat User</span>
                             </a>
                         </li>
                     </ul>
@@ -177,14 +170,14 @@
 
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Profile</span>
+                    <span class="hide-menu">Akun</span>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                         <span>
                             <i class="ti ti-users"></i>
                         </span>
-                        <span class="hide-menu">Account</span>
+                        <span class="hide-menu">Akun</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">

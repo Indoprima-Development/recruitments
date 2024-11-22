@@ -229,7 +229,7 @@ class HomeController extends Controller
             'status' => 9
         ]);
 
-        AlertSuccess("Deleted", "Vacancy is set to off");
+        AlertSuccess("Terhapus", "Lowongan berhasil dihapus");
         return redirect()->back();
     }
 

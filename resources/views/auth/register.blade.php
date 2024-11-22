@@ -50,12 +50,11 @@
                             <div
                                 class="row justify-content-center align-items-center p-4">
                                 <div class="col-sm-12 col-md-12 col-xl-12">
-                                    <h2 class="mb-3 fs-7 fw-bolder">Welcome to Recruitment</h2>
-                                    <p class=" mb-9">PT. Indoprima Gemilang</p>
+                                    <h2 class="mb-3 fs-7 fw-bolder">Halo Talenta Luar Biasa, Yuk Mulai!</h2>
                                     <div class="position-relative text-center my-4">
                                         <p
                                             class="mb-0 fs-4 px-3 d-inline-block bg-white text-dark z-index-5 position-relative">
-                                            Please insert the form below</p>
+                                            Isikan form di bawah ini!</p>
                                         <span
                                             class="border-top position-absolute top-50 start-50 translate-middle"></span>
                                     </div>
@@ -73,7 +72,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <label for="ktp" class="form-label">Password</label>
+                                                    <label for="ktp" class="form-label">Kata Sandi</label>
                                                     <div class="input-group border rounded-1 border-1 border-dark">
                                                         <span class="input-group-text bg-transparent px-6 border-0"
                                                             id="basic-addon1">
@@ -149,8 +148,8 @@
 
                                                 <div class="col-sm-2">
                                                     <label for="ipk" class="form-label text-primary">IPK</label>
-                                                    <input type="text" name="ipk"
-                                                        class="form-control border-1 border-primary" required>
+                                                    <input type="number" name="ipk"
+                                                        class="form-control border-1 border-primary" step="any"  required placeholder="4.00">
                                                 </div>
 
                                                 <hr class="mt-3 border-1">
@@ -158,13 +157,13 @@
                                                 <div class="col-sm-6">
                                                     <label for="ktp" class="form-label text-success">Berat Badan (kg)</label>
                                                     <input type="number" name="berat_badan"
-                                                        class="form-control border-1 border-success" required>
+                                                        class="form-control border-1 border-success" required step="any">
                                                 </div>
 
                                                 <div class="col-sm-6">
                                                     <label for="ktp" class="form-label text-success">Tinggi Badan (cm)</label>
                                                     <input type="number" name="tinggi_badan"
-                                                        class="form-control border-1 border-success" required>
+                                                        class="form-control border-1 border-success" required step="any">
                                                 </div>
 
                                                 <div class="col-sm-12 mt-3 text-end">
@@ -190,7 +189,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Close</button>
+                                    data-bs-dismiss="modal">Tutup</button>
                                 <button id="btnSubmit" type="submit"
                                     class="btn btn-primary rounded-2">Daftar</button>
                             </div>
