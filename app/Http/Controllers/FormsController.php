@@ -36,8 +36,9 @@ class FormsController extends Controller
         $datadetails = Datadetail::where("user_id",Auth::user()->id)->get();
         $dataorganisasis = Dataorganisasi::where("user_id",Auth::user()->id)->get();
         $datapeminatans = Datapeminatan::where("user_id",Auth::user()->id)->get();
+        $users = User::find(Auth::user()->id);
 
-        return view("forms.index",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","datapeminatans"));
+        return view("forms.index",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","datapeminatans",'users'));
     }
 
     /**
