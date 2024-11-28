@@ -50,14 +50,15 @@ class LoginRegisterController extends Controller
             'ipk'                 => $request->ipk,
             'berat_badan'         => $request->berat_badan,
             'tinggi_badan'        => $request->tinggi_badan,
+            'is_active'           => 0,
+            'active_token'        => GenerateRandomString(),
         ]);
 
-        $credentials = $request->only('email', 'password');
-        Auth::attempt($credentials);
-        $request->session()->regenerate();
+        Alert::success('Success', 'Akun berhasil dibuat. Silahkan melakukan konfirmasi email');
 
-        Alert::success('Success', 'Akun berhasil dibuat.');
-        return redirect('vacancies');
+        SendMail($request->name,GenerateRandomString());
+
+        return redirect('auth/login');
     }
 
     public function login()
@@ -76,13 +77,19 @@ class LoginRegisterController extends Controller
         $user = User::where('email', $request->email)->first();
         if (!empty($user)) {
             if (Hash::check($request->password, $user->password)) {
+
+                if ($user->is_active == "" || $user->is_active == 0) {
+                    Alert::error('Gagal!', 'Akun belum diaktifkan, harap memeriksa email untuk konfirmasi akun');
+                    return redirect()->back();
+                }
+
                 Auth::attempt($credentials);
                 $request->session()->regenerate();
                 return redirect('vacancies');
             }
         }
 
-        Alert::error('Failed!', 'Your provided credentials do not match in our records.');
+        Alert::error('Gagal!', 'Email dan Password tidak sesuai.');
 
         return back()->withErrors([
             'email' => 'Your provided credentials do not match in our records.',

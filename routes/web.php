@@ -50,8 +50,6 @@ Route::get('/send-email',function(){
     ];
 
     Mail::to('findryankpradana@gmail.com')->send(new SendEmail($data));
-
-    dd("Email Berhasil dikirim.");
 });
 
 Route::prefix('auth')->group(function () {
