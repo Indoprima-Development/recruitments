@@ -13,25 +13,33 @@ use App\Models\Ptkformtransaction;
 use App\Models\Qna;
 use App\Models\Qna_transaction;
 use Illuminate\Support\Facades\DB;
+use League\OAuth2\Client\Provider\Google;
+
+use Google\Client as Google_Client;
+use Google\Service\Gmail as Google_Service_Gmail;
+use Google\Service\Gmail\Message as Google_Service_Gmail_Message;
+
+
 
 class HomeController extends Controller
 {
-    public function home(){
+    public function home()
+    {
         if (Auth::user()->role != 'ADMIN') {
             return redirect('vacancies');
         }
 
         $data = Ptkformtransaction::select(DB::raw('count(id) as jumlah, status'))
-        ->orderBy('status','ASC')
-        ->groupBy('status')
-        ->get();
+            ->orderBy('status', 'ASC')
+            ->groupBy('status')
+            ->get();
 
-        $dataResults = [0,0,0,0,0,0,0,0];
+        $dataResults = [0, 0, 0, 0, 0, 0, 0, 0];
         foreach ($data as $key => $d) {
             $dataResults[$d->status] = $d->jumlah;
         }
 
-        return view("home.home",compact("dataResults"));
+        return view("home.home", compact("dataResults"));
     }
 
     public function index()
@@ -158,7 +166,7 @@ class HomeController extends Controller
         ]);
 
         $ptkFormId = $data['examTransaction']->exam->ptkform_id;
-        Ptkformtransaction::where('user_id',Auth::user()->id)->where('ptkform_id',$ptkFormId)->update([
+        Ptkformtransaction::where('user_id', Auth::user()->id)->where('ptkform_id', $ptkFormId)->update([
             'score_technical_test' => $score,
             'technical_test'    => date('Y-m-d H:i:s'),
         ]);
@@ -224,8 +232,9 @@ class HomeController extends Controller
         return view('home.examHistories', compact('data'));
     }
 
-    public function offVacancy($id){
-        Ptkform::where('id',$id)->update([
+    public function offVacancy($id)
+    {
+        Ptkform::where('id', $id)->update([
             'status' => 9
         ]);
 
@@ -233,16 +242,22 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
-    public function examUsers(){
-        $lamarans = Ptkformtransaction::where('user_id',Auth::user()->id)->whereNull('score_technical_test')->get();
+    public function examUsers()
+    {
+        $lamarans = Ptkformtransaction::where('user_id', Auth::user()->id)->whereNull('score_technical_test')->get();
         $ids = [];
 
         foreach ($lamarans as $key => $d) {
-            array_push($ids,$d->ptkform_id);
+            array_push($ids, $d->ptkform_id);
         }
-        $exams = Exam::whereIn('ptkform_id',$ids)->get();
+        $exams = Exam::whereIn('ptkform_id', $ids)->get();
 
         $data['exam']       = $exams;
-        return view('home.examination', compact('data','exams'));
+        return view('home.examination', compact('data', 'exams'));
+    }
+
+    public function sendMail()
+    {
+
     }
 }

@@ -1,5 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendEmail;
 
 // $apiEndpoint = 'https://api.example.com/create';
 // $header    'Authorization' => 'Bearer ' . $token
@@ -37,4 +39,13 @@ function DeleteAPI($apiEndpoint, $header)
 {
     $response = Http::withHeaders($header)->delete($apiEndpoint);
     return $response->json();
+}
+
+function SendMail($name,$body){
+    $data = [
+        'name' => $name,
+        'body' => $body
+    ];
+
+    Mail::to('findryankpradana@gmail.com')->send(new SendEmail($data));
 }
