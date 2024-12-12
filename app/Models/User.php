@@ -33,6 +33,8 @@ class User extends Authenticatable
         'ipk',
         'berat_badan',
         'tinggi_badan',
+        'is_active',
+        'active_token',
     ];
 
     /**
@@ -56,7 +58,7 @@ class User extends Authenticatable
     ];
 
     public function datapendidikanformal()
-	{
-		return $this->hasMany('App\Models\Datapendidikanformal',"user_id","id");
-	}
+    {
+        return $this->hasMany('App\Models\Datapendidikanformal', "user_id", "id");
+    }
 }

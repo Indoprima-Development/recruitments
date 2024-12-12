@@ -60,6 +60,7 @@ Route::prefix('auth')->group(function () {
         Route::post('/authenticate', 'authenticate')->name('authenticate');
     });
 });
+Route::get('/emails/konfirmation',[MainController::class, 'konfirmation']);
 
 Route::get('/',                 [MainController::class, 'index']);
 Route::get('/vacancies',        [MainController::class, 'vacancy']);

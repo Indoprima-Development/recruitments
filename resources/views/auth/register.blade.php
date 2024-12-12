@@ -126,6 +126,7 @@
                                                     <select name="pendidikan_terakhir"
                                                         class="form-select border-1 border-primary" required>
                                                         <option value="" selected disabled>Pilih</option>
+                                                        <option value="SMA SMK">SMA SMK</option>
                                                         <option value="D4">D4</option>
                                                         <option value="S1">S1</option>
                                                         <option value="S2">S2</option>

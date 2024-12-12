@@ -41,11 +41,12 @@ function DeleteAPI($apiEndpoint, $header)
     return $response->json();
 }
 
-function SendMail($name,$body){
+function SendMail($name,$body,$email,$subject){
     $data = [
+        'subject' => $subject,
         'name' => $name,
         'body' => $body
     ];
 
-    Mail::to('findryankpradana@gmail.com')->send(new SendEmail($data));
+    Mail::to($email)->send(new SendEmail($data));
 }

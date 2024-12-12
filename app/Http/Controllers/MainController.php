@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Jobtitle;
 use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MainController extends Controller
 {
@@ -54,5 +56,14 @@ class MainController extends Controller
         $jobtitle = Jobtitle::findOrFail($ptkform->jobtitle_id);
 
         return view('ptkforms.show', compact('ptkform', 'isApplied', 'jobtitle'));
+    }
+
+    public function konfirmation(Request $request){
+        User::where('active_token', $request->input('token'))->update([
+            'is_active' => 1
+        ]);
+
+        Alert::success('Success', 'Akun berhasil diaktifasi');
+        return redirect('auth/login');
     }
 }

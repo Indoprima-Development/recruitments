@@ -38,6 +38,8 @@ class LoginRegisterController extends Controller
             return redirect()->back();
         }
 
+        $tokenGenerate = GenerateRandomString();
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -51,12 +53,12 @@ class LoginRegisterController extends Controller
             'berat_badan'         => $request->berat_badan,
             'tinggi_badan'        => $request->tinggi_badan,
             'is_active'           => 0,
-            'active_token'        => GenerateRandomString(),
+            'active_token'        => $tokenGenerate,
         ]);
 
         Alert::success('Success', 'Akun berhasil dibuat. Silahkan melakukan konfirmasi email');
 
-        SendMail($request->name,GenerateRandomString());
+        SendMail($request->name,$tokenGenerate,$request->email,'Verifikasi Pendaftaran Akun');
 
         return redirect('auth/login');
     }
