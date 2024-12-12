@@ -9,6 +9,7 @@
                 <!-- ============================= -->
                 <!-- Home -->
                 <!-- ============================= -->
+                @if(Auth::user())
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                     <span class="hide-menu">Home</span>
@@ -45,6 +46,7 @@
                         <span class="hide-menu">Lowongan Pekerjaan</span>
                     </a>
                 </li>
+
                 @if(Auth::user()->role == 'ADMIN')
                 <li class="nav-small-cap">
                     <i class="ti ti-brand-databricks nav-small-cap-icon fs-4"></i>
@@ -188,6 +190,21 @@
                         </li>
                     </ul>
                 </li>
+                @else
+                <li class="nav-small-cap">
+                    <i class="ti ti-user nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Akun</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{url('auth/login')}}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-briefcase"></i>
+                        </span>
+                        <span class="hide-menu">Masuk</span>
+                    </a>
+                </li>
+
+                @endif
 
                 @if(false)
                 <!-- ============================= -->
