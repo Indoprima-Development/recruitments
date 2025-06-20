@@ -10,16 +10,16 @@
             </li>
             <li class="nav-item d-none d-xl-block">
                 <a href="{{url('/')}}" class="text-nowrap nav-link">
-                    <img src="{{asset('package/dist/images/logos/logo.png')}}" class="dark-logo" width="300" alt="" />
-                    <img src="{{asset('package/dist/images/logos/logo.png')}}" class="light-logo" width="300" alt="" />
+                    <img src="{{asset('photo/white-logo.png')}}" class="dark-logo" width="300" alt="" />
+                    <img src="{{asset('photo/white-logo.png')}}" class="light-logo" width="300" alt="" />
                 </a>
             </li>
         </ul>
         @if(Auth::user()->role == 'ADMIN')
         @endif
         <div class="d-block d-xl-none">
-            <a href="{{url('/')}}" class="text-nowrap nav-link">
-                <img src="{{asset('package/dist/images/logos/logo.png')}}" width="300" alt="" />
+            <a href="{{url('/')}}" class="text-nowrap nav-link mt-2 mb-2">
+                <img src="{{asset('photo/white-logo.png')}}" width="200" alt="" />
             </a>
         </div>
         <button class="navbar-toggler p-0 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

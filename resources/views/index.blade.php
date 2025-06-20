@@ -81,10 +81,10 @@
                         <!-- Text Section -->
                         <div class="col-lg-6 text-light" data-aos="fade-up" data-aos-delay="200">
                             <div class="hero-content py-5">
-                                <h6 class="d-flex align-items-center gap-2 fs-5 fw-medium mb-3 text-info">
+                                <h6 class="d-flex align-items-center gap-2 fs-5 fw-medium mb-3 text-info"  style="text-shadow: 0 0 10px #00f0ff;">
                                     <i class="ti ti-rocket fs-5"></i> Welcome to the Future
                                 </h6>
-                                <h1 class="fw-bold mb-4 display-4">
+                                <h1 class="fw-bold mb-4 display-4 text-white"  style="text-shadow: 0 0 10px #00f0ff;">
                                     Indoprima Gemilang<br>
                                     <span class="text-primary"
                                         style="text-shadow: 0 0 10px #00f0ff;">Recruitment</span><br>System
@@ -224,9 +224,9 @@
                     <!-- Section Title -->
                     <div class="row justify-content-center mb-5">
                         <div class="col-lg-6 text-center" data-aos="fade-up" data-aos-delay="300">
-                            <h2 class="fw-bold display-6" style="text-shadow: 0 0 10px #00f7ff, 0 0 20px #00f7ff, 0 0 30px #00f7ff;">🧭 Alur Rekrutmen</h2>
+                            <h2 class="fw-bold display-6 text-white" style="text-shadow: 0 0 10px #00f7ff, 0 0 20px #00f7ff, 0 0 30px #00f7ff;">🧭 Alur Rekrutmen</h2>
 
-                            <p class="text-muted fs-5">Langkah demi langkah menuju masa depan kariermu</p>
+                            <p class="text-primary fs-5">Langkah demi langkah menuju masa depan kariermu</p>
                         </div>
                     </div>
 

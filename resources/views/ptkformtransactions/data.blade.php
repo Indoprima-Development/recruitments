@@ -57,11 +57,21 @@
                     <tr>
                         <td>{{ $i + 1 }}</td>
                         <td>
+                            @if($ptkformtransaction->user)
                             <a href="{{url('datadiris/data-users', $ptkformtransaction->user->id)}}">
                                 {{ $ptkformtransaction->user->name }}
                             </a>
+                            @else
+                            -
+                            @endif
                         </td>
-                        <td>{{ $ptkformtransaction->ptkform->jobtitle->jobtitle_name ?? "-" }}</td>
+                        <td>
+                            @if($ptkformtransaction->ptkform)
+                            {{ $ptkformtransaction->ptkform->jobtitle->jobtitle_name ?? "-" }}
+                            @else
+                            -
+                            @endif
+                        </td>
 
                         <?php
                         $a = $ptkformtransaction->user->datapendidikanformal;
