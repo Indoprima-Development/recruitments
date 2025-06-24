@@ -1,115 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
-    <!-- --------------------------------------------------- -->
-    <!-- Title -->
-    <!-- --------------------------------------------------- -->
-    <title>Recruitment</title>
-
-    <!-- --------------------------------------------------- -->
-    <!-- Required Meta Tag -->
-    <!-- --------------------------------------------------- -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="handheldfriendly" content="true" />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="description" content="Mordenize" />
-    <meta name="author" content="" />
-    <meta name="keywords" content="Mordenize" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-    <!-- --------------------------------------------------- -->
-    <!-- Favicon -->
-    <!-- --------------------------------------------------- -->
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Opportunities | Indoprima Gemilang</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('package/dist/images/logos/favicon.ico') }}" />
 
-    <!-- --------------------------------------------------- -->
-    <!-- Owl Carousel -->
-    <!-- --------------------------------------------------- -->
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
 
-    <!-- --------------------------------------------------- -->
-    <!-- Prism Js -->
-    <!-- --------------------------------------------------- -->
-    <link rel="stylesheet" href="{{ asset('package/dist/libs/prismjs/themes/prism-okaidia.min.css') }}">
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('package/dist/css/style.min.css') }}">
 
-    <!-- --------------------------------------------------- -->
-    <!-- Core Css -->
-    <!-- --------------------------------------------------- -->
-
-    <link id="themeColors" rel="stylesheet" href="{{ asset('package/dist/css/style.min.css') }}" />
     <style>
-        /* Base Styles */
         :root {
-            --primary-color: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --dark-bg: #0f172a;
-            --darker-bg: #020617;
-            --card-bg: rgba(15, 23, 42, 0.7);
-            --text-light: #e2e8f0;
-            --text-muted: #94a3b8;
-            --neon-accent: #00f5d4;
-            --neon-pink: #f72585;
+            --primary: #00f7ff;
+            --primary-light: rgba(0, 247, 255, 0.1);
+            --primary-dark: #00c2cb;
+            --secondary: #7b2cbf;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --light-muted: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border-radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         body {
-            background-color: var(--darker-bg);
-            color: var(--text-light);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
         }
 
-        /* Glassmorphism Card */
-        .glassmorphism-card {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        /* Glass Card */
+        .glass-card {
             background: rgba(15, 23, 42, 0.5);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
             overflow: hidden;
             position: relative;
+            transition: var(--transition);
         }
 
-        .glassmorphism-card::before {
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 247, 255, 0.1);
+        }
+
+        /* Header Section */
+        .hero-header {
+            position: relative;
+            overflow: hidden;
+            padding: 3rem 0;
+        }
+
+        .hero-header::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
+            background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+            animation: gradient-pulse 15s infinite alternate;
             z-index: -1;
         }
 
-        /* Text Gradient */
-        .text-gradient-primary {
-            background: linear-gradient(90deg, var(--primary-light), var(--neon-accent));
+        .hero-title {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--light), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            margin-bottom: 1rem;
         }
 
         /* Floating Orb */
         .floating-orb {
-            position: relative;
             width: 120px;
             height: 120px;
-            margin-left: auto;
-        }
-
-        .orb-core {
-            width: 100%;
-            height: 100%;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, var(--primary-light), var(--primary-dark));
-            box-shadow: 0 0 30px var(--primary-light);
+            background: radial-gradient(circle at 30% 30%, var(--primary), var(--primary-dark));
+            box-shadow: 0 0 40px var(--primary);
+            position: relative;
             animation: pulse 4s infinite alternate;
         }
 
-        .orb-glow {
+        .floating-orb::after {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
@@ -117,250 +118,171 @@
             height: 100%;
             border-radius: 50%;
             background: transparent;
-            box-shadow: 0 0 60px var(--primary-light);
+            box-shadow: 0 0 60px var(--primary);
             opacity: 0.7;
             animation: pulse 3s infinite alternate-reverse;
         }
 
-        /* Neon Tabs */
-        .neon-tab-container {
+        /* Tabs */
+        .modern-tabs {
             background: rgba(15, 23, 42, 0.5);
             border-radius: 12px;
             padding: 8px;
             backdrop-filter: blur(10px);
         }
 
-        .nav-pills .nav-link {
-            color: var(--text-muted);
+        .modern-tabs .nav-link {
+            color: var(--light-muted);
             background: transparent;
             border: none;
-            position: relative;
-            padding: 12px 20px;
+            padding: 12px 24px;
             margin-right: 8px;
-            transition: all 0.3s ease;
+            position: relative;
+            transition: var(--transition);
         }
 
-        .nav-pills .nav-link.active {
-            color: var(--text-light);
-            background: transparent;
+        .modern-tabs .nav-link.active {
+            color: var(--light);
         }
 
-        .nav-pills .nav-link.active .tab-underline {
-            width: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--neon-accent));
-            box-shadow: 0 0 15px var(--primary-light);
-        }
-
-        .tab-underline {
+        .modern-tabs .nav-link.active::after {
+            content: '';
             position: absolute;
             bottom: 0;
             left: 0;
+            width: 100%;
             height: 2px;
-            width: 0;
-            transition: all 0.3s ease;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             border-radius: 2px;
-        }
-
-        /* Holographic Button */
-        .btn-holographic {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(0, 245, 212, 0.2));
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: var(--text-light);
-            border-radius: 10px;
-            padding: 12px 20px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-holographic:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-holographic .btn-hover-effect {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(to bottom right,
-                    transparent,
-                    transparent,
-                    transparent,
-                    rgba(99, 102, 241, 0.1),
-                    transparent,
-                    transparent,
-                    transparent);
-            transform: rotate(30deg);
-            transition: all 0.7s ease;
-        }
-
-        .btn-holographic:hover .btn-hover-effect {
-            left: 100%;
-            top: 100%;
-        }
-
-        /* Divider Line */
-        .divider-line {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
         }
 
         /* Job Cards */
         .job-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
+            height: 100%;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(99, 102, 241, 0.1);
-            transition: all 0.3s ease;
-            height: 100%;
+            z-index: 1;
         }
 
-        .job-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.3);
-        }
-
-        .job-card-glow {
+        .job-card::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1), transparent 70%);
+            background: radial-gradient(circle at 50% 0%, rgba(0, 247, 255, 0.1), transparent 70%);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: var(--transition);
+            z-index: -1;
+            /* Ensure pseudo-element stays behind */
+            pointer-events: none; /* Add this */
         }
 
-        .job-card:hover .job-card-glow {
+        .job-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 247, 255, 0.15);
+            border-color: rgba(0, 247, 255, 0.3);
+        }
+
+        .job-card:hover::before {
             opacity: 1;
         }
 
-        .job-card-header {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
         .job-title {
-            color: var(--text-light);
             font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
         }
 
         .job-department {
             display: inline-block;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary-light);
+            background: rgba(0, 247, 255, 0.1);
+            color: var(--primary);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 500;
-        }
-
-        .job-card-body {
-            margin-bottom: 20px;
         }
 
         .job-meta {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 1rem;
         }
 
         .meta-item {
             display: flex;
             align-items: center;
-            color: var(--text-muted);
+            color: var(--light-muted);
             font-size: 0.875rem;
         }
 
         .meta-item i {
             margin-right: 6px;
-            font-size: 1rem;
-        }
-
-        .job-start-date {
-            display: flex;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        .job-start-date i {
-            margin-right: 6px;
-        }
-
-        .job-card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: var(--primary);
         }
 
         .job-type {
-            background: rgba(0, 245, 212, 0.1);
-            color: var(--neon-accent);
+            background: rgba(123, 44, 191, 0.1);
+            color: var(--secondary);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 500;
         }
 
-        .job-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-icon-danger {
-            background: rgba(247, 37, 133, 0.1);
-            color: var(--neon-pink);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .btn-icon-danger:hover {
-            background: rgba(247, 37, 133, 0.2);
-            transform: translateY(-2px);
-        }
-
         .btn-apply {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
-            color: white;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: var(--darker);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            font-weight: 600;
             text-decoration: none;
-        }
-
-        .btn-apply i {
-            margin-left: 6px;
-            transition: transform 0.3s ease;
+            transition: var(--transition);
+            z-index: 2; /* Higher than parent */
         }
 
         .btn-apply:hover {
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
+        }
+
+        /* Create Button */
+        .btn-create {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-create:hover {
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
         }
 
-        .btn-apply:hover i {
-            transform: translateX(3px);
+        .btn-create::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: var(--transition);
+        }
+
+        .btn-create:hover::before {
+            left: 100%;
         }
 
         /* Animations */
@@ -376,34 +298,43 @@
             }
         }
 
-        @keyframes rotate {
+        @keyframes gradient-pulse {
             0% {
-                transform: rotate(0deg);
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(10%, 10%);
             }
 
             100% {
-                transform: rotate(360deg);
+                transform: translate(0, 0);
             }
         }
 
-        /* Hover Float Effect */
-        .hover-float {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
 
-        .hover-float:hover {
-            transform: translateY(-8px);
+            .modern-tabs .nav-link {
+                padding: 10px 15px;
+                font-size: 0.875rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- --------------------------------------------------- -->
+    <!-- Preloader -->
+    <div class="preloader">
+        <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" alt="Loading..." class="lds-ripple img-fluid">
+    </div>
+
     <!-- Body Wrapper -->
-    <!-- --------------------------------------------------- -->
     <div class="page-wrapper" id="main-wrapper" data-layout="horizontal" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
-        <!-- Header Start -->
 
         @include('layouts.parts.headbar')
         @include('layouts.parts.sidebar')
@@ -411,20 +342,17 @@
 
         <div class="body-wrapper">
             <div class="container-fluid">
-                <!-- Hero Header Section -->
-                <div class="card glassmorphism-card position-relative overflow-hidden mb-5">
-                    <div class="card-body px-5 py-4">
+                <!-- Hero Header -->
+                <div class="glass-card mb-5">
+                    <div class="card-body p-5">
                         <div class="row align-items-center">
-                            <div class="col-md-9">
-                                <h1 class="fw-bold mb-3 text-gradient-primary">Career Opportunities</h1>
-                                <p class="text-muted-light mb-0">Join our innovative team and shape the future with us
-                                </p>
+                            <div class="col-lg-9">
+                                <h1 class="hero-title mb-3">Join Our Team</h1>
+                                <p class="text-light-muted mb-0">Discover exciting career opportunities and be part of
+                                    our innovative journey</p>
                             </div>
-                            <div class="col-md-3">
-                                <div class="floating-orb">
-                                    <div class="orb-core"></div>
-                                    <div class="orb-glow"></div>
-                                </div>
+                            <div class="col-lg-3 text-lg-end">
+                                <div class="floating-orb mx-auto mx-lg-0"></div>
                             </div>
                         </div>
                     </div>
@@ -432,39 +360,35 @@
 
                 <!-- Filter Tabs -->
                 <div class="row mb-4">
-                    <div class="col-md-9">
-                        <div class="neon-tab-container">
+                    <div class="col-lg-9">
+                        <div class="modern-tabs">
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="all-tab" data-bs-toggle="pill"
                                         data-bs-target="#all" type="button" role="tab">
                                         <i class="ti ti-list me-2"></i>
-                                        <span>All Positions</span>
-                                        <div class="tab-underline"></div>
+                                        All Positions
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="staff-tab" data-bs-toggle="pill"
                                         data-bs-target="#staff" type="button" role="tab">
                                         <i class="ti ti-briefcase me-2"></i>
-                                        <span>Staff</span>
-                                        <div class="tab-underline"></div>
+                                        Full-time
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="nonstaff-tab" data-bs-toggle="pill"
                                         data-bs-target="#nonstaff" type="button" role="tab">
                                         <i class="ti ti-users me-2"></i>
-                                        <span>Non-Staff</span>
-                                        <div class="tab-underline"></div>
+                                        Contract
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="intern-tab" data-bs-toggle="pill"
                                         data-bs-target="#intern" type="button" role="tab">
                                         <i class="ti ti-star me-2"></i>
-                                        <span>Internship</span>
-                                        <div class="tab-underline"></div>
+                                        Internship
                                     </button>
                                 </li>
                             </ul>
@@ -472,18 +396,14 @@
                     </div>
 
                     @if (Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia@gmail.com'))
-                        <div class="col-md-3 text-end">
-                            <button class="btn btn-holographic w-100" id="create-vacancy-btn">
-                                <span class="btn-text">Create Vacancy</span>
-                                <span class="btn-icon"><i class="ti ti-plus"></i></span>
-                                <span class="btn-hover-effect"></span>
+                        <div class="col-lg-3 text-lg-end">
+                            <button class="btn btn-create w-100 w-lg-auto" id="create-vacancy-btn">
+                                <i class="ti ti-plus me-2"></i>
+                                Create Position
                             </button>
                         </div>
                     @endif
                 </div>
-
-                <!-- Divider -->
-                <div class="divider-line mb-5"></div>
 
                 <!-- Job Listings -->
                 <div class="tab-content" id="pills-tabContent">
@@ -491,18 +411,19 @@
                         <div class="row gy-4">
                             @foreach ($jobs as $job)
                                 <div class="col-lg-4 col-md-6">
-                                    <div class="job-card hover-float">
-                                        <div class="job-card-header">
-                                            <h3 class="job-title">{{ $job->jobtitle->jobtitle_name ?? '-' }}</h3>
-                                            <div class="job-department neon-badge">
-                                                {{ $job->division->division_name ?? '-' }}</div>
+                                    <div class="glass-card job-card p-4">
+                                        <div class="job-card-header mb-4">
+                                            <h3 class="job-title text-white">{{ $job->jobtitle->jobtitle_name ?? '-' }}
+                                            </h3>
+                                            <span
+                                                class="job-department">{{ $job->division->division_name ?? '-' }}</span>
                                         </div>
 
-                                        <div class="job-card-body">
+                                        <div class="job-card-body mb-4">
                                             <div class="job-meta">
                                                 <div class="meta-item">
                                                     <i class="ti ti-school"></i>
-                                                    <span>{{ $job->education->education_name }}</span>
+                                                    <span>{{ $job->education->education_name ?? 'Not specified' }}</span>
                                                 </div>
                                                 <div class="meta-item">
                                                     <i class="ti ti-gender-bigender"></i>
@@ -516,141 +437,120 @@
                                                 </div>
                                             </div>
 
-                                            <div class="job-start-date">
+                                            <div class="meta-item">
                                                 <i class="ti ti-calendar"></i>
                                                 <span>Start Date: {{ $job->date_startwork }}</span>
                                             </div>
                                         </div>
 
-                                        <div class="job-card-footer">
-                                            <div class="job-type neon-badge-accent">{{ $job->status_pegawai }}</div>
+                                        <div class="job-card-footer d-flex justify-content-between align-items-center">
+                                            <span class="badge bg-primary text-white">{{ $job->status_pegawai }}</span>
 
-                                            <div class="job-actions">
+                                            <div class="d-flex align-items-center gap-2">
                                                 @if (Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia@gmail.com'))
                                                     <button data-id="{{ $job->id }}" type="button"
-                                                        class="btn-icon-danger btn-delete">
+                                                        class="btn btn-sm btn-outline-danger btn-delete">
                                                         <i class="ti ti-trash"></i>
                                                     </button>
                                                 @endif
 
-                                                <a href="{{ url('vacancies', $job->id) }}" class="btn-apply">
-                                                    <span>Apply Now</span>
-                                                    <i class="ti ti-arrow-right"></i>
+                                                <a target="_blank" href="{{ url('vacancies', $job->id) }}"
+                                                    class="btn-apply">
+                                                    Apply Now
+                                                    <i class="ti ti-arrow-right ms-2"></i>
                                                 </a>
                                             </div>
                                         </div>
-
-                                        <div class="job-card-glow"></div>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     </div>
-
-                    <!-- Other tab panes would go here -->
                 </div>
             </div>
         </div>
 
-        <footer class="footer-part pt-8 pb-5">
+        <!-- Footer -->
+        <footer class="footer py-5">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-4">
-                        <div class="text-center">
-                            <a href="index-new.html">
-                                <img src="{{ asset('photo/white-logo.png') }}" alt=""
-                                    class="mb-3" height="30">
-                            </a>
-                            <p class="mb-0 small">
-                                © {{ date('Y') }} <span class="fw-semibold text-info">PT. Indoprima
-                                    Gemilang</span><br>
-                                Dirancang & Dikembangkan oleh
-                                <a href="https://indoprimagemilang.com"
-                                    class="text-decoration-none text-info fw-semibold">Information System</a>
-                            </p>
-                        </div>
+                    <div class="col-lg-6 text-center">
+                        <img src="{{ asset('photo/white-logo.png') }}" alt="Indoprima Gemilang" height="40"
+                            class="mb-3">
+                        <p class="small text-light-muted">
+                            © {{ date('Y') }} <span class="text-primary">PT. Indoprima Gemilang</span><br>
+                            Designed & Developed by <span class="text-primary">Information Systems Team</span>
+                        </p>
                     </div>
                 </div>
             </div>
         </footer>
-
     </div>
 
-    <script>
-        // Add interactive animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate job cards on load
-            const jobCards = document.querySelectorAll('.job-card');
-            jobCards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
-
-            // Add hover effect to tabs
-            const tabs = document.querySelectorAll('.nav-link');
-            tabs.forEach(tab => {
-                tab.addEventListener('mouseenter', function() {
-                    if (!this.classList.contains('active')) {
-                        this.querySelector('.tab-underline').style.width = '50%';
-                        this.querySelector('.tab-underline').style.backgroundColor =
-                            'var(--text-muted)';
-                    }
-                });
-
-                tab.addEventListener('mouseleave', function() {
-                    if (!this.classList.contains('active')) {
-                        this.querySelector('.tab-underline').style.width = '0';
-                    }
-                });
-            });
-        });
-    </script>
-
-    <!--  Mobilenavbar -->
+    <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Vacancy</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Apakah anda yakin menghapus data?
+                    Are you sure you want to delete this position?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <a id="linkDelete" href="#" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('package/dist/libs/simplebar/dist/simplebar.min.js') }}"></script>
     <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- ---------------------------------------------- -->
-    <!-- core files -->
-    <!-- ---------------------------------------------- -->
     <script src="{{ asset('package/dist/js/app.min.js') }}"></script>
     <script src="{{ asset('package/dist/js/app.horizontal.init.js') }}"></script>
     <script src="{{ asset('package/dist/js/app-style-switcher.js') }}"></script>
     <script src="{{ asset('package/dist/js/sidebarmenu.js') }}"></script>
-
     <script src="{{ asset('package/dist/js/custom.js') }}"></script>
-    <script src="{{ asset('package/dist/libs/prismjs/prism.js') }}"></script>
-
-    <!-- ---------------------------------------------- -->
-    <!-- current page js files -->
-    <!-- ---------------------------------------------- -->
-    <script src="{{ asset('package/dist/js/apps/notes.js') }}"></script>
 
     <script>
-        $(".btnDelete").on("click", function() {
-            $('#modalDelete').modal('show')
-            $('#linkDelete').attr('href', '{{ url('off-vacancy') }}/' + $(this).data('id'))
+        // Delete confirmation
+        $(document).ready(function() {
+            $(".btn-delete").on("click", function() {
+                $('#modalDelete').modal('show');
+                $('#linkDelete').attr('href', '{{ url('off-vacancy') }}/' + $(this).data('id'));
+            });
+
+            // Remove preloader when page loads
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    document.querySelector('.preloader').style.opacity = '0';
+                    document.querySelector('.preloader').style.visibility = 'hidden';
+                }, 500);
+            });
+
+            // Animate job cards on scroll
+            const jobCards = document.querySelectorAll('.job-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            jobCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
         });
     </script>
 </body>

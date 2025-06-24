@@ -1,134 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
-    <!-- Title -->
-    <title>Recruitment - PT. Indoprima Gemilang</title>
-    <!-- Required Meta Tag -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="handheldfriendly" content="true" />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="description" content="Mordenize" />
-    <meta name="author" content="" />
-    <meta name="keywords" content="Mordenize" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!-- Favicon -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Indoprima Gemilang</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('package/dist/images/logos/favicon.ico') }}" />
-    <!-- Owl Carousel -->
-    <link rel="stylesheet" href="{{ asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
-    <!-- Core Css -->
-    <link id="themeColors" rel="stylesheet" href="{{ asset('package/dist/css/style.min.css') }}" />
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@500;700&display=swap"
-        rel="stylesheet">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        .hero-quote {
-            font-family: 'Orbitron', 'Audiowide', sans-serif;
-        }
-    </style>
-</head>
-
-<body>
-    <!-- Preloader -->
-    @include('sweetalert::alert')
-    <div class="preloader">
-        <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" alt="loader" class="lds-ripple img-fluid" />
-    </div>
-    <!-- Body Wrapper -->
-    <div class="login-wrapper" data-theme="future">
-        <div class="login-container">
-            <!-- Background Elements -->
-            <div class="bg-grid"></div>
-            <div class="floating-orb orb-1"></div>
-            <div class="floating-orb orb-2"></div>
-            <div class="particles-container"></div>
-
-            <div class="login-content">
-                <div class="login-hero">
-                    <div class="logo-container">
-                        <img src="{{ asset('photo/white-logo.png') }}" alt="Company Logo" class="holographic-logo">
-                        <div class="logo-glow"></div>
-                    </div>
-                    <div class="hero-image">
-                        <img src="{{ asset('photo/login.png') }}" alt="Login Visual" class="floating-img">
-                        <div class="image-reflection"></div>
-                    </div>
-                    <div class="hero-quote">
-                        <h3>Unlock Your Potential</h3>
-                        <p>Join our network of exceptional talents shaping the future</p>
-                    </div>
-                </div>
-
-                <div class="login-form-container">
-                    <div class="form-wrapper">
-                        <div class="form-header" style="font-family: 'Orbitron', 'Audiowide', sans-serif">
-                            <h2 class="text-white">Welcome Back</h2>
-                            <p class="subtext">PT. Indoprima Gemilang</p>
-
-                            <div class="divider">
-                                <span class="divider-line"></span>
-                                <span class="divider-text">Secure Login</span>
-                                <span class="divider-line"></span>
-                            </div>
-                        </div>
-
-                        <form action="{{ route('authenticate') }}" method="POST" class="auth-form" style="font-family: 'Orbitron', 'Audiowide', sans-serif">
-                            @csrf
-
-                            <div class="input-field floating-input">
-                                <input type="email" name="email" id="email" required>
-                                <label for="email">Email Address</label>
-                                <div class="input-highlight"></div>
-                                <i class="input-icon ti ti-mail"></i>
-                            </div>
-
-                            <div class="input-field floating-input">
-                                <input type="password" name="password" id="password" required>
-                                <label for="password">Password</label>
-                                <div class="input-highlight"></div>
-                                <i class="input-icon ti ti-lock"></i>
-                            </div>
-
-                            <button type="submit" class="login-btn">
-                                <span class="btn-text">Sign In</span>
-                                <span class="btn-icon">
-                                    <i class="ti ti-arrow-right"></i>
-                                </span>
-                                <span class="btn-glow"></span>
-                            </button>
-
-                            <div class="form-footer" style="font-family: 'Orbitron', 'Audiowide', sans-serif">
-                                <p>Don't have an account?
-                                    <a href="{{ url('auth/register') }}" class="register-link">
-                                        <span>Create Account</span>
-                                        <i class="ti ti-arrow-up-right"></i>
-                                    </a>
-                                </p>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <style>
-        /* Base Variables */
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --accent: #00f5d4;
-            --dark-bg: #0f172a;
-            --darker-bg: #020617;
-            --card-bg: rgba(15, 23, 42, 0.6);
-            --text-light: #e2e8f0;
-            --text-muted: #94a3b8;
-            --neon-glow: 0 0 10px rgba(99, 102, 241, 0.7);
+            --primary: #00f7ff;
+            --primary-light: rgba(0, 247, 255, 0.1);
+            --primary-dark: #00c2cb;
+            --secondary: #7b2cbf;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --light-muted: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Base Styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -136,295 +34,207 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--darker-bg);
-            color: var(--text-light);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Login Container */
-        .login-wrapper {
-            min-height: 100vh;
-            display: flex;
-            position: relative;
-            overflow: hidden;
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
         }
 
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Main Layout */
         .login-container {
-            display: flex;
-            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             min-height: 100vh;
             position: relative;
-            z-index: 2;
         }
 
-        /* Background Elements */
-        .bg-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.3;
-            z-index: 1;
-        }
-
-        .floating-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.3;
-            z-index: 1;
-        }
-
-        .orb-1 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--primary), transparent 70%);
-            top: -100px;
-            left: -100px;
-            animation: float 15s infinite alternate ease-in-out;
-        }
-
-        .orb-2 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, var(--accent), transparent 70%);
-            bottom: -200px;
-            right: -200px;
-            animation: float 20s infinite alternate-reverse ease-in-out;
-        }
-
-        .particles-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        /* Login Content Layout */
-        .login-content {
-            display: flex;
-            width: 100%;
-            min-height: 100vh;
-        }
-
-        .login-hero {
-            flex: 1;
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            padding: 4rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 3rem;
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(2, 6, 23, 0.9));
-            backdrop-filter: blur(10px);
-            z-index: 2;
-            position: relative;
-        }
-
-        .login-form-container {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            background: rgba(2, 6, 23, 0.7);
-            backdrop-filter: blur(10px);
-            border-left: 1px solid rgba(99, 102, 241, 0.1);
-            z-index: 3;
-        }
-
-        /* Logo Styles */
-        .logo-container {
-            position: relative;
-            margin-bottom: 3rem;
-        }
-
-        .holographic-logo {
-            width: 250px;
-            height: auto;
-            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.5));
-            position: relative;
-            z-index: 2;
-        }
-
-        .logo-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, var(--primary-light), transparent 70%);
-            opacity: 0.3;
+            overflow: hidden;
             z-index: 1;
         }
 
-        /* Hero Image */
-        .hero-image {
-            flex-grow: 1;
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+            animation: gradient-pulse 15s infinite alternate;
+            z-index: -1;
+        }
+
+        .logo-container {
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            height: 48px;
+            width: auto;
+            filter: drop-shadow(0 0 20px rgba(0, 247, 255, 0.3));
+        }
+
+        .hero-content {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            flex-grow: 1;
+            text-align: center;
             position: relative;
+            z-index: 2;
         }
 
-        .floating-img {
+        .hero-illustration {
             max-width: 80%;
             height: auto;
-            animation: float 6s infinite alternate ease-in-out;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            margin: 2rem 0;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));
+            animation: float 6s ease-in-out infinite;
         }
 
-        .image-reflection {
-            position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70%;
-            height: 20px;
-            background: radial-gradient(ellipse at center,
-                    rgba(99, 102, 241, 0.3) 0%,
-                    transparent 70%);
-            filter: blur(5px);
-        }
-
-        /* Hero Quote */
-        .hero-quote {
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .hero-quote h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, var(--text-light), var(--accent));
+        .hero-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--light), var(--primary));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        .hero-quote p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+        .hero-text p {
+            color: var(--light-muted);
+            font-size: 1.1rem;
+            max-width: 80%;
+            margin: 0 auto;
         }
 
-        /* Form Styles */
-        .form-wrapper {
+        /* Form Section */
+        .form-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            background: rgba(2, 6, 23, 0.7);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(2, 6, 23, 0.9), rgba(15, 23, 42, 0.7));
+            z-index: -1;
+        }
+
+        .form-container {
             width: 100%;
             max-width: 400px;
         }
 
         .form-header {
-            text-align: center;
             margin-bottom: 2.5rem;
+            text-align: center;
         }
 
-        .form-header h2 {
+        .form-header h1 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
-            font-weight: 700;
+            color: var(--light);
         }
 
-        .neon-text {
-            text-shadow: 0 0 10px rgba(99, 102, 241, 0.7),
-                0 0 20px rgba(99, 102, 241, 0.5),
-                0 0 30px rgba(99, 102, 241, 0.3);
-            animation: neon-pulse 2s infinite alternate;
-        }
-
-        .subtext {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-        }
-
-        .divider-line {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
-        }
-
-        .divider-text {
-            padding: 0 1rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Input Fields */
-        .input-field {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .floating-input {
-            position: relative;
-        }
-
-        .floating-input input {
-            width: 100%;
-            padding: 1rem 1rem 1rem 2.5rem;
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 8px;
-            color: var(--text-light);
+        .form-header p {
+            color: var(--light-muted);
             font-size: 0.95rem;
-            transition: all 0.3s ease;
         }
 
-        .floating-input input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        /* Form Elements */
+        .auth-form {
+            width: 100%;
         }
 
-        .floating-input label {
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
             position: absolute;
             top: 1rem;
-            left: 2.5rem;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .floating-input input:focus+label,
-        .floating-input input:not(:placeholder-shown)+label {
-            top: -0.6rem;
             left: 1rem;
-            font-size: 0.75rem;
-            background: var(--dark-bg);
-            padding: 0 0.5rem;
-            color: var(--primary-light);
+            color: var(--light-muted);
+            pointer-events: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
         }
 
-        .input-highlight {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .floating-input input:focus~.input-highlight {
+        .form-input {
             width: 100%;
+            padding: 1rem;
+            padding-left: 3rem;
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            color: var(--light);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 247, 255, 0.1);
+        }
+
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: -0.6rem;
+            left: 0.8rem;
+            font-size: 0.75rem;
+            background: var(--darker);
+            padding: 0 0.5rem;
+            color: var(--primary);
         }
 
         .input-icon {
@@ -432,190 +242,262 @@
             left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1rem;
+            color: var(--light-muted);
+            transition: var(--transition);
         }
 
-        /* Login Button */
+        .form-input:focus ~ .input-icon {
+            color: var(--primary);
+        }
+
+        /* Button */
         .login-btn {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
+            background: var(--primary);
+            color: var(--darker);
             border: none;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            margin: 2rem 0 1rem;
+            margin: 2rem 0 1.5rem;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             z-index: 1;
         }
 
         .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.2);
         }
 
-        .login-btn .btn-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .login-btn:hover .btn-icon {
-            transform: translateX(3px);
-        }
-
-        .btn-glow {
+        .login-btn::before {
+            content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg,
-                    transparent,
-                    rgba(255, 255, 255, 0.2),
-                    transparent);
-            transition: all 0.7s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
             z-index: -1;
         }
 
-        .login-btn:hover .btn-glow {
+        .login-btn:hover::before {
             left: 100%;
         }
 
         /* Form Footer */
         .form-footer {
             text-align: center;
-            margin-top: 1.5rem;
-            color: var(--text-muted);
+            color: var(--light-muted);
             font-size: 0.9rem;
         }
 
         .register-link {
-            color: var(--accent);
+            color: var(--primary);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .register-link:hover {
-            color: var(--primary-light);
+            color: var(--light);
         }
 
-        .register-link i {
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            color: var(--light-muted);
             font-size: 0.8rem;
-            transition: transform 0.3s ease;
         }
 
-        .register-link:hover i {
-            transform: translate(2px, -2px);
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .divider::before {
+            margin-right: 1rem;
+        }
+
+        .divider::after {
+            margin-left: 1rem;
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .element-1 {
+            width: 300px;
+            height: 300px;
+            background-color: var(--primary);
+            top: 20%;
+            left: 20%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .element-2 {
+            width: 400px;
+            height: 400px;
+            background-color: var(--secondary);
+            bottom: 10%;
+            right: 10%;
+            animation: float 10s ease-in-out infinite reverse;
         }
 
         /* Animations */
         @keyframes float {
-            0% {
-                transform: translateY(0);
-            }
-
-            100% {
-                transform: translateY(-15px);
-            }
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(0, 15px); }
         }
 
-        @keyframes neon-pulse {
-            0% {
-                text-shadow: 0 0 10px rgba(99, 102, 241, 0.7),
-                    0 0 20px rgba(99, 102, 241, 0.5),
-                    0 0 30px rgba(99, 102, 241, 0.3);
-            }
-
-            100% {
-                text-shadow: 0 0 15px rgba(99, 102, 241, 0.8),
-                    0 0 25px rgba(99, 102, 241, 0.6),
-                    0 0 35px rgba(99, 102, 241, 0.4);
-            }
+        @keyframes gradient-pulse {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(10%, 10%); }
+            100% { transform: translate(0, 0); }
         }
 
-        /* Responsive Adjustments */
+        /* Responsive */
         @media (max-width: 1024px) {
-            .login-content {
-                flex-direction: column;
+            .login-container {
+                grid-template-columns: 1fr;
             }
 
-            .login-hero {
+            .hero-section {
                 display: none;
             }
 
-            .login-form-container {
-                max-width: 100%;
-                border-left: none;
-                border-top: 1px solid rgba(99, 102, 241, 0.1);
+            .form-section {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .form-header h1 {
+                font-size: 1.8rem;
             }
         }
     </style>
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" alt="Loading..." class="lds-ripple img-fluid">
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-element element-1"></div>
+    <div class="floating-element element-2"></div>
+
+    <!-- Main Container -->
+    <div class="login-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="logo-container">
+                <img src="{{ asset('photo/white-logo.png') }}" alt="Indoprima Gemilang" class="logo">
+            </div>
+
+            <div class="hero-content">
+                <img src="{{ asset('photo/login.png') }}" alt="Career Illustration" class="hero-illustration">
+
+                <div class="hero-text">
+                    <h2>Unlock Your Potential</h2>
+                    <p>Join our elite team of professionals shaping the future of automotive manufacturing</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Section -->
+        <section class="form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to access your recruitment portal</p>
+                </div>
+
+                <div class="divider">Secure Login</div>
+
+                <form action="{{ route('authenticate') }}" method="POST" class="auth-form">
+                    @csrf
+
+                    <div class="form-group">
+                        <input type="email" name="email" id="email" class="form-input" placeholder=" " required>
+                        <label for="email" class="form-label">Email Address</label>
+                        <i class="input-icon ti ti-mail"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-input" placeholder=" " required>
+                        <label for="password" class="form-label">Password</label>
+                        <i class="input-icon ti ti-lock"></i>
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        <span>Sign In</span>
+                        <i class="ti ti-arrow-right"></i>
+                    </button>
+
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="{{ url('auth/register') }}" class="register-link">Register now</a></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/app.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/custom.js') }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Create floating particles
-            const particlesContainer = document.querySelector('.particles-container');
-            const particleCount = 30;
+        // Remove preloader when page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.preloader').classList.add('fade-out');
+            }, 500);
+        });
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
+        // Input focus effects
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.previousElementSibling.style.color = 'var(--primary)';
+                this.nextElementSibling.style.color = 'var(--primary)';
+            });
 
-                // Random properties
-                const size = Math.random() * 3 + 1;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const delay = Math.random() * 5;
-                const duration = Math.random() * 10 + 10;
-
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.animationDuration = `${duration}s`;
-                particle.style.opacity = Math.random() * 0.5 + 0.1;
-
-                particlesContainer.appendChild(particle);
-            }
-
-            // Add input focus effects
-            const inputs = document.querySelectorAll('.floating-input input');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.querySelector('.input-icon').style.color = 'var(--primary)';
-                });
-
-                input.addEventListener('blur', function() {
-                    this.parentElement.querySelector('.input-icon').style.color =
-                        'var(--text-muted)';
-                });
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.previousElementSibling.style.color = 'var(--light-muted)';
+                }
+                this.nextElementSibling.style.color = 'var(--light-muted)';
             });
         });
     </script>
-
-    <!-- Import Js Files -->
-    <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('package/dist/libs/simplebar/dist/simplebar.min.js') }}"></script>
-    <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- core files -->
-    <script src="{{ asset('package/dist/js/app.min.js') }}"></script>
-    <script src="{{ asset('package/dist/js/app.horizontal.init.js') }}"></script>
-    <script src="{{ asset('package/dist/js/app-style-switcher.js') }}"></script>
-    <script src="{{ asset('package/dist/js/sidebarmenu.js') }}"></script>
-
-    <script src="{{ asset('package/dist/js/custom.js') }}"></script>
 </body>
-
 </html>
