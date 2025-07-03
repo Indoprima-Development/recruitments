@@ -74,7 +74,7 @@
                         </td>
 
                         <?php
-                        $a = $ptkformtransaction->user->datapendidikanformal;
+                        $a = $ptkformtransaction->user->datapendidikanformal ?? [];
                         ?>
 
                         @if (count($a) > 0)
@@ -98,7 +98,7 @@
                         <td>{{$ptkformtransaction->score_technical_test ?? "-"}}</td>
                         <td>
                             @if ($ptkformtransaction->status == 0)
-                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="0" type="button" types="cv_review" class="btnEditStatus btn btn-sm btn-outline-primary" names="{{ $ptkformtransaction->user->name }}">
+                                <button ptkformtrid="{{$ptkformtransaction->id}}" status="0" type="button" types="cv_review" class="btnEditStatus btn btn-sm btn-outline-primary" names="{{ $ptkformtransaction->user->name ?? '-' }}">
                                     <i class="ti ti-question-mark"></i>
                                 </button>
                             @else
