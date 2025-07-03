@@ -7,7 +7,9 @@
     <title>Join Our Team | PT. Indoprima Gemilang</title>
     <meta name="description" content="Start your career journey with PT. Indoprima Gemilang">
     <link rel="shortcut icon" type="image/png" href="{{ asset('package/dist/images/logos/favicon.ico') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -35,7 +37,12 @@
             flex-direction: column;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 700;
             color: var(--dark);
@@ -67,7 +74,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
             animation: gradient-pulse 15s infinite alternate;
         }
 
@@ -300,9 +307,17 @@
 
         /* Animations */
         @keyframes gradient-pulse {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(10%, 10%); }
-            100% { transform: translate(0, 0); }
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(10%, 10%);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
         }
 
         /* Responsive */
@@ -362,11 +377,13 @@
         <!-- Visual Section -->
         <div class="visual-section">
             <div class="logo-container">
-                <img src="{{ asset('package/dist/images/logos/logo.png') }}" alt="PT. Indoprima Gemilang" class="logo">
+                <img src="{{ asset('package/dist/images/logos/logo.png') }}" alt="PT. Indoprima Gemilang"
+                    class="logo">
             </div>
 
             <div class="visual-content">
-                <img src="{{ asset('package/dist/images/backgrounds/login-security.svg') }}" alt="Career Illustration" class="illustration">
+                <img src="{{ asset('package/dist/images/backgrounds/login-security.svg') }}" alt="Career Illustration"
+                    class="illustration">
             </div>
 
             <div class="visual-footer">
@@ -398,27 +415,32 @@
                 <div class="form-grid">
                     <div class="input-group">
                         <label for="name" class="form-label">Full Name</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="John Doe" required>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="John Doe"
+                            required>
                     </div>
 
                     <div class="input-group">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="your@email.com" required>
+                        <input type="email" name="email" id="email" class="form-control"
+                            placeholder="your@email.com" required>
                     </div>
 
                     <div class="input-group">
                         <label for="ktp" class="form-label">ID Number (NIK)</label>
-                        <input type="text" name="ktp" id="ktp" class="form-control" placeholder="3577******" required>
+                        <input type="text" name="ktp" id="ktp" class="form-control"
+                            placeholder="3577******" required>
                     </div>
 
                     <div class="input-group">
                         <label for="no_wa" class="form-label">WhatsApp Number</label>
-                        <input type="tel" name="no_wa" id="no_wa" class="form-control" placeholder="0812*******" required>
+                        <input type="tel" name="no_wa" id="no_wa" class="form-control"
+                            placeholder="0812*******" required>
                     </div>
 
                     <div class="input-group">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required>
+                        <input type="password" name="password" id="password" class="form-control"
+                            placeholder="••••••••" required>
                     </div>
                 </div>
 
@@ -442,17 +464,84 @@
 
                     <div class="input-group">
                         <label for="asal_instansi" class="form-label">Institution Name</label>
-                        <input type="text" name="asal_instansi" id="asal_instansi" class="form-control" required>
+
+                        <select name="asal_instansi" id="asal_instansi" class="form-select">
+                            <option value="">Select</option>
+                            <option value="Universitas Indonesia">Universitas Indonesia</option>
+                            <option value="Institut Teknologi Bandung">Institut Teknologi Bandung</option>
+                            <option value="Universitas Gadjah Mada">Universitas Gadjah Mada</option>
+                            <option value="Institut Pertanian Bogor">Institut Pertanian Bogor</option>
+                            <option value="Institut Teknologi Sepuluh Nopember">Institut Teknologi Sepuluh Nopember
+                            </option>
+                            <option value="Universitas Airlangga">Universitas Airlangga</option>
+                            <option value="Universitas Padjadjaran">Universitas Padjadjaran</option>
+                            <option value="Universitas Diponegoro">Universitas Diponegoro</option>
+                            <option value="Universitas Hasanuddin">Universitas Hasanuddin</option>
+                            <option value="Universitas Brawijaya">Universitas Brawijaya</option>
+                            <option value="Universitas Negeri Surabaya">Universitas Negeri Surabaya</option>
+                            <option value="Universitas Trunojoyo Madura">Universitas Trunojoyo Madura</option>
+                            <option value="Universitas Jember">Universitas Jember</option>
+                            <option value="Universitas Negeri Malang">Universitas Negeri Malang</option>
+                            <option value="Universitas Bina Nusantara">Universitas Bina Nusantara</option>
+                            <option value="Universitas Pelita Harapan">Universitas Pelita Harapan</option>
+                            <option value="Universitas Katolik Parahyangan">Universitas Katolik Parahyangan</option>
+                            <option value="Universitas Tarumanagara">Universitas Tarumanagara</option>
+                            <option value="Universitas Atma Jaya Yogyakarta">Universitas Atma Jaya Yogyakarta</option>
+                            <option value="Universitas Kristen Petra">Universitas Kristen Petra</option>
+                            <option value="Universitas Muhammadiyah Malang">Universitas Muhammadiyah Malang</option>
+                            <option value="Universitas Surabaya">Universitas Surabaya</option>
+                            <option value="Universitas Ciputra">Universitas Ciputra</option>
+                            <option value="Universitas Wijaya Kusuma Surabaya">Universitas Wijaya Kusuma Surabaya
+                            </option>
+                            <option value="Politeknik Manufaktur Ceper">Politeknik Manufaktur Ceper</option>
+                            <option value="Politeknik ATK Yogyakarta">Politeknik ATK Yogyakarta</option>
+                            <option value="Politeknik Perkapalan Negeri Surabaya">Politeknik Perkapalan Negeri Surabaya
+                            </option>
+                            <option value="Politeknik Elektronika Negeri Surabaya">Politeknik Elektronika Negeri
+                                Surabaya</option>
+                            <option value="Politeknik Negeri Malang">Politeknik Negeri Malang</option>
+                            <option value="Politeknik Negeri Jember">Politeknik Negeri Jember</option>
+                            <option value="Others">Others</option>
+                        </select>
+
                     </div>
 
                     <div class="input-group">
                         <label for="jurusan" class="form-label">Major/Field of Study</label>
-                        <input type="text" name="jurusan" id="jurusan" class="form-control" required>
+
+                        <select name="jurusan" id="jurusan" class="form-control">
+                            <option value="">Select Major/Field</option>
+                            <option value="Akuntansi">Akuntansi</option>
+                            <option value="Kimia">Kimia</option>
+                            <option value="Manajemen">Manajemen</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Matematika">Matematika</option>
+                            <option value="Others">Others</option>
+                            <option value="Psikologi">Psikologi</option>
+                            <option value="Sastra Inggris">Sastra Inggris</option>
+                            <option value="Sastra Mandarin">Sastra Mandarin</option>
+                            <option value="Sistem Informasi">Sistem Informasi</option>
+                            <option value="Statistika">Statistika</option>
+                            <option value="Teknik Desain Manufaktur">Teknik Desain Manufaktur</option>
+                            <option value="Teknik Elektro">Teknik Elektro</option>
+                            <option value="Teknik Fisika">Teknik Fisika</option>
+                            <option value="Teknik Industri">Teknik Industri</option>
+                            <option value="Teknik Informatika">Teknik Informatika</option>
+                            <option value="Teknik K3">Teknik K3</option>
+                            <option value="Teknik Kimia">Teknik Kimia</option>
+                            <option value="Teknik Lingkungan">Teknik Lingkungan</option>
+                            <option value="Teknik Material">Teknik Material</option>
+                            <option value="Teknik Mesin">Teknik Mesin</option>
+                            <option value="Teknik Metalurgi">Teknik Metalurgi</option>
+                            <option value="Others">Others</option>
+                        </select>
+
                     </div>
 
                     <div class="input-group">
                         <label for="ipk" class="form-label">GPA Score</label>
-                        <input type="number" name="ipk" id="ipk" class="form-control" step="0.01" min="0" max="4" placeholder="3.50" required>
+                        <input type="number" name="ipk" id="ipk" class="form-control" step="0.01"
+                            min="0" max="4" placeholder="3.50" required>
                     </div>
                 </div>
 
@@ -465,17 +554,20 @@
                 <div class="form-grid">
                     <div class="input-group">
                         <label for="tinggi_badan" class="form-label">Height (cm)</label>
-                        <input type="number" name="tinggi_badan" id="tinggi_badan" class="form-control" placeholder="170" required>
+                        <input type="number" name="tinggi_badan" id="tinggi_badan" class="form-control"
+                            placeholder="170" required>
                     </div>
 
                     <div class="input-group">
                         <label for="berat_badan" class="form-label">Weight (kg)</label>
-                        <input type="number" name="berat_badan" id="berat_badan" class="form-control" placeholder="65" required>
+                        <input type="number" name="berat_badan" id="berat_badan" class="form-control"
+                            placeholder="65" required>
                     </div>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="button" class="btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+                <button type="button" class="btn-primary mt-4" data-bs-toggle="modal"
+                    data-bs-target="#confirmationModal">
                     Submit Application
                     <i class="ti ti-arrow-right"></i>
                 </button>
@@ -487,10 +579,12 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Confirm Your Application</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Please review all information before submitting. You won't be able to make changes after submission.</p>
+                            <p>Please review all information before submitting. You won't be able to make changes after
+                                submission.</p>
                             <div class="alert alert-light mt-3">
                                 <i class="ti ti-info-circle me-2"></i>
                                 Ensure all data is accurate and complete
@@ -531,4 +625,5 @@
         });
     </script>
 </body>
+
 </html>
