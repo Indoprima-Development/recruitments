@@ -88,7 +88,7 @@
             <p>Untuk menyelesaikan pembuatan akun Anda dan mulai menjelajahi peluang karir, silakan verifikasi alamat email Anda dengan mengklik tombol di bawah ini:</p>
             <div class="button-container">
                 <a
-                    href="http://ixp1.indoprimagemilang.com:81/recruitments/public/emails/konfirmation?token={{ $data['body'] }}">Konfirmasi
+                    href="https://career.indoprimagemilang.com/emails/konfirmation?token={{ $data['body'] }}">Konfirmasi
                     Email</a>
             </div>
         </div>
