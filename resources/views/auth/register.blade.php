@@ -127,7 +127,6 @@
 
         .logo {
             height: 48px;
-            filter: brightness(0) invert(1);
             transition: var(--transition);
         }
 
@@ -251,7 +250,7 @@
         }
 
         .form-control {
-            width: 100%;
+            width: 90%;
             padding: 1rem 1.25rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--border-radius);
@@ -485,13 +484,11 @@
 
     <div class="registration-container">
         <form action="{{ route('store') }}" method="POST" class="form-section">
-            <div class="logo-container">
-                <img src="{{ asset('package/dist/images/logos/logo.png') }}" alt="PT. Indoprima Gemilang"
-                    class="logo">
-            </div>
             @csrf
 
             <div class="form-header">
+                <img src="{{ asset('photo/white-logo.png') }}" alt="PT. Indoprima Gemilang"
+                    class="logo">
                 <h1 class="form-title animate__animated animate__fadeInDown">Join Our Team</h1>
                 <p class="form-subtitle animate__animated animate__fadeInDown animate__delay-1s">Complete the form below
                     to start your application process</p>
@@ -602,7 +599,7 @@
 
                     <div class="input-group animate__animated animate__fadeIn animate__delay-7s">
                         <label for="jurusan" class="form-label">Major/Field of Study</label>
-                        <select name="jurusan" id="jurusan" class="form-control">
+                        <select name="jurusan" id="jurusan" class="form-select">
                             <option value="">Select Major/Field</option>
                             <option value="Akuntansi">Akuntansi</option>
                             <option value="Kimia">Kimia</option>
@@ -647,13 +644,13 @@
                     <div class="input-group animate__animated animate__fadeIn animate__delay-9s">
                         <label for="tinggi_badan" class="form-label">Height (cm)</label>
                         <input type="number" name="tinggi_badan" id="tinggi_badan" class="form-control"
-                            placeholder="170" required>
+                            placeholder="170" step="any" required>
                     </div>
 
                     <div class="input-group animate__animated animate__fadeIn animate__delay-9s">
                         <label for="berat_badan" class="form-label">Weight (kg)</label>
                         <input type="number" name="berat_badan" id="berat_badan" class="form-control"
-                            placeholder="65" required>
+                            placeholder="65" step="any" required>
                     </div>
                 </div>
 

@@ -24,5 +24,9 @@ jobs:
 
       - name: Pull latest code on server
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
-            "cd /var/www/recruitments/recruitments && git reset --hard && git pull origin main"
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "
+          cd /var/www/recruitments/recruitments &&
+          git reset --hard &&
+          git pull origin main &&
+          php artisan config:cache
+        "

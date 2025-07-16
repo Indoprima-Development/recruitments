@@ -34,8 +34,7 @@ class LoginRegisterController extends Controller
         ->first();
 
         if (!empty($user)) {
-            Alert::error('Error', 'Email atau KTP sudah terdaftar');
-            return redirect()->back();
+            return view('auth.alreadyRegistered',compact('user'));
         }
 
         $tokenGenerate = GenerateRandomString();
@@ -50,8 +49,8 @@ class LoginRegisterController extends Controller
             'asal_instansi'       => $request->asal_instansi,
             'jurusan'             => $request->jurusan,
             'ipk'                 => $request->ipk,
-            'berat_badan'         => $request->berat_badan,
-            'tinggi_badan'        => $request->tinggi_badan,
+            'berat_badan'         => (int)$request->berat_badan,
+            'tinggi_badan'        => (int)$request->tinggi_badan,
             'is_active'           => 0,
             'active_token'        => $tokenGenerate,
         ]);
@@ -60,7 +59,8 @@ class LoginRegisterController extends Controller
 
         SendMail($request->name,$tokenGenerate,$request->email,'Verifikasi Pendaftaran Akun');
 
-        return redirect('auth/login');
+        $email = $request->email;
+        return view('auth.successRegister',compact('email'));
     }
 
     public function login()
