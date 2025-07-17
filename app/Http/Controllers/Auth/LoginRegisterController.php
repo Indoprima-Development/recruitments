@@ -78,6 +78,10 @@ class LoginRegisterController extends Controller
         // $user = User::where('ktp', $request->ktp)->orWhere('nohp', $request->nohp)->first();
         $user = User::where('email', $request->email)->first();
         if (!empty($user)) {
+            if ($user->is_active != 1) {
+                return view('auth.emailActivation');
+            }
+
             if (Hash::check($request->password, $user->password)) {
 
                 if ($user->is_active == "" || $user->is_active == 0) {
