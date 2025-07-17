@@ -397,10 +397,10 @@
 
                     @if (Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia@gmail.com'))
                         <div class="col-lg-3 text-lg-end">
-                            <button class="btn btn-create w-100 w-lg-auto" id="create-vacancy-btn">
+                            <a target="_blank" class="btn btn-create w-100 w-lg-auto" href="{{url('ptkforms/create')}}">
                                 <i class="ti ti-plus me-2"></i>
                                 Create Position
-                            </button>
+                            </a>
                         </div>
                     @endif
                 </div>
