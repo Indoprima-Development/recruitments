@@ -54,6 +54,7 @@
                             <option value="Staff" >Staff</option>
                             <option value="Non Staff" >Non Staff</option>
                             <option value="Internship" >Internship</option>
+                            <option value="LTC" >LTC</option>
                         </select>
                     </div>
 

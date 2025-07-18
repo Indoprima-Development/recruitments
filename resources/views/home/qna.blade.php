@@ -60,8 +60,7 @@ $answers = range(1, 5);
                         </p>
                         <div class="vstack gap-3 mt-4">
                             <div class="row">
-                                @foreach ($numbers as $i)
-                                    <div class="col-2 mb-2">
+                                @for ($i=1; $i <= count($data['qna']); $i++)                       <div class="col-2 mb-2">
                                         <a id="btnSoal{{ $i }}" index="{{ $i }}"
                                             class="btnSoal btn btn-muted p-0 hstack justify-content-center"
                                             href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -69,7 +68,7 @@ $answers = range(1, 5);
                                             <h4 class="text-white">{{ $i }}</h4>
                                         </a>
                                     </div>
-                                @endforeach
+                                @endfor
                             </div>
                         </div>
                     </div>

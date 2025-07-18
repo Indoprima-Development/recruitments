@@ -177,7 +177,8 @@
             transition: var(--transition);
             z-index: -1;
             /* Ensure pseudo-element stays behind */
-            pointer-events: none; /* Add this */
+            pointer-events: none;
+            /* Add this */
         }
 
         .job-card:hover {
@@ -245,7 +246,8 @@
             font-weight: 600;
             text-decoration: none;
             transition: var(--transition);
-            z-index: 2; /* Higher than parent */
+            z-index: 2;
+            /* Higher than parent */
         }
 
         .btn-apply:hover {
@@ -374,14 +376,14 @@
                                     <button class="nav-link" id="staff-tab" data-bs-toggle="pill"
                                         data-bs-target="#staff" type="button" role="tab">
                                         <i class="ti ti-briefcase me-2"></i>
-                                        Full-time
+                                        Staff
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="nonstaff-tab" data-bs-toggle="pill"
                                         data-bs-target="#nonstaff" type="button" role="tab">
                                         <i class="ti ti-users me-2"></i>
-                                        Contract
+                                        Non Staff
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
@@ -391,13 +393,21 @@
                                         Internship
                                     </button>
                                 </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="ltc-tab" data-bs-toggle="pill" data-bs-target="#ltc"
+                                        type="button" role="tab">
+                                        <i class="ti ti-star me-2"></i>
+                                        LTC
+                                    </button>
+                                </li>
                             </ul>
                         </div>
                     </div>
 
                     @if (Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia@gmail.com'))
                         <div class="col-lg-3 text-lg-end">
-                            <a target="_blank" class="btn btn-create w-100 w-lg-auto" href="{{url('ptkforms/create')}}">
+                            <a target="_blank" class="btn btn-create w-100 w-lg-auto"
+                                href="{{ url('ptkforms/create') }}">
                                 <i class="ti ti-plus me-2"></i>
                                 Create Position
                             </a>
@@ -407,62 +417,47 @@
 
                 <!-- Job Listings -->
                 <div class="tab-content" id="pills-tabContent">
+                    <!-- All -->
                     <div class="tab-pane fade show active" id="all" role="tabpanel">
                         <div class="row gy-4">
                             @foreach ($jobs as $job)
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="glass-card job-card p-4">
-                                        <div class="job-card-header mb-4">
-                                            <h3 class="job-title text-white">{{ $job->jobtitle->jobtitle_name ?? '-' }}
-                                            </h3>
-                                            <span
-                                                class="job-department">{{ $job->division->division_name ?? '-' }}</span>
-                                        </div>
+                                @include('job-card', ['job' => $job])
+                            @endforeach
+                        </div>
+                    </div>
 
-                                        <div class="job-card-body mb-4">
-                                            <div class="job-meta">
-                                                <div class="meta-item">
-                                                    <i class="ti ti-school"></i>
-                                                    <span>{{ $job->education->education_name ?? 'Not specified' }}</span>
-                                                </div>
-                                                <div class="meta-item">
-                                                    <i class="ti ti-gender-bigender"></i>
-                                                    @if ($job->gender == 1)
-                                                        <span>Male</span>
-                                                    @elseif ($job->gender == 2)
-                                                        <span>Female</span>
-                                                    @else
-                                                        <span>Any Gender</span>
-                                                    @endif
-                                                </div>
-                                            </div>
+                    <!-- Staff -->
+                    <div class="tab-pane fade" id="staff" role="tabpanel">
+                        <div class="row gy-4">
+                            @foreach ($jobs->where('status_pegawai', 'Staff') as $job)
+                                @include('job-card', ['job' => $job])
+                            @endforeach
+                        </div>
+                    </div>
 
-                                            <div class="meta-item">
-                                                <i class="ti ti-calendar"></i>
-                                                <span>Start Date: {{ $job->date_startwork }}</span>
-                                            </div>
-                                        </div>
+                    <!-- Non Staff -->
+                    <div class="tab-pane fade" id="nonstaff" role="tabpanel">
+                        <div class="row gy-4">
+                            @foreach ($jobs->where('status_pegawai', 'Non Staff') as $job)
+                                @include('job-card', ['job' => $job])
+                            @endforeach
+                        </div>
+                    </div>
 
-                                        <div class="job-card-footer d-flex justify-content-between align-items-center">
-                                            <span class="badge bg-primary text-white">{{ $job->status_pegawai }}</span>
+                    <!-- Internship -->
+                    <div class="tab-pane fade" id="intern" role="tabpanel">
+                        <div class="row gy-4">
+                            @foreach ($jobs->where('status_pegawai', 'Internship') as $job)
+                                @include('job-card', ['job' => $job])
+                            @endforeach
+                        </div>
+                    </div>
 
-                                            <div class="d-flex align-items-center gap-2">
-                                                @if (Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia@gmail.com'))
-                                                    <button data-id="{{ $job->id }}" type="button"
-                                                        class="btn btn-sm btn-outline-danger btn-delete">
-                                                        <i class="ti ti-trash"></i>
-                                                    </button>
-                                                @endif
-
-                                                <a target="_blank" href="{{ url('vacancies', $job->id) }}"
-                                                    class="btn-apply">
-                                                    Apply Now
-                                                    <i class="ti ti-arrow-right ms-2"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <!-- LTC -->
+                    <div class="tab-pane fade" id="ltc" role="tabpanel">
+                        <div class="row gy-4">
+                            @foreach ($jobs->where('status_pegawai', 'LTC') as $job)
+                                @include('job-card', ['job' => $job])
                             @endforeach
                         </div>
                     </div>
@@ -506,6 +501,140 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalCV" tabindex="-1" aria-labelledby="cvModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light border-0"
+                style="
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        ">
+                <!-- Animated header with gradient -->
+                <div class="modal-header border-0 position-relative"
+                    style="
+                background: linear-gradient(90deg, rgba(0,212,255,0.2) 0%, rgba(9,9,121,0.3) 50%, rgba(0,212,255,0.2) 100%);
+                padding: 1.5rem;
+            ">
+                    <h5 class="modal-title fs-4 fw-bold" id="cvModalLabel"
+                        style="
+                    background: linear-gradient(90deg, #00d4ff 0%, #5e72eb 100%);
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    color: transparent;
+                    letter-spacing: 1px;
+                ">
+                        <i class="bi bi-file-earmark-person-fill me-2"></i>
+                        CV UPDATE REQUIRED
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"
+                        style="
+                    filter: brightness(0) invert(1);
+                    opacity: 0.8;
+                    transition: all 0.3s;
+                "
+                        onmouseover="this.style.opacity='1'; this.style.transform='scale(1.2)'"
+                        onmouseout="this.style.opacity='0.8'; this.style.transform='scale(1)'"></button>
+                </div>
+
+                <!-- Glowing body content -->
+                <div class="modal-body py-4 px-4" style="position: relative;">
+                    <div class="d-flex align-items-start">
+                        <div class="me-3"
+                            style="
+                        font-size: 2rem;
+                        background: linear-gradient(135deg, #00d4ff 0%, #5e72eb 100%);
+                        -webkit-background-clip: text;
+                        background-clip: text;
+                        color: transparent;
+                    ">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        </div>
+                        <div>
+                            <p class="mb-3" style="font-size: 1.1rem; line-height: 1.6;">
+                                <span class="d-block mb-2" style="color: #00d4ff; font-weight: 500;">Important
+                                    Application Requirement</span>
+                                Please ensure your professional profile is fully updated in the <span
+                                    style="color: #5e72eb; font-weight: 500;">Account > CV</span> section before
+                                submitting your application.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Animated border effect -->
+                    <div
+                        style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    border: 1px solid transparent;
+                    border-radius: 15px;
+                    background: linear-gradient(135deg, rgba(0,212,255,0.3) 0%, rgba(9,9,121,0.1) 50%, rgba(0,212,255,0.3) 100%);
+                    pointer-events: none;
+                    animation: borderPulse 4s infinite;
+                ">
+                    </div>
+                </div>
+
+                <!-- Hover effect buttons -->
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-light me-2" data-bs-dismiss="modal"
+                        style="
+                    border: 1px solid rgba(0, 212, 255, 0.5);
+                    border-radius: 8px;
+                    transition: all 0.3s;
+                    position: relative;
+                    overflow: hidden;
+                "
+                        onmouseover="this.style.boxShadow='0 0 15px rgba(0, 212, 255, 0.5)'; this.style.borderColor='rgba(0, 212, 255, 1)'"
+                        onmouseout="this.style.boxShadow='none'; this.style.borderColor='rgba(0, 212, 255, 0.5)'">
+                        I'll Update Later
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="location.href='/forms'"
+                        style="
+                    background: linear-gradient(135deg, #00d4ff 0%, #5e72eb 100%);
+                    border: none;
+                    border-radius: 8px;
+                    padding: 8px 20px;
+                    font-weight: 500;
+                    transition: all 0.3s;
+                    position: relative;
+                    overflow: hidden;
+                "
+                        onmouseover="this.style.boxShadow='0 0 20px rgba(0, 212, 255, 0.7)'; this.style.transform='translateY(-2px)'"
+                        onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)'">
+                        Update CV Now <i class="bi bi-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes borderPulse {
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+
+        .modal-content {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+
     <!-- Scripts -->
     <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('package/dist/libs/simplebar/dist/simplebar.min.js') }}"></script>
@@ -519,6 +648,8 @@
     <script>
         // Delete confirmation
         $(document).ready(function() {
+            $('#modalCV').modal('show');
+
             $(".btn-delete").on("click", function() {
                 $('#modalDelete').modal('show');
                 $('#linkDelete').attr('href', '{{ url('off-vacancy') }}/' + $(this).data('id'));

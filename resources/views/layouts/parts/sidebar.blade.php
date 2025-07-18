@@ -158,13 +158,13 @@
                         <li class="sidebar-item">
                             <a href="{{url('exam-histories')}}" class="sidebar-link">
                                 <i class="ti ti-presentation"></i>
-                                <span class="hide-menu">Riwayat Tes</span>
+                                <span class="hide-menu">Test</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('exam-users')}}" class="sidebar-link">
                                 <i class="ti ti-presentation"></i>
-                                <span class="hide-menu">Riwayat User</span>
+                                <span class="hide-menu">User</span>
                             </a>
                         </li>
                     </ul>
