@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jobtitle;
+use App\Models\Ptkfield;
 use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MainController extends Controller
@@ -40,6 +42,7 @@ class MainController extends Controller
 
     public function showVacancy($id)
     {
+        $id = Crypt::decryptString($id);
         $ptkform = Ptkform::findOrFail($id);
 
         $isApplied = false;
@@ -54,8 +57,9 @@ class MainController extends Controller
         }
 
         $jobtitle = Jobtitle::findOrFail($ptkform->jobtitle_id);
+        $ptkfields = Ptkfield::where('ptkform_id',$id)->get();
 
-        return view('ptkforms.show', compact('ptkform', 'isApplied', 'jobtitle'));
+        return view('ptkforms.show', compact('ptkform', 'isApplied', 'jobtitle','ptkfields'));
     }
 
     public function konfirmation(Request $request){

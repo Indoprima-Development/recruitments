@@ -39,7 +39,7 @@
                     </button>
                 @endif
 
-                <a target="_blank" href="{{ url('vacancies', $job->id) }}" class="btn-apply">
+                <a target="_blank" href="{{ url('vacancies', Crypt::encryptString($job->id)) }}" class="btn-apply">
                     Apply Now <i class="ti ti-arrow-right ms-2"></i>
                 </a>
             </div>

@@ -381,7 +381,9 @@
                                 <h5 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
                                     EXPERIENCE</h5>
                                 <div class="bg-light p-3 rounded">
-                                    {!! $ptkform->responsibility !!}
+                                    @foreach ($ptkfields as $no => $d)
+                                    <h6>{{$no+1}}. {{$d->field->field_name}} {{$d->year}} Tahun</h6>
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -480,7 +482,8 @@
                             </table>
                         </div>
 
-                        <p class="mt-4">Saya, <strong class="text-primary">{{ Auth::user()->name ?? '' }}</strong>, setuju untuk berpartisipasi dalam seluruh proses seleksi sesuai dengan kebijakan perusahaan.</p>
+                        <p class="mt-4">Saya, <strong class="text-primary">{{ Auth::user()->name ?? '' }}</strong>,
+                            setuju untuk berpartisipasi dalam seluruh proses seleksi sesuai dengan kebijakan perusahaan.</p>
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="ptkform_id" value="{{ $ptkform->id }}">
@@ -561,7 +564,7 @@
     <script>
         $("#btnSubmitApplication").on("click", function() {
             $('#btnSubmitApplication').html("Loading...")
-            $('#btnSubmitApplication').prop("disabled",true)
+            $('#btnSubmitApplication').prop("disabled", true)
             $('#formApplication').submit()
         });
     </script>
