@@ -471,6 +471,28 @@
         }
     </style>
 
+    <style>
+        .card-hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .card-hover-scale:hover {
+            transform: translateY(-5px);
+        }
+
+        .bg-success-gradient {
+            background: linear-gradient(135deg, #28a745 0%, #5cb85c 100%);
+        }
+
+        .bg-warning-gradient {
+            background: linear-gradient(135deg, #ffc107 0%, #f0ad4e 100%);
+        }
+
+        .bg-danger-gradient {
+            background: linear-gradient(135deg, #dc3545 0%, #d9534f 100%);
+        }
+    </style>
+
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
