@@ -561,7 +561,7 @@
     <script>
         $("#btnSubmitApplication").on("click", function() {
             $('#btnSubmitApplication').html("Loading...")
-            $('#btnSubmitApplication').prop("disabled",'true')
+            $('#btnSubmitApplication').prop("disabled",true)
             $('#formApplication').submit()
         });
     </script>
