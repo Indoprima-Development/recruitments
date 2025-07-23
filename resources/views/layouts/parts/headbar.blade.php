@@ -1,5 +1,66 @@
 <!-- Header Start -->
 @if(Auth::check())
+<style>
+    /* Header Styles */
+    .app-header {
+        background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+    }
+
+    .navbar {
+        padding: 0.75rem 1rem;
+    }
+
+    .logo-img {
+        transition: all 0.3s ease;
+    }
+
+    .logo-img:hover {
+        opacity: 0.9;
+    }
+
+    .navbar-toggler {
+        padding: 0.5rem;
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+    /* User Dropdown */
+    .avatar {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        border: none;
+        min-width: 280px;
+        overflow: hidden;
+    }
+
+    .dropdown-header {
+        background-color: #f8f9fa;
+    }
+
+    .dropdown-item {
+        transition: all 0.2s;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f1f7fe;
+        color: #3a7bd5;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1199.98px) {
+        .navbar-brand {
+            margin-right: 0;
+        }
+    }
+</style>
 <header class="app-header bg-primary-subtle">
     <nav class="navbar navbar-expand-xl navbar-light container-fluid px-0">
         <ul class="navbar-nav">

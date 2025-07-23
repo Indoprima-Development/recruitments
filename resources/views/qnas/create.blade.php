@@ -1,6 +1,6 @@
 @extends('default')
 
-@section('content2')
+@section('content')
 
 @if($errors->any())
 <div class="alert alert-danger">
@@ -20,32 +20,29 @@
 		@endforeach
 	</select>
 </div>
-<div class="mb-3">
-	{{ Form::label('user_id', 'User Id', ['class'=>'form-label']) }}
-	{{ Form::text('user_id', Auth::user()->id, array('class' => 'form-control','readonly')) }}
-</div>
+{{ Form::hidden('user_id', Auth::user()->id, array('class' => 'form-control','readonly')) }}
 <div class="mb-3">
 	{{ Form::label('question', 'Question', ['class'=>'form-label']) }}
 	{{ Form::textarea('question', null, array('class' => 'form-control')) }}
 </div>
 <div class="mb-3">
-	{{ Form::label('answer1', 'Answer1', ['class'=>'form-label']) }}
+	{{ Form::label('answer1', 'Answer 1', ['class'=>'form-label']) }}
 	{{ Form::textarea('answer1', null, array('class' => 'form-control')) }}
 </div>
 <div class="mb-3">
-	{{ Form::label('answer2', 'Answer2', ['class'=>'form-label']) }}
+	{{ Form::label('answer2', 'Answer 2', ['class'=>'form-label']) }}
 	{{ Form::textarea('answer2', null, array('class' => 'form-control')) }}
 </div>
 <div class="mb-3">
-	{{ Form::label('answer3', 'Answer3', ['class'=>'form-label']) }}
+	{{ Form::label('answer3', 'Answer 3', ['class'=>'form-label']) }}
 	{{ Form::textarea('answer3', null, array('class' => 'form-control')) }}
 </div>
 <div class="mb-3">
-	{{ Form::label('answer4', 'Answer4', ['class'=>'form-label']) }}
+	{{ Form::label('answer4', 'Answer 4', ['class'=>'form-label']) }}
 	{{ Form::textarea('answer4', null, array('class' => 'form-control')) }}
 </div>
 <div class="mb-3">
-	{{ Form::label('answer5', 'Answer5', ['class'=>'form-label']) }}
+	{{ Form::label('answer5', 'Answer 5', ['class'=>'form-label']) }}
 	{{ Form::textarea('answer5', null, array('class' => 'form-control')) }}
 </div>
 <div class="mb-3">

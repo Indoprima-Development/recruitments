@@ -1,118 +1,268 @@
 @extends('default')
 
 @section('addCss')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3a7bd5;
+            --secondary-color: #00d2ff;
+            --card-bg: #ffffff;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border-color: #e0e6ed;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .profile-photo-container {
+            width: 150px;
+            height: 150px;
+            margin: -75px auto 1rem;
+            border: 5px solid white;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .candidate-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .candidate-position {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .profile-card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .profile-card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .profile-card-body {
+            padding: 1.5rem;
+        }
+
+        .info-table {
+            width: 100%;
+        }
+
+        .info-table tr td {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--text-light);
+            width: 30%;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .status-badge-primary {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+        }
+
+        .status-badge-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-badge-warning {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+
+        .action-btn {
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .action-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .timeline-table {
+            width: 100%;
+        }
+
+        .timeline-table th, .timeline-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
 @endsection
 
 @section('content2')
     <div class="container-fluid" id="contentToSave">
-        <div class="card overflow-hidden border-1 border-primary">
-            <div class="card-body p-0">
-                <img src="{{ asset('photo/header.png') }}" alt="" class="img-fluid">
-                <div class="row align-items-center">
-                    <div class="col-lg-4 order-lg-1 order-2">
-                        <div class="d-flex align-items-center justify-content-around m-4">
-                            <div class="text-center text-muted">
-                                <i class="ti ti-file fs-6 d-block mb-2"></i>
-                                <p class="mb-0 fs-4">
-                                    @if($users->cv != null)
-                                    <a class="btn btn-sm btn-primary" href="{{url($users->cv)}}">
-                                        CV
-                                    </a>
-                                    @else
-                                    <a class="btn btn-sm btn-primary" href="3">
-                                        CV Not Uploaded
-                                    </a>
-                                    @endif
-                                </p>
-                            </div>
-                            <div class="text-center text-muted">
-                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
-                                <p class="mb-0 fs-4"><b>{{ $ptkformtransactions[0]->ptkform->jobtitle->jobtitle_name ?? "-" }}</b></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mt-n3 order-lg-2 order-1">
-                        <div class="mt-n5">
-                            <div class="d-flex align-items-center justify-content-center mb-2">
-                                <div class="linear-gradient d-flex align-items-center justify-content-center rounded-circle"
-                                    style="width: 110px; height: 110px;";>
-                                    <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden"
-                                        style="width: 100px; height: 100px;";>
-                                        @if ($users->photo != null)
-                                            <img src="{{ asset($users->photo) }}" alt="" class="w-100 h-100">
-                                        @endif
-                                    </div>
+        <!-- Profile Header -->
+        <div class="profile-header text-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="profile-photo-container">
+                            @if ($users->photo != null)
+                                <img src="{{ asset($users->photo) }}" alt="Candidate Photo" class="profile-photo">
+                            @else
+                                <div class="bg-light d-flex align-items-center justify-content-center h-100">
+                                    <i class="fas fa-user fa-3x text-muted"></i>
                                 </div>
-                            </div>
-                            <div class="text-center">
-                                <h5 class="fs-5 mb-0 fw-semibold">{{ $users->name }}</h5>
-                                <p class="mb-0 fs-4">
-                                    <a target="_blank" href="wa.me/{{ $users->no_wa }}">
-                                        {{ $users->no_wa }}</a>
-                                </p>
-                            </div>
+                            @endif
                         </div>
-                    </div>
-                    <div class="col-lg-4 order-last">
-                        <div class="d-flex align-items-center justify-content-around m-4">
-                            <div class="text-center text-muted">
-                                <i class="ti ti-circle-check fs-6 d-block mb-2"></i>
-                                <p class="mb-0 fs-4">
-                                    <b>
-                                        @if($ptkformtransactions[0]->join != null)
-                                        JOIN
-                                        @elseif($ptkformtransactions[0]->mcu)
-                                        MCU
-                                        @elseif($ptkformtransactions[0]->finalisasi != null)
-                                        FINALISASI
-                                        @elseif($ptkformtransactions[0]->interview_direksi != null)
-                                        INTERVIEW DIREKSI
-                                        @elseif($ptkformtransactions[0]->interview_user != null)
-                                        INTERVIEW USER
-                                        @elseif($ptkformtransactions[0]->psikotest != null)
-                                        PSIKOTEST
-                                        @elseif($ptkformtransactions[0]->interview_hc != null)
-                                        INTERVIEW HC
-                                        @elseif($ptkformtransactions[0]->cv_review != null)
-                                        CV REVIEW
-                                        @else
-                                        APPLY
-                                        @endif
-                                    </b>
-                                </p>
-                            </div>
+                        <h1 class="candidate-name">{{ $users->name }}</h1>
+                        <p class="candidate-position">
+                            {{ $ptkformtransactions[0]->ptkform->jobtitle->jobtitle_name ?? "-" }}
+                        </p>
 
-                            <div class="text-center text-muted">
-                                <i class="ti ti-printer fs-6 d-block mb-2"></i>
-                                <p class="mb-0 fs-4">
-                                    <button class="btn btn-sm btn-primary" onclick="saveDivAsPDF()">Save as PDF</button>
-                                </p>
-                            </div>
+                        <div class="d-flex justify-content-center gap-3 mb-4 no-print">
+                            @if($users->cv != null)
+                            <a href="{{url($users->cv)}}" class="action-btn btn btn-light">
+                                <i class="fas fa-file-pdf"></i> View CV
+                            </a>
+                            @else
+                            <button class="action-btn btn btn-light" disabled>
+                                <i class="fas fa-exclamation-circle"></i> CV Not Uploaded
+                            </button>
+                            @endif
+
+                            <button onclick="saveDivAsPDF()" class="action-btn btn btn-light">
+                                <i class="fas fa-download"></i> Save as PDF
+                            </button>
+
+                            <a target="_blank" href="https://wa.me/{{ $users->no_wa }}" class="action-btn btn btn-light">
+                                <i class="fab fa-whatsapp"></i> Contact
+                            </a>
+                        </div>
+
+                        <div class="mb-3">
+                            @php
+                                $statusClass = 'status-badge-primary';
+                                $statusText = 'APPLY';
+
+                                if($ptkformtransactions[0]->join != null) {
+                                    $statusClass = 'status-badge-success';
+                                    $statusText = 'JOINED';
+                                } elseif($ptkformtransactions[0]->mcu) {
+                                    $statusClass = 'status-badge-warning';
+                                    $statusText = 'MEDICAL CHECKUP';
+                                } elseif($ptkformtransactions[0]->finalisasi != null) {
+                                    $statusClass = 'status-badge-success';
+                                    $statusText = 'FINALIZED';
+                                } elseif($ptkformtransactions[0]->interview_direksi != null) {
+                                    $statusClass = 'status-badge-primary';
+                                    $statusText = 'DIRECTOR INTERVIEW';
+                                } elseif($ptkformtransactions[0]->interview_user != null) {
+                                    $statusClass = 'status-badge-primary';
+                                    $statusText = 'USER INTERVIEW';
+                                } elseif($ptkformtransactions[0]->psikotest != null) {
+                                    $statusClass = 'status-badge-primary';
+                                    $statusText = 'PSYCHOTEST';
+                                } elseif($ptkformtransactions[0]->interview_hc != null) {
+                                    $statusClass = 'status-badge-primary';
+                                    $statusText = 'HC INTERVIEW';
+                                } elseif($ptkformtransactions[0]->cv_review != null) {
+                                    $statusClass = 'status-badge-primary';
+                                    $statusText = 'CV REVIEWED';
+                                }
+                            @endphp
+                            <span class="status-badge {{ $statusClass }}">
+                                {{ $statusText }}
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card shadow-none border-1 border-primary">
-                    <div class="card-body row text-center">
-                        <h5 class="text-primary"><b>Riwayat Lamaran</b></h5>
-                        <hr>
-                        <table class="table table-bordered table-sm">
+        <div class="container">
+            <!-- Application Timeline -->
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <h5 class="mb-0">Application Timeline</h5>
+                </div>
+                <div class="profile-card-body">
+                    <div class="table-responsive">
+                        <table class="timeline-table">
                             <thead>
                                 <tr>
-                                    <th>Jobtitle</th>
+                                    <th>Position</th>
                                     <th>Score</th>
-                                    <th>CV</th>
+                                    <th>CV Review</th>
                                     <th>Technical</th>
-                                    <th>HC</th>
-                                    <th>Psikotes</th>
-                                    <th>User</th>
-                                    <th>Director</th>
-                                    <th>Finalisasi</th>
+                                    <th>HC Interview</th>
+                                    <th>Psikotest</th>
+                                    <th>User Interview</th>
+                                    <th>Director Interview</th>
+                                    <th>Finalization</th>
                                     <th>MCU</th>
                                     <th>Join</th>
                                 </tr>
@@ -121,9 +271,9 @@
                                 @foreach ($ptkformtransactions as $ptkformtransaction)
                                 <tr>
                                     <td>{{ $ptkformtransaction->ptkform->jobtitle->jobtitle_name ?? "-" }}</td>
-                                    <td>{{$ptkformtransaction->score_candidate ?? 0}}</td>
+                                    <td>{{ $ptkformtransaction->score_candidate ?? 0 }}</td>
                                     <td>{{ $ptkformtransaction->cv_review != null ? substr($ptkformtransaction->cv_review,0,10) : '-' }}</td>
-                                    <td>{{$ptkformtransaction->score_technical_test ?? "-"}}</td>
+                                    <td>{{ $ptkformtransaction->score_technical_test ?? "-" }}</td>
                                     <td>{{ $ptkformtransaction->interview_hc != null ? substr($ptkformtransaction->interview_hc,0,10) : '-' }}</td>
                                     <td>{{ $ptkformtransaction->psikotest != null ? substr($ptkformtransaction->psikotest,0,10) : '-' }}</td>
                                     <td>{{ $ptkformtransaction->interview_user != null ? substr($ptkformtransaction->interview_user,0,10) : '-' }}</td>
@@ -139,239 +289,260 @@
                 </div>
             </div>
 
-            <div class="col-sm-12 col-md-6">
-                <div class="card shadow-none border-1 border-primary">
-                    <div class="card-body row">
-                        <h5>Data Diri</h5>
-                        <hr>
-                        <table class="table table-sm">
-                            <tr>
-                                <td>Tempat, Tanggal Lahir</td>
-                                <td>{{ $datadiri->tempat_lahir ?? '-' }},
-                                    {{ $datadiri->tanggal_lahir ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>Alamat</td>
-                                <td>{{ $datadiri->alamat ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>Telepon</td>
-                                <td>{{ $datadiri->no_hp ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>Golongan Darah</td>
-                                <td>{{ $datadiri->golongan_darah ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>NIK</td>
-                                <td>{{ $datadiri->ktp ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>Kendaraan yang Dipakai</td>
-                                <td>{{ $datadiri->kendaraan ?? '-' }}</td>
-                            </tr>
-
-                            <tr>
-                                <td>Jenis Kelamin</td>
-                                <td>
-                                    @if ($datadiri)
-                                        {{ $datadiri->gender == 1 ? 'Laki-laki' : 'Perempuan' }}
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Status Rumah</td>
-                                <td>{{ $datadiri->status_rumah ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>No. Wa</td>
-                                <td>{{ $datadiri->no_wa ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>Agama</td>
-                                <td>{{ $datadiri->agama ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>Tinggi Badan</td>
-                                <td>{{ $datadiri->tinggi_badan ?? '-' }}</td>
-                            </tr>
-
-                            <tr>
-                                <td>Berat Badan</td>
-                                <td>{{ $datadiri->berat_badan ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <td>SIM</td>
-                                <td>{{ $datadiri->sim ?? '-' }}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-12 col-md-6">
-
-                <div class="card shadow-none border-1 border-primary">
-                    <div class="card-body row">
-                        <h5>Pendidikan Formal</h5>
-                        <hr>
-                        <table class="table table-bordered table-sm">
-                            <thead>
+            <div class="row">
+                <!-- Personal Information -->
+                <div class="col-md-6">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h5 class="mb-0">Personal Information</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <table class="info-table">
                                 <tr>
-                                    <th>Tingkat</th>
-                                    <th>Instansi</th>
-                                    <th>Jurusan</th>
-                                    <th>Lulus</th>
-                                    <th>Nilai</th>
+                                    <td class="info-label">Birth Place/Date</td>
+                                    <td>{{ $datadiri->tempat_lahir ?? '-' }}, {{ $datadiri->tanggal_lahir ?? '-' }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datapendidikanformals as $datapendidikanformal)
-                                    <tr>
-                                        <td>{{ $datapendidikanformal->tingkat }}</td>
-                                        <td>{{ $datapendidikanformal->instansi }}</td>
-                                        <td>{{ $datapendidikanformal->jurusan }}</td>
-                                        <td>{{ $datapendidikanformal->lulus_tahun }}</td>
-                                        <td>{{ $datapendidikanformal->nilai }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                <tr>
+                                    <td class="info-label">Address</td>
+                                    <td>{{ $datadiri->alamat ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">Phone</td>
+                                    <td>{{ $datadiri->no_hp ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">Blood Type</td>
+                                    <td>{{ $datadiri->golongan_darah ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">ID Number</td>
+                                    <td>{{ $datadiri->ktp ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">Vehicle</td>
+                                    <td>{{ $datadiri->kendaraan ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">Gender</td>
+                                    <td>
+                                        @if ($datadiri)
+                                            {{ $datadiri->gender == 1 ? 'Male' : 'Female' }}
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">House Status</td>
+                                    <td>{{ $datadiri->status_rumah ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">WhatsApp</td>
+                                    <td>{{ $datadiri->no_wa ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">Religion</td>
+                                    <td>{{ $datadiri->agama ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">Height</td>
+                                    <td>{{ $datadiri->tinggi_badan ?? '-' }} cm</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">Weight</td>
+                                    <td>{{ $datadiri->berat_badan ?? '-' }} kg</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-label">Driver License</td>
+                                    <td>{{ $datadiri->sim ?? '-' }}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card shadow-none border-1 border-primary">
-                    <div class="card-body row">
-                        <h5>Pendidikan Informal</h5>
-                        <table class="table table-bordered table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Jenis</th>
-                                    <th>Tingkat</th>
-                                    <th>Instansi</th>
-                                    <th>Jurusan</th>
-                                    <th>Mulai</th>
-                                    <th>Akhir</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datapendidikannonformals as $datapendidikannonformal)
-                                    <tr>
-                                        <td>{{ $datapendidikannonformal->jenis }}</td>
-                                        <td>{{ $datapendidikannonformal->tingkat }}</td>
-                                        <td>{{ $datapendidikannonformal->instansi }}</td>
-                                        <td>{{ $datapendidikannonformal->jurusan }}</td>
-                                        <td>{{ $datapendidikannonformal->date_start }}</td>
-                                        <td>{{ $datapendidikannonformal->date_end }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <!-- Education -->
+                <div class="col-md-6">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h5 class="mb-0">Formal Education</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Level</th>
+                                            <th>Institution</th>
+                                            <th>Major</th>
+                                            <th>Graduation</th>
+                                            <th>GPA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($datapendidikanformals as $datapendidikanformal)
+                                            <tr>
+                                                <td>{{ $datapendidikanformal->tingkat }}</td>
+                                                <td>{{ $datapendidikanformal->instansi }}</td>
+                                                <td>{{ $datapendidikanformal->jurusan }}</td>
+                                                <td>{{ $datapendidikanformal->lulus_tahun }}</td>
+                                                <td>{{ $datapendidikanformal->nilai }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-card mt-4">
+                        <div class="profile-card-header">
+                            <h5 class="mb-0">Non-Formal Education</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Level</th>
+                                            <th>Institution</th>
+                                            <th>Field</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($datapendidikannonformals as $datapendidikannonformal)
+                                            <tr>
+                                                <td>{{ $datapendidikannonformal->jenis }}</td>
+                                                <td>{{ $datapendidikannonformal->tingkat }}</td>
+                                                <td>{{ $datapendidikannonformal->instansi }}</td>
+                                                <td>{{ $datapendidikannonformal->jurusan }}</td>
+                                                <td>{{ $datapendidikannonformal->date_start }}</td>
+                                                <td>{{ $datapendidikannonformal->date_end }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-card mt-4">
+                        <div class="profile-card-header">
+                            <h5 class="mb-0">Skills & Hobbies</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Skill/Hobby</th>
+                                            <th>Level</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($datakemampuans as $datakemampuan)
+                                            <tr>
+                                                <td>Skill</td>
+                                                <td>{{ $datakemampuan->kemampuan }}</td>
+                                                <td>{{ $datakemampuan->level }}</td>
+                                            </tr>
+                                        @endforeach
+
+                                        @foreach ($dataolahragas as $dataolahraga)
+                                            <tr>
+                                                <td>Hobby</td>
+                                                <td>{{ $dataolahraga->olahraga }}</td>
+                                                <td>{{ $dataolahraga->level }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card shadow-none border-1 border-primary">
-                    <div class="card-body row">
-                        <h5>Kemampuan dan Hobi</h5>
-                        <hr>
-                        <table class="table table-bordered table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Jenis</th>
-                                    <th>Level</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datakemampuans as $i => $datakemampuan)
-                                    <tr>
-                                        <td>{{ $datakemampuan->kemampuan }}</td>
-                                        <td>{{ $datakemampuan->level }}</td>
-                                    </tr>
-                                @endforeach
-
-                                @foreach ($dataolahragas as $i => $dataolahraga)
-                                    <tr>
-                                        <td>{{ $dataolahraga->olahraga }}</td>
-                                        <td>{{ $dataolahraga->level }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <!-- Family -->
+                <div class="col-12">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h5 class="mb-0">Family Members</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Relationship</th>
+                                            <th>Name</th>
+                                            <th>Birth Place/Date</th>
+                                            <th>Occupation</th>
+                                            <th>Address</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($datakeluargas as $datakeluarga)
+                                            <tr>
+                                                <td>{{ $datakeluarga->status_hubungan }}</td>
+                                                <td>{{ $datakeluarga->nama_keluarga }}</td>
+                                                <td>{{ $datakeluarga->tempat_lahir_keluarga }}, {{ $datakeluarga->tanggal_lahir_keluarga }}</td>
+                                                <td>{{ $datakeluarga->pekerjaan }}</td>
+                                                <td>{{ $datakeluarga->alamat }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-12">
-                <div class="card shadow-none border-1 border-primary">
-                    <div class="card-body row">
-                        <h5>Keluarga</h5>
-                        <hr>
-                        <table class="table table-bordered table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Hubungan</th>
-                                    <th>Nama</th>
-                                    <th>Tempat,Tanggal Lahir</th>
-                                    <th>Pekerjaan</th>
-                                    <th>Alamat</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datakeluargas as $i => $datakeluarga)
-                                    <tr>
-                                        <td>{{ $datakeluarga->status_hubungan }}</td>
-                                        <td>{{ $datakeluarga->nama_keluarga }}</td>
-                                        <td>{{ $datakeluarga->tempat_lahir_keluarga }},
-                                            {{ $datakeluarga->tanggal_lahir_keluarga }}</td>
-                                        <td>{{ $datakeluarga->pekerjaan }}</td>
-                                        <td>{{ $datakeluarga->alamat }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-12">
-                <div class="card shadow-none border-1 border-primary">
-                    <div class="card-body row">
-                        <h5>Pengalaman Kerja</h5>
-                        <hr>
-                        <table class="table table-bordered table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Instansi</th>
-                                    <th>Jabatan Awal</th>
-                                    <th>Jabatan Akhir</th>
-                                    <th>Gaji Awal</th>
-                                    <th>Gaji Akhir</th>
-                                    <th>Mulai</th>
-                                    <th>Akhir</th>
-                                    <th>Alasan Keluar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datapengalamankerjas as $datapengalamankerja)
-                                    <tr>
-                                        <td>{{ $datapengalamankerja->perusahaan }}</td>
-                                        <td>{{ $datapengalamankerja->jabatan_awal }}</td>
-                                        <td>{{ $datapengalamankerja->jabatan_terakhir }}</td>
-                                        <td>{{ $datapengalamankerja->gaji_awal }}</td>
-                                        <td>{{ $datapengalamankerja->gaji_akhir }}</td>
-                                        <td>{{ $datapengalamankerja->date_start }}</td>
-                                        <td>{{ $datapengalamankerja->date_end }}</td>
-                                        <td>{{ $datapengalamankerja->alasan_keluar }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <!-- Work Experience -->
+                <div class="col-12">
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h5 class="mb-0">Work Experience</h5>
+                        </div>
+                        <div class="profile-card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Company</th>
+                                            <th>Initial Position</th>
+                                            <th>Final Position</th>
+                                            <th>Initial Salary</th>
+                                            <th>Final Salary</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                            <th>Reason for Leaving</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($datapengalamankerjas as $datapengalamankerja)
+                                            <tr>
+                                                <td>{{ $datapengalamankerja->perusahaan }}</td>
+                                                <td>{{ $datapengalamankerja->jabatan_awal }}</td>
+                                                <td>{{ $datapengalamankerja->jabatan_terakhir }}</td>
+                                                <td>{{ $datapengalamankerja->gaji_awal }}</td>
+                                                <td>{{ $datapengalamankerja->gaji_akhir }}</td>
+                                                <td>{{ $datapengalamankerja->date_start }}</td>
+                                                <td>{{ $datapengalamankerja->date_end }}</td>
+                                                <td>{{ $datapengalamankerja->alasan_keluar }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@stop
+@endsection
 
 @section('addJs')
 <script>
@@ -379,7 +550,7 @@
         const element = document.getElementById('contentToSave');
         html2pdf(element, {
             margin: 1,
-            filename: '{{ $users->name }}.pdf',
+            filename: '{{ $users->name }}_Profile.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
