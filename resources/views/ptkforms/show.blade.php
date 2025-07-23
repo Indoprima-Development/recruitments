@@ -560,8 +560,9 @@
 
     <script>
         $("#btnSubmitApplication").on("click", function() {
-            $('#applicationModal').modal('hide')
-            $('#formApplication').submit()
+            $('#btnSubmitApplication').html("Loading...")
+            $('#btnSubmitApplication').prop("disabled",'true')
+            $('#btnSubmitApplication').submit()
         });
     </script>
 @endsection
