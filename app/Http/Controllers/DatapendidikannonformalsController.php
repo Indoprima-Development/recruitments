@@ -112,6 +112,6 @@ class DatapendidikannonformalsController extends Controller
         $datapendidikannonformal = Datapendidikannonformal::findOrFail($id);
         $datapendidikannonformal->delete();
 
-        return to_route('datapendidikannonformals.index');
+        return redirect('forms?section=pendidikan');
     }
 }
