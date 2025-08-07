@@ -70,7 +70,7 @@
                             menjalani tahapan seleksi selanjutnya atau diberhentikan setelah diterima kerja.
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Setuju</button>
+                            <button type="submit" class="btn btn-primary">Setuju</button>
                         </div>
                     </div>
                 </div>
