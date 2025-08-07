@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datakemampuan;
 use App\Http\Requests\DatakemampuanRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class DatakemampuansController extends Controller
 {
@@ -16,8 +17,7 @@ class DatakemampuansController extends Controller
      */
     public function index()
     {
-        $datakemampuans= Datakemampuan::all();
-        return view('datakemampuans.index', ['datakemampuans'=>$datakemampuans]);
+        return redirect('forms?section=ketrampilan');
     }
 
     /**
@@ -55,8 +55,8 @@ class DatakemampuansController extends Controller
      */
     public function show($id)
     {
-        $datakemampuan = Datakemampuan::findOrFail($id);
-        return view('datakemampuans.show',['datakemampuan'=>$datakemampuan]);
+        $id = Crypt::decryptString($id);
+        return redirect('forms?section=ketrampilan');
     }
 
     /**
@@ -67,6 +67,7 @@ class DatakemampuansController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $datakemampuan = Datakemampuan::findOrFail($id);
         return view('datakemampuans.edit',['datakemampuan'=>$datakemampuan]);
     }
@@ -80,6 +81,7 @@ class DatakemampuansController extends Controller
      */
     public function update(DatakemampuanRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $datakemampuan = Datakemampuan::findOrFail($id);
 		$datakemampuan->user_id = $request->input('user_id');
 		$datakemampuan->kemampuan = $request->input('kemampuan');
@@ -97,9 +99,10 @@ class DatakemampuansController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $datakemampuan = Datakemampuan::findOrFail($id);
         $datakemampuan->delete();
 
-        return to_route('datakemampuans.index');
+        return redirect('forms?section=ketrampilan');
     }
 }

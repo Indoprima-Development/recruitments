@@ -27,9 +27,7 @@
 
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('datakemampuans.edit', [$datakemampuan->id]) }}"
-                                                    class="btn btn-sm btn-primary">Edit</a>
-                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datakemampuans.destroy', $datakemampuan->id]]) !!}
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datakemampuans.destroy', Crypt::encryptString($datakemampuan->id)]]) !!}
                                                 {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                                 {!! Form::close() !!}
                                             </div>
