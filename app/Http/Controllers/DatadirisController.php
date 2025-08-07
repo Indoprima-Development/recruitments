@@ -176,7 +176,7 @@ class DatadirisController extends Controller
             return redirect('forms?section=pernyataan');
         }
 
-        return redirect('opening-jobs');
+        return redirect('forms?section=pernyataan');
     }
 
     public function photo(Request $request)
@@ -220,7 +220,7 @@ class DatadirisController extends Controller
         $datadiri = Datadiri::findOrFail($id);
         $datadiri->delete();
 
-        return to_route('datadiris.index');
+        return redirect('forms?section=pernyataan');
     }
 
     public function dataAllUsers(){
