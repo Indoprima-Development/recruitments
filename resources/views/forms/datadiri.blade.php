@@ -359,10 +359,6 @@
                                 <td>{{ $datapeminatan->field->field_name }}</td>
                                 <td class="text-end pe-4">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('datapeminatans.edit', [Crypt::encryptString($datapeminatan->id)]) }}"
-                                           class="btn btn-sm btn-outline-primary rounded-circle p-1">
-                                            <i class="ti ti-edit fs-4"></i>
-                                        </a>
                                         {!! Form::open(['method' => 'DELETE','route' => ['datapeminatans.destroy',Crypt::encryptString($datapeminatan->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-1">
                                             <i class="ti ti-trash fs-4"></i>
