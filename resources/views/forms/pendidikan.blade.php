@@ -31,9 +31,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($datapendidikanformals as $datapendidikanformal)
+                                @foreach ($datapendidikanformals as $no => $datapendidikanformal)
                                     <tr>
-                                        <td>{{ $datapendidikanformal->id }}</td>
+                                        <td>{{ $no+1 }}</td>
                                         <td>{{ $datapendidikanformal->tingkat }}</td>
                                         <td>{{ $datapendidikanformal->instansi }}</td>
                                         <td>{{ $datapendidikanformal->jurusan }}</td>
@@ -42,9 +42,9 @@
 
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('datapendidikanformals.edit', [$datapendidikanformal->id]) }}"
+                                                <a href="{{ route('datapendidikanformals.edit', [Crypt::encryptString($datapendidikanformal->id)]) }}"
                                                     class="btn btn-sm btn-primary">Edit</a>
-                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datapendidikanformals.destroy', $datapendidikanformal->id]]) !!}
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datapendidikanformals.destroy', Crypt::encryptString($datapendidikanformal->id)]]) !!}
                                                 {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                                 {!! Form::close() !!}
                                             </div>
@@ -61,7 +61,7 @@
                 <div class="card-body p-4">
                     <div class="row mb-2">
                         <div class="col text-start">
-                            <h5 class="card-title fw-semibold">Pendidikan Formal</h5>
+                            <h5 class="card-title fw-semibold">Pendidikan Non Formal</h5>
                         </div>
                         <div class="col text-end">
                             <a href="{{ url('datapendidikannonformals/create') }}" class="btn btn-primary text-white card-hover">
@@ -84,9 +84,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($datapendidikannonformals as $datapendidikannonformal)
+                                @foreach ($datapendidikannonformals as $no => $datapendidikannonformal)
                                     <tr>
-                                        <td>{{ $datapendidikannonformal->id }}</td>
+                                        <td>{{ $no+1 }}</td>
                                         <td>{{ $datapendidikannonformal->jenis }}</td>
                                         <td>{{ $datapendidikannonformal->tingkat }}</td>
                                         <td>{{ $datapendidikannonformal->instansi }}</td>
@@ -95,11 +95,11 @@
 
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('datapendidikannonformals.edit', [$datapendidikannonformal->id]) }}"
+                                                <a href="{{ route('datapendidikannonformals.edit', [Crypt::encryptString($datapendidikannonformal->id)]) }}"
                                                     class="btn btn-sm btn-primary">Edit</a>
                                                 {!! Form::open([
                                                     'method' => 'DELETE',
-                                                    'route' => ['datapendidikannonformals.destroy', $datapendidikannonformal->id],
+                                                    'route' => ['datapendidikannonformals.destroy', Crypt::encryptString($datapendidikannonformal->id)],
                                                 ]) !!}
                                                 {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                                 {!! Form::close() !!}

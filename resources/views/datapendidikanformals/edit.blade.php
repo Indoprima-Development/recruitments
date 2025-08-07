@@ -10,7 +10,7 @@
 		</div>
 	@endif
 
-	{{ Form::model($datapendidikanformal, array('route' => array('datapendidikanformals.update', $datapendidikanformal->id), 'method' => 'PUT')) }}
+	{{ Form::model($datapendidikanformal, array('route' => array('datapendidikanformals.update', Crypt::encryptString($datapendidikanformal->id)), 'method' => 'PUT')) }}
     <div class="mb-3">
         {{ Form::label('tingkat', 'Tingkat', ['class' => 'form-label']) }}
         <select class="form-select" name="tingkat">

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datapendidikannonformal;
 use App\Http\Requests\DatapendidikannonformalRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class DatapendidikannonformalsController extends Controller
 {
@@ -59,6 +60,7 @@ class DatapendidikannonformalsController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
         $datapendidikannonformal = Datapendidikannonformal::findOrFail($id);
         return view('datapendidikannonformals.show',['datapendidikannonformal'=>$datapendidikannonformal]);
     }
@@ -71,6 +73,7 @@ class DatapendidikannonformalsController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $datapendidikannonformal = Datapendidikannonformal::findOrFail($id);
         return view('datapendidikannonformals.edit',['datapendidikannonformal'=>$datapendidikannonformal]);
     }
@@ -84,6 +87,7 @@ class DatapendidikannonformalsController extends Controller
      */
     public function update(DatapendidikannonformalRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $datapendidikannonformal = Datapendidikannonformal::findOrFail($id);
 		$datapendidikannonformal->user_id = $request->input('user_id');
 		$datapendidikannonformal->jenis = $request->input('jenis');
@@ -105,6 +109,7 @@ class DatapendidikannonformalsController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $datapendidikannonformal = Datapendidikannonformal::findOrFail($id);
         $datapendidikannonformal->delete();
 

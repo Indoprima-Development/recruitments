@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Datapendidikanformal;
 use App\Http\Requests\DatapendidikanformalRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class DatapendidikanformalsController extends Controller
 {
@@ -59,6 +60,7 @@ class DatapendidikanformalsController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
         $datapendidikanformal = Datapendidikanformal::findOrFail($id);
         return view('datapendidikanformals.show',['datapendidikanformal'=>$datapendidikanformal]);
     }
@@ -71,6 +73,7 @@ class DatapendidikanformalsController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $datapendidikanformal = Datapendidikanformal::findOrFail($id);
         return view('datapendidikanformals.edit',['datapendidikanformal'=>$datapendidikanformal]);
     }
@@ -84,6 +87,7 @@ class DatapendidikanformalsController extends Controller
      */
     public function update(DatapendidikanformalRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $datapendidikanformal = Datapendidikanformal::findOrFail($id);
 		$datapendidikanformal->tingkat = $request->input('tingkat');
 		$datapendidikanformal->instansi = $request->input('instansi');
@@ -103,6 +107,7 @@ class DatapendidikanformalsController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $datapendidikanformal = Datapendidikanformal::findOrFail($id);
         $datapendidikanformal->delete();
 
