@@ -10,12 +10,9 @@
 		</div>
 	@endif
 
-	{{ Form::model($datakesehatan, array('route' => array('datakesehatans.update', $datakesehatan->id), 'method' => 'PUT')) }}
+	{{ Form::model($datakesehatan, array('route' => array('datakesehatans.update', Crypt::encryptString($datakesehatan->id)), 'method' => 'PUT')) }}
 
-		<div class="mb-3">
-			{{ Form::label('user_id', 'User_id', ['class'=>'form-label']) }}
-			{{ Form::text('user_id', null, array('class' => 'form-control')) }}
-		</div>
+		{{ Form::hidden('user_id', null, array('class' => 'form-control')) }}
 		<div class="mb-3">
 			{{ Form::label('kesehatan', 'Kesehatan', ['class'=>'form-label']) }}
 			{{ Form::textarea('kesehatan', null, array('class' => 'form-control')) }}
