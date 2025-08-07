@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Dataolahraga;
 use App\Http\Requests\DataolahragaRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class DataolahragasController extends Controller
 {
@@ -16,8 +17,7 @@ class DataolahragasController extends Controller
      */
     public function index()
     {
-        $dataolahragas= Dataolahraga::all();
-        return view('dataolahragas.index', ['dataolahragas'=>$dataolahragas]);
+        return redirect('forms');
     }
 
     /**
@@ -55,8 +55,7 @@ class DataolahragasController extends Controller
      */
     public function show($id)
     {
-        $dataolahraga = Dataolahraga::findOrFail($id);
-        return view('dataolahragas.show',['dataolahraga'=>$dataolahraga]);
+        return redirect('forms');
     }
 
     /**
@@ -67,6 +66,7 @@ class DataolahragasController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $dataolahraga = Dataolahraga::findOrFail($id);
         return view('dataolahragas.edit',['dataolahraga'=>$dataolahraga]);
     }
@@ -80,13 +80,14 @@ class DataolahragasController extends Controller
      */
     public function update(DataolahragaRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $dataolahraga = Dataolahraga::findOrFail($id);
 		$dataolahraga->user_id = $request->input('user_id');
 		$dataolahraga->olahraga = $request->input('olahraga');
 		$dataolahraga->level = $request->input('level');
         $dataolahraga->save();
 
-        return to_route('dataolahragas.index');
+        return redirect('forms');
     }
 
     /**
@@ -97,9 +98,10 @@ class DataolahragasController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $dataolahraga = Dataolahraga::findOrFail($id);
         $dataolahraga->delete();
 
-        return to_route('dataolahragas.index');
+        return redirect('forms');
     }
 }

@@ -256,11 +256,11 @@
                                 <td>{{ $dataolahraga->level }}</td>
                                 <td class="text-end pe-4">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('dataolahragas.edit', [$dataolahraga->id]) }}"
+                                        <a href="{{ route('dataolahragas.edit', [Crypt::encryptString($dataolahraga->id)]) }}"
                                            class="btn btn-sm btn-outline-primary rounded-circle p-1">
                                             <i class="ti ti-edit fs-4"></i>
                                         </a>
-                                        {!! Form::open(['method' => 'DELETE', 'route' => ['dataolahragas.destroy', $dataolahraga->id]]) !!}
+                                        {!! Form::open(['method' => 'DELETE', 'route' => ['dataolahragas.destroy', Crypt::encryptString($dataolahraga->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-1">
                                             <i class="ti ti-trash fs-4"></i>
                                         </button>
@@ -306,15 +306,15 @@
                                 <td>{{ $datakesehatan->keterangan }}</td>
                                 <td class="text-end pe-4">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('datakesehatans.show', [$datakesehatan->id]) }}"
+                                        <a href="{{ route('datakesehatans.show', [Crypt::encryptString($datakesehatan->id)]) }}"
                                            class="btn btn-sm btn-outline-info rounded-circle p-1">
                                             <i class="ti ti-eye fs-4"></i>
                                         </a>
-                                        <a href="{{ route('datakesehatans.edit', [$datakesehatan->id]) }}"
+                                        <a href="{{ route('datakesehatans.edit', [Crypt::encryptString($datakesehatan->id)]) }}"
                                            class="btn btn-sm btn-outline-primary rounded-circle p-1">
                                             <i class="ti ti-edit fs-4"></i>
                                         </a>
-                                        {!! Form::open(['method' => 'DELETE', 'route' => ['datakesehatans.destroy', $datakesehatan->id]]) !!}
+                                        {!! Form::open(['method' => 'DELETE', 'route' => ['datakesehatans.destroy', Crypt::encryptString($datakesehatan->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle p-1">
                                             <i class="ti ti-trash fs-4"></i>
                                         </button>

@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Datakesehatan;
 use App\Http\Requests\DatakesehatanRequest;
 
+
+use Illuminate\Support\Facades\Crypt;
+
 class DatakesehatansController extends Controller
 {
     /**
@@ -16,8 +19,7 @@ class DatakesehatansController extends Controller
      */
     public function index()
     {
-        $datakesehatans= Datakesehatan::all();
-        return view('datakesehatans.index', ['datakesehatans'=>$datakesehatans]);
+        return redirect('forms');
     }
 
     /**
@@ -44,7 +46,7 @@ class DatakesehatansController extends Controller
 		$datakesehatan->keterangan = $request->input('keterangan');
         $datakesehatan->save();
 
-        return to_route('datakesehatans.index');
+        return redirect('forms');
     }
 
     /**
@@ -55,8 +57,7 @@ class DatakesehatansController extends Controller
      */
     public function show($id)
     {
-        $datakesehatan = Datakesehatan::findOrFail($id);
-        return view('datakesehatans.show',['datakesehatan'=>$datakesehatan]);
+        return redirect('forms');
     }
 
     /**
@@ -67,6 +68,7 @@ class DatakesehatansController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $datakesehatan = Datakesehatan::findOrFail($id);
         return view('datakesehatans.edit',['datakesehatan'=>$datakesehatan]);
     }
@@ -80,13 +82,14 @@ class DatakesehatansController extends Controller
      */
     public function update(DatakesehatanRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $datakesehatan = Datakesehatan::findOrFail($id);
 		$datakesehatan->user_id = $request->input('user_id');
 		$datakesehatan->kesehatan = $request->input('kesehatan');
 		$datakesehatan->keterangan = $request->input('keterangan');
         $datakesehatan->save();
 
-        return to_route('datakesehatans.index');
+        return redirect('forms');
     }
 
     /**
@@ -97,9 +100,10 @@ class DatakesehatansController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $datakesehatan = Datakesehatan::findOrFail($id);
         $datakesehatan->delete();
 
-        return to_route('datakesehatans.index');
+        return redirect('forms');
     }
 }
