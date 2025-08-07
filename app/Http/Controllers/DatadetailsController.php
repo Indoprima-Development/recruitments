@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datadetail;
 use App\Http\Requests\DatadetailRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class DatadetailsController extends Controller
 {
@@ -16,8 +17,7 @@ class DatadetailsController extends Controller
      */
     public function index()
     {
-        $datadetails = Datadetail::all();
-        return view('datadetails.index', ['datadetails'=>$datadetails]);
+        return redirect('forms');
     }
 
     /**
@@ -57,6 +57,7 @@ class DatadetailsController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
         $datadetail = Datadetail::findOrFail($id);
         return view('datadetails.show',['datadetail'=>$datadetail]);
     }
@@ -69,6 +70,7 @@ class DatadetailsController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $datadetail = Datadetail::findOrFail($id);
         return view('datadetails.edit',['datadetail'=>$datadetail]);
     }
@@ -82,6 +84,7 @@ class DatadetailsController extends Controller
      */
     public function update(DatadetailRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $datadetail = Datadetail::findOrFail($id);
 		$datadetail->user_id = $request->input('user_id');
 		$datadetail->tipe = $request->input('tipe');
@@ -90,7 +93,7 @@ class DatadetailsController extends Controller
 		$datadetail->hubungan = $request->input('hubungan');
         $datadetail->save();
 
-        return to_route('datadetails.index');
+        return redirect('forms');
     }
 
     /**
@@ -101,9 +104,10 @@ class DatadetailsController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $datadetail = Datadetail::findOrFail($id);
         $datadetail->delete();
 
-        return to_route('datadetails.index');
+        return redirect('forms');
     }
 }
