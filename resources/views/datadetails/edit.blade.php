@@ -10,12 +10,9 @@
 		</div>
 	@endif
 
-	{{ Form::model($datadetail, array('route' => array('datadetails.update', $datadetail->id), 'method' => 'PUT')) }}
+	{{ Form::model($datadetail, array('route' => array('datadetails.update', Crypt::encryptString($datadetail->id)), 'method' => 'PUT')) }}
 
-		<div class="mb-3">
-			{{ Form::label('user_id', 'User_id', ['class'=>'form-label']) }}
-			{{ Form::text('user_id', null, array('class' => 'form-control')) }}
-		</div>
+		{{ Form::hidden('user_id', null, array('class' => 'form-control')) }}
 		<div class="mb-3">
 			{{ Form::label('tipe', 'Tipe', ['class'=>'form-label']) }}
 			{{ Form::textarea('tipe', null, array('class' => 'form-control')) }}

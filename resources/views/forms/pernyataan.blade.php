@@ -115,9 +115,9 @@
 
                                 <td>
                                     <div class="d-flex gap-2">
-                                        <a href="{{ route('datadetails.edit', [$datadetail->id]) }}"
+                                        <a href="{{ route('datadetails.edit', [Crypt::encryptString($datadetail->id)]) }}"
                                             class="btn btn-sm btn-primary">Edit</a>
-                                        {!! Form::open(['method' => 'DELETE', 'route' => ['datadetails.destroy', $datadetail->id]]) !!}
+                                        {!! Form::open(['method' => 'DELETE', 'route' => ['datadetails.destroy', Crypt::encryptString($datadetail->id)]]) !!}
                                         {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                         {!! Form::close() !!}
                                     </div>

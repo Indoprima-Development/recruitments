@@ -112,6 +112,6 @@ class DatakeluargasController extends Controller
         $datakeluarga = Datakeluarga::findOrFail($id);
         $datakeluarga->delete();
 
-        return to_route('datakeluargas.index');
+        return redirect('forms?section=keluarga');
     }
 }

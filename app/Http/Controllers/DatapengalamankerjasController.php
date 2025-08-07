@@ -129,6 +129,6 @@ class DatapengalamankerjasController extends Controller
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
         $datapengalamankerja->delete();
 
-        return to_route('datapengalamankerjas.index');
+        return redirect('forms?section=pengalaman');
     }
 }
