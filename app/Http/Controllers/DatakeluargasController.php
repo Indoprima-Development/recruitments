@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datakeluarga;
 use App\Http\Requests\DatakeluargaRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class DatakeluargasController extends Controller
 {
@@ -16,8 +17,7 @@ class DatakeluargasController extends Controller
      */
     public function index()
     {
-        $datakeluargas= Datakeluarga::all();
-        return view('datakeluargas.index', ['datakeluargas'=>$datakeluargas]);
+        return redirect('forms?section=keluarga');
     }
 
     /**
@@ -59,6 +59,7 @@ class DatakeluargasController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
         $datakeluarga = Datakeluarga::findOrFail($id);
         return view('datakeluargas.show',['datakeluarga'=>$datakeluarga]);
     }
@@ -71,6 +72,7 @@ class DatakeluargasController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $datakeluarga = Datakeluarga::findOrFail($id);
         return view('datakeluargas.edit',['datakeluarga'=>$datakeluarga]);
     }
@@ -84,6 +86,7 @@ class DatakeluargasController extends Controller
      */
     public function update(DatakeluargaRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $datakeluarga = Datakeluarga::findOrFail($id);
 		$datakeluarga->user_id = $request->input('user_id');
 		$datakeluarga->status_hubungan = $request->input('status_hubungan');
@@ -105,6 +108,7 @@ class DatakeluargasController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $datakeluarga = Datakeluarga::findOrFail($id);
         $datakeluarga->delete();
 

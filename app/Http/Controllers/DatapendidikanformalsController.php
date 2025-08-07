@@ -18,8 +18,7 @@ class DatapendidikanformalsController extends Controller
      */
     public function index()
     {
-        $datapendidikanformals= Datapendidikanformal::all();
-        return view('datapendidikanformals.index', ['datapendidikanformals'=>$datapendidikanformals]);
+        return redirect('forms?section=pendidikan');
     }
 
     /**
