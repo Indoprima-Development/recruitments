@@ -8,6 +8,7 @@ use App\Models\Datapeminatan;
 use App\Http\Requests\DatapeminatanRequest;
 use App\Models\Field;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class DatapeminatansController extends Controller
 {
@@ -18,8 +19,7 @@ class DatapeminatansController extends Controller
      */
     public function index()
     {
-        $datapeminatans= Datapeminatan::all();
-        return view('datapeminatans.index', ['datapeminatans'=>$datapeminatans]);
+        return redirect('forms');
     }
 
     /**
@@ -29,14 +29,14 @@ class DatapeminatansController extends Controller
      */
     public function create()
     {
-        $datapeminatans = Datapeminatan::where('user_id',Auth::user()->id)->get();
+        $datapeminatans = Datapeminatan::where('user_id', Auth::user()->id)->get();
         if (count($datapeminatans) >= 3) {
-            AlertError("Error","Maksimal data peminatan adalah 3");
+            AlertError("Error", "Maksimal data peminatan adalah 3");
             return redirect()->back();
         }
-        
+
         $fields = Field::all();
-        return view('datapeminatans.create',compact('fields'));
+        return view('datapeminatans.create', compact('fields'));
     }
 
     /**
@@ -47,15 +47,15 @@ class DatapeminatansController extends Controller
      */
     public function store(DatapeminatanRequest $request)
     {
-        $datapeminatans = Datapeminatan::where('user_id',Auth::user()->id)->get();
+        $datapeminatans = Datapeminatan::where('user_id', Auth::user()->id)->get();
         if (count($datapeminatans) >= 3) {
-            AlertError("Error","Maksimal data peminatan adalah 3");
+            AlertError("Error", "Maksimal data peminatan adalah 3");
             return redirect()->back();
         }
 
         $datapeminatan = new Datapeminatan;
-		$datapeminatan->user_id = $request->input('user_id');
-		$datapeminatan->field_id = $request->input('field_id');
+        $datapeminatan->user_id = $request->input('user_id');
+        $datapeminatan->field_id = $request->input('field_id');
         $datapeminatan->save();
 
         return redirect('forms');
@@ -69,8 +69,9 @@ class DatapeminatansController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
         $datapeminatan = Datapeminatan::findOrFail($id);
-        return view('datapeminatans.show',['datapeminatan'=>$datapeminatan]);
+        return view('datapeminatans.show', ['datapeminatan' => $datapeminatan]);
     }
 
     /**
@@ -81,8 +82,9 @@ class DatapeminatansController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $datapeminatan = Datapeminatan::findOrFail($id);
-        return view('datapeminatans.edit',['datapeminatan'=>$datapeminatan]);
+        return redirect('forms');
     }
 
     /**
@@ -94,12 +96,13 @@ class DatapeminatansController extends Controller
      */
     public function update(DatapeminatanRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $datapeminatan = Datapeminatan::findOrFail($id);
-		$datapeminatan->user_id = $request->input('user_id');
-		$datapeminatan->field_id = $request->input('field_id');
+        $datapeminatan->user_id = $request->input('user_id');
+        $datapeminatan->field_id = $request->input('field_id');
         $datapeminatan->save();
 
-        return to_route('datapeminatans.index');
+        return redirect('forms');
     }
 
     /**
@@ -110,9 +113,10 @@ class DatapeminatansController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $datapeminatan = Datapeminatan::findOrFail($id);
         $datapeminatan->delete();
 
-        return to_route('datapeminatans.index');
+        return redirect('forms');
     }
 }
