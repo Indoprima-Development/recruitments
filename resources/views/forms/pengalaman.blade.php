@@ -27,9 +27,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($datapengalamankerjas as $datapengalamankerja)
+                                @foreach ($datapengalamankerjas as $no => $datapengalamankerja)
                                     <tr>
-                                        <td>{{ $datapengalamankerja->id }}</td>
+                                        <td>{{ $no + 1 }}</td>
                                         <td>{{ $datapengalamankerja->perusahaan }}</td>
                                         <td>{{ $datapengalamankerja->jabatan_awal }}</td>
                                         <td>{{ $datapengalamankerja->jabatan_terakhir }}</td>
@@ -51,9 +51,7 @@
 
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('datapengalamankerjas.edit', [$datapengalamankerja->id]) }}"
-                                                    class="btn btn-sm btn-primary">Edit</a>
-                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datapengalamankerjas.destroy', $datapengalamankerja->id]]) !!}
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datapengalamankerjas.destroy', Crypt::encryptString($datapengalamankerja->id)]]) !!}
                                                 {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                                 {!! Form::close() !!}
                                             </div>

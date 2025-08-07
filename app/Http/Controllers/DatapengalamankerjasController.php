@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datapengalamankerja;
 use App\Http\Requests\DatapengalamankerjaRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class DatapengalamankerjasController extends Controller
 {
@@ -16,8 +17,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function index()
     {
-        $datapengalamankerjas= Datapengalamankerja::all();
-        return view('datapengalamankerjas.index', ['datapengalamankerjas'=>$datapengalamankerjas]);
+        return redirect('forms?section=pengalaman');
     }
 
     /**
@@ -73,6 +73,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
         return view('datapengalamankerjas.show',['datapengalamankerja'=>$datapengalamankerja]);
     }
@@ -85,6 +86,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
         return view('datapengalamankerjas.edit',['datapengalamankerja'=>$datapengalamankerja]);
     }
@@ -98,6 +100,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function update(DatapengalamankerjaRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
 		$datapengalamankerja->user_id = $request->input('user_id');
 		$datapengalamankerja->perusahaan = $request->input('perusahaan');
@@ -122,6 +125,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
         $datapengalamankerja->delete();
 
