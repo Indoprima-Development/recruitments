@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Dataorganisasi;
 use App\Http\Requests\DataorganisasiRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class DataorganisasisController extends Controller
 {
@@ -16,8 +17,7 @@ class DataorganisasisController extends Controller
      */
     public function index()
     {
-        $dataorganisasis= Dataorganisasi::all();
-        return view('dataorganisasis.index', ['dataorganisasis'=>$dataorganisasis]);
+        redirect('forms?section=organisasi');
     }
 
     /**
@@ -58,6 +58,7 @@ class DataorganisasisController extends Controller
      */
     public function show($id)
     {
+        $id = Crypt::decryptString($id);
         $dataorganisasi = Dataorganisasi::findOrFail($id);
         return view('dataorganisasis.show',['dataorganisasi'=>$dataorganisasi]);
     }
@@ -70,8 +71,9 @@ class DataorganisasisController extends Controller
      */
     public function edit($id)
     {
+        $id = Crypt::decryptString($id);
         $dataorganisasi = Dataorganisasi::findOrFail($id);
-        return view('dataorganisasis.edit',['dataorganisasi'=>$dataorganisasi]);
+        return redirect('forms?section=organisasi');
     }
 
     /**
@@ -83,6 +85,7 @@ class DataorganisasisController extends Controller
      */
     public function update(DataorganisasiRequest $request, $id)
     {
+        $id = Crypt::decryptString($id);
         $dataorganisasi = Dataorganisasi::findOrFail($id);
 		$dataorganisasi->user_id = $request->input('user_id');
 		$dataorganisasi->nama_organisasi = $request->input('nama_organisasi');
@@ -103,9 +106,10 @@ class DataorganisasisController extends Controller
      */
     public function destroy($id)
     {
+        $id = Crypt::decryptString($id);
         $dataorganisasi = Dataorganisasi::findOrFail($id);
         $dataorganisasi->delete();
 
-        return to_route('dataorganisasis.index');
+        return redirect('forms?section=organisasi');
     }
 }
