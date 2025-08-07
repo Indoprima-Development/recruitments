@@ -217,7 +217,7 @@
             <tbody>
                 @foreach ($ptkformtransactions as $i => $ptkformtransaction)
                     <tr>
-                        <td>{{ $i + 1 }}</td>
+                        <td>{{ ($ptkformtransactions->currentPage() - 1) * $ptkformtransactions->perPage() + $i + 1 }}</td>
                         <td>
                             @if ($ptkformtransaction->user)
                                 <a href="{{ url('datadiris/data-users', $ptkformtransaction->user->id) }}"
@@ -451,6 +451,10 @@ switch($ptkformtransaction->status) {
                 @endforeach
             </tbody>
         </table>
+        <div class="d-flex justify-content-end mt-3">
+            {{ $ptkformtransactions->links('pagination::bootstrap-5') }}
+        </div>
+
     </div>
 
     <!-- Status Update Modal -->
@@ -524,6 +528,8 @@ switch($ptkformtransaction->status) {
                 paging: false,
                 scrollCollapse: true,
                 scrollCollapse: true,
+                searching: false,
+                info: false,
                 fixedColumns: {
                     start: 3,
                 },

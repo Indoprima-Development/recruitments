@@ -20,8 +20,8 @@ class PtkformtransactionsController extends Controller
      */
     public function index()
     {
-        $ptkformtransactions= Ptkformtransaction::all();
-        return view('ptkformtransactions.index', ['ptkformtransactions'=>$ptkformtransactions]);
+        $ptkformtransactions = Ptkformtransaction::all();
+        return view('ptkformtransactions.index', ['ptkformtransactions' => $ptkformtransactions]);
     }
 
     /**
@@ -44,11 +44,11 @@ class PtkformtransactionsController extends Controller
     {
         $questions = json_decode($request->questions);
         $score = 0;
-        for ($i=0; $i < count($questions->score); $i++){
-            $var = "jawaban_".$i;
+        for ($i = 0; $i < count($questions->score); $i++) {
+            $var = "jawaban_" . $i;
             if ($questions->type[$i] == 'Rating') {
-                $score += (int)$request->$var/5 * (int)$questions->score[$i];
-            }else{
+                $score += (int)$request->$var / 5 * (int)$questions->score[$i];
+            } else {
                 if ($questions->jawaban[$i] == $request->$var) {
                     $score += (int)$questions->score[$i];
                 }
@@ -56,13 +56,13 @@ class PtkformtransactionsController extends Controller
         }
 
         $ptkformtransaction = new Ptkformtransaction;
-		$ptkformtransaction->ptkform_id = $request->input('ptkform_id');
-		$ptkformtransaction->status = 0;
+        $ptkformtransaction->ptkform_id = $request->input('ptkform_id');
+        $ptkformtransaction->status = 0;
         $ptkformtransaction->score_candidate = $score;
-		$ptkformtransaction->user_id = Auth::user()->id;
+        $ptkformtransaction->user_id = Auth::user()->id;
         $ptkformtransaction->save();
 
-        AlertSuccess("Success","Berhasil melamar pekerjaan");
+        AlertSuccess("Success", "Berhasil melamar pekerjaan");
         return redirect()->back();
     }
 
@@ -75,7 +75,7 @@ class PtkformtransactionsController extends Controller
     public function show($id)
     {
         $ptkformtransaction = Ptkformtransaction::findOrFail($id);
-        return view('ptkformtransactions.show',['ptkformtransaction'=>$ptkformtransaction]);
+        return view('ptkformtransactions.show', ['ptkformtransaction' => $ptkformtransaction]);
     }
 
     /**
@@ -87,7 +87,7 @@ class PtkformtransactionsController extends Controller
     public function edit($id)
     {
         $ptkformtransaction = Ptkformtransaction::findOrFail($id);
-        return view('ptkformtransactions.edit',['ptkformtransaction'=>$ptkformtransaction]);
+        return view('ptkformtransactions.edit', ['ptkformtransaction' => $ptkformtransaction]);
     }
 
     /**
@@ -100,9 +100,9 @@ class PtkformtransactionsController extends Controller
     public function update(PtkformtransactionRequest $request, $id)
     {
         $ptkformtransaction = Ptkformtransaction::findOrFail($id);
-		$ptkformtransaction->ptkform_id = $request->input('ptkform_id');
-		$ptkformtransaction->status = $request->input('status');
-		$ptkformtransaction->user_id = $request->input('user_id');
+        $ptkformtransaction->ptkform_id = $request->input('ptkform_id');
+        $ptkformtransaction->status = $request->input('status');
+        $ptkformtransaction->user_id = $request->input('user_id');
         $ptkformtransaction->save();
 
         return to_route('ptkformtransactions.index');
@@ -122,30 +122,36 @@ class PtkformtransactionsController extends Controller
         return to_route('ptkformtransactions.index');
     }
 
-    public function dataByStatus($status){
+    public function dataByStatus($status)
+    {
         $ptkformtransactions = Ptkformtransaction::select("*");
+
         if ($status != "all") {
             $ptkformtransactions = $ptkformtransactions->where("status", $status);
         }
-        $ptkformtransactions = $ptkformtransactions->get();
 
-        return view('ptkformtransactions.data',compact('ptkformtransactions'));
+        // Ganti get() dengan paginate(100)
+        $ptkformtransactions = $ptkformtransactions->paginate(50);
+
+        return view('ptkformtransactions.data', compact('ptkformtransactions'));
     }
 
-    public function changeStatus(Request $request){
+
+    public function changeStatus(Request $request)
+    {
         $status = 9;
         if ($request->statusokornot == 'OK') {
             $status = $request->status + 1;
         }
 
-        $data = Ptkformtransaction::where("id",$request->ptkformtrid)->first();
+        $data = Ptkformtransaction::where("id", $request->ptkformtrid)->first();
         if ($data->pic == "") {
             $update["pic"] = Auth::user()->name;
         }
 
         $update["status"] = $status;
         $update[$request->type] = date("Y-m-d");
-        $update["score_".$request->type] = $request->score;
+        $update["score_" . $request->type] = $request->score;
 
         $data->update($update);
 
@@ -155,7 +161,7 @@ class PtkformtransactionsController extends Controller
             "keterangan"    => $request->keterangan
         ]);
 
-        AlertSuccess("Success","Status berhasil diubah");
+        AlertSuccess("Success", "Status berhasil diubah");
         return redirect()->back();
     }
 }
