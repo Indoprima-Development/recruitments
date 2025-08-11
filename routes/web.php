@@ -72,7 +72,7 @@ Route::get('/vacancies/{id}',   [MainController::class, 'showVacancy']);
 Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
     //HOME
     Route::controller(HomeController::class)->group(function () {
-        Route::get('/home', 'home');
+        // Route::get('/home', 'home');
         Route::get('/rank-test-by-project/{project_id}', 'rankTestByProjectId');
         Route::get('/rank-test/{exam_id}', 'rankTest');
     });
@@ -121,6 +121,7 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/home',   [HomeController::class, 'home']);
     Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
 
     Route::controller(HomeController::class)->group(function () {
