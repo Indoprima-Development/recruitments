@@ -67,6 +67,8 @@ Route::get('/',                 [MainController::class, 'index']);
 Route::get('/vacancies',        [MainController::class, 'vacancy']);
 Route::get('/vacancies/{id}',   [MainController::class, 'showVacancy']);
 
+//FIX
+
 Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
     //HOME
     Route::controller(HomeController::class)->group(function () {
