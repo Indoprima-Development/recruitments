@@ -172,10 +172,6 @@ class DatadirisController extends Controller
         }
         $datadiri->save();
 
-        if ($request->input('ekspektasi_gaji') == "" || $request->input('fasilitas_harapan') == "" || $request->input('kesediaan_penempatan') == "" || $request->input('kesediaan_mulai_bekerja') == "" || $request->input('keterangan_jabatan_terakhir') == "") {
-            return redirect('forms?section=pernyataan');
-        }
-
         return redirect('forms?section=pernyataan');
     }
 

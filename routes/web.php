@@ -43,7 +43,8 @@ use App\Http\Controllers\PtkformtransactionsController;
 */
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendEmail;
-Route::get('/send-email',function(){
+
+Route::get('/send-email', function () {
     $data = [
         'name' => 'Syahrizal As',
         'body' => 'Testing Kirim Email di Santri Koding'
@@ -60,29 +61,37 @@ Route::prefix('auth')->group(function () {
         Route::post('/authenticate', 'authenticate')->name('authenticate');
     });
 });
-Route::get('/emails/konfirmation',[MainController::class, 'konfirmation']);
+Route::get('/emails/konfirmation', [MainController::class, 'konfirmation']);
 
 Route::get('/',                 [MainController::class, 'index']);
 Route::get('/vacancies',        [MainController::class, 'vacancy']);
 Route::get('/vacancies/{id}',   [MainController::class, 'showVacancy']);
 
-Route::group(['middleware' => ['web', 'auth']], function () {
-    Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
-
+Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
+    //HOME
     Route::controller(HomeController::class)->group(function () {
-        Route::get('/dashboard', 'index')->name('dashboard');
         Route::get('/home', 'home');
-        Route::get('/examination/{project_id}', 'examination');
-        Route::get('/qna/{exam_id}', 'qna');
-        Route::get('/qna-transaction/{code}', 'qnaTransaction');
-        Route::get('/submit-test/{exam_id}', 'submitTest');
         Route::get('/rank-test-by-project/{project_id}', 'rankTestByProjectId');
         Route::get('/rank-test/{exam_id}', 'rankTest');
-        Route::get('/update-time-remaining/{exam_id}', 'updateTimeRemaining');
-        Route::get('exam-histories', 'examHistories');
-        Route::get('off-vacancy/{id}', 'offVacancy');
-        Route::get('exam-users', 'examUsers');
     });
+
+    Route::resource('/divisions', DivisionsController::class);
+    Route::resource('/departments', DepartmentsController::class);
+    Route::resource('/sections', SectionsController::class);
+    Route::resource('/jobtitles', JobtitlesController::class);
+    Route::resource('/education', EducationController::class);
+    Route::resource('/majors', MajorsController::class);
+    Route::resource('/locations', LocationsController::class);
+    Route::resource('/fields', FieldsController::class);
+
+    // PTKFORMS
+    Route::resource('/ptkforms', PtkformsController::class);
+    Route::controller(PtkformsController::class)->group(function () {
+        Route::post('/ptkforms/change-status/{id}', 'changeStatus');
+        Route::get('/ptkforms/destroy/{id}', 'destroy');
+    });
+
+    Route::resource('/ptkfields', PtkfieldsController::class);
 
     //PROJECT
     Route::resource('/projects', ProjectsController::class);
@@ -102,27 +111,28 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::post('/qnas-upload-image', 'qnaUploadImage');
     });
 
-    //ADMIN
-    Route::resource('/divisions', DivisionsController::class);
-    Route::resource('/departments', DepartmentsController::class);
-    Route::resource('/sections', SectionsController::class);
-    Route::resource('/jobtitles', JobtitlesController::class);
-    Route::resource('/education', EducationController::class);
-    Route::resource('/majors', MajorsController::class);
-    Route::resource('/locations', LocationsController::class);
-    Route::resource('/fields', FieldsController::class);
-
-    Route::resource('/ptkforms', PtkformsController::class);
-    Route::controller(PtkformsController::class)->group(function () {
-        Route::post('/ptkforms/change-status/{id}', 'changeStatus');
-        Route::get('/ptkforms/destroy/{id}', 'destroy');
-    });
-
-    Route::resource('/ptkfields', PtkfieldsController::class);
     Route::resource('/ptkformtransactions', PtkformtransactionsController::class);
     Route::controller(PtkformtransactionsController::class)->group(function () {
         Route::get('/ptkformtransactions/{status}/data', 'dataByStatus');
         Route::post('/ptkformtransactions/change-status', 'changeStatus');
+    });
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
+
+    Route::controller(HomeController::class)->group(function () {
+        Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/examination/{project_id}', 'examination');
+        Route::get('/qna/{exam_id}', 'qna');
+        Route::get('/qna-transaction/{code}', 'qnaTransaction');
+        Route::get('/submit-test/{exam_id}', 'submitTest');
+        Route::get('/rank-test-by-project/{project_id}', 'rankTestByProjectId');
+        Route::get('/rank-test/{exam_id}', 'rankTest');
+        Route::get('/update-time-remaining/{exam_id}', 'updateTimeRemaining');
+        Route::get('exam-histories', 'examHistories');
+        Route::get('off-vacancy/{id}', 'offVacancy');
+        Route::get('exam-users', 'examUsers');
     });
 
     // Formulir
