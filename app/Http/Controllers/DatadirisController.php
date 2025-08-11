@@ -19,6 +19,7 @@ use App\Models\Ptkformtransaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class DatadirisController extends Controller
 {
@@ -157,6 +158,21 @@ class DatadirisController extends Controller
 
     public function pernyataan(Request $request, $id)
     {
+        try {
+            // Validasi file maksimal 1 MB dan hanya gambar tertentu
+            $request->validate([
+                'image_jabatan_terakhir' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
+            ], [
+                'image_jabatan_terakhir.max' => 'Ukuran file maksimal 1 MB.',
+                'image_jabatan_terakhir.image' => 'File harus berupa gambar.',
+                'image_jabatan_terakhir.mimes' => 'Format file harus jpeg, png, jpg, atau gif.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Alert::error('Oops!', 'File terlalu besar atau format tidak sesuai.');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+
+        // Ambil data berdasarkan user login
         $datadiri = Datadiri::findOrFail(Auth::user()->id);
         $datadiri->ekspektasi_gaji = $request->input('ekspektasi_gaji');
         $datadiri->fasilitas_harapan = $request->input('fasilitas_harapan');
@@ -164,44 +180,83 @@ class DatadirisController extends Controller
         $datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');
         $datadiri->keterangan_jabatan_terakhir = $request->input('keterangan_jabatan_terakhir');
 
-        if (!empty($request->image_jabatan_terakhir)) {
+        // Upload file jika ada
+        if ($request->hasFile('image_jabatan_terakhir')) {
             $filename = $id . ".png";
             $pathUpload = "jabatan";
-            UploadFile($request->image_jabatan_terakhir, $pathUpload, $filename);
-            $datadiri->image_jabatan_terakhir = $pathUpload."/"."$filename";
+            UploadFile($request->file('image_jabatan_terakhir'), $pathUpload, $filename);
+            $datadiri->image_jabatan_terakhir = "$pathUpload/$filename";
         }
+
         $datadiri->save();
 
+        Alert::success('Sukses!', 'Data berhasil disimpan.');
         return redirect('forms?section=pernyataan');
     }
 
     public function photo(Request $request)
     {
+        try {
+            // Validasi file (opsional + max 1 MB + hanya gambar)
+            $request->validate([
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
+            ], [
+                'photo.max' => 'Ukuran file maksimal 1 MB.',
+                'photo.image' => 'File harus berupa gambar.',
+                'photo.mimes' => 'Format file harus jpeg, png, jpg, atau gif.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Alert::error('Oops!', 'File terlalu besar atau format tidak sesuai.');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+
+        // Ambil data user yang login
         $datadiri = User::findOrFail(Auth::user()->id);
 
-        if (!empty($request->photo)) {
+        // Upload file jika ada
+        if ($request->hasFile('photo')) {
             $filename = $datadiri->id . ".png";
             $pathUpload = "photo";
-            UploadFile($request->photo, $pathUpload, $filename);
-            $datadiri->photo = $pathUpload."/"."$filename";
+            UploadFile($request->file('photo'), $pathUpload, $filename);
+            $datadiri->photo = "$pathUpload/$filename";
         }
+
         $datadiri->save();
 
+        Alert::success('Sukses!', 'Foto berhasil diperbarui.');
         return redirect('forms');
     }
 
+
     public function cv(Request $request)
     {
+        try {
+            // Validasi file (opsional + max 1 MB + hanya PDF)
+            $request->validate([
+                'cv' => 'nullable|mimes:pdf|max:2048', // max 1 MB
+            ], [
+                'cv.max' => 'Ukuran file maksimal 2 MB.',
+                'cv.mimes' => 'File harus berformat PDF.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Alert::error('Oops!', 'File terlalu besar atau format tidak sesuai.');
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }
+
+        // Ambil data user login
         $datadiri = User::findOrFail(Auth::user()->id);
 
-        if (!empty($request->cv)) {
+        // Upload file jika ada
+        if ($request->hasFile('cv')) {
             $filename = $datadiri->id . ".pdf";
             $pathUpload = "cv";
-            UploadFile($request->cv, $pathUpload, $filename);
-            $datadiri->cv = $pathUpload."/"."$filename";
+            UploadFile($request->file('cv'), $pathUpload, $filename);
+            $datadiri->cv = "$pathUpload/$filename";
         }
+
         $datadiri->save();
 
+        Alert::success('Sukses!', 'CV berhasil diperbarui.');
         return redirect('forms');
     }
 
@@ -219,27 +274,29 @@ class DatadirisController extends Controller
         return redirect('forms?section=pernyataan');
     }
 
-    public function dataAllUsers(){
+    public function dataAllUsers()
+    {
         $users = Datadiri::select("*")->get();
-        return view('datadiris.users',compact('users'));
+        return view('datadiris.users', compact('users'));
     }
 
-    public function dataUserById($id){
+    public function dataUserById($id)
+    {
         $users = User::findOrFail($id);
-        $datadiri = Datadiri::where("user_id",$id)->first();
-        $datakesehatans = Datakesehatan::where("user_id",$id)->get();
-        $datapendidikanformals = Datapendidikanformal::where("user_id",$id)->get();
-        $datapendidikannonformals = Datapendidikannonformal::where("user_id",$id)->get();
-        $datakeluargas = Datakeluarga::where("user_id",$id)->get();
-        $datapengalamankerjas = Datapengalamankerja::where("user_id",$id)->get();
-        $datakemampuans = Datakemampuan::where("user_id",$id)->get();
-        $dataolahragas = Dataolahraga::where("user_id",$id)->get();
-        $datadetails = Datadetail::where("user_id",$id)->get();
-        $dataorganisasis = Dataorganisasi::where("user_id",$id)->get();
+        $datadiri = Datadiri::where("user_id", $id)->first();
+        $datakesehatans = Datakesehatan::where("user_id", $id)->get();
+        $datapendidikanformals = Datapendidikanformal::where("user_id", $id)->get();
+        $datapendidikannonformals = Datapendidikannonformal::where("user_id", $id)->get();
+        $datakeluargas = Datakeluarga::where("user_id", $id)->get();
+        $datapengalamankerjas = Datapengalamankerja::where("user_id", $id)->get();
+        $datakemampuans = Datakemampuan::where("user_id", $id)->get();
+        $dataolahragas = Dataolahraga::where("user_id", $id)->get();
+        $datadetails = Datadetail::where("user_id", $id)->get();
+        $dataorganisasis = Dataorganisasi::where("user_id", $id)->get();
 
-        $ptkformtransactions = Ptkformtransaction::where('user_id',$id)->orderBy('id','DESC')->get();
+        $ptkformtransactions = Ptkformtransaction::where('user_id', $id)->orderBy('id', 'DESC')->get();
         // dd($ptkformtransaction->ptkform);
 
-        return view("forms.show",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","users",'ptkformtransactions'));
+        return view("forms.show", compact("datadiri", "datapendidikanformals", "datapendidikannonformals", "datakeluargas", "datapengalamankerjas", "datakemampuans", "dataorganisasis", "dataolahragas", "datadetails", "datakesehatans", "users", 'ptkformtransactions'));
     }
 }

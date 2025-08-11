@@ -93,7 +93,7 @@
                             <div class="upload-area">
                                 <i class="ph ph-file-plus"></i>
                                 <span>Select file or drag here</span>
-                                <small>PDF, DOC, DOCX (Max 5MB)</small>
+                                <small>PDF ONLY (Max 1MB)</small>
                             </div>
                         </label>
                     </div>
@@ -117,7 +117,7 @@
                             <div class="upload-area">
                                 <i class="ph ph-image-square"></i>
                                 <span>Select photo or drag here</span>
-                                <small>JPG, PNG (Max 2MB)</small>
+                                <small>JPG, PNG, JPEG (Max 1MB)</small>
                             </div>
                         </label>
                     </div>

@@ -163,7 +163,7 @@
                         </li>
                         <li class="sidebar-item">
                             <a href="{{url('exam-users')}}" class="sidebar-link">
-                                <i class="ti ti-presentation"></i>
+                                <i class="ti ti-user"></i>
                                 <span class="hide-menu">User</span>
                             </a>
                         </li>
