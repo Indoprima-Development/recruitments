@@ -160,13 +160,16 @@ class DatadirisController extends Controller
     {
         try {
             // Validasi file maksimal 1 MB dan hanya gambar tertentu
-            $request->validate([
-                'image_jabatan_terakhir' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
-            ], [
-                'image_jabatan_terakhir.max' => 'Ukuran file maksimal 1 MB.',
-                'image_jabatan_terakhir.image' => 'File harus berupa gambar.',
-                'image_jabatan_terakhir.mimes' => 'Format file harus jpeg, png, jpg, atau gif.',
-            ]);
+            $request->validate(
+                [
+                    'image_jabatan_terakhir' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
+                ],
+                [
+                    'image_jabatan_terakhir.max' => 'The file size must not exceed 1 MB.',
+                    'image_jabatan_terakhir.image' => 'The file must be an image.',
+                    'image_jabatan_terakhir.mimes' => 'The file format must be jpeg, png, jpg, or gif.',
+                ]
+            );
         } catch (\Illuminate\Validation\ValidationException $e) {
             Alert::error('Oops!', 'File terlalu besar atau format tidak sesuai.');
             return redirect()->back()->withErrors($e->validator)->withInput();
@@ -198,13 +201,16 @@ class DatadirisController extends Controller
     {
         try {
             // Validasi file (opsional + max 1 MB + hanya gambar)
-            $request->validate([
-                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
-            ], [
-                'photo.max' => 'Ukuran file maksimal 1 MB.',
-                'photo.image' => 'File harus berupa gambar.',
-                'photo.mimes' => 'Format file harus jpeg, png, jpg, atau gif.',
-            ]);
+            $request->validate(
+                [
+                    'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
+                ],
+                [
+                    'photo.max' => 'The file size must not exceed 1 MB.',
+                    'photo.image' => 'The file must be an image.',
+                    'photo.mimes' => 'The file format must be jpeg, png, jpg, or gif.',
+                ]
+            );
         } catch (\Illuminate\Validation\ValidationException $e) {
             Alert::error('Oops!', 'File terlalu besar atau format tidak sesuai.');
             return redirect()->back()->withErrors($e->validator)->withInput();
@@ -223,7 +229,8 @@ class DatadirisController extends Controller
 
         $datadiri->save();
 
-        Alert::success('Sukses!', 'Foto berhasil diperbarui.');
+        Alert::success('Success!', 'Photo has been updated successfully.');
+
         return redirect('forms');
     }
 
@@ -231,17 +238,18 @@ class DatadirisController extends Controller
     public function cv(Request $request)
     {
         try {
-            // Validasi file (opsional + max 1 MB + hanya PDF)
+            // File validation (optional + max 2 MB + PDF only)
             $request->validate([
-                'cv' => 'nullable|mimes:pdf|max:2048', // max 1 MB
+                'cv' => 'nullable|mimes:pdf|max:2048', // max 2 MB
             ], [
-                'cv.max' => 'Ukuran file maksimal 2 MB.',
-                'cv.mimes' => 'File harus berformat PDF.',
+                'cv.max' => 'The file size must not exceed 2 MB.',
+                'cv.mimes' => 'The file must be in PDF format.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            Alert::error('Oops!', 'File terlalu besar atau format tidak sesuai.');
+            Alert::error('Oops!', 'The file is too large or the format is not supported.');
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
+
 
         // Ambil data user login
         $datadiri = User::findOrFail(Auth::user()->id);
@@ -256,7 +264,7 @@ class DatadirisController extends Controller
 
         $datadiri->save();
 
-        Alert::success('Sukses!', 'CV berhasil diperbarui.');
+        Alert::success('Success!', 'CV has been updated successfully.');
         return redirect('forms');
     }
 

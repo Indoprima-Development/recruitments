@@ -30,7 +30,8 @@
                 </div>
                 <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('kesediaan_penempatan', 'Kesediaan Penempatan', ['class' => 'form-label']) }}
-                    <br><small class="text-danger">Apakah bersedia ditempatkan di seluruh unit bisnis PT Indoprima Gelimang</small>
+                    <br><small class="text-danger">Apakah bersedia ditempatkan di seluruh unit bisnis PT Indoprima
+                        Gelimang</small>
                     <select name="kesediaan_penempatan" class="form-select">
                         <option {{ $datadiri && $datadiri->kesediaan_penempatan == 1 ? 'selected' : '' }}
                             value="1">Ya</option>
@@ -44,12 +45,17 @@
                 <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('image_jabatan_terakhir', 'Struktur Organisasi', ['class' => 'form-label']) }}
                     <br><small class="text-danger">(Opsional) Gambarkan struktur organisasi anda di perusahaan
-                        terakhir</small>
+                        terakhir (Max : 1 Mb)</small>
                     <input type="file" class="form-control" name="image_jabatan_terakhir" accept="image/*" />
 
-                    @if ($datadiri && $datadiri->image_jabatan_terakhir != '-')
-                        <img class="w-100 mt-2" src="{{ asset($datadiri->image_jabatan_terakhir) }}" />
+                    @if ($datadiri && !empty($datadiri->image_jabatan_terakhir) && $datadiri->image_jabatan_terakhir != '-')
+                        @if (file_exists(public_path($datadiri->image_jabatan_terakhir)))
+                            <img class="w-100 mt-2" src="{{ asset($datadiri->image_jabatan_terakhir) }}" />
+                        @else
+                            <img class="w-100 mt-2" src="{{ asset('images/no-image.png') }}" />
+                        @endif
                     @endif
+
                 </div>
             </div>
 
@@ -86,7 +92,7 @@
                     <h5 class="card-title fw-semibold">Referensi dan Rekomendasi</h5>
                 </div>
                 <div class="col-sm-12 col-md-4 text-end">
-                    <a href="#" class="btn btn-primary" >
+                    <a href="#" class="btn btn-primary">
                         + Rekomendasi
                     </a>
                 </div>
@@ -117,7 +123,10 @@
                                     <div class="d-flex gap-2">
                                         <a href="{{ route('datadetails.edit', [Crypt::encryptString($datadetail->id)]) }}"
                                             class="btn btn-sm btn-primary">Edit</a>
-                                        {!! Form::open(['method' => 'DELETE', 'route' => ['datadetails.destroy', Crypt::encryptString($datadetail->id)]]) !!}
+                                        {!! Form::open([
+                                            'method' => 'DELETE',
+                                            'route' => ['datadetails.destroy', Crypt::encryptString($datadetail->id)],
+                                        ]) !!}
                                         {!! Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) !!}
                                         {!! Form::close() !!}
                                     </div>
