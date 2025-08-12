@@ -76,11 +76,11 @@
                                     <div class="d-flex justify-content-end gap-2">
                                         <a href="{{ route('datapengalamankerjas.edit', [Crypt::encryptString($datapengalamankerja->id)]) }}"
                                            class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-pen fs-5"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         {!! Form::open(['method' => 'DELETE', 'route' => ['datapengalamankerjas.destroy', Crypt::encryptString($datapengalamankerja->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash fs-5"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                         {!! Form::close() !!}
                                     </div>

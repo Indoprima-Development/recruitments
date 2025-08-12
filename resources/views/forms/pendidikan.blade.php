@@ -45,12 +45,12 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="progress bg-dark-4 flex-grow-1 me-2" style="height: 6px;">
-                                            <div class="progress-bar bg-{{ $datapendidikanformal->nilai >= 80 ? 'success' : ($datapendidikanformal->nilai >= 60 ? 'warning' : 'danger') }}"
+                                            <div class="progress-bar bg-{{ $datapendidikanformal->nilai >= 3.5 ? 'success' : ($datapendidikanformal->nilai >= 2.5 ? 'warning' : 'danger') }}"
                                                  role="progressbar"
-                                                 style="width: {{ $datapendidikanformal->nilai }}%"
+                                                 style="width: {{ $datapendidikanformal->nilai * 25 }}%"
                                                  aria-valuenow="{{ $datapendidikanformal->nilai }}"
                                                  aria-valuemin="0"
-                                                 aria-valuemax="100">
+                                                 aria-valuemax="4">
                                             </div>
                                         </div>
                                         <small class="text-white">{{ $datapendidikanformal->nilai }}</small>
@@ -60,11 +60,11 @@
                                     <div class="d-flex justify-content-end gap-2">
                                         <a href="{{ route('datapendidikanformals.edit', [Crypt::encryptString($datapendidikanformal->id)]) }}"
                                            class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-pen fs-5"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         {!! Form::open(['method' => 'DELETE', 'route' => ['datapendidikanformals.destroy', Crypt::encryptString($datapendidikanformal->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash fs-5"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                         {!! Form::close() !!}
                                     </div>
@@ -109,7 +109,7 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="icon-circle bg-warning-soft me-3">
-                                            <i class="fas fa-{{ $datapendidikannonformal->jenis == 'Workshop' ? 'laptop-code' : 'chalkboard-teacher' }} text-warning"></i>
+                                            <i class="fas fa-desktop text-warning"></i>
                                         </div>
                                         <span>{{ $datapendidikannonformal->jenis }}</span>
                                     </div>
@@ -126,11 +126,11 @@
                                     <div class="d-flex justify-content-end gap-2">
                                         <a href="{{ route('datapendidikannonformals.edit', [Crypt::encryptString($datapendidikannonformal->id)]) }}"
                                            class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-pen fs-5"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         {!! Form::open(['method' => 'DELETE', 'route' => ['datapendidikannonformals.destroy', Crypt::encryptString($datapendidikannonformal->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash fs-5"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                         {!! Form::close() !!}
                                     </div>

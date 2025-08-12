@@ -62,11 +62,11 @@
                                     <div class="d-flex justify-content-end gap-2">
                                         <a href="{{ route('datakeluargas.edit', [Crypt::encryptString($datakeluarga->id)]) }}"
                                            class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-pen fs-5"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         {!! Form::open(['method' => 'DELETE', 'route' => ['datakeluargas.destroy', Crypt::encryptString($datakeluarga->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash fs-5"></i>
+                                            <i class="fas fa-trash "></i>
                                         </button>
                                         {!! Form::close() !!}
                                     </div>

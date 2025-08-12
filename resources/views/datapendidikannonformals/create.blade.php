@@ -30,11 +30,11 @@
 		</div>
         {{ Form::hidden('jurusan', "-", array('class' => 'form-control')) }}
 		<div class="mb-3">
-			{{ Form::label('date_start', 'Date Start', ['class'=>'form-label']) }}
+			{{ Form::label('date_start', 'Waktu Dimulai', ['class'=>'form-label']) }}
 			{{ Form::date('date_start', null, array('class' => 'form-control')) }}
 		</div>
 		<div class="mb-3">
-			{{ Form::label('date_end', 'Date End', ['class'=>'form-label']) }}
+			{{ Form::label('date_end', 'Waktu Selesai', ['class'=>'form-label']) }}
 			{{ Form::date('date_end', null, array('class' => 'form-control')) }}
 		</div>
 

@@ -34,26 +34,32 @@
                                     </div>
                                 </td>
                                 <td>
+                                    <?php
+                                        $level = 3;
+                                        if ($datakemampuan->level == 'Basic') {
+                                            $level = 1;
+                                        }else if ($datakemampuan->level == 'Middle') {
+                                            $level = 2;
+                                        }else{
+                                            $level = 3;
+                                        }
+                                    ?>
                                     <div class="progress bg-dark-4" style="height: 8px;">
                                         <div class="progress-bar bg-warning"
                                              role="progressbar"
-                                             style="width: {{ $datakemampuan->level * 20 }}%"
-                                             aria-valuenow="{{ $datakemampuan->level * 20 }}"
+                                             style="width: {{ $level * 33.4 }}%"
+                                             aria-valuenow="{{ $level * 33.4 }}"
                                              aria-valuemin="0"
                                              aria-valuemax="100">
                                         </div>
                                     </div>
-                                    <small class="text-warning">{{ str_repeat('★', $datakemampuan->level) }}{{ str_repeat('☆', 5 - $datakemampuan->level) }}</small>
+                                    <small class="text-warning">{{ str_repeat('★', $level) }}{{ str_repeat('☆', 3 - $level) }}</small>
                                 </td>
                                 <td class="text-end pe-4">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('datakemampuans.edit', [Crypt::encryptString($datakemampuan->id)]) }}"
-                                           class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-pen fs-5"></i>
-                                        </a>
                                         {!! Form::open(['method' => 'DELETE', 'route' => ['datakemampuans.destroy', Crypt::encryptString($datakemampuan->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash fs-5"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                         {!! Form::close() !!}
                                     </div>

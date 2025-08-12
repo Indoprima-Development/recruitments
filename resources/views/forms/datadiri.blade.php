@@ -8,7 +8,7 @@
                     <p class="text-muted mb-0 small">(*) Wajib diisi</p>
                 </div>
                 <div class="bg-primary bg-opacity-10 p-2 rounded">
-                    <i class="ti ti-user-circle fs-5 text-primary"></i>
+                    <i class="ti ti-user-circle text-primary"></i>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
             @if ($errors->any())
                 <div class="alert alert-danger border-0 bg-danger-soft mb-4">
                     <div class="d-flex align-items-center">
-                        <i class="ti ti-alert-circle fs-5 me-2"></i>
+                        <i class="ti ti-alert-circle me-2"></i>
                         <div>
                             @foreach ($errors->all() as $error)
                                 <div>{{ $error }}</div>
@@ -284,7 +284,7 @@
                                     <div class="d-flex justify-content-end gap-2">
                                         <a href="{{ route('dataolahragas.edit', [Crypt::encryptString($dataolahraga->id)]) }}"
                                             class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-pen fs-5"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         {!! Form::open([
                                             'method' => 'DELETE',
@@ -292,7 +292,7 @@
                                         ]) !!}
                                         <button type="submit"
                                             class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash fs-5"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                         {!! Form::close() !!}
                                     </div>
@@ -349,13 +349,9 @@
                                 </td>
                                 <td class="text-end pe-4">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('datakesehatans.show', [Crypt::encryptString($datakesehatan->id)]) }}"
-                                            class="btn btn-sm btn-icon btn-outline-info rounded-circle hover-lift">
-                                            <i class="fas fa-eye fs-5"></i>
-                                        </a>
                                         <a href="{{ route('datakesehatans.edit', [Crypt::encryptString($datakesehatan->id)]) }}"
                                             class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-pen fs-5"></i>
+                                            <i class="fas fa-edit"></i>
                                         </a>
                                         {!! Form::open([
                                             'method' => 'DELETE',
@@ -363,7 +359,7 @@
                                         ]) !!}
                                         <button type="submit"
                                             class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash fs-5"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                         {!! Form::close() !!}
                                     </div>
@@ -419,7 +415,7 @@
                                         ]) !!}
                                         <button type="submit"
                                             class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash fs-5"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                         {!! Form::close() !!}
                                     </div>

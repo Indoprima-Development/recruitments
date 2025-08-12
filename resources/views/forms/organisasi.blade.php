@@ -47,10 +47,6 @@
                                 </td>
                                 <td class="text-end pe-4">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('dataorganisasis.edit', [Crypt::encryptString($dataorganisasi->id)]) }}"
-                                           class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-pen fs-5"></i>
-                                        </a>
                                         {!! Form::open(['method' => 'DELETE', 'route' => ['dataorganisasis.destroy', Crypt::encryptString($dataorganisasi->id)]]) !!}
                                         <button type="submit" class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
                                             <i class="fas fa-trash fs-5"></i>
