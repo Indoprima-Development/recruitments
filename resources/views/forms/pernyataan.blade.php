@@ -92,7 +92,7 @@
                     <h5 class="card-title fw-semibold">Referensi dan Rekomendasi</h5>
                 </div>
                 <div class="col-sm-12 col-md-4 text-end">
-                    <a href="#" class="btn btn-primary">
+                    <a href="{{url('datadetails/create')}}" class="btn btn-primary">
                         + Rekomendasi
                     </a>
                 </div>
