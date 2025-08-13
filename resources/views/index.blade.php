@@ -383,6 +383,19 @@
             }
         }
     </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KG6TYXERDJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KG6TYXERDJ');
+    </script>
 </head>
 
 <body>
@@ -509,7 +522,8 @@
                         <div class="glass-card job-card h-100 p-4">
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
-                                    <h5 class="fw-bold mb-1 text-primary">{{ $job->jobtitle->jobtitle_name ?? '-' }}</h5>
+                                    <h5 class="fw-bold mb-1 text-primary">{{ $job->jobtitle->jobtitle_name ?? '-' }}
+                                    </h5>
                                     <p class="text-primary mb-0 small">{{ $job->division->division_name ?? '-' }}</p>
                                 </div>
                                 <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1">

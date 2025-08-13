@@ -10,7 +10,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -42,7 +44,12 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
             line-height: 1.2;
@@ -227,8 +234,8 @@
             box-shadow: 0 0 0 3px rgba(0, 247, 255, 0.1);
         }
 
-        .form-input:focus + .form-label,
-        .form-input:not(:placeholder-shown) + .form-label {
+        .form-input:focus+.form-label,
+        .form-input:not(:placeholder-shown)+.form-label {
             top: -0.6rem;
             left: 0.8rem;
             font-size: 0.75rem;
@@ -246,7 +253,7 @@
             transition: var(--transition);
         }
 
-        .form-input:focus ~ .input-icon {
+        .form-input:focus~.input-icon {
             color: var(--primary);
         }
 
@@ -367,14 +374,29 @@
 
         /* Animations */
         @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(0, 15px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(0, 15px);
+            }
         }
 
         @keyframes gradient-pulse {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(10%, 10%); }
-            100% { transform: translate(0, 0); }
+            0% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(10%, 10%);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
         }
 
         /* Responsive */
@@ -402,6 +424,19 @@
             }
         }
     </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KG6TYXERDJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KG6TYXERDJ');
+    </script>
 </head>
 
 <body>
@@ -452,7 +487,8 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="password" name="password" id="password" class="form-input" placeholder=" " required>
+                        <input type="password" name="password" id="password" class="form-input" placeholder=" "
+                            required>
                         <label for="password" class="form-label">Password</label>
                         <i class="input-icon ti ti-lock"></i>
                     </div>
@@ -463,7 +499,8 @@
                     </button>
 
                     <div class="form-footer">
-                        <p>Don't have an account? <a href="{{ url('auth/register') }}" class="register-link">Register now</a></p>
+                        <p>Don't have an account? <a href="{{ url('auth/register') }}" class="register-link">Register
+                                now</a></p>
                     </div>
                 </form>
             </div>
@@ -500,4 +537,5 @@
         });
     </script>
 </body>
+
 </html>

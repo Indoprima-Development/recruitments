@@ -14,24 +14,37 @@
     <meta name="keywords" content="Mordenize" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/png" href="{{asset('package/dist/images/logos/favicon.ico')}}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('package/dist/images/logos/favicon.ico') }}" />
     <!-- Owl Carousel -->
-    <link rel="stylesheet" href="{{asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
     <!-- Core Css -->
-    <link id="themeColors" rel="stylesheet" href="{{asset('package/dist/css/style.min.css')}}" />
-    <link rel="stylesheet" href="{{asset('package/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}">
+    <link id="themeColors" rel="stylesheet" href="{{ asset('package/dist/css/style.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('package/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
     @yield('addCss')
-    <script src="{{asset('package/dist/libs/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KG6TYXERDJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KG6TYXERDJ');
+    </script>
 </head>
 
 <body>
     @include('sweetalert::alert')
     <!-- Preloader -->
     <div class="preloader">
-        <img src="{{asset('package/dist/images/logos/favicon.ico')}}" alt="loader" class="lds-ripple img-fluid" />
+        <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" alt="loader" class="lds-ripple img-fluid" />
     </div>
     <!-- Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="horizontal" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="page-wrapper" id="main-wrapper" data-layout="horizontal" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
 
         @include('layouts.parts.headbar')
         @include('layouts.parts.sidebar')
@@ -56,10 +69,11 @@
     </div>
 
     <!--  Mobilenavbar -->
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="mobilenavbar" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="mobilenavbar"
+        aria-labelledby="offcanvasWithBothOptionsLabel">
         <nav class="sidebar-nav scroll-sidebar">
             <div class="offcanvas-header justify-content-between">
-                <img src="{{asset('package/dist/images/logos/favicon.ico')}}" alt="" class="img-fluid">
+                <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" alt="" class="img-fluid">
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body profile-dropdown mobile-navbar" data-simplebar="" data-simplebar>
@@ -74,8 +88,10 @@
                         <ul aria-expanded="false" class="collapse first-level my-3">
                             <li class="sidebar-item py-2">
                                 <a href="#" class="d-flex align-items-center">
-                                    <div class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('package/dist/images/svgs/icon-dd-chat.svg')}}" alt="" class="img-fluid" width="24" height="24">
+                                    <div
+                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-chat.svg') }}"
+                                            alt="" class="img-fluid" width="24" height="24">
                                     </div>
                                     <div class="d-inline-block">
                                         <h6 class="mb-1 bg-hover-primary">Chat Application</h6>
@@ -85,8 +101,10 @@
                             </li>
                             <li class="sidebar-item py-2">
                                 <a href="#" class="d-flex align-items-center">
-                                    <div class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('package/dist/images/svgs/icon-dd-invoice.svg')}}" alt="" class="img-fluid" width="24" height="24">
+                                    <div
+                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-invoice.svg') }}"
+                                            alt="" class="img-fluid" width="24" height="24">
                                     </div>
                                     <div class="d-inline-block">
                                         <h6 class="mb-1 bg-hover-primary">Invoice App</h6>
@@ -96,8 +114,10 @@
                             </li>
                             <li class="sidebar-item py-2">
                                 <a href="#" class="d-flex align-items-center">
-                                    <div class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('package/dist/images/svgs/icon-dd-mobile.svg')}}" alt="" class="img-fluid" width="24" height="24">
+                                    <div
+                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-mobile.svg') }}"
+                                            alt="" class="img-fluid" width="24" height="24">
                                     </div>
                                     <div class="d-inline-block">
                                         <h6 class="mb-1 bg-hover-primary">Contact Application</h6>
@@ -107,8 +127,10 @@
                             </li>
                             <li class="sidebar-item py-2">
                                 <a href="#" class="d-flex align-items-center">
-                                    <div class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('package/dist/images/svgs/icon-dd-message-box.svg')}}" alt="" class="img-fluid" width="24" height="24">
+                                    <div
+                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-message-box.svg') }}"
+                                            alt="" class="img-fluid" width="24" height="24">
                                     </div>
                                     <div class="d-inline-block">
                                         <h6 class="mb-1 bg-hover-primary">Email App</h6>
@@ -118,8 +140,10 @@
                             </li>
                             <li class="sidebar-item py-2">
                                 <a href="#" class="d-flex align-items-center">
-                                    <div class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('package/dist/images/svgs/icon-dd-cart.svg')}}" alt="" class="img-fluid" width="24" height="24">
+                                    <div
+                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-cart.svg') }}"
+                                            alt="" class="img-fluid" width="24" height="24">
                                     </div>
                                     <div class="d-inline-block">
                                         <h6 class="mb-1 bg-hover-primary">User Profile</h6>
@@ -129,8 +153,10 @@
                             </li>
                             <li class="sidebar-item py-2">
                                 <a href="#" class="d-flex align-items-center">
-                                    <div class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('package/dist/images/svgs/icon-dd-date.svg')}}" alt="" class="img-fluid" width="24" height="24">
+                                    <div
+                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-date.svg') }}"
+                                            alt="" class="img-fluid" width="24" height="24">
                                     </div>
                                     <div class="d-inline-block">
                                         <h6 class="mb-1 bg-hover-primary">Calendar App</h6>
@@ -140,8 +166,10 @@
                             </li>
                             <li class="sidebar-item py-2">
                                 <a href="#" class="d-flex align-items-center">
-                                    <div class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('package/dist/images/svgs/icon-dd-lifebuoy.svg')}}" alt="" class="img-fluid" width="24" height="24">
+                                    <div
+                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-lifebuoy.svg') }}"
+                                            alt="" class="img-fluid" width="24" height="24">
                                     </div>
                                     <div class="d-inline-block">
                                         <h6 class="mb-1 bg-hover-primary">Contact List Table</h6>
@@ -151,8 +179,10 @@
                             </li>
                             <li class="sidebar-item py-2">
                                 <a href="#" class="d-flex align-items-center">
-                                    <div class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{asset('package/dist/images/svgs/icon-dd-application.svg')}}" alt="" class="img-fluid" width="24" height="24">
+                                    <div
+                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
+                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-application.svg') }}"
+                                            alt="" class="img-fluid" width="24" height="24">
                                     </div>
                                     <div class="d-inline-block">
                                         <h6 class="mb-1 bg-hover-primary">Notes Application</h6>
