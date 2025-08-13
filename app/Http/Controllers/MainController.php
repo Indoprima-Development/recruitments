@@ -45,6 +45,8 @@ class MainController extends Controller
         $id = Crypt::decryptString($id);
         $ptkform = Ptkform::findOrFail($id);
 
+        // dd(Auth::check());
+
         $isApplied = false;
         if (Auth::check()) {
             $trs = Ptkformtransaction::where('ptkform_id', $id)

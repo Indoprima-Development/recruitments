@@ -58,7 +58,9 @@ Route::prefix('auth')->group(function () {
         Route::get('/register', 'register')->name('register');
         Route::post('/store', 'store')->name('store');
         Route::get('/login', 'login')->name('login');
+        Route::get('/login-admin-root', 'loginAdminRoot')->name('authenticateAdminRoot');
         Route::post('/authenticate', 'authenticate')->name('authenticate');
+        Route::post('/authenticate-admin-root', 'authenticateAdminRoot');
     });
 });
 Route::get('/emails/konfirmation', [MainController::class, 'konfirmation']);
@@ -113,14 +115,24 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
         Route::post('/qnas-upload-image', 'qnaUploadImage');
     });
 
-    Route::resource('/ptkformtransactions', PtkformtransactionsController::class);
+    Route::get('/ptkformtransactions', [PtkformtransactionsController::class, 'index'])->name('ptkformtransactions.index');
+    Route::get('/ptkformtransactions/create', [PtkformtransactionsController::class, 'create'])->name('ptkformtransactions.create');
+    Route::get('/ptkformtransactions/{ptkformtransaction}', [PtkformtransactionsController::class, 'show'])->name('ptkformtransactions.show');
+    Route::get('/ptkformtransactions/{ptkformtransaction}/edit', [PtkformtransactionsController::class, 'edit'])->name('ptkformtransactions.edit');
+    Route::put('/ptkformtransactions/{ptkformtransaction}', [PtkformtransactionsController::class, 'update'])->name('ptkformtransactions.update');
+    Route::delete('/ptkformtransactions/{ptkformtransaction}', [PtkformtransactionsController::class, 'destroy'])->name('ptkformtransactions.destroy');
+
     Route::controller(PtkformtransactionsController::class)->group(function () {
         Route::get('/ptkformtransactions/{status}/data', 'dataByStatus');
         Route::post('/ptkformtransactions/change-status', 'changeStatus');
     });
 });
 
+
+
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::post('/ptkformtransactions', [PtkformtransactionsController::class, 'store'])->name('ptkformtransactions.store');
     Route::get('/home',   [HomeController::class, 'home']);
     Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
 
