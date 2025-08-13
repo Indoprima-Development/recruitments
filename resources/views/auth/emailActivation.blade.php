@@ -181,7 +181,7 @@
         <h1>Account Already Registered</h1>
 
         <div class="alert-message">
-            The <span class="highlight">{{$user->email}}</span> Not Active. Please check your email to confirm your account.
+            The <span class="highlight">{{$user->email ?? '-'}}</span> Not Active. Please check your email to confirm your account.
         </div>
 
         <div class="solution-section">
