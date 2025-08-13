@@ -372,7 +372,7 @@
 
                 <!-- Filter Tabs -->
                 <div class="row mb-4">
-                    <div class="col-lg-9">
+                    <div class="{{ Auth::check() && (Auth::user()->role == 'ADMIN') ? 'col-lg-9' : 'col-12' }}"">
                         <div class="modern-tabs">
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -414,7 +414,7 @@
                         </div>
                     </div>
 
-                    @if (Auth::check() && (Auth::user()->role == 'ADMIN' || Auth::user()->email == 'findryankurnia@gmail.com'))
+                    @if (Auth::check() && (Auth::user()->role == 'ADMIN'))
                         <div class="col-lg-3 text-lg-end">
                             <a target="_blank" class="btn btn-create w-100 w-lg-auto"
                                 href="{{ url('ptkforms/create') }}">
