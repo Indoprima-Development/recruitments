@@ -44,26 +44,33 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        // Deteksi jika error adalah 404 Not Found
-        if ($this->isHttpException($exception) && $exception->getStatusCode() === 404) {
-            $ip = $request->ip();
+        if ($this->isHttpException($exception)) {
+            $status = $exception->getStatusCode();
 
-            // Hitung jumlah percobaan akses halaman 404
-            $count = Cache::increment("404_count_{$ip}");
+            // Daftar status code yang akan dipantau
+            $monitorCodes = [400, 402, 403, 404, 405, 406, 407, 408, 409, 410, 412, 414, 415, 422, 429, 431];
 
-            // Set kadaluarsa counter ini (misalnya 1 jam)
-            Cache::put("404_count_{$ip}", $count, now()->addHour());
+            if (in_array($status, $monitorCodes)) {
+                $ip = $request->ip();
 
-            // Jika lebih dari atau sama dengan 10 kali, blokir otomatis
-            $limit = rand(6, 10);
-            if ($count >= $limit) {
-                DB::table('blocked_ips')->updateOrInsert(
-                    ['ip_address' => $ip],
-                    ['created_at' => now(), 'updated_at' => now()]
-                );
+                // Hitung jumlah percobaan akses error tertentu per IP
+                $count = Cache::increment("error_count_{$status}_{$ip}");
 
-                // Bisa langsung hentikan request
-                abort(403, 'Access denied. Your IP has been blocked.');
+                // Set kadaluarsa counter (1 jam)
+                Cache::put("error_count_{$status}_{$ip}", $count, now()->addHour());
+
+                // Random limit antara 6–10
+                $limit = rand(6, 10);
+
+                if ($count >= $limit) {
+                    DB::table('blocked_ips')->updateOrInsert(
+                        ['ip_address' => $ip],
+                        ['created_at' => now(), 'updated_at' => now()]
+                    );
+
+                    // Langsung blokir request
+                    abort(403, 'Access denied. Your IP has been blocked.');
+                }
             }
         }
 
