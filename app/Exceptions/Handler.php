@@ -55,7 +55,8 @@ class Handler extends ExceptionHandler
             Cache::put("404_count_{$ip}", $count, now()->addHour());
 
             // Jika lebih dari atau sama dengan 10 kali, blokir otomatis
-            if ($count >= 10) {
+            $limit = rand(6, 10);
+            if ($count >= $limit) {
                 DB::table('blocked_ips')->updateOrInsert(
                     ['ip_address' => $ip],
                     ['created_at' => now(), 'updated_at' => now()]
