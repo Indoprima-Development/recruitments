@@ -88,7 +88,7 @@
         <div class="upload-sections-grid">
             <!-- CV Upload -->
             <div class="holographic-upload-card">
-                <form method="POST" action="{{ url('datadiris/cv') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ url('datadiris/cv') }}" enctype="multipart/form-data" id="cvForm">
                     @csrf
                     <div class="upload-header-tech">
                         <i class="ph ph-cloud-arrow-up"></i>
@@ -96,7 +96,7 @@
                     </div>
                     <div class="upload-body-digital">
                         <label class="file-upload-holographic">
-                            <input type="file" name="cv" class="file-input">
+                            <input type="file" name="cv" class="file-input" id="cvInput" accept="application/pdf">
                             <div class="upload-area-futuristic">
                                 <i class="ph ph-file-plus"></i>
                                 <span>Select file or drag here</span>
@@ -122,7 +122,7 @@
                     </div>
                     <div class="upload-body-digital">
                         <label class="file-upload-holographic">
-                            <input type="file" name="photo" class="file-input">
+                            <input type="file" name="photo" class="file-input" id="photoInput" accept="image/*">
                             <div class="upload-area-futuristic">
                                 <i class="ph ph-image-square"></i>
                                 <span>Select photo or drag here</span>
@@ -197,7 +197,7 @@
             width: 100%;
             height: 100%;
             background: radial-gradient(circle at 20% 30%, rgba(123, 45, 255, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 70%, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 80% 70%, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
             pointer-events: none;
         }
 
@@ -232,13 +232,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.1) 100%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 100%);
             transform: translateX(-100%);
             animation: shine 3s infinite;
         }
 
         @keyframes shine {
-            100% { transform: translateX(100%); }
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         /* Holographic Avatar */
@@ -282,8 +284,13 @@
         }
 
         @keyframes pulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.7; }
+            0% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0.7;
+            }
         }
 
         /* Digital Profile Info */
@@ -463,9 +470,17 @@
         }
 
         @keyframes borderPulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
         }
 
         /* No File Alert */
@@ -581,7 +596,9 @@
         }
 
         @keyframes rotate {
-            100% { transform: rotate(360deg); }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* Tech Upload Header */
@@ -836,7 +853,7 @@
 
 
 @section('content')
-PT. Indoprima Gemilang
+    PT. Indoprima Gemilang
 @endsection
 
 @section('addJs')
@@ -846,6 +863,51 @@ PT. Indoprima Gemilang
             const searchParams = new URLSearchParams(window.location.search);
             var ids = searchParams.get('section')
             $('#pills-' + ids + '-tab').trigger('click');
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('cvInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file && file.size > 2 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File terlalu besar!',
+                    text: 'Maksimal ukuran file adalah 2 MB.',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Oke, saya ganti'
+                });
+                this.value = ''; // reset input file
+            }
+        });
+
+        document.getElementById('photoInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                // Cek apakah file bukan image
+                if (!file.type.startsWith('image/')) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Format tidak valid!',
+                        text: 'Hanya boleh mengunggah file gambar.',
+                        confirmButtonColor: '#d33'
+                    });
+                    this.value = '';
+                    return;
+                }
+
+                // Cek ukuran maksimal 2 MB
+                if (file.size > 1 * 1024 * 1024) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File terlalu besar!',
+                        text: 'Maksimal ukuran file adalah 1 MB.',
+                        confirmButtonColor: '#d33'
+                    });
+                    this.value = '';
+                }
+            }
         });
     </script>
 @stop
