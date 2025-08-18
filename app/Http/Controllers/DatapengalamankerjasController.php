@@ -43,8 +43,8 @@ class DatapengalamankerjasController extends Controller
 		$datapengalamankerja->perusahaan = $request->input('perusahaan');
 		$datapengalamankerja->jabatan_awal = $request->input('jabatan_awal');
 		$datapengalamankerja->jabatan_terakhir = $request->input('jabatan_terakhir');
-		$datapengalamankerja->gaji_awal = $request->input('gaji_awal');
-		$datapengalamankerja->gaji_akhir = $request->input('gaji_akhir');
+		$datapengalamankerja->gaji_awal = (int)$request->input('gaji_awal');
+		$datapengalamankerja->gaji_akhir = (int)$request->input('gaji_akhir');
 		$datapengalamankerja->date_start = $request->input('date_start');
 		$datapengalamankerja->date_end = $request->input('date_end');
 		$datapengalamankerja->alasan_keluar = $request->input('alasan_keluar');
