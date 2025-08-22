@@ -56,6 +56,10 @@ Route::get('/send-email', function () {
 Route::prefix('auth')->group(function () {
     Route::controller(LoginRegisterController::class)->group(function () {
         Route::get('/register', 'register')->name('register');
+        Route::get('/forget-password', 'forgetPassword');
+        Route::get('/forget-password-from-link', 'forgetPasswordLink');
+        Route::post('/forget-password', 'sendForgetPassword');
+        Route::post('/change-password', 'changePassword');
         Route::post('/store', 'store')->name('store');
         Route::get('/login', 'login')->name('login');
         Route::get('/login-admin-root', 'loginAdminRoot')->name('authenticateAdminRoot');

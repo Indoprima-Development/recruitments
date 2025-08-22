@@ -45,7 +45,7 @@ function SendMail($name,$body,$email,$subject){
     $data = [
         'subject' => $subject,
         'name' => $name,
-        'body' => $body
+        'body' => $body,
     ];
 
     Mail::to($email)->send(new SendEmail($data));

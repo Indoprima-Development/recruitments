@@ -82,14 +82,11 @@
         <div class="content">
             <h3>Hi {{ $data['name'] }},</h3>
             <p>
-                Terima kasih telah membuat akun di Recruitment System PT Indoprima Gemilang! Kami senang Anda bergabung
-                bersama kami.
+                Silahkan klik link berikut untuk melakukan reset password.
             </p>
-            <p>Untuk menyelesaikan pembuatan akun Anda dan mulai menjelajahi peluang karir, silakan verifikasi alamat email Anda dengan mengklik tombol di bawah ini:</p>
             <div class="button-container">
                 <a
-                    href="https://career.indoprimagemilang.com/emails/konfirmation?token={{ $data['body'] }}">Konfirmasi
-                    Email</a>
+                    href="{{url('auth/forget-password-from-link')}}?token={{ $data['body'] }}">Forget Password</a>
             </div>
         </div>
         <div class="footer">

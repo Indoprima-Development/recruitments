@@ -29,7 +29,16 @@ class SendEmail extends Mailable
     public function build()
     {
         $subject = $this->data['subject'] ?? 'No Reply Indoprima Gemilang';
-        return $this->subject($subject )
-                    ->view('emails.sendemail');
+
+        // Tentukan view default
+        $view = 'emails.sendemail';
+
+        // Jika subject = forget password → ganti view
+        if (strtolower($subject) === 'forget password') {
+            $view = 'emails.forget';
+        }
+
+        return $this->subject($subject)
+            ->view($view);
     }
 }

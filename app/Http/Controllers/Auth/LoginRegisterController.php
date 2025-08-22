@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Constants\Constants;
+use Illuminate\Support\Facades\Crypt;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginRegisterController extends Controller
@@ -172,5 +173,42 @@ class LoginRegisterController extends Controller
         return back()->withErrors([
             'email' => 'Your provided credentials do not match in our records.',
         ])->onlyInput('email');
+    }
+
+    public function forgetPassword()
+    {
+        return view('auth.forget-password');
+    }
+
+    public function sendForgetPassword(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if (empty($user)) {
+            return 1;
+        }
+
+        $id = Crypt::encryptString($user->id) . "&dt=" . date('YmdHis');
+        SendMail($user->name, $id, $request->email, 'forget password');
+        return view('auth.forget-password-send');
+    }
+
+    public function forgetPasswordLink(Request $request)
+    {
+        $id = Crypt::decryptString($request->input("token"));
+        $user = User::findOrFail($id);
+        $token = Crypt::encryptString($user->id);
+
+        return view('auth.forget-password-change', compact('token'));
+    }
+
+    public function changePassword(Request $request)
+    {
+        $id = Crypt::decryptString($request->input("token"));
+        $user = User::findOrFail($id);
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return redirect('auth/login');
     }
 }

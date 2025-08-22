@@ -501,6 +501,9 @@
                     <div class="form-footer">
                         <p>Don't have an account? <a href="{{ url('auth/register') }}" class="register-link">Register
                                 now</a></p>
+                        <hr>
+                        <p>Forget your password? <a href="{{ url('auth/forget-password') }}"
+                                class="register-link">Reset</a></p>
                     </div>
                 </form>
             </div>
