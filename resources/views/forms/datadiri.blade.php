@@ -200,7 +200,7 @@
                             <div class="form-check form-check-inline mb-2">
                                 <input name="kendaraan[]" value="{{ $d }}" type="checkbox"
                                     class="form-check-input" id="kendaraan{{ $d }}"
-                                    {{ $datadiri && in_array($d, json_decode($datadiri->kendaraan)) ? 'checked' : '' }}>
+                                    >
                                 <label class="form-check-label"
                                     for="kendaraan{{ $d }}">{{ $d }}</label>
                             </div>
@@ -215,7 +215,7 @@
                             <div class="form-check form-check-inline mb-2">
                                 <input name="sim[]" value="{{ $d }}" type="checkbox"
                                     class="form-check-input" id="sim{{ $d }}"
-                                    {{ $datadiri && in_array($d, json_decode($datadiri->sim)) ? 'checked' : '' }}>
+                                    {{ $datadiri && in_array($d, json_decode($datadiri->kendaraan ?? '[]') ?? []) ? 'checked' : '' }}>
                                 <label class="form-check-label"
                                     for="sim{{ $d }}">{{ $d }}</label>
                             </div>

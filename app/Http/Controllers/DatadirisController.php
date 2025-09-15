@@ -153,7 +153,7 @@ class DatadirisController extends Controller
         $datadiri->cities = $request->input('cities');
         $datadiri->save();
 
-        return to_route('datadiris.index');
+        return redirect('forms');
     }
 
     public function pernyataan(Request $request, $id)
@@ -176,7 +176,13 @@ class DatadirisController extends Controller
         }
 
         // Ambil data berdasarkan user login
-        $datadiri = Datadiri::findOrFail(Auth::user()->id);
+        $datadiri = Datadiri::where('user_id', Auth::user()->id)->first();
+
+        if (!$datadiri) {
+            $datadiri = new Datadiri();
+            $datadiri->user_id = Auth::user()->id; // wajib isi kalau field ini required
+        }
+
         $datadiri->ekspektasi_gaji = $request->input('ekspektasi_gaji');
         $datadiri->fasilitas_harapan = $request->input('fasilitas_harapan');
         $datadiri->kesediaan_penempatan = $request->input('kesediaan_penempatan');
@@ -185,7 +191,7 @@ class DatadirisController extends Controller
 
         // Upload file jika ada
         if ($request->hasFile('image_jabatan_terakhir')) {
-            $filename = $id . ".png";
+            $filename = Auth::user()->id . ".png"; // atau pakai $datadiri->id setelah save
             $pathUpload = "jabatan";
             UploadFile($request->file('image_jabatan_terakhir'), $pathUpload, $filename);
             $datadiri->image_jabatan_terakhir = "$pathUpload/$filename";

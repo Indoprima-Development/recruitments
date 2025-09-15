@@ -1,13 +1,13 @@
 <div class="tab-pane fade" id="pills-pernyataan" role="tabpanel" aria-labelledby="pills-security-tab" tabindex="0">
     <div class="card">
         <div class="card-body p-4">
-            {{ Form::model($datadiri, ['url' => ['datadiris/pernyataan', Auth::user()->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
+            {{ Form::model($datadiri, ['url' => ['datadiris/pernyataan', Auth::user()->id], 'method' => 'POST', 'enctype' => 'multipart/form-data', 'id' => 'formPernyataan']) }}
             <div class="row">
                 <div class="col-sm-12 col-md-8">
                     <h5 class="card-title fw-semibold">Pernyataan</h5>
                 </div>
                 <div class="col-sm-12 col-md-4 text-end">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    <button id="btnPernyataan" type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         Simpan Pernyataan
                     </button>
@@ -31,7 +31,7 @@
                 <div class="mb-3 col-sm-12 col-md-6">
                     {{ Form::label('kesediaan_penempatan', 'Kesediaan Penempatan', ['class' => 'form-label']) }}
                     <br><small class="text-danger">Apakah bersedia ditempatkan di seluruh unit bisnis PT Indoprima
-                        Gelimang</small>
+                        Gemilang</small>
                     <select name="kesediaan_penempatan" class="form-select">
                         <option {{ $datadiri && $datadiri->kesediaan_penempatan == 1 ? 'selected' : '' }}
                             value="1">Ya</option>
@@ -56,29 +56,6 @@
                         @endif
                     @endif
 
-                </div>
-            </div>
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Pernyataan</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Demikian keterangan-keterangan tersebut, saya berikan dengan sebenar-benarnya. Apabila
-                            keterangan
-                            tersebut menyimpang dari keadaan yang sebenarnya, saya bersedia melepaskan kesempatan saya
-                            untuk
-                            menjalani tahapan seleksi selanjutnya atau diberhentikan setelah diterima kerja.
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Setuju</button>
-                        </div>
-                    </div>
                 </div>
             </div>
             {{ Form::close() }}
@@ -139,3 +116,24 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.getElementById('btnPernyataan').addEventListener('click', function () {
+    Swal.fire({
+        title: 'Pernyataan',
+        text: "Demikian keterangan-keterangan tersebut, saya berikan dengan sebenar-benarnya. Apabila keterangan tersebut menyimpang dari keadaan yang sebenarnya, saya bersedia melepaskan kesempatan saya untuk menjalani tahapan seleksi selanjutnya atau diberhentikan setelah diterima kerja.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Setuju',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // submit form
+            document.getElementById('formPernyataan').submit();
+        }
+    })
+});
+</script>
+
