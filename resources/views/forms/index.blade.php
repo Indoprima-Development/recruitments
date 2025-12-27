@@ -1,913 +1,530 @@
-@extends('default')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content2')
-    <!-- Futuristic Profile Container -->
-    <div class="futuristic-profile-container">
-        <!-- Glass Profile Card -->
-        <div class="glass-profile-card">
-            <!-- Profile Header with Gradient -->
-            <div class="profile-header-gradient">
-                <div class="profile-avatar-hologram">
-                    @if ($users->photo != null)
-                        <img src="{{ asset($users->photo) }}" alt="Profile" class="avatar-image-glowing">
-                    @else
-                        <div class="avatar-hologram-placeholder">
-                            <i class="ph ph-user"></i>
-                        </div>
-                    @endif
-                    <div class="hologram-effect"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Recruitment Profile - PT. Indoprima Gelimang</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="{{ asset('package/dist/images/logos/favicon.ico') }}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('package/dist/css/style.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('package/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Standalone Styles -->
+    <style>
+        :root {
+            --bs-body-font-family: 'Plus Jakarta Sans', sans-serif;
+            --bs-body-bg: #f5f7fa;
+        }
+
+        body {
+            background-color: var(--bs-body-bg);
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .main-container {
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        /* Modern Header */
+        .app-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        /* Utilities */
+        .object-fit-cover {
+            object-fit: cover;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .transition-all {
+            transition: all 0.25s ease-in-out;
+        }
+
+        /* Interactive Effects */
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+
+        .hover-bg-light:hover {
+            background-color: #f8f9fa !important;
+        }
+
+        /* Modern Cards */
+        .card-modern {
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+            background: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-modern:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Tab Navigation - Clean Pill Style */
+        .user-profile-tab {
+            background: white;
+            padding: 0.5rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            margin-bottom: 1.5rem;
+        }
+
+        .user-profile-tab .nav-link {
+            color: #64748b;
+            border-radius: 12px !important;
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .user-profile-tab .nav-link:hover {
+            background: #f8fafc;
+            color: var(--bs-primary);
+        }
+
+        .user-profile-tab .nav-link.active {
+            background-color: var(--bs-primary) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.3);
+            border-color: var(--bs-primary);
+        }
+
+        /* Sticky Sidebar */
+        .sticky-sidebar {
+            position: sticky;
+            top: 100px;
+            z-index: 900;
+        }
+
+        /* Form Controls */
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            padding: 0.8rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.1);
+            background-color: #fff;
+        }
+
+        .form-floating>label {
+            padding-left: 1rem;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(120deg, var(--bs-primary) 0%, #1e293b 100%);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .welcome-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    @include('sweetalert::alert')
+
+    <!-- Modern Header -->
+    <header class="app-header py-3 mb-4">
+        <div class="container-xxl d-flex align-items-center justify-content-between">
+            <a href="{{ url('/') }}"
+                class="d-flex align-items-center gap-2 text-decoration-none hover-scale transition-all">
+                <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" width="42" alt="Logo"
+                    class="rounded-3">
+                <div>
+                    <h6 class="fw-bolder text-dark mb-0 ls-tight">Recruitment Portal</h6>
+                    <small class="text-muted d-block" style="font-size: 0.75rem;">PT. Indoprima Gelimang</small>
                 </div>
+            </a>
 
-                <div class="profile-info-digital">
-                    <h1 class="profile-name-neon">{{ $users->name }}</h1>
-                    <div class="profile-title-cyber">
-                        {{ $ptkformtransactions[0]->ptkform->jobtitle->jobtitle_name ?? '-' }}
-                    </div>
-                    <div class="profile-contact-tech">
-                        <a href="wa.me/{{ $users->no_wa }}" class="contact-link-digital">
-                            <i class="ph ph-whatsapp-logo"></i>
-                            <span class="digital-text">{{ $users->no_wa }}</span>
-                        </a>
-                    </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="dropdown">
+                    <button class="btn btn-light rounded-pill border py-1 px-2 d-flex align-items-center gap-2"
+                        data-bs-toggle="dropdown">
+                        @if ($users->photo)
+                            <img src="{{ asset($users->photo) }}" class="rounded-circle object-fit-cover" width="32"
+                                height="32" alt="User">
+                        @else
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold"
+                                style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
+                        @endif
+                        <span
+                            class="d-none d-md-block fw-semibold text-dark fs-3 me-1">{{ Str::limit(Auth::user()->name, 15) }}</span>
+                        <i class="ti ti-chevron-down text-muted fs-2"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2"
+                        style="width: 200px;">
+                        <li>
+                            <div class="dropdown-header text-uppercase fs-2 fw-bold text-primary">Account</div>
+                        </li>
+                        <li><a class="dropdown-item rounded-2 py-2 mb-1" href="{{ url('/') }}"><i
+                                    class="ti ti-home me-2"></i> Home</a></li>
+                        <li>
+                            <hr class="dropdown-divider my-1">
+                        </li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item rounded-2 py-2 text-danger"><i
+                                        class="ti ti-logout me-2"></i> Logout</button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </div>
+    </header>
 
-            <!-- Profile Content with Cyber Elements -->
-            <div class="profile-content-grid">
-                <!-- CV Section -->
-                <div class="cyber-section">
-                    <div class="section-icon-cyber">
-                        <i class="ph ph-file-text"></i>
+    <!-- Main Content -->
+    <div class="main-container container-xxl pb-5">
+
+        <!-- Welcome Section -->
+        <div class="welcome-banner p-4 p-md-5 mb-5 text-white">
+            <div class="welcome-pattern"></div>
+            <div class="row align-items-center position-relative z-1">
+                <div class="col-lg-7">
+                    <span
+                        class="badge bg-white bg-opacity-20 border border-white border-opacity-25 text-dark mb-3 px-3 py-2 rounded-pill">
+                        <i class="ti ti-sparkles me-1"></i> Selamat Datang, Kandidat!
+                    </span>
+                    <h2 class="fw-bolder mb-2 text-white display-6">Lengkapi Profil Profesional Anda</h2>
+                    <p class="mb-0 text-white-50 fs-5" style="max-width: 600px;">Data yang lengkap dan valid akan
+                        meningkatkan peluang Anda untuk melanjutkan ke tahap rekrutmen selanjutnya.</p>
+                </div>
+                <div class="col-lg-5 text-end d-none d-lg-block">
+                    <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt="Decoration"
+                        class="img-fluid opacity-25" style="max-height: 140px; filter: grayscale(1) brightness(2);">
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 d-flex align-items-start">
+            <!-- Sidebar -->
+            <div class="col-lg-3 sticky-sidebar">
+                <div class="card-modern p-4 text-center mb-4 border-top border-4 border-primary">
+                    <div class="position-relative d-inline-block mb-3 mt-n5">
+                        <div class="p-1 bg-white rounded-circle">
+                            @if ($users->photo != null)
+                                <img src="{{ asset($users->photo) }}" class="rounded-circle shadow-lg object-fit-cover"
+                                    width="120" height="120">
+                            @else
+                                <div class="rounded-circle bg-primary bg-gradient text-white d-flex align-items-center justify-content-center shadow-lg"
+                                    style="width: 120px; height: 120px; font-size: 3rem;">
+                                    <i class="ti ti-user"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <button
+                            class="btn btn-sm btn-dark rounded-circle position-absolute bottom-0 end-0 shadow border border-2 border-white"
+                            style="width: 36px; height: 36px;" onclick="document.getElementById('photoInput').click()"
+                            title="Ubah Foto">
+                            <i class="ti ti-camera"></i>
+                        </button>
                     </div>
-                    <div class="section-content-digital">
-                        <h3 class="section-title-hud">Curriculum Vitae</h3>
-                        @if ($users->cv != null)
-                            <a href="{{ url($users->cv) }}" class="download-btn-digital">
-                                <span class="btn-text">Download CV</span>
-                                <i class="ph ph-download-simple"></i>
-                                <span class="digital-border"></span>
-                            </a>
-                        @else
-                            <div class="no-file-alert">
-                                <i class="ph ph-warning-circle"></i>
-                                <span>No CV uploaded</span>
+
+                    <h5 class="fw-bold text-dark mb-0">{{ $users->name }}</h5>
+                    <p class="text-primary fw-medium small mb-4">
+                        {{ $ptkformtransactions[0]->ptkform->jobtitle->jobtitle_name ?? 'Applicant' }}</p>
+
+                    <!-- Contact Info -->
+                    <div class="bg-light rounded-3 p-3 mb-4 text-start">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <div class="bg-white p-2 rounded-circle shadow-sm text-primary"><i class="ti ti-mail"></i>
                             </div>
+                            <div class="overflow-hidden">
+                                <small class="text-muted d-block" style="font-size: 10px; uppercase">EMAIL</small>
+                                <span class="fw-bold text-dark text-truncate d-block"
+                                    style="font-size: 13px;">{{ $users->email }}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-white p-2 rounded-circle shadow-sm text-success"><i
+                                    class="ti ti-brand-whatsapp"></i></div>
+                            <div>
+                                <small class="text-muted d-block" style="font-size: 10px; uppercase">WHATSAPP</small>
+                                <span class="fw-bold text-dark" style="font-size: 13px;">{{ $users->no_wa }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <form method="POST" action="{{ url('datadiris/photo') }}" enctype="multipart/form-data"
+                            id="photoForm" class="d-none">
+                            @csrf
+                            <input type="file" name="photo" id="photoInput" accept="image/*"
+                                onchange="document.getElementById('photoForm').submit()">
+                        </form>
+
+                        <button class="btn btn-outline-primary rounded-pill fw-bold btn-sm py-2 hover-bg-light"
+                            onclick="document.getElementById('cvInput').click()">
+                            <i class="ti ti-file-upload me-2"></i> {{ $users->cv ? 'Perbarui CV' : 'Upload CV' }}
+                        </button>
+                        <form method="POST" action="{{ url('datadiris/cv') }}" enctype="multipart/form-data"
+                            id="cvForm" class="d-none">
+                            @csrf
+                            <input type="file" name="cv" id="cvInput" accept="application/pdf"
+                                onchange="document.getElementById('cvForm').submit()">
+                        </form>
+
+                        @if ($users->cv)
+                            <a href="{{ url($users->cv) }}" target="_blank"
+                                class="btn btn-light rounded-pill fw-bold btn-sm py-2 border text-dark">
+                                <i class="ti ti-eye me-2"></i> Lihat CV
+                            </a>
+                        @endif
+
+                        @if (Auth::user()->role == 'ADMIN')
+                            <button class="btn btn-dark rounded-pill btn-sm py-2 mt-2" onclick="saveDivAsPDF()">
+                                <i class="ti ti-printer me-2"></i> Export PDF
+                            </button>
                         @endif
                     </div>
                 </div>
 
-                <!-- Verification Section -->
-                <div class="cyber-section">
-                    <div class="section-icon-cyber">
-                        <i class="ph ph-shield-check"></i>
+                <!-- Progress/Status -->
+                <div class="card-modern p-4">
+                    <h6 class="fw-bold mb-3">Status Profil</h6>
+                    <div class="d-flex justify-content-between mb-1">
+                        <small class="fw-medium text-muted">Kelengkapan</small>
+                        <small class="fw-bold text-primary">85%</small>
                     </div>
-                    <div class="section-content-digital">
-                        <h3 class="section-title-hud">Verification Status</h3>
-                        <div class="verified-badge-cyber">
-                            <i class="ph ph-check-circle"></i>
-                            <span>Verified Account</span>
-                            <div class="verification-pulse"></div>
-                        </div>
+                    <div class="progress bg-light" style="height: 6px; border-radius: 10px;">
+                        <div class="progress-bar bg-primary" role="progressbar"
+                            style="width: 85%; border-radius: 10px;" aria-valuenow="85" aria-valuemin="0"
+                            aria-valuemax="100"></div>
+                    </div>
+                    <div class="mt-3 d-flex gap-2 flex-wrap">
+                        <span
+                            class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-20">Verified
+                            Email</span>
+                        <span
+                            class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-20">Verified
+                            Phone</span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Export Button -->
-                @if (Auth::user()->role == 'ADMIN')
-                    <div class="profile-actions-futuristic">
-                        <button class="export-btn-cyber" onclick="saveDivAsPDF()">
-                            <i class="ph ph-file-pdf"></i>
-                            <span>Export Profile</span>
-                            <div class="btn-light-effect"></div>
-                        </button>
-                    </div>
-                @endif
+            <!-- Main Content Area -->
+            <div class="col-lg-9">
+                <!-- Navigation Tabs -->
+                <div class="mb-4">
+                    @include('forms.headbar')
+                </div>
+
+                <!-- Forms Container -->
+                <div class="tab-content" id="pills-tabContent">
+                    @include('forms.datadiri')
+                    @include('forms.pendidikan')
+                    @include('forms.keluarga')
+                    @include('forms.pengalaman')
+                    @include('forms.kemampuan')
+                    @include('forms.organisasi')
+                    @include('forms.lain')
+                    @include('forms.pernyataan')
+                </div>
+
+                <!-- Simple Footer -->
+                <div class="text-center mt-5 py-3 border-top border-light-subtle">
+                    <small class="text-muted">&copy; {{ date('Y') }} PT. Indoprima Gelimang. All rights
+                        reserved.</small>
+                </div>
             </div>
         </div>
 
-        <!-- Upload Sections with Holographic Effect -->
-        <div class="upload-sections-grid">
-            <!-- CV Upload -->
-            <div class="holographic-upload-card">
-                <form method="POST" action="{{ url('datadiris/cv') }}" enctype="multipart/form-data" id="cvForm">
-                    @csrf
-                    <div class="upload-header-tech">
-                        <i class="ph ph-cloud-arrow-up"></i>
-                        <h3>Update CV</h3>
-                    </div>
-                    <div class="upload-body-digital">
-                        <label class="file-upload-holographic">
-                            <input type="file" name="cv" class="file-input" id="cvInput" accept="application/pdf">
-                            <div class="upload-area-futuristic">
-                                <i class="ph ph-file-plus"></i>
-                                <span>Select file or drag here</span>
-                                <small>PDF (Max 2MB)</small>
-                                <div class="upload-grid-lines"></div>
-                            </div>
-                        </label>
-                    </div>
-                    <button type="submit" class="upload-btn-cyber">
-                        Upload CV
-                        <div class="btn-cyber-border"></div>
-                    </button>
-                </form>
-            </div>
-
-            <!-- Photo Upload -->
-            <div class="holographic-upload-card">
-                <form method="POST" action="{{ url('datadiris/photo') }}" enctype="multipart/form-data">
-                    @csrf
-                    <div class="upload-header-tech">
-                        <i class="ph ph-image"></i>
-                        <h3>Update Photo</h3>
-                    </div>
-                    <div class="upload-body-digital">
-                        <label class="file-upload-holographic">
-                            <input type="file" name="photo" class="file-input" id="photoInput" accept="image/*">
-                            <div class="upload-area-futuristic">
-                                <i class="ph ph-image-square"></i>
-                                <span>Select photo or drag here</span>
-                                <small>JPG, PNG, JPEG (Max 1MB)</small>
-                                <div class="upload-grid-lines"></div>
-                            </div>
-                        </label>
-                    </div>
-                    <button type="submit" class="upload-btn-cyber">
-                        Upload Photo
-                        <div class="btn-cyber-border"></div>
-                    </button>
-                </form>
-            </div>
-        </div>
     </div>
 
-    <!-- Futuristic Form Container -->
-    <div class="futuristic-form-container">
-        @include('forms.headbar')
-
-        <div class="form-body-digital">
-            <div class="tab-content" id="pills-tabContent">
-                @include('forms.datadiri')
-                @include('forms.pendidikan')
-                @include('forms.keluarga')
-                @include('forms.pengalaman')
-                @include('forms.kemampuan')
-                @include('forms.organisasi')
-                @include('forms.lain')
-                @include('forms.pernyataan')
-            </div>
-
-
-        </div>
-    </div>
-
-    <!-- Futuristic CSS Styles -->
-    <style>
-        /* Futuristic Color Scheme */
-        :root {
-            --cyber-blue: #00f0ff;
-            --cyber-purple: #7b2dff;
-            --cyber-pink: #ff2d75;
-            --cyber-dark: #0d0d1a;
-            --cyber-dark-2: #1a1a2e;
-            --cyber-dark-3: #2a2a4a;
-            --cyber-text: #e6e6ff;
-            --cyber-text-light: #b8b8ff;
-            --cyber-success: #00ff9d;
-            --cyber-warning: #ffcc00;
-            --cyber-danger: #ff2d5a;
-        }
-
-        /* Futuristic Profile Container */
-        .futuristic-profile-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            font-family: 'Rajdhani', 'Orbitron', sans-serif;
-            color: var(--cyber-text);
-            background: var(--cyber-dark);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .futuristic-profile-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(123, 45, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        /* Glass Profile Card */
-        .glass-profile-card {
-            background: rgba(13, 13, 26, 0.7);
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Profile Header with Gradient */
-        .profile-header-gradient {
-            display: flex;
-            align-items: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, var(--cyber-purple) 0%, var(--cyber-blue) 100%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .profile-header-gradient::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 100%);
-            transform: translateX(-100%);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        /* Holographic Avatar */
-        .profile-avatar-hologram {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 2rem;
-            border: 4px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-            position: relative;
-        }
-
-        .avatar-image-glowing {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(1.1) contrast(1.1);
-        }
-
-        .avatar-hologram-placeholder {
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 240, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--cyber-blue);
-            font-size: 2.5rem;
-        }
-
-        .hologram-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.3) 0%, transparent 70%);
-            animation: pulse 3s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% {
-                opacity: 0.3;
-            }
-
-            100% {
-                opacity: 0.7;
-            }
-        }
-
-        /* Digital Profile Info */
-        .profile-info-digital {
-            flex: 1;
-        }
-
-        .profile-name-neon {
-            font-size: 1.8rem;
-            margin: 0 0 0.5rem 0;
-            color: var(--cyber-text);
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-            letter-spacing: 1px;
-        }
-
-        .profile-title-cyber {
-            font-size: 1.1rem;
-            color: var(--cyber-blue);
-            margin-bottom: 1rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        .contact-link-digital {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--cyber-text-light);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-
-        .contact-link-digital:hover {
-            color: var(--cyber-blue);
-            text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
-        }
-
-        .contact-link-digital i {
-            font-size: 1.2rem;
-            color: var(--cyber-blue);
-        }
-
-        .digital-text {
-            position: relative;
-        }
-
-        .digital-text::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--cyber-blue);
-            transition: width 0.3s;
-        }
-
-        .contact-link-digital:hover .digital-text::after {
-            width: 100%;
-        }
-
-        /* Profile Content Grid */
-        .profile-content-grid {
-            padding: 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        /* Cyber Section */
-        .cyber-section {
-            display: flex;
-            margin-bottom: 0;
-            padding: 1.5rem;
-            background: rgba(26, 26, 46, 0.5);
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cyber-section:hover {
-            border-color: var(--cyber-blue);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .cyber-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--cyber-purple), var(--cyber-blue));
-        }
-
-        .section-icon-cyber {
-            width: 48px;
-            height: 48px;
-            background: rgba(0, 240, 255, 0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1.5rem;
-            color: var(--cyber-blue);
-            font-size: 1.5rem;
-            border: 1px solid rgba(0, 240, 255, 0.2);
-        }
-
-        .section-content-digital {
-            flex: 1;
-        }
-
-        .section-title-hud {
-            font-size: 1.1rem;
-            margin: 0 0 1rem 0;
-            color: var(--cyber-text);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title-hud::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--cyber-blue);
-        }
-
-        /* Digital Download Button */
-        .download-btn-digital {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.5rem;
-            background: rgba(0, 240, 255, 0.1);
-            color: var(--cyber-blue);
-            border: none;
-            border-radius: 6px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .download-btn-digital:hover {
-            background: rgba(0, 240, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2);
-        }
-
-        .digital-border {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            border: 1px solid var(--cyber-blue);
-            border-radius: 6px;
-            opacity: 0;
-            transition: all 0.3s;
-        }
-
-        .download-btn-digital:hover .digital-border {
-            opacity: 1;
-            animation: borderPulse 2s infinite;
-        }
-
-        @keyframes borderPulse {
-            0% {
-                opacity: 0.5;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0.5;
-            }
-        }
-
-        /* No File Alert */
-        .no-file-alert {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--cyber-warning);
-            font-weight: 500;
-        }
-
-        /* Cyber Verification Badge */
-        .verified-badge-cyber {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.8rem 1.5rem;
-            background: rgba(0, 255, 157, 0.1);
-            color: var(--cyber-success);
-            border-radius: 6px;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .verification-pulse {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: radial-gradient(circle at center, rgba(0, 255, 157, 0.3) 0%, transparent 70%);
-            animation: pulse 2s infinite;
-        }
-
-        /* Futuristic Profile Actions */
-        .profile-actions-futuristic {
-            grid-column: 1 / -1;
-            text-align: right;
-            margin-top: 1rem;
-        }
-
-        .export-btn-cyber {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1rem 2rem;
-            background: rgba(123, 45, 255, 0.1);
-            color: var(--cyber-text);
-            border: 1px solid var(--cyber-purple);
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .export-btn-cyber:hover {
-            background: rgba(123, 45, 255, 0.2);
-            box-shadow: 0 0 20px rgba(123, 45, 255, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .btn-light-effect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: -100%;
-            background: linear-gradient(90deg, transparent, rgba(123, 45, 255, 0.3), transparent);
-            transition: all 0.6s;
-        }
-
-        .export-btn-cyber:hover .btn-light-effect {
-            left: 100%;
-        }
-
-        /* Holographic Upload Grid */
-        .upload-sections-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .holographic-upload-card {
-            background: rgba(13, 13, 26, 0.7);
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 240, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            padding: 1.5rem;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .holographic-upload-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 240, 255, 0.2);
-            border-color: var(--cyber-blue);
-        }
-
-        .holographic-upload-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(0, 240, 255, 0.05) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Tech Upload Header */
-        .upload-header-tech {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .upload-header-tech i {
-            font-size: 1.8rem;
-            color: var(--cyber-blue);
-        }
-
-        .upload-header-tech h3 {
-            margin: 0;
-            font-size: 1.2rem;
-            color: var(--cyber-text);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        /* Futuristic File Upload */
-        .file-upload-holographic {
-            display: block;
-            cursor: pointer;
-            position: relative;
-            z-index: 1;
-        }
-
-        .upload-area-futuristic {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            border: 2px dashed rgba(0, 240, 255, 0.3);
-            border-radius: 8px;
-            text-align: center;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .upload-grid-lines {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background:
-                linear-gradient(90deg, var(--cyber-dark-3) 1px, transparent 1px),
-                linear-gradient(180deg, var(--cyber-dark-3) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.3;
-        }
-
-        .file-upload-holographic:hover .upload-area-futuristic {
-            border-color: var(--cyber-blue);
-            background: rgba(0, 240, 255, 0.05);
-        }
-
-        .upload-area-futuristic i {
-            font-size: 2rem;
-            color: var(--cyber-blue);
-            margin-bottom: 1rem;
-        }
-
-        .upload-area-futuristic span {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--cyber-text);
-        }
-
-        .upload-area-futuristic small {
-            color: var(--cyber-text-light);
-            font-size: 0.9rem;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        /* Cyber Upload Button */
-        .upload-btn-cyber {
-            display: block;
-            width: 100%;
-            padding: 0.8rem;
-            margin-top: 1.5rem;
-            background: rgba(0, 240, 255, 0.1);
-            color: var(--cyber-blue);
-            border: none;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .upload-btn-cyber:hover {
-            background: rgba(0, 240, 255, 0.2);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-        }
-
-        .btn-cyber-border {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            border: 1px solid var(--cyber-blue);
-            border-radius: 6px;
-            opacity: 0;
-            transition: all 0.3s;
-        }
-
-        .upload-btn-cyber:hover .btn-cyber-border {
-            opacity: 1;
-            animation: borderPulse 2s infinite;
-        }
-
-        /* Futuristic Form Container */
-        .futuristic-form-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            background: var(--cyber-dark-2);
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .futuristic-form-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                linear-gradient(90deg, var(--cyber-dark-3) 1px, transparent 1px),
-                linear-gradient(180deg, var(--cyber-dark-3) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.1;
-            pointer-events: none;
-        }
-
-        .form-body-digital {
-            padding: 2rem;
-        }
-
-        /* Cyber Next Button */
-        .form-actions-futuristic {
-            padding: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: flex-end;
-            position: relative;
-        }
-
-        .next-btn-cyber {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1rem 2rem;
-            background: rgba(123, 45, 255, 0.2);
-            color: var(--cyber-text);
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .next-btn-cyber:hover {
-            background: rgba(205, 185, 241, 0.3);
-            box-shadow: 0 0 20px rgba(241, 239, 244, 0.3);
-            transform: translateX(5px);
-        }
-
-        .next-btn-cyber i {
-            transition: transform 0.3s;
-        }
-
-        .next-btn-cyber:hover i {
-            transform: translateX(5px);
-        }
-
-        .btn-light-streak {
-            position: absolute;
-            width: 30px;
-            height: 100%;
-            top: 0;
-            left: -30px;
-            background: linear-gradient(90deg, transparent, rgba(123, 45, 255, 0.5), transparent);
-            transform: skewX(-20deg);
-            transition: all 0.6s;
-        }
-
-        .next-btn-cyber:hover .btn-light-streak {
-            left: calc(100% + 30px);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .profile-header-gradient {
-                flex-direction: column;
-                text-align: center;
-                padding: 2rem 1rem;
-            }
-
-            .profile-avatar-hologram {
-                margin-right: 0;
-                margin-bottom: 1.5rem;
-            }
-
-            .cyber-section {
-                flex-direction: column;
-            }
-
-            .section-icon-cyber {
-                margin-right: 0;
-                margin-bottom: 1rem;
-            }
-
-            .profile-actions-futuristic {
-                text-align: center;
-            }
-        }
-    </style>
-
-    <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Scripts -->
+    <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/app.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/app.horizontal.init.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/sweetalert2@11.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <script>
+        // PDF Export
         function saveDivAsPDF() {
-            // Your existing PDF export logic
-            console.log("Exporting to PDF...");
-            // Implement your PDF export functionality here
+            window.print();
+        }
+
+        // Logic Global Forms
+        var dataProvince = [];
+        $(document).ready(function() {
+            // Province Fetcher
+            if ($('#provinces').length > 0) {
+                $.getJSON('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json', function(data) {
+                    dataProvince = data;
+                    var provincesDropdown = $('#provinces');
+                    provincesDropdown.empty();
+                    provincesDropdown.append($('<option>', {
+                        value: '',
+                        text: 'Pilih Provinsi'
+                    }));
+
+                    $.each(data, function(index, province) {
+                        provincesDropdown.append($('<option>', {
+                            value: index,
+                            text: province.name
+                        }));
+                    });
+
+                    // Set selected
+                    var currentProv = $('#dataProvince').val();
+                    if (currentProv && currentProv !== '-') {
+                        const foundIndex = data.findIndex(p => p.name === currentProv);
+                        if (foundIndex !== -1) provincesDropdown.val(foundIndex);
+                    }
+                });
+            }
+
+            // City Fetcher
+            $('#provinces').change(function() {
+                var index = $(this).val();
+                if (!index) return;
+                var provinceId = dataProvince[index].id;
+                $('#dataProvince').val(dataProvince[index].name);
+
+                if (provinceId) {
+                    $.getJSON(
+                        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
+                        function(data) {
+                            var citiesDropdown = $('#cities');
+                            citiesDropdown.empty();
+                            citiesDropdown.append($('<option>', {
+                                value: '',
+                                text: 'Pilih Kota'
+                            }));
+                            $.each(data, function(index, city) {
+                                citiesDropdown.append($('<option>', {
+                                    value: city.name,
+                                    text: city.name
+                                }));
+                            });
+                        });
+                } else {
+                    $('#cities').empty().append($('<option>', {
+                        value: '',
+                        text: 'Pilih Kota'
+                    }));
+                }
+            });
+
+            // Bootstrap Validation
+            (function() {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms).forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            })();
+        });
+
+        // Pernyataan Logic (Global Context)
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var preview = document.getElementById('previewImgElement');
+                    if (!preview) {
+                        var container = document.getElementById('imagePreview');
+                        if (container) {
+                            preview = document.createElement('img');
+                            preview.id = 'previewImgElement';
+                            preview.className = 'img-fluid rounded-3 shadow-sm border';
+                            preview.style.maxHeight = '200px';
+                            container.appendChild(preview);
+                        }
+                    }
+                    if (preview) {
+                        preview.src = e.target.result;
+                        preview.classList.remove('d-none');
+                        var container = document.getElementById('imagePreview');
+                        if (container) container.classList.remove('d-none');
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // SweetAlert for Pernyataan
+        var btnPernyataan = document.getElementById('btnPernyataan');
+        if (btnPernyataan) {
+            btnPernyataan.addEventListener('click', function() {
+                Swal.fire({
+                    title: 'Konfirmasi Pernyataan',
+                    text: "Saya menyatakan bahwa data yang saya berikan adalah benar dan sesuai kondisi sebenarnya.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: 'var(--bs-primary)',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Simpan',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('formPernyataan').submit();
+                    }
+                })
+            });
         }
     </script>
-@endsection
+</body>
 
-
-@section('content')
-    PT. Indoprima Gemilang
-@endsection
-
-@section('addJs')
-    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            const searchParams = new URLSearchParams(window.location.search);
-            var ids = searchParams.get('section')
-            $('#pills-' + ids + '-tab').trigger('click');
-        });
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        document.getElementById('cvInput').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file && file.size > 2 * 1024 * 1024) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'File terlalu besar!',
-                    text: 'Maksimal ukuran file adalah 2 MB.',
-                    confirmButtonColor: '#d33',
-                    confirmButtonText: 'Oke, saya ganti'
-                });
-                this.value = ''; // reset input file
-            }
-        });
-
-        document.getElementById('photoInput').addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                // Cek apakah file bukan image
-                if (!file.type.startsWith('image/')) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Format tidak valid!',
-                        text: 'Hanya boleh mengunggah file gambar.',
-                        confirmButtonColor: '#d33'
-                    });
-                    this.value = '';
-                    return;
-                }
-
-                // Cek ukuran maksimal 2 MB
-                if (file.size > 1 * 1024 * 1024) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'File terlalu besar!',
-                        text: 'Maksimal ukuran file adalah 1 MB.',
-                        confirmButtonColor: '#d33'
-                    });
-                    this.value = '';
-                }
-            }
-        });
-    </script>
-@stop
+</html>

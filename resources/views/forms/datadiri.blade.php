@@ -1,601 +1,464 @@
 <div class="tab-pane fade show active" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
-    <!-- Personal Data Card -->
-    <div class="card border-0 shadow-sm overflow-hidden mb-4">
-        <div class="card-header bg-transparent py-3 border-bottom">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="mb-0 fw-semibold text-primary">Data Diri</h5>
-                    <p class="text-muted mb-0 small">(*) Wajib diisi</p>
-                </div>
-                <div class="bg-primary bg-opacity-10 p-2 rounded">
-                    <i class="ti ti-user-circle text-primary"></i>
-                </div>
-            </div>
-        </div>
 
-        <div class="card-body p-4">
+    <!-- Hero / Intro Section for Data Diri -->
+    <div class="mb-4">
+        <h4 class="fw-bolder text-dark mb-1">Informasi Personal</h4>
+        <p class="text-muted small">Lengkapi data diri Anda dengan informasi yang valid dan terbaru.</p>
+    </div>
+
+    <!-- Main Data Diri Form -->
+    <div class="card border-0 shadow-sm rounded-4 bg-white mb-5 position-relative overflow-hidden">
+        <div class="position-absolute top-0 start-0 w-100 h-1 bg-primary"></div> <!-- Top Accent Line -->
+
+        <div class="card-body p-4 p-lg-5">
             @if ($errors->any())
-                <div class="alert alert-danger border-0 bg-danger-soft mb-4">
-                    <div class="d-flex align-items-center">
-                        <i class="ti ti-alert-circle me-2"></i>
-                        <div>
+                <div
+                    class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger mb-4 rounded-3 d-flex align-items-center">
+                    <i class="ti ti-alert-circle fs-4 me-3"></i>
+                    <div>
+                        <ul class="mb-0 ps-3">
                             @foreach ($errors->all() as $error)
-                                <div>{{ $error }}</div>
+                                <li>{{ $error }}</li>
                             @endforeach
-                        </div>
+                        </ul>
                     </div>
                 </div>
             @endif
 
             {{ Form::model($datadiri, ['url' => ['datadiris/store', Auth::user()->id], 'method' => 'POST', 'class' => 'needs-validation', 'novalidate']) }}
 
-            <div class="row g-4">
-                <!-- Name Field -->
-                <div class="col-12">
-                    <div class="form-floating">
-                        {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nama Lengkap', 'required']) }}
-                        {{ Form::label('name', 'Nama Lengkap (*)', ['class' => 'form-label']) }}
-                        <div class="invalid-feedback">Harap isi nama lengkap</div>
-                    </div>
+            <!-- Section: Identitas Utama -->
+            <div class="mb-5">
+                <div class="d-flex align-items-center mb-4">
+                    <span class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 me-3">
+                        <i class="ti ti-id fs-5"></i>
+                    </span>
+                    <h5 class="fw-bold mb-0">Identitas Utama</h5>
                 </div>
 
-                <!-- KTP and Religion -->
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        {{ Form::text('ktp', null, ['class' => 'form-control', 'placeholder' => 'Nomor KTP', 'required']) }}
-                        {{ Form::label('ktp', 'KTP (*)', ['class' => 'form-label']) }}
-                        <div class="invalid-feedback">Harap isi nomor KTP</div>
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ Form::text('name', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'Nama Lengkap', 'required', 'id' => 'name']) }}
+                            {{ Form::label('name', 'Nama Lengkap (Sesuai KTP)') }}
+                            <div class="invalid-feedback">Nama wajib diisi.</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <select class="form-select" name="agama" id="agama" required>
-                            <option value="" disabled selected>Pilih Agama</option>
-                            @foreach (\App\Constants\DatadiriConst::Agama as $d)
-                                <option value="{{ $d }}"
-                                    {{ $datadiri && $datadiri->agama == $d ? 'selected' : '' }}>
-                                    {{ $d }}
-                                </option>
-                            @endforeach
-                        </select>
-                        {{ Form::label('agama', 'Agama (*)', ['class' => 'form-label']) }}
-                        <div class="invalid-feedback">Harap pilih agama</div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ Form::text('ktp', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'Nomor KTP', 'required', 'id' => 'ktp']) }}
+                            {{ Form::label('ktp', 'Nomor KTP') }}
+                            <div class="invalid-feedback">Nomor KTP wajib diisi.</div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Personal Details -->
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        <select class="form-select" name="gender" required>
-                            <option value="" disabled selected>Pilih Gender</option>
-                            <option value="1" {{ $datadiri && $datadiri->gender == 1 ? 'selected' : '' }}>
-                                Laki-laki</option>
-                            <option value="0" {{ $datadiri && $datadiri->gender == 0 ? 'selected' : '' }}>
-                                Perempuan</option>
-                        </select>
-                        {{ Form::label('gender', 'Gender (*)', ['class' => 'form-label']) }}
-                        <div class="invalid-feedback">Harap pilih gender</div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        {{ Form::text('tempat_lahir', null, ['class' => 'form-control', 'placeholder' => 'Tempat Lahir', 'required']) }}
-                        {{ Form::label('tempat_lahir', 'Tempat Lahir (*)', ['class' => 'form-label']) }}
-                        <div class="invalid-feedback">Harap isi tempat lahir</div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        {{ Form::date('tanggal_lahir', null, ['class' => 'form-control', 'required']) }}
-                        {{ Form::label('tanggal_lahir', 'Tanggal Lahir (*)', ['class' => 'form-label']) }}
-                        <div class="invalid-feedback">Harap isi tanggal lahir</div>
-                    </div>
-                </div>
-
-                <!-- Contact Information -->
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        {{ Form::text('no_hp', null, ['class' => 'form-control', 'placeholder' => 'Nomor HP', 'required']) }}
-                        {{ Form::label('no_hp', 'No. HP (*)', ['class' => 'form-label']) }}
-                        <div class="invalid-feedback">Harap isi nomor HP</div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        {{ Form::text('no_wa', null, ['class' => 'form-control', 'placeholder' => 'Nomor WA']) }}
-                        {{ Form::label('no_wa', 'No. WA (*)', ['class' => 'form-label']) }}
-                    </div>
-                </div>
-
-                <!-- Address Section -->
-                <div class="col-md-4">
-                    <div class="form-floating h-100">
-                        {{ Form::textarea('alamat', null, ['class' => 'form-control h-100', 'placeholder' => 'Alamat', 'style' => 'height: 100%', 'required']) }}
-                        {{ Form::label('alamat', 'Alamat (*)', ['class' => 'form-label']) }}
-                        <div class="invalid-feedback">Harap isi alamat</div>
-                    </div>
-                </div>
-
-                <div class="col-md-8">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select id="provinces" class="form-select">
-                                    <option idProv="" value="{{ $datadiri->provinces ?? '-' }}">
-                                        {{ $datadiri->provinces ?? 'Pilih Provinsi' }}
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select bg-light-subtle border-light shadow-none fw-medium"
+                                name="agama" id="agama" required>
+                                <option value="" disabled selected>Pilih Agama</option>
+                                @foreach (\App\Constants\DatadiriConst::Agama as $d)
+                                    <option value="{{ $d }}"
+                                        {{ $datadiri && $datadiri->agama == $d ? 'selected' : '' }}>{{ $d }}
                                     </option>
-                                </select>
-                                {{ Form::label('provinces', 'Provinsi', ['class' => 'form-label']) }}
-                                <input type="hidden" name="provinces" id="dataProvince"
-                                    value="{{ $datadiri->provinces ?? '-' }}">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <select name="cities" id="cities" class="form-select">
-                                    <option value="{{ $datadiri->cities ?? '-' }}">
-                                        {{ $datadiri->cities ?? 'Pilih Kota' }}</option>
-                                </select>
-                                {{ Form::label('cities', 'Kota', ['class' => 'form-label']) }}
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-floating">
-                                <select class="form-select" name="status_rumah">
-                                    <option value="" disabled selected>Pilih Status Tempat Tinggal</option>
-                                    @foreach (\App\Constants\DatadiriConst::StatusRumah as $d)
-                                        <option value="{{ $d }}"
-                                            {{ $datadiri && $datadiri->status_rumah == $d ? 'selected' : '' }}>
-                                            {{ $d }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                {{ Form::label('status_rumah', 'Status Tempat Tinggal', ['class' => 'form-label']) }}
-                            </div>
+                                @endforeach
+                            </select>
+                            {{ Form::label('agama', 'Agama') }}
                         </div>
                     </div>
-                </div>
 
-                <!-- Physical Information -->
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        <select class="form-select" name="golongan_darah">
-                            <option value="" disabled selected>Pilih Golongan Darah</option>
-                            @foreach (\App\Constants\DatadiriConst::GolonganDarah as $d)
-                                <option value="{{ $d }}"
-                                    {{ $datadiri && $datadiri->golongan_darah == $d ? 'selected' : '' }}>
-                                    {{ $d }}
-                                </option>
-                            @endforeach
-                        </select>
-                        {{ Form::label('golongan_darah', 'Golongan Darah', ['class' => 'form-label']) }}
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select bg-light-subtle border-light shadow-none fw-medium"
+                                name="gender" id="gender" required>
+                                <option value="" disabled selected>Pilih Gender</option>
+                                <option value="1" {{ $datadiri && $datadiri->gender == 1 ? 'selected' : '' }}>
+                                    Laki-laki</option>
+                                <option value="0" {{ $datadiri && $datadiri->gender == 0 ? 'selected' : '' }}>
+                                    Perempuan</option>
+                            </select>
+                            {{ Form::label('gender', 'Jenis Kelamin') }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        {{ Form::number('tinggi_badan', null, ['class' => 'form-control', 'placeholder' => 'Tinggi Badan (cm)']) }}
-                        {{ Form::label('tinggi_badan', 'Tinggi Badan (cm)', ['class' => 'form-label']) }}
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            {{ Form::text('tempat_lahir', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'Tempat Lahir', 'required', 'id' => 'tempat_lahir']) }}
+                            {{ Form::label('tempat_lahir', 'Tempat Lahir') }}
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        {{ Form::number('berat_badan', null, ['class' => 'form-control', 'placeholder' => 'Berat Badan (kg)']) }}
-                        {{ Form::label('berat_badan', 'Berat Badan (kg)', ['class' => 'form-label']) }}
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            {{ Form::date('tanggal_lahir', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'required', 'id' => 'tanggal_lahir']) }}
+                            {{ Form::label('tanggal_lahir', 'Tanggal Lahir') }}
+                        </div>
                     </div>
-                </div>
-
-                <!-- Vehicle and License -->
-                <div class="col-md-6">
-                    <div class="card border-1 border-primary bg-light-subtle p-3 h-100">
-                        <h6 class="mb-3 fw-semibold">Kendaraan</h6>
-                        @foreach (\App\Constants\DatadiriConst::Kendaraan as $d)
-                            <div class="form-check form-check-inline mb-2">
-                                <input name="kendaraan[]" value="{{ $d }}" type="checkbox"
-                                    class="form-check-input" id="kendaraan{{ $d }}"
-                                    >
-                                <label class="form-check-label"
-                                    for="kendaraan{{ $d }}">{{ $d }}</label>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card border-1 border-primary bg-light-subtle p-3 h-100">
-                        <h6 class="mb-3 fw-semibold">SIM (Surat Izin Mengemudi)</h6>
-                        @foreach (\App\Constants\DatadiriConst::SIM as $d)
-                            <div class="form-check form-check-inline mb-2">
-                                <input name="sim[]" value="{{ $d }}" type="checkbox"
-                                    class="form-check-input" id="sim{{ $d }}"
-                                    {{ $datadiri && in_array($d, json_decode($datadiri->kendaraan ?? '[]') ?? []) ? 'checked' : '' }}>
-                                <label class="form-check-label"
-                                    for="sim{{ $d }}">{{ $d }}</label>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="col-12 text-end mt-4">
-                    <button type="submit" class="next-btn-cyber px-4 py-2 text-dark">
-                        Simpan Data Diri <i class="ti ti-device-floppy me-2"></i>
-                    </button>
                 </div>
             </div>
+
+            <hr class="border-light my-5">
+
+            <!-- Section: Kontak & Alamat -->
+            <div class="mb-5">
+                <div class="d-flex align-items-center mb-4">
+                    <span class="bg-success bg-opacity-10 text-success rounded-circle p-2 me-3">
+                        <i class="ti ti-map-pin fs-5"></i>
+                    </span>
+                    <h5 class="fw-bold mb-0">Kontak & Domisili</h5>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ Form::text('no_hp', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'No HP', 'required', 'id' => 'no_hp']) }}
+                            {{ Form::label('no_hp', 'Nomor HP (Aktif)') }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ Form::text('no_wa', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'No WA', 'id' => 'no_wa']) }}
+                            {{ Form::label('no_wa', 'Nomor WhatsApp') }}
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ Form::textarea('alamat', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'Alamat', 'style' => 'height: 100px', 'required', 'id' => 'alamat']) }}
+                            {{ Form::label('alamat', 'Alamat Lengkap (Jalan, RT/RW, Kel/Desa, Kec)') }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select id="provinces"
+                                class="form-select bg-light-subtle border-light shadow-none fw-medium">
+                                <option value="{{ $datadiri->provinces ?? '-' }}">
+                                    {{ $datadiri->provinces ?? 'Pilih Provinsi' }}</option>
+                            </select>
+                            {{ Form::label('provinces', 'Provinsi') }}
+                            <input type="hidden" name="provinces" id="dataProvince"
+                                value="{{ $datadiri->provinces ?? '-' }}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select name="cities" id="cities"
+                                class="form-select bg-light-subtle border-light shadow-none fw-medium">
+                                <option value="{{ $datadiri->cities ?? '-' }}">{{ $datadiri->cities ?? 'Pilih Kota' }}
+                                </option>
+                            </select>
+                            {{ Form::label('cities', 'Kota/Kabupaten') }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select bg-light-subtle border-light shadow-none fw-medium"
+                                name="status_rumah" id="status_rumah">
+                                <option value="" disabled selected>Pilih Status</option>
+                                @foreach (\App\Constants\DatadiriConst::StatusRumah as $d)
+                                    <option value="{{ $d }}"
+                                        {{ $datadiri && $datadiri->status_rumah == $d ? 'selected' : '' }}>
+                                        {{ $d }}</option>
+                                @endforeach
+                            </select>
+                            {{ Form::label('status_rumah', 'Status Rumah') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-light my-5">
+
+            <!-- Section: Data Fisik & Kendaraan -->
+            <div class="row g-5">
+                <!-- Data Fisik -->
+                <div class="col-lg-6">
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="bg-danger bg-opacity-10 text-danger rounded-circle p-2 me-3">
+                            <i class="ti ti-heart-rate-monitor fs-5"></i>
+                        </span>
+                        <h5 class="fw-bold mb-0">Data Fisik</h5>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="bg-light-subtle rounded-3 p-3 text-center border border-light">
+                                <label class="small text-muted mb-2 d-block">Gol. Darah</label>
+                                <select class="form-select border-0 bg-white shadow-sm text-center fw-bold"
+                                    name="golongan_darah" id="golongan_darah">
+                                    <option value="" disabled selected>-</option>
+                                    @foreach (\App\Constants\DatadiriConst::GolonganDarah as $d)
+                                        <option value="{{ $d }}"
+                                            {{ $datadiri && $datadiri->golongan_darah == $d ? 'selected' : '' }}>
+                                            {{ $d }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light-subtle rounded-3 p-3 text-center border border-light">
+                                <label class="small text-muted mb-2 d-block">Tinggi (cm)</label>
+                                {{ Form::number('tinggi_badan', null, ['class' => 'form-control border-0 bg-white shadow-sm text-center fw-bold', 'placeholder' => '0']) }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="bg-light-subtle rounded-3 p-3 text-center border border-light">
+                                <label class="small text-muted mb-2 d-block">Berat (kg)</label>
+                                {{ Form::number('berat_badan', null, ['class' => 'form-control border-0 bg-white shadow-sm text-center fw-bold', 'placeholder' => '0']) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dokumen & Kendaraan -->
+                <div class="col-lg-6">
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 me-3">
+                            <i class="ti ti-car fs-5"></i>
+                        </span>
+                        <h5 class="fw-bold mb-0">Kendaraan & SIM</h5>
+                    </div>
+
+                    <div class="d-flex flex-column gap-3">
+                        <!-- Kendaraan -->
+                        <div>
+                            <label class="small fw-bold text-muted text-uppercase mb-2">Kepemilikan Kendaraan</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (\App\Constants\DatadiriConst::Kendaraan as $d)
+                                    <input type="checkbox" class="btn-check" name="kendaraan[]"
+                                        value="{{ $d }}" id="vehicle_{{ $d }}"
+                                        {{ $datadiri && in_array($d, json_decode($datadiri->kendaraan ?? '[]') ?? []) ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-secondary rounded-pill btn-sm px-3"
+                                        for="vehicle_{{ $d }}">{{ $d }}</label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- SIM -->
+                        <div>
+                            <label class="small fw-bold text-muted text-uppercase mb-2">Kepemilikan SIM</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (\App\Constants\DatadiriConst::SIM as $d)
+                                    <input type="checkbox" class="btn-check" name="sim[]"
+                                        value="{{ $d }}" id="sim_{{ $d }}"
+                                        {{ $datadiri && in_array($d, json_decode($datadiri->sim ?? '[]') ?? []) ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-secondary rounded-pill btn-sm px-3"
+                                        for="sim_{{ $d }}">{{ $d }}</label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 pt-3 border-top">
+                <button type="submit"
+                    class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow-lg hover-scale w-100 w-md-auto">
+                    <i class="ti ti-device-floppy me-2"></i> Simpan Perubahan
+                </button>
+            </div>
+
             {{ Form::close() }}
         </div>
     </div>
 
-    <!-- Hobbies Section -->
-    <div class="card glass-card border-0 rounded-4 overflow-hidden mt-4">
-        <div class="card-header bg-gradient-primary py-3">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="mb-0 fw-semibold text-white"><i class="fas fa-running me-2"></i> Hobi</h5>
+    <!-- Hobi Section -->
+    <div class="row g-4 mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div
+                    class="card-header bg-white p-4 border-bottom-0 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <span class="bg-info bg-opacity-10 text-info rounded-circle p-2 me-3">
+                            <i class="ti ti-ball-football fs-5"></i>
+                        </span>
+                        <div>
+                            <h5 class="fw-bold mb-0">Hobi & Minat</h5>
+                            <p class="text-muted small mb-0">Aktivitas di waktu luang</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('dataolahragas.create') }}"
+                        class="btn btn-sm btn-light text-primary fw-bold rounded-pill px-3 hover-primary">
+                        <i class="ti ti-plus me-1"></i> Tambah
+                    </a>
                 </div>
-                <a href="{{ route('dataolahragas.create') }}" class="btn btn-sm btn-light rounded-pill hover-lift">
-                    <i class="fas fa-plus me-1"></i> Tambah Hobi
-                </a>
-            </div>
-        </div>
-        <div class="card-body p-0 bg-dark-2">
-            <div class="table-responsive">
-                <table class="table table-dark table-hover mb-0 table-borderless">
-                    <thead class="bg-dark-3">
-                        <tr>
-                            <th class="ps-4 text-uppercase fw-light text-white">No</th>
-                            <th class="text-uppercase fw-light text-white">Hobi</th>
-                            <th class="text-uppercase fw-light text-white">Level</th>
-                            <th class="text-end pe-4 text-uppercase fw-light text-white">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($dataolahragas as $i => $dataolahraga)
-                            <tr class="hover-glow">
-                                <td class="ps-4 text-primary fw-bold">{{ $i + 1 }}</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-primary-soft me-3">
-                                            <i class="fas fa-running text-primary"></i>
+                <div class="card-body p-4 pt-0">
+                    <div class="row g-3">
+                        @forelse ($dataolahragas as $dataolahraga)
+                            <div class="col-md-6 col-lg-4">
+                                <div
+                                    class="p-3 rounded-3 border border-light-subtle bg-light-subtle position-relative h-100">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-1">{{ $dataolahraga->olahraga }}</h6>
+                                            <span
+                                                class="badge bg-white border text-dark rounded-pill">{{ $dataolahraga->level }}</span>
                                         </div>
-                                        <span>{{ $dataolahraga->olahraga }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="progress bg-dark-4" style="height: 6px;">
-                                        <div class="progress-bar bg-{{ $dataolahraga->level == 'Pemula' ? 'info' : ($dataolahraga->level == 'Menengah' ? 'warning' : 'success') }}"
-                                            role="progressbar"
-                                            style="width: {{ $dataolahraga->level == 'Pemula' ? '30%' : ($dataolahraga->level == 'Menengah' ? '60%' : '90%') }}"
-                                            aria-valuenow="{{ $dataolahraga->level == 'Pemula' ? '30' : ($dataolahraga->level == 'Menengah' ? '60' : '90') }}"
-                                            aria-valuemin="0" aria-valuemax="100">
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-icon btn-ghost-secondary rounded-circle"
+                                                type="button" data-bs-toggle="dropdown">
+                                                <i class="ti ti-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                                <li><a class="dropdown-item"
+                                                        href="{{ route('dataolahragas.edit', [Crypt::encryptString($dataolahraga->id)]) }}"><i
+                                                            class="ti ti-pencil me-2"></i> Edit</a></li>
+                                                <li>
+                                                    {!! Form::open([
+                                                        'method' => 'DELETE',
+                                                        'route' => ['dataolahragas.destroy', Crypt::encryptString($dataolahraga->id)],
+                                                    ]) !!}
+                                                    <button type="submit" class="dropdown-item text-danger"
+                                                        onclick="return confirm('Hapus hobi ini?')"><i
+                                                            class="ti ti-trash me-2"></i> Hapus</button>
+                                                    {!! Form::close() !!}
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <small class="text-white">{{ $dataolahraga->level }}</small>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('dataolahragas.edit', [Crypt::encryptString($dataolahraga->id)]) }}"
-                                            class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        {!! Form::open([
-                                            'method' => 'DELETE',
-                                            'route' => ['dataolahragas.destroy', Crypt::encryptString($dataolahraga->id)],
-                                        ]) !!}
-                                        <button type="submit"
-                                            class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        {!! Form::close() !!}
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-12 text-center py-5">
+                                <div class="bg-light-subtle rounded-circle d-inline-flex p-3 mb-3 text-muted">
+                                    <i class="ti ti-ball-football-off fs-1"></i>
+                                </div>
+                                <p class="text-muted">Belum ada data hobi ditambahkan.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Health History Section -->
-    <div class="card glass-card border-0 rounded-4 overflow-hidden mt-4">
-        <div class="card-header bg-gradient-info py-3">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="mb-0 fw-semibold text-white"><i class="fas fa-heartbeat me-2"></i> Riwayat Kesehatan
-                    </h5>
+    <!-- Riwayat Kesehatan Section -->
+    <div class="row g-4 mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div
+                    class="card-header bg-white p-4 border-bottom-0 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <span class="bg-danger bg-opacity-10 text-danger rounded-circle p-2 me-3">
+                            <i class="ti ti-activity-heartbeat fs-5"></i>
+                        </span>
+                        <div>
+                            <h5 class="fw-bold mb-0">Riwayat Kesehatan</h5>
+                            <p class="text-muted small mb-0">Catatan kondisi medis</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('datakesehatans.create') }}"
+                        class="btn btn-sm btn-light text-danger fw-bold rounded-pill px-3 hover-danger">
+                        <i class="ti ti-plus me-1"></i> Tambah
+                    </a>
                 </div>
-                <a href="{{ route('datakesehatans.create') }}" class="btn btn-sm btn-light rounded-pill hover-lift">
-                    <i class="fas fa-plus me-1"></i> Tambah Riwayat
-                </a>
-            </div>
-        </div>
-        <div class="card-body p-0 bg-dark-2">
-            <div class="table-responsive">
-                <table class="table table-dark table-hover mb-0 table-borderless">
-                    <thead class="bg-dark-3">
-                        <tr>
-                            <th class="ps-4 text-uppercase fw-light text-white">No</th>
-                            <th class="text-uppercase fw-light text-white">Riwayat Kesehatan</th>
-                            <th class="text-uppercase fw-light text-white">Keterangan</th>
-                            <th class="text-end pe-4 text-uppercase fw-light text-white">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($datakesehatans as $i => $datakesehatan)
-                            <tr class="hover-glow">
-                                <td class="ps-4 text-info fw-bold">{{ $i + 1 }}</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-info-soft me-3">
-                                            <i class="fas fa-heartbeat text-info"></i>
+                <div class="card-body p-4 pt-0">
+                    <div class="row g-3">
+                        @forelse ($datakesehatans as $datakesehatan)
+                            <div class="col-md-6">
+                                <div
+                                    class="d-flex align-items-center p-3 rounded-3 border border-light-subtle bg-white h-100 shadow-sm hover-lift transition-all">
+                                    <div class="flex-shrink-0 me-3">
+                                        @if ($datakesehatan->keterangan == 'Berat' || $datakesehatan->keterangan == 'Bahaya')
+                                            <span class="bg-danger text-white rounded-circle p-2 d-flex"><i
+                                                    class="ti ti-alert-triangle"></i></span>
+                                        @elseif($datakesehatan->keterangan == 'Sedang')
+                                            <span class="bg-warning text-white rounded-circle p-2 d-flex"><i
+                                                    class="ti ti-alert-circle"></i></span>
+                                        @else
+                                            <span class="bg-success text-white rounded-circle p-2 d-flex"><i
+                                                    class="ti ti-check"></i></span>
+                                        @endif
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="fw-bold mb-0">{{ $datakesehatan->kesehatan }}</h6>
+                                        <small class="text-muted">Tingkat: {{ $datakesehatan->keterangan }}</small>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-link text-muted" type="button"
+                                                data-bs-toggle="dropdown"><i class="ti ti-dots"></i></button>
+                                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+                                                <li><a class="dropdown-item"
+                                                        href="{{ route('datakesehatans.edit', [Crypt::encryptString($datakesehatan->id)]) }}">Edit</a>
+                                                </li>
+                                                <li>
+                                                    {!! Form::open([
+                                                        'method' => 'DELETE',
+                                                        'route' => ['datakesehatans.destroy', Crypt::encryptString($datakesehatan->id)],
+                                                    ]) !!}
+                                                    <button type="submit" class="dropdown-item text-danger"
+                                                        onclick="return confirm('Hapus?')">Hapus</button>
+                                                    {!! Form::close() !!}
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <span>{{ $datakesehatan->kesehatan }}</span>
                                     </div>
-                                </td>
-                                <td>
-                                    <span
-                                        class="badge bg-{{ $datakesehatan->keterangan == 'Ringan' ? 'success' : ($datakesehatan->keterangan == 'Sedang' ? 'warning' : 'danger') }}">
-                                        {{ $datakesehatan->keterangan }}
-                                    </span>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('datakesehatans.edit', [Crypt::encryptString($datakesehatan->id)]) }}"
-                                            class="btn btn-sm btn-icon btn-outline-primary rounded-circle hover-lift">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        {!! Form::open([
-                                            'method' => 'DELETE',
-                                            'route' => ['datakesehatans.destroy', Crypt::encryptString($datakesehatan->id)],
-                                        ]) !!}
-                                        <button type="submit"
-                                            class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        {!! Form::close() !!}
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-12 text-center py-5">
+                                <div
+                                    class="d-inline-flex bg-success bg-opacity-10 text-success rounded-circle p-3 mb-3">
+                                    <i class="ti ti-heart-check fs-1"></i>
+                                </div>
+                                <p class="text-muted fw-medium">Tidak ada riwayat penyakit. Anda sehat!</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Interest Section -->
-    <div class="card glass-card border-0 rounded-4 overflow-hidden mt-4">
-        <div class="card-header bg-gradient-purple py-3">
-            <div class="d-flex justify-content-between align-items-center">
+    <!-- Data Peminatan Section -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+        <div class="card-header bg-white p-4 border-bottom-0 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <span class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 me-3">
+                    <i class="ti ti-briefcase fs-5"></i>
+                </span>
                 <div>
-                    <h5 class="mb-0 fw-semibold text-white"><i class="fas fa-star me-2"></i> Data Peminatan</h5>
-                    <p class="text-white-50 mb-0 small">Maksimal data adalah 3</p>
+                    <h5 class="fw-bold mb-0">Bidang Peminatan</h5>
+                    <p class="text-muted small mb-0">Posisi atau bidang yang diminati</p>
                 </div>
-                <a href="{{ route('datapeminatans.create') }}" class="btn btn-sm btn-light rounded-pill hover-lift">
-                    <i class="fas fa-plus me-1"></i> Tambah Peminatan
-                </a>
             </div>
+            <a href="{{ route('datapeminatans.create') }}"
+                class="btn btn-sm btn-light text-warning fw-bold rounded-pill px-3 hover-warning">
+                <i class="ti ti-plus me-1"></i> Tambah
+            </a>
         </div>
-        <div class="card-body p-0 bg-dark-2">
-            <div class="table-responsive">
-                <table class="table table-dark table-hover mb-0 table-borderless">
-                    <thead class="bg-dark-3">
-                        <tr>
-                            <th class="ps-4 text-uppercase fw-light text-white">No</th>
-                            <th class="text-uppercase fw-light text-white">Field</th>
-                            <th class="text-end pe-4 text-uppercase fw-light text-white">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($datapeminatans as $i => $datapeminatan)
-                            <tr class="hover-glow">
-                                <td class="ps-4 text-purple fw-bold">{{ $i + 1 }}</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-purple-soft me-3">
-                                            <i class="fas fa-star text-purple"></i>
-                                        </div>
-                                        <span>{{ $datapeminatan->field->field_name }}</span>
-                                    </div>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        {!! Form::open([
-                                            'method' => 'DELETE',
-                                            'route' => ['datapeminatans.destroy', Crypt::encryptString($datapeminatan->id)],
-                                        ]) !!}
-                                        <button type="submit"
-                                            class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        {!! Form::close() !!}
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+        <div class="card-body p-4 pt-0">
+            @if ($datapeminatans->count() > 0)
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach ($datapeminatans as $datapeminatan)
+                        <div
+                            class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25 rounded-pill px-3 py-2 d-flex align-items-center gap-2">
+                            <span>{{ $datapeminatan->field->field_name }}</span>
+                            {!! Form::open([
+                                'method' => 'DELETE',
+                                'route' => ['datapeminatans.destroy', Crypt::encryptString($datapeminatan->id)],
+                                'class' => 'd-flex align-items-center',
+                            ]) !!}
+                            <button type="submit" class="btn btn-link p-0 text-muted hover-danger"
+                                onclick="return confirm('Hapus peminatan ini?')" style="line-height: 1;"><i
+                                    class="ti ti-x"></i></button>
+                            {!! Form::close() !!}
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-4 text-muted">
+                    <i class="ti ti-briefcase-off fs-3 d-block mb-2 text-opacity-50 text-dark"></i>
+                    Belum ada bidang peminatan.
+                </div>
+            @endif
         </div>
     </div>
 
-    <!-- Add this CSS to your stylesheet -->
-    <style>
-        :root {
-            --bg-dark: #0f172a;
-            --bg-dark-2: #1e293b;
-            --bg-dark-3: #334155;
-            --bg-dark-4: #475569;
-
-            --primary: #3b82f6;
-            --primary-soft: rgba(59, 130, 246, 0.1);
-
-            --info: #06b6d4;
-            --info-soft: rgba(6, 182, 212, 0.1);
-
-            --purple: #8b5cf6;
-            --purple-soft: rgba(139, 92, 246, 0.1);
-        }
-
-        .glass-card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .bg-dark-2 {
-            background-color: var(--bg-dark-2);
-        }
-
-        .bg-dark-3 {
-            background-color: var(--bg-dark-3);
-        }
-
-        .bg-dark-4 {
-            background-color: var(--bg-dark-4);
-        }
-
-        .bg-gradient-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        }
-
-        .bg-gradient-info {
-            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
-        }
-
-        .bg-gradient-purple {
-            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-        }
-
-        .hover-lift {
-            transition: all 0.2s ease;
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .hover-glow:hover {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
-        }
-
-        .icon-circle {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .table-borderless td,
-        .table-borderless th {
-            border: none;
-        }
-
-        .rounded-4 {
-            border-radius: 1rem !important;
-        }
-
-        .text-purple {
-            color: var(--purple);
-        }
-
-        .bg-purple-soft {
-            background-color: var(--purple-soft);
-        }
-    </style>
 </div>
-
-<script>
-    var dataProvince = [];
-    $(document).ready(function() {
-        // Fetch provinces
-        $.getJSON('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json', function(data) {
-            dataProvince = data;
-            var provincesDropdown = $('#provinces');
-            provincesDropdown.empty();
-            provincesDropdown.append($('<option>', {
-                value: '',
-                text: 'Pilih Provinsi'
-            }));
-
-            $.each(data, function(index, province) {
-                provincesDropdown.append($('<option>', {
-                    value: index,
-                    text: province.name
-                }));
-            });
-
-            // Set selected value if exists
-            if ("{{ $datadiri->provinces ?? '' }}" !== "") {
-                provincesDropdown.val(data.findIndex(p => p.name ===
-                    "{{ $datadiri->provinces ?? '' }}"));
-            }
-        });
-
-        // Handle province selection
-        $('#provinces').change(function() {
-            var index = $(this).val();
-            var provinceId = dataProvince[index].id;
-            $('#dataProvince').val(dataProvince[index].name);
-
-            if (provinceId) {
-                // Fetch cities based on selected province
-                $.getJSON(
-                    `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
-                    function(data) {
-                        var citiesDropdown = $('#cities');
-                        citiesDropdown.empty();
-                        citiesDropdown.append($('<option>', {
-                            value: '',
-                            text: 'Pilih Kota'
-                        }));
-
-                        $.each(data, function(index, city) {
-                            citiesDropdown.append($('<option>', {
-                                value: city.name,
-                                text: city.name
-                            }));
-                        });
-
-                        // Set selected value if exists
-                        if ("{{ $datadiri->cities ?? '' }}" !== "") {
-                            citiesDropdown.val("{{ $datadiri->cities ?? '' }}");
-                        }
-                    });
-            } else {
-                $('#cities').empty().append($('<option>', {
-                    value: '',
-                    text: 'Pilih Kota'
-                }));
-            }
-        });
-
-        // Form validation
-        (function() {
-            'use strict'
-            var forms = document.querySelectorAll('.needs-validation')
-            Array.prototype.slice.call(forms)
-                .forEach(function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
-    });
-</script>

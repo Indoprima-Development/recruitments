@@ -1,109 +1,68 @@
-<div class="tab-pane fade" id="pills-lain" role="tabpanel" aria-labelledby="pills-security-tab" tabindex="0">
+<div class="tab-pane fade" id="pills-lain" role="tabpanel" aria-labelledby="pills-lain-tab" tabindex="0">
+
+    <!-- Hero Section -->
+    <div class="mb-4">
+        <h4 class="fw-bolder text-dark mb-1">Informasi Lainnya</h4>
+        <p class="text-muted small">Tambahkan data pendukung lainnya seperti Hobi, Referensi, dan Kesehatan.</p>
+    </div>
+
     <div class="row g-4">
         <!-- Hobi Card -->
-        <div class="col-md-4 d-flex align-items-stretch">
-            <div class="card glass-card border-0 rounded-4 overflow-hidden w-100 hover-lift">
-                <div class="card-header bg-gradient-hobi py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="mb-0 fw-semibold text-white"><i class="fas fa-running me-2"></i> Hobi</h5>
-                        </div>
-                        <a href="{{ route('dataolahragas.create') }}" class="btn btn-sm btn-light rounded-pill hover-lift">
-                            <i class="fas fa-plus me-1"></i> Tambah
-                        </a>
+        <div class="col-md-4">
+            <div
+                class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white hover-up transition-all group-card">
+                <div class="card-body p-4 text-center d-flex flex-column align-items-center justify-content-center">
+                    <div class="mb-4 p-3 rounded-circle bg-success bg-opacity-10 text-success position-relative">
+                        <i class="ti ti-run fs-1"></i>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
                     </div>
-                </div>
-                <div class="card-body bg-dark-2">
-                    <div class="d-flex align-items-center justify-content-center" style="min-height: 100px;">
-                        <i class="fas fa-running display-4 text-success opacity-25"></i>
-                    </div>
-                    <p class="text-center text-white-50 mt-3 mb-0 small">Tambahkan hobi Anda</p>
+                    <h5 class="fw-bold text-dark mb-2">Hobi & Minat</h5>
+                    <p class="text-muted small mb-4">Tambahkan aktivitas dan hobi yang Anda gemari.</p>
+                    <a href="{{ route('dataolahragas.create') }}"
+                        class="btn btn-outline-success rounded-pill px-4 fw-bold w-100 mt-auto hover-scale">
+                        <i class="ti ti-plus me-1"></i> Tambah Hobi
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Referensi Card -->
-        <div class="col-md-4 d-flex align-items-stretch">
-            <div class="card glass-card border-0 rounded-4 overflow-hidden w-100 hover-lift">
-                <div class="card-header bg-gradient-referensi py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="mb-0 fw-semibold text-white"><i class="fas fa-handshake me-2"></i> Referensi</h5>
-                        </div>
-                        <a href="{{ route('datadetails.create') }}" class="btn btn-sm btn-light rounded-pill hover-lift">
-                            <i class="fas fa-plus me-1"></i> Tambah
-                        </a>
+        <div class="col-md-4">
+            <div
+                class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white hover-up transition-all group-card">
+                <div class="card-body p-4 text-center d-flex flex-column align-items-center justify-content-center">
+                    <div class="mb-4 p-3 rounded-circle bg-primary bg-opacity-10 text-primary position-relative">
+                        <i class="ti ti-user-check fs-1"></i>
                     </div>
-                </div>
-                <div class="card-body bg-dark-2">
-                    <div class="d-flex align-items-center justify-content-center" style="min-height: 100px;">
-                        <i class="fas fa-handshake display-4 text-primary opacity-25"></i>
-                    </div>
-                    <p class="text-center text-white-50 mt-3 mb-0 small">Tambahkan referensi</p>
+                    <h5 class="fw-bold text-dark mb-2">Referensi Kerja</h5>
+                    <p class="text-muted small mb-4">Tambahkan referensi dari tempat kerja sebelumnya.</p>
+                    <a href="{{ route('datadetails.create') }}"
+                        class="btn btn-outline-primary rounded-pill px-4 fw-bold w-100 mt-auto hover-scale">
+                        <i class="ti ti-plus me-1"></i> Tambah Referensi
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Kesehatan Card -->
-        <div class="col-md-4 d-flex align-items-stretch">
-            <div class="card glass-card border-0 rounded-4 overflow-hidden w-100 hover-lift">
-                <div class="card-header bg-gradient-kesehatan py-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="mb-0 fw-semibold text-white"><i class="fas fa-heartbeat me-2"></i> Kesehatan</h5>
-                        </div>
-                        <a href="{{ route('datakesehatans.create') }}" class="btn btn-sm btn-light rounded-pill hover-lift">
-                            <i class="fas fa-plus me-1"></i> Tambah
-                        </a>
+        <div class="col-md-4">
+            <div
+                class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white hover-up transition-all group-card">
+                <div class="card-body p-4 text-center d-flex flex-column align-items-center justify-content-center">
+                    <div class="mb-4 p-3 rounded-circle bg-danger bg-opacity-10 text-danger position-relative">
+                        <i class="ti ti-heartbeat fs-1"></i>
                     </div>
-                </div>
-                <div class="card-body bg-dark-2">
-                    <div class="d-flex align-items-center justify-content-center" style="min-height: 100px;">
-                        <i class="fas fa-heartbeat display-4 text-danger opacity-25"></i>
-                    </div>
-                    <p class="text-center text-white-50 mt-3 mb-0 small">Riwayat kesehatan</p>
+                    <h5 class="fw-bold text-dark mb-2">Riwayat Kesehatan</h5>
+                    <p class="text-muted small mb-4">Tambahkan catatan kondisi kesehatan atau riwayat medis.</p>
+                    <a href="{{ route('datakesehatans.create') }}"
+                        class="btn btn-outline-danger rounded-pill px-4 fw-bold w-100 mt-auto hover-scale">
+                        <i class="ti ti-plus me-1"></i> Tambah Riwayat
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    .bg-gradient-hobi {
-        background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
-    }
-
-    .bg-gradient-referensi {
-        background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
-    }
-
-    .bg-gradient-kesehatan {
-        background: linear-gradient(135deg, #ef4444 0%, #d946ef 100%);
-    }
-
-    /* Consistent with previous styling */
-    .glass-card {
-        transition: all 0.3s ease;
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(10px);
-    }
-
-    .hover-lift {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .hover-lift:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .bg-dark-2 {
-        background-color: #1e293b;
-    }
-
-    @media (max-width: 768px) {
-        .col-md-4 {
-            margin-bottom: 1rem;
-        }
-    }
-</style>

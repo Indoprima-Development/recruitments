@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -11,8 +11,9 @@
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('package/landing/dist/libs/aos/dist/aos.css') }}">
@@ -24,20 +25,29 @@
 
     <style>
         :root {
-            --primary: #00f7ff;
-            --primary-dark: #00c2cb;
-            --secondary: #7b2cbf;
-            --dark: #0a0a1a;
-            --darker: #050510;
-            --light: #f0f8ff;
-            --glass: rgba(255, 255, 255, 0.05);
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #06b6d4;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --bg-white: #ffffff;
+            --bg-light: #f8fafc;
+            --bg-surface: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--darker);
-            color: var(--light);
+            background-color: var(--bg-white);
+            color: var(--text-primary);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         h1,
@@ -46,340 +56,393 @@
         h4,
         h5,
         h6 {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-primary);
         }
 
         /* Navbar */
         .navbar {
-            backdrop-filter: blur(10px);
-            background-color: rgba(10, 10, 26, 0.8) !important;
-            border-bottom: 1px solid rgba(0, 247, 255, 0.1);
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            transition: var(--transition);
         }
 
-        .nav-link,
-        .navbar-brand {
-            color: var(--light) !important;
+        .navbar-brand img {
+            height: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            margin: 0 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
         }
 
         .btn-nav {
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            transition: all 0.3s ease;
+            background-color: var(--primary);
+            color: white !important;
+            padding: 0.625rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            border: none;
+            box-shadow: var(--shadow);
         }
 
         .btn-nav:hover {
-            background-color: var(--primary);
-            color: var(--darker);
-            box-shadow: 0 0 15px var(--primary);
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, var(--darker), var(--dark));
+            padding: 160px 0 100px;
+            background: radial-gradient(circle at top right, #eff6ff 0%, #ffffff 40%, #f0f9ff 100%);
             position: relative;
             overflow: hidden;
-            padding: 120px 0;
         }
 
         .hero-section::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 247, 255, 0.05) 0%, transparent 70%);
-            animation: pulse 15s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(10%, 10%);
-            }
-
-            100% {
-                transform: translate(-10%, -10%);
-            }
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232563eb' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
         .hero-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--light), var(--primary));
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-dark) 100%);
             -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1.2;
-        }
-
-        .hero-title2 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(to right, var(--light), var(--primary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1.2;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-subtitle {
-            position: relative;
-            display: inline-block;
-        }
-
-        .hero-subtitle::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, var(--primary), transparent);
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 540px;
         }
 
         /* Buttons */
-        .btn-primary-accent {
-            background-color: var(--primary);
-            color: var(--darker);
-            font-weight: 600;
-            padding: 12px 28px;
+        .btn-primary-hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 2rem;
             border-radius: 50px;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1.1rem;
             border: none;
-            position: relative;
-            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
         }
 
-        .btn-primary-accent:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.3);
+        .btn-primary-hero:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+            color: white;
         }
 
-        .btn-primary-accent::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .btn-primary-accent:hover::before {
-            left: 100%;
-        }
-
-        .btn-outline-accent {
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            background: transparent;
-            font-weight: 600;
-            padding: 12px 28px;
+        .btn-outline-hero {
+            background: white;
+            color: var(--text-primary);
+            padding: 1rem 2rem;
             border-radius: 50px;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
         }
 
-        .btn-outline-accent:hover {
-            background-color: var(--primary);
-            color: var(--darker);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.3);
+        .btn-outline-hero:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
         }
 
-        /* Cards */
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
+        /* Video Card */
+        .video-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: var(--transition);
+        }
+
+        .video-card:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .video-wrapper {
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
             overflow: hidden;
             position: relative;
+            background: #000;
         }
 
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 0%, rgba(0, 247, 255, 0.1), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        /* Stats */
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
         }
 
-        .glass-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 247, 255, 0.15);
-            border-color: rgba(0, 247, 255, 0.3);
+        .stat-item h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
         }
 
-        .glass-card:hover::before {
-            opacity: 1;
+        .stat-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
         /* Job Cards */
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title span {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
         .job-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: var(--transition);
             height: 100%;
-            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .job-card:hover {
+            border-color: var(--primary-light);
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 247, 255, 0.2);
+            box-shadow: var(--shadow-lg);
         }
 
-        /* Process Steps */
-        .process-step {
-            position: relative;
-            padding: 30px 20px;
+        .job-badge {
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .job-dept {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .job-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .feature-item i {
+            color: var(--primary);
+        }
+
+        .btn-job {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-primary);
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
             text-align: center;
-            transition: all 0.3s ease;
         }
 
-        .process-step::after {
-            content: '';
+        .btn-job:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Process Section */
+        .process-section {
+            background: var(--bg-light);
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .process-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: var(--transition);
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .process-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .process-icon-wrapper {
+            width: 70px;
+            height: 70px;
+            background: #eff6ff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+            font-size: 1.75rem;
+            transition: var(--transition);
+        }
+
+        .process-card:hover .process-icon-wrapper {
+            background: var(--primary);
+            color: white;
+            transform: rotateY(360deg);
+        }
+
+        .process-number {
             position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 30px;
-            background-color: var(--primary);
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f1f5f9;
+            z-index: -1;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 100px 0;
+        }
+
+        .about-image {
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 80px 0 30px;
+        }
+
+        .footer-logo {
+            height: 40px;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            opacity: 0;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
         }
 
-        .process-step:hover {
-            transform: translateY(-10px);
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
         }
 
-        .process-step:hover::after {
-            opacity: 1;
-            bottom: -20px;
-        }
-
-        /* Floating Elements */
-        .floating-element {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.3;
-            z-index: 0;
-        }
-
-        .element-1 {
-            width: 300px;
-            height: 300px;
-            background-color: var(--primary);
-            top: 10%;
-            left: 10%;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .element-2 {
-            width: 200px;
-            height: 200px;
-            background-color: var(--secondary);
-            bottom: 10%;
-            right: 10%;
-            animation: float 10s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(20px, 20px);
-            }
-
-            100% {
-                transform: translate(0, 0);
-            }
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
+        /* Responsive */
+        @media (max-width: 991px) {
             .hero-title {
                 font-size: 2.5rem;
             }
 
             .hero-section {
-                padding: 80px 0;
-            }
-        }
-
-        /* Futuristic Card Styles */
-        .futuristic-card {
-            background: rgba(15, 23, 42, 0.5) !important;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 247, 255, 0.1);
-            border-radius: 12px;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .futuristic-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(0, 247, 255, 0.15);
-            border-color: rgba(0, 247, 255, 0.3);
-        }
-
-        /* Border Animation Effect */
-        .border-animation {
-            border: 1px solid transparent;
-            border-radius: 12px;
-            animation: borderPulse 3s infinite;
-        }
-
-        @keyframes borderPulse {
-            0% {
-                border-color: rgba(0, 247, 255, 0.1);
+                padding: 120px 0 80px;
             }
 
-            50% {
-                border-color: rgba(0, 247, 255, 0.4);
+            .video-card {
+                transform: none;
+                margin-top: 3rem;
             }
 
-            100% {
-                border-color: rgba(0, 247, 255, 0.1);
-            }
-        }
-
-        /* Hover Effects */
-        .futuristic-card:hover .hover-effect {
-            height: 100%;
-            opacity: 0.1;
-        }
-
-        .futuristic-card:hover h6 span {
-            opacity: 1;
-            width: 50px;
-        }
-
-        /* Grid Adjustment */
-        .col-lg-2-4 {
-            position: relative;
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-        }
-
-        @media (min-width: 992px) {
-            .col-lg-2-4 {
-                flex: 0 0 20%;
-                max-width: 20%;
+            .hero-stats {
+                justify-content: center;
             }
         }
     </style>
@@ -393,36 +456,40 @@
             dataLayer.push(arguments);
         }
         gtag('js', new Date());
-
         gtag('config', 'G-KG6TYXERDJ');
     </script>
 </head>
 
 <body>
-    <!-- Floating Background Elements -->
-    <div class="floating-element element-1"></div>
-    <div class="floating-element element-2"></div>
-
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="{{ asset('photo/white-logo.png') }}" height="40" alt="Indoprima Gemilang">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('photo/white-logo.png') }}" alt="Indoprima Gemilang">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fas fa-bars text-light"></i>
+                <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item mx-2">
-                        <a class="nav-link" href="{{ url('vacancies') }}">Explore Jobs</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('vacancies') }}">Career Opportunities</a>
                     </li>
                     @if (!Auth::check())
-                        <li class="nav-item mx-2">
-                            <a class="btn btn-nav rounded-pill px-4" href="{{ url('auth/login') }}">
-                                <i class="fas fa-sign-in-alt me-2"></i> Sign In
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn-nav" href="{{ url('auth/login') }}">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                            </a>
+                        </li>
+                    @else
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn-nav" href="{{ url('dashboard') }}">
+                                <i class="fas fa-columns me-2"></i>Dashboard
                             </a>
                         </li>
                     @endif
@@ -435,56 +502,65 @@
     <section class="hero-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
-                    <h6 class="text-primary mb-3 d-flex align-items-center">
-                        <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 me-3">
-                            <i class="fas fa-rocket me-2"></i> We're Hiring
-                        </span>
-                    </h6>
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="d-inline-flex align-items-center rounded-pill bg-blue-50 px-3 py-1 mb-4"
+                        style="background: #eff6ff; border: 1px solid #dbeafe;">
+                        <span class="badge rounded-pill bg-primary me-2">NEW</span>
+                        <span class="text-primary fw-bold small">We are hiring multiple positions!</span>
+                    </div>
 
-
-                    <h3 class="hero-title2">Build Your Future With</h3>
-                    <h1 class="hero-title mb-4">
-                        <span class="hero-subtitle text-white">Indoprima Gemilang</span>
-                    </h1>
-
-                    <p class="lead mb-5 text-light opacity-75">
-                        Join our innovative team and shape the future of automotive manufacturing.
-                        Your next career adventure starts here.
+                    <h1 class="hero-title">Build Your Future With Indoprima Gemilang</h1>
+                    <p class="hero-subtitle">
+                        Join our elite team of professionals shaping the future of automotive manufacturing.
+                        Innovate, grow, and succeed with us.
                     </p>
 
-                    <div class="d-flex flex-wrap gap-3">
+                    <div class="d-flex flex-wrap gap-3 mb-5">
+                        <a href="{{ url('vacancies') }}" class="btn-primary-hero">
+                            Explore Careers <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
                         @if (!Auth::check())
-                            <a href="{{ url('auth/login') }}" class="btn btn-primary-accent">
-                                <i class="fas fa-sign-in-alt me-2"></i> Get Started
-                            </a>
-                            <a href="{{ url('auth/register') }}" class="btn btn-outline-accent">
+                            <a href="{{ url('auth/register') }}" class="btn-outline-hero">
                                 Create Account
-                            </a>
-                        @else
-                            <a href="{{ url('vacancies') }}" class="btn btn-primary-accent">
-                                View Openings
                             </a>
                         @endif
                     </div>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <h3>500+</h3>
+                            <p>Employees</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>30+</h3>
+                            <p>Years Experience</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>Global</h3>
+                            <p>Market Reach</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="400">
-                    <div class="position-relative">
-                        <div class="glass-card p-3">
-                            <div class="ratio ratio-16x9 rounded-3 overflow-hidden">
-                                <iframe src="https://www.youtube.com/embed/e4HFE2XAGkk"
-                                    title="Indoprima Gemilang Recruitment" allowfullscreen
-                                    style="border: none;"></iframe>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="video-card">
+                        <div class="video-wrapper ratio ratio-16x9">
+                            <iframe
+                                src="https://www.youtube.com/embed/e4HFE2XAGkk?rel=0&autoplay=1&mute=1&loop=1&playlist=e4HFE2XAGkk"
+                                title="Indoprima Gemilang Company Profile"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen style="border: none;">
+                            </iframe>
+                        </div>
+                        <div class="mt-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <h5 class="fw-bold mb-1">Company Profile</h5>
+                                <p class="text-muted small mb-0">Get to know us better</p>
                             </div>
-                        </div>
-
-                        <!-- Decorative elements -->
-                        <div class="position-absolute top-0 start-0 translate-middle">
-                            <div class="bg-primary rounded-circle p-2" style="width: 20px; height: 20px;"></div>
-                        </div>
-                        <div class="position-absolute bottom-0 end-0 translate-middle">
-                            <div class="bg-secondary rounded-circle p-2" style="width: 20px; height: 20px;"></div>
+                            <a href="https://www.youtube.com/watch?v=e4HFE2XAGkk" target="_blank"
+                                class="btn btn-sm btn-outline-primary rounded-pill">
+                                Watch Full Video
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -493,51 +569,36 @@
     </section>
 
     <!-- Featured Jobs Section -->
-    <section class="py-8 position-relative overflow-hidden">
-        <div class="container position-relative">
-            <div class="row justify-content-center mb-6" data-aos="fade-up">
-                <div class="col-lg-8 text-center">
-                    <h2 class="display-5 fw-bold mb-3">
-                        <span
-                            style="
-                            background: linear-gradient(90deg, #00f0ff, #0088ff);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
-                            font-weight: bold;
-                            display: inline-block;
-                            ">
-                            Current Opportunities
-                        </span>
-
-                    </h2>
-                    <p class="text-light opacity-75">
-                        Explore our latest job openings and find your perfect match
-                    </p>
-                </div>
+    <section class="py-5 position-relative">
+        <div class="container py-lg-5">
+            <div class="section-title" data-aos="fade-up">
+                <span>OPPORTUNITIES</span>
+                <h2>Latest Job Openings</h2>
+                <p class="text-muted mt-2">Find the perfect role for you</p>
             </div>
 
-            <div class="row g-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="row g-4">
                 @foreach ($jobs as $job)
-                    <div class="col-md-6 col-lg-4">
-                        <div class="glass-card job-card h-100 p-4">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h5 class="fw-bold mb-1 text-primary">{{ $job->jobtitle->jobtitle_name ?? '-' }}
-                                    </h5>
-                                    <p class="text-primary mb-0 small">{{ $job->division->division_name ?? '-' }}</p>
-                                </div>
-                                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1">
-                                    {{ $job->status_pegawai }}
-                                </span>
+                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="job-card">
+                            <span class="job-badge">{{ $job->status_pegawai }}</span>
+                            <h3 class="job-title">{{ $job->jobtitle->jobtitle_name ?? '-' }}</h3>
+                            <div class="job-dept">
+                                <i class="ti ti-building-skyscraper"></i>
+                                {{ $job->division->division_name ?? '-' }}
                             </div>
 
-                            <ul class="list-unstyled small mb-4">
-                                <li class="mb-2 d-flex align-items-center">
-                                    <i class="fas fa-graduation-cap text-primary me-2"></i>
+                            <div class="job-features">
+                                <div class="feature-item">
+                                    <i class="ti ti-school"></i>
                                     {{ $job->education->education_name ?? '-' }}
-                                </li>
-                                <li class="mb-2 d-flex align-items-center">
-                                    <i class="fas fa-venus-mars text-primary me-2"></i>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="ti ti-calendar"></i>
+                                    {{ $job->date_startwork }}
+                                </div>
+                                <div class="feature-item">
+                                    <i class="ti ti-users"></i>
                                     @if ($job->gender == 1)
                                         Male
                                     @elseif ($job->gender == 2)
@@ -545,17 +606,13 @@
                                     @else
                                         Male/Female
                                     @endif
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <i class="fas fa-calendar-alt text-primary me-2"></i>
-                                    Start: {{ $job->date_startwork }}
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
 
                             <div class="mt-auto">
                                 <a href="{{ url('vacancies', $job->id) }}"
-                                    class="btn btn-sm btn-outline-primary w-100">
-                                    Apply Now <i class="fas fa-arrow-right ms-2"></i>
+                                    class="btn-job d-block text-decoration-none">
+                                    View Details
                                 </a>
                             </div>
                         </div>
@@ -563,83 +620,42 @@
                 @endforeach
             </div>
 
-            <div class="text-center mt-6" data-aos="fade-up" data-aos-delay="300">
-                <a href="{{ url('vacancies') }}" class="btn btn-primary-accent px-5">
-                    View All Positions
+            <div class="text-center mt-5" data-aos="fade-up">
+                <a href="{{ url('vacancies') }}" class="btn-primary-hero px-5 text-decoration-none d-inline-block">
+                    View All Positions <i class="ti ti-arrow-right ms-2"></i>
                 </a>
             </div>
         </div>
     </section>
 
     <!-- Recruitment Process -->
-    <section class="py-8 bg-dark position-relative overflow-hidden">
-        <div class="container position-relative">
-            <div class="row justify-content-center mb-6" data-aos="fade-up">
-                <div class="col-lg-8 text-center">
-                    <h2 class="display-5 fw-bold mb-3 text-white">
-                        Our <span
-                            style="
-                            background: linear-gradient(90deg, #00f0ff, #0088ff);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
-                            display: inline-block;
-                        ">Hiring</span>
-                        Process
-                    </h2>
-
-                    <p class="text-light opacity-75">
-                        Transparent steps to join our innovative team
-                    </p>
-                </div>
+    <section class="process-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <span>HOW IT WORKS</span>
+                <h2>Admission Process</h2>
+                <p class="text-muted mt-2">Smooth and transparent recruitment journey</p>
             </div>
 
-            <div class="row g-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="row g-4">
                 @php
                     $steps = [
-                        ['icon' => 'fas fa-user-plus', 'label' => 'Create Account'],
-                        ['icon' => 'fas fa-check-circle', 'label' => 'Verify Account'],
-                        ['icon' => 'fas fa-sign-in-alt', 'label' => 'Login'],
-                        ['icon' => 'fas fa-briefcase', 'label' => 'Apply for Job'],
-                        ['icon' => 'fas fa-laptop-code', 'label' => 'Technical Test'],
-                        ['icon' => 'fas fa-users', 'label' => 'HR Interview'],
-                        ['icon' => 'fas fa-brain', 'label' => 'Psychological Test'],
-                        ['icon' => 'fas fa-user-tie', 'label' => 'Final Interview'],
-                        ['icon' => 'fas fa-heartbeat', 'label' => 'Medical Check-up'],
-                        ['icon' => 'fas fa-handshake', 'label' => 'Onboarding'],
+                        ['icon' => 'ti ti-user-plus', 'label' => 'Create Account'],
+                        ['icon' => 'ti ti-file-text', 'label' => 'Apply & Test'],
+                        ['icon' => 'ti ti-users', 'label' => 'Interview'],
+                        ['icon' => 'ti ti-check', 'label' => 'Onboarding'],
                     ];
                 @endphp
 
                 @foreach ($steps as $index => $step)
-                    <div class="col-6 col-md-4 col-lg-2-4" data-aos="zoom-in" data-aos-delay="{{ $index * 100 }}">
-                        <div class="process-step futuristic-card h-100 p-4 position-relative overflow-hidden">
-                            <!-- Glowing border effect -->
-                            <div class="position-absolute top-0 left-0 w-100 h-100 border-animation"
-                                style="z-index: 1;"></div>
-
-                            <!-- Step number with futuristic design -->
-                            <div class="step-number position-absolute top-0 start-0 translate-middle bg-dark rounded-circle d-flex align-items-center justify-content-center"
-                                style="width: 30px; height: 30px; border: 2px solid var(--primary);">
-                                <span class="text-primary fw-bold small">{{ $index + 1 }}</span>
+                    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                        <div class="process-card">
+                            <span class="process-number">{{ $index + 1 }}</span>
+                            <div class="process-icon-wrapper">
+                                <i class="{{ $step['icon'] }}"></i>
                             </div>
-
-                            <!-- Icon with glowing effect -->
-                            <div class="icon-wrapper bg-dark bg-opacity-50 rounded-circle p-3 mb-3 mx-auto d-flex align-items-center justify-content-center"
-                                style="width: 70px; height: 70px; border: 1px solid rgba(0, 247, 255, 0.3);">
-                                <i class="{{ $step['icon'] }} text-white fs-4"
-                                    style="filter: drop-shadow(0 0 5px rgba(0, 247, 255, 0.5));"></i>
-                            </div>
-
-                            <!-- Step label with subtle animation -->
-                            <h6 class="fw-semibold mb-0 text-white text-center position-relative" style="z-index: 2;">
-                                {{ $step['label'] }}
-                                <span class="position-absolute bottom-0 start-50 translate-middle-x bg-primary"
-                                    style="width: 30px; height: 2px; opacity: 0; transition: all 0.3s ease;"></span>
-                            </h6>
-
-                            <!-- Hover effect element -->
-                            <div class="hover-effect position-absolute bottom-0 start-0 w-100 bg-primary"
-                                style="height: 0%; z-index: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);">
-                            </div>
+                            <h4 class="fw-bold mb-2">{{ $step['label'] }}</h4>
+                            <p class="text-muted small mb-0">Completing step {{ $index + 1 }} of the process</p>
                         </div>
                     </div>
                 @endforeach
@@ -648,38 +664,26 @@
     </section>
 
     <!-- About Section -->
-    <section class="py-8 position-relative overflow-hidden">
-        <div class="container position-relative">
+    <section class="about-section">
+        <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-                    <h2 class="display-5 fw-bold mb-4">
-                        <span class="text-primary">About</span> <span
-                            style="
-                            background: linear-gradient(90deg, #00f0ff, #0088ff);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
-                            display: inline-block;
-                        ">Indoprima
-                            Gemilang</span>
-                    </h2>
-
-                    <p class="lead mb-4">
+                    <span class="text-primary fw-bold text-uppercase letter-spacing-1 mb-2 d-block">About Us</span>
+                    <h2 class="fw-bold mb-4 display-6">Excellence in Automotive Components</h2>
+                    <p class="lead text-secondary mb-4">
                         PT Indoprima Gemilang is a leading manufacturer of motorized vehicle components, serving
                         international automotive companies with excellence and innovation.
                     </p>
-                    <p>
+                    <p class="text-secondary mb-4">
                         We are fully committed to maintaining the highest quality standards in production. From material
-                        selection to quality control, every process is meticulously executed to ensure perfection in our
-                        products.
+                        selection to quality control, every process is meticulously executed to ensure perfection.
                     </p>
+                    <a href="#" class="btn btn-outline-primary rounded-pill px-4">Learn More</a>
                 </div>
-
                 <div class="col-lg-6" data-aos="fade-left">
-                    <div class="glass-card p-4">
-                        <div class="ratio ratio-16x9 rounded-3 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                                alt="Indoprima Gemilang Factory" class="object-fit-cover">
-                        </div>
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1565514020176-db9318b76dfb?q=80&w=2070&auto=format&fit=crop"
+                            alt="Modern Office" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -687,29 +691,28 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-6 bg-dark position-relative">
-        <div class="container position-relative">
-            <div class="row justify-content-center">
-                <div class="col-lg-6 text-center">
-                    <a href="index.html" class="d-inline-block mb-4">
-                        <img src="{{ asset('photo/white-logo.png') }}" height="40" alt="Indoprima Gemilang">
-                    </a>
-
-                    <p class="small text-light opacity-75 mb-4">
-                        © {{ date('Y') }} PT. Indoprima Gemilang. All rights reserved.<br>
-                        Designed and Developed by Information System Team
+    <footer class="footer">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <img src="{{ asset('photo/white-logo.png') }}" class="footer-logo" alt="Logo">
+                    <h3 class="fw-bold mb-4">Ready to start your journey?</h3>
+                    <p class="opacity-75 mb-5">
+                        Join us and be part of a company that values innovation, integrity, and growth.
+                        Your future starts here.
                     </p>
 
-                    <div class="d-flex justify-content-center gap-3">
-                        <a href="#" class="text-light opacity-75 hover-opacity-100">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="text-light opacity-75 hover-opacity-100">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-light opacity-75 hover-opacity-100">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
+                    <div class="d-flex justify-content-center gap-3 mb-5">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+
+                    <div class="border-top border-secondary border-opacity-25 pt-4">
+                        <p class="small opacity-50 mb-0">
+                            © {{ date('Y') }} PT. Indoprima Gemilang. All rights reserved.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -721,25 +724,19 @@
     <script src="{{ asset('package/landing/dist/libs/aos/dist/aos.js') }}"></script>
     <script src="{{ asset('package/landing/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('package/landing/dist/libs/owl.carousel/dist/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('package/landing/dist/js/custom.js') }}"></script>
 
     <script>
-        // Initialize AOS animation
         AOS.init({
             duration: 800,
-            easing: 'ease-in-out',
+            easing: 'ease-out-cubic',
             once: true
         });
 
-        // Change navbar style on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.backgroundColor = 'rgba(10, 10, 26, 0.95)';
-                navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 50) {
+                $('.navbar').addClass('shadow-sm');
             } else {
-                navbar.style.backgroundColor = 'rgba(10, 10, 26, 0.8)';
-                navbar.style.boxShadow = 'none';
+                $('.navbar').removeClass('shadow-sm');
             }
         });
     </script>

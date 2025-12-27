@@ -1,128 +1,98 @@
-<div class="tab-pane fade show" id="pills-kemampuan" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
-    <div class="card glass-card border-0 rounded-4 overflow-hidden">
-        <div class="card-header bg-gradient-skills py-3">
-            <div class="d-flex justify-content-between align-items-center">
+<div class="tab-pane fade" id="pills-kemampuan" role="tabpanel" aria-labelledby="pills-kemampuan-tab" tabindex="0">
+
+    <!-- Hero Section -->
+    <div class="mb-4">
+        <h4 class="fw-bolder text-dark mb-1">Keahlian & Kompetensi</h4>
+        <p class="text-muted small">Daftar keterampilan dan tingkat keahlian Anda.</p>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+        <div class="card-header bg-white p-4 d-flex justify-content-between align-items-center border-bottom-0">
+            <div class="d-flex align-items-center">
+                <span class="bg-warning bg-opacity-10 text-warning rounded-circle p-2 me-3">
+                    <i class="ti ti-bulb fs-5"></i>
+                </span>
                 <div>
-                    <h5 class="mb-0 fw-semibold text-white"><i class="fas fa-star me-2"></i> Kemampuan</h5>
+                    <h5 class="fw-bold mb-0">Daftar Kemampuan</h5>
+                    <p class="text-muted small mb-0">Hard skill & soft skill</p>
                 </div>
-                <a href="{{ url('datakemampuans/create') }}" class="btn btn-sm btn-light rounded-pill hover-lift">
-                    <i class="fas fa-plus me-1"></i> Tambah Data
-                </a>
             </div>
+            <a href="{{ url('datakemampuans/create') }}"
+                class="btn btn-sm btn-outline-warning rounded-pill px-3 fw-bold hover-warning">
+                <i class="ti ti-plus me-1"></i> Tambah
+            </a>
         </div>
-        <div class="card-body p-0 bg-dark-2">
-            <div class="table-responsive">
-                <table class="table table-dark table-hover mb-0 table-borderless">
-                    <thead class="bg-dark-3">
-                        <tr>
-                            <th class="ps-4 text-uppercase fw-light text-white">No</th>
-                            <th class="text-uppercase fw-light text-white">Kemampuan</th>
-                            <th class="text-uppercase fw-light text-white">Level</th>
-                            <th class="text-end pe-4 text-uppercase fw-light text-white">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($datakemampuans as $i => $datakemampuan)
-                            <tr class="hover-glow">
-                                <td class="ps-4 text-warning fw-bold">{{ $i+1 }}</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-circle bg-warning-soft me-2">
-                                            <i class="fas fa-certificate text-warning"></i>
-                                        </div>
-                                        <span>{{ $datakemampuan->kemampuan }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <?php
-                                        $level = 3;
-                                        if ($datakemampuan->level == 'Basic') {
-                                            $level = 1;
-                                        }else if ($datakemampuan->level == 'Middle') {
-                                            $level = 2;
-                                        }else{
-                                            $level = 3;
-                                        }
-                                    ?>
-                                    <div class="progress bg-dark-4" style="height: 8px;">
-                                        <div class="progress-bar bg-warning"
-                                             role="progressbar"
-                                             style="width: {{ $level * 33.4 }}%"
-                                             aria-valuenow="{{ $level * 33.4 }}"
-                                             aria-valuemin="0"
-                                             aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                    <small class="text-warning">{{ str_repeat('★', $level) }}{{ str_repeat('☆', 3 - $level) }}</small>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        {!! Form::open(['method' => 'DELETE', 'route' => ['datakemampuans.destroy', Crypt::encryptString($datakemampuan->id)]]) !!}
-                                        <button type="submit" class="btn btn-sm btn-icon btn-outline-danger rounded-circle hover-lift">
-                                            <i class="fas fa-trash"></i>
+
+        <div class="card-body p-4 pt-0">
+            @if (count($datakemampuans) > 0)
+                <div class="row g-3">
+                    @foreach ($datakemampuans as $d)
+                        @php
+                            $levelVal = 3;
+                            $levelColor = 'success';
+                            if ($d->level == 'Basic') {
+                                $levelVal = 1;
+                                $levelColor = 'secondary';
+                            } elseif ($d->level == 'Middle') {
+                                $levelVal = 2;
+                                $levelColor = 'info';
+                            } else {
+                                $levelVal = 3;
+                                $levelColor = 'success';
+                            }
+                        @endphp
+                        <div class="col-md-6 col-lg-4">
+                            <div
+                                class="p-3 border border-light-subtle rounded-4 h-100 bg-white shadow-sm hover-lift transition-all position-relative overflow-hidden group-hover-border">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-dark mb-0 text-truncate pe-2">{{ $d->kemampuan }}</h6>
+
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link text-muted p-0" type="button"
+                                            data-bs-toggle="dropdown">
+                                            <i class="ti ti-dots"></i>
                                         </button>
-                                        {!! Form::close() !!}
+                                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+                                            <li>
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['datakemampuans.destroy', Crypt::encryptString($d->id)]]) !!}
+                                                <button type="submit" class="dropdown-item text-danger"
+                                                    onclick="return confirm('Hapus data ini?')">Hapus</button>
+                                                {!! Form::close() !!}
+                                            </li>
+                                        </ul>
                                     </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+
+                                <span
+                                    class="badge bg-{{ $levelColor }} bg-opacity-10 text-{{ $levelColor }} rounded-pill mb-3 small">{{ $d->level }}</span>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="progress flex-grow-1 bg-light" style="height: 6px;">
+                                        <div class="progress-bar bg-{{ $levelColor }}" role="progressbar"
+                                            style="width: {{ $levelVal * 33.33 }}%"></div>
+                                    </div>
+                                    <div class="text-warning small" style="white-space: nowrap;">
+                                        @for ($star = 0; $star < $levelVal; $star++)
+                                            <i class="ti ti-star-filled"></i>
+                                        @endfor
+                                        @for ($star = $levelVal; $star < 3; $star++)
+                                            <i class="ti ti-star"></i>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-5">
+                    <div class="d-inline-flex bg-warning bg-opacity-10 text-warning rounded-circle p-3 mb-3">
+                        <i class="ti ti-bulb-off fs-1"></i>
+                    </div>
+                    <p class="text-muted">Belum ada kemampuan ditambahkan.</p>
+                </div>
+            @endif
         </div>
     </div>
 </div>
-
-<style>
-    .bg-gradient-skills {
-        background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
-    }
-
-    .bg-warning-soft {
-        background-color: rgba(245, 158, 11, 0.1);
-    }
-
-    /* Level indicator styles */
-    .progress {
-        width: 100px;
-        border-radius: 4px;
-    }
-
-    .progress-bar {
-        border-radius: 4px;
-    }
-
-    /* Star rating */
-    .text-warning {
-        color: #f59e0b !important;
-    }
-
-    /* Consistent with previous styling */
-    .hover-glow:hover {
-        background-color: rgba(255, 255, 255, 0.03);
-    }
-
-    .icon-circle {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    @media (max-width: 992px) {
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .table td, .table th {
-            white-space: nowrap;
-        }
-
-        .progress {
-            width: 80px;
-        }
-    }
-</style>

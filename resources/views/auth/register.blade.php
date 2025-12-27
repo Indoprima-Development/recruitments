@@ -1,476 +1,787 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Our Team | PT. Indoprima Gemilang</title>
-    <meta name="description" content="Start your career journey with PT. Indoprima Gemilang">
+    <meta name="description" content="Start your career journey with PT. Indoprima Gemilang - Register now">
     <link rel="shortcut icon" type="image/png" href="{{ asset('package/dist/images/logos/favicon.ico') }}">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --accent: #10b981;
-            --accent-light: #34d399;
-            --dark: #0f172a;
-            --darker: #020617;
-            --light: #f8fafc;
-            --light-muted: #94a3b8;
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+            --accent: #06b6d4;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --bg-white: #ffffff;
+            --bg-light: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
             --border-radius: 16px;
             --border-radius-lg: 24px;
-            --glow: 0 0 15px rgba(99, 102, 241, 0.5);
-            --glow-accent: 0 0 15px rgba(16, 185, 129, 0.5);
-            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            --border-radius-xl: 32px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.15s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--darker);
-            color: var(--light);
+            background-color: var(--bg-light);
+            color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            color: var(--light);
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
-        /* Glassmorphism Effect */
-        .glass {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .preloader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .preloader-text {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Header */
+        .register-header {
+            background: var(--bg-white);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-logo {
+            height: 40px;
+            transition: var(--transition);
+        }
+
+        .header-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .login-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .login-link:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: var(--bg-white);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-percentage {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 100px;
+            width: 0%;
+            transition: width 0.5s ease;
         }
 
         /* Main Container */
-        .registration-container {
-            max-width: 1200px;
+        .register-container {
+            max-width: 800px;
             margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        /* Hero Section */
+        .register-hero {
+            text-align: center;
+            margin-bottom: 2rem;
             padding: 2rem;
+            background: var(--primary-gradient);
+            border-radius: var(--border-radius-lg);
+            color: white;
             position: relative;
             overflow: hidden;
         }
 
-        /* Background Elements */
-        .bg-elements {
+        .register-hero::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
 
-        .bg-circle {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.15;
-        }
-
-        .circle-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--primary);
-            top: -100px;
-            left: -100px;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .circle-2 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent);
-            bottom: -150px;
-            right: -150px;
-            animation: float 10s ease-in-out infinite reverse;
-        }
-
-        .circle-3 {
-            width: 200px;
-            height: 200px;
-            background: var(--primary-light);
-            top: 50%;
-            left: 30%;
-            animation: float 6s ease-in-out infinite 2s;
-        }
-
-        .logo-container {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
-            z-index: 2;
-        }
-
-        .logo {
-            height: 48px;
-            transition: var(--transition);
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        /* Form Section */
-        .form-section {
-            padding: 4rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .form-header {
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .form-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: var(--glow);
-        }
-
-        .form-subtitle {
-            color: var(--light-muted);
-            font-size: 1.1rem;
-            max-width: 80%;
-            margin: 0 auto;
-        }
-
-        .divider {
-            display: flex;
+        .hero-badge {
+            display: inline-flex;
             align-items: center;
-            margin: 2rem 0;
-            color: var(--light-muted);
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
             position: relative;
         }
 
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.3), transparent);
+        .register-hero h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
         }
 
-        .divider::before {
-            margin-right: 1rem;
+        .register-hero p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+            position: relative;
         }
 
-        .divider::after {
-            margin-left: 1rem;
+        /* Benefits Grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .benefit-card {
+            background: var(--bg-white);
+            padding: 1.25rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+
+        .benefit-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-content h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .benefit-content p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
 
         /* Form Card */
         .form-card {
-            background: rgba(15, 23, 42, 0.7);
+            background: var(--bg-white);
             border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-lg);
-            padding: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: var(--transition);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
-        .form-card:hover {
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
-            border-color: rgba(99, 102, 241, 0.3);
+        .form-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .form-section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            position: relative;
-            padding-bottom: 0.5rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--bg-light);
         }
 
-        .form-section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), transparent);
-            border-radius: 3px;
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
         }
 
-        .form-section-title i {
+        .section-title {
+            flex: 1;
+        }
+
+        .section-title h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-title p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.125rem;
+        }
+
+        .section-number {
+            width: 28px;
+            height: 28px;
+            background: var(--bg-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
             color: var(--primary);
         }
 
+        /* Form Grid */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .form-grid.single {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
         /* Form Elements */
-        .input-group {
-            margin-bottom: 1.5rem;
-            position: relative;
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
         }
 
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--light);
-            transition: var(--transition);
+        .required-badge {
+            color: #ef4444;
+            font-size: 0.75rem;
         }
 
         .form-control {
-            width: 90%;
-            padding: 1rem 1.25rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--border-radius);
-            font-size: 1rem;
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.95rem;
             transition: var(--transition);
-            background-color: rgba(2, 6, 23, 0.5);
-            color: var(--light);
+            background-color: var(--bg-white);
+            color: var(--text-primary);
         }
 
         .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.3);
+            color: var(--text-muted);
+        }
+
+        .form-control:hover {
+            border-color: #d1d5db;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: var(--glow);
-            background-color: rgba(2, 6, 23, 0.8);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
         .form-select {
             width: 100%;
-            padding: 1rem 1.25rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23e2e8f0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1.25rem center;
-            background-size: 12px;
+            padding: 0.875rem 2.5rem 0.875rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.95rem;
             transition: var(--transition);
-            background-color: rgba(2, 6, 23, 0.5);
-            color: var(--light);
+            background-color: var(--bg-white);
+            color: var(--text-primary);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234b5563' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 12px;
+        }
+
+        .form-select:hover {
+            border-color: #d1d5db;
         }
 
         .form-select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: var(--glow);
-            background-color: rgba(2, 6, 23, 0.8);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
-        /* Button */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        /* Input with icon */
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon .form-control {
+            padding-left: 2.75rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus~.input-icon {
+            color: var(--primary);
+        }
+
+        /* Password Toggle */
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: var(--transition);
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        /* Form Helper */
+        .form-helper {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .form-helper i {
+            font-size: 0.8rem;
+        }
+
+        /* Submit Section */
+        .submit-section {
+            padding: 1.5rem;
+            background: var(--bg-light);
+        }
+
+        .submit-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            margin-top: 2px;
+        }
+
+        .terms-checkbox label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .terms-checkbox a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .terms-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: var(--primary-gradient);
             color: white;
             border: none;
-            border-radius: var(--border-radius);
-            padding: 1.25rem 2rem;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.75rem;
-            width: 100%;
-            box-shadow: var(--shadow);
+            gap: 0.5rem;
             position: relative;
             overflow: hidden;
-            z-index: 1;
+            transition: var(--transition);
         }
 
-        .btn-primary::before {
+        .btn-submit::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md), var(--glow);
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), 0 0 20px rgba(37, 99, 235, 0.3);
         }
 
-        .btn-primary:hover::before {
-            opacity: 1;
+        .btn-submit:hover::before {
+            left: 100%;
         }
 
-        .btn-primary i {
-            transition: var(--transition);
+        .btn-submit:active {
+            transform: translateY(0);
         }
 
-        .btn-primary:hover i {
-            transform: translateX(5px);
+        .btn-submit i {
+            transition: transform 0.3s ease;
         }
 
-        /* Modal */
-        .modal-content {
-            border-radius: var(--border-radius-lg);
-            border: none;
-            box-shadow: var(--shadow-lg);
-            background: var(--dark);
-            color: var(--light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .btn-submit:hover i {
+            transform: translateX(4px);
         }
 
-        .modal-header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .modal-title {
-            font-weight: 700;
-            color: var(--light);
-            font-size: 1.5rem;
+        /* Security Note */
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--success-light);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #047857;
         }
 
-        .modal-body {
-            padding: 1.5rem;
+        .security-note i {
+            font-size: 1rem;
         }
 
-        .modal-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
+        /* Footer */
+        .register-footer {
+            text-align: center;
+            margin-top: 2rem;
         }
 
-        .btn-light {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-            border: none;
-            border-radius: var(--border-radius);
-            padding: 0.75rem 1.5rem;
-            transition: var(--transition);
-        }
-
-        .btn-light:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: var(--light);
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            background: rgba(2, 6, 23, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .alert-light {
-            color: var(--light-muted);
-        }
-
-        /* Animations */
-        @keyframes float {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            50% {
-                transform: translate(10px, 10px);
-            }
-
-            100% {
-                transform: translate(0, 0);
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
-            }
-
-            70% {
-                box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
-            }
+        .register-footer p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
         /* Responsive */
-        @media (max-width: 992px) {
-            .form-section {
-                padding: 2rem;
-            }
-        }
-
         @media (max-width: 768px) {
+            .register-container {
+                padding: 1.5rem 1rem 2rem;
+            }
+
             .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            .form-title {
-                font-size: 2rem;
+            .benefits-grid {
+                grid-template-columns: 1fr;
             }
 
-            .form-subtitle {
-                max-width: 100%;
+            .register-hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-right span {
+                display: none;
             }
 
             .form-section {
-                padding: 1.5rem;
+                padding: 1.25rem;
             }
 
-            .form-card {
-                padding: 1.5rem;
+            .section-header {
+                flex-wrap: wrap;
+            }
+
+            .section-title {
+                order: 1;
+                width: 100%;
+                margin-top: 0.5rem;
             }
         }
 
-        @media (max-width: 576px) {
-            .registration-container {
-                padding: 1rem;
+        @media (max-width: 480px) {
+            .register-header {
+                padding: 0.875rem 1rem;
             }
 
-            .form-section {
-                padding: 1rem 0;
+            .header-logo {
+                height: 32px;
             }
 
-            .form-title {
-                font-size: 1.75rem;
+            .login-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
             }
+
+            .register-hero {
+                padding: 1.5rem 1rem;
+            }
+
+            .register-hero h1 {
+                font-size: 1.25rem;
+            }
+
+            .section-icon {
+                width: 36px;
+                height: 36px;
+            }
+
+            .form-control,
+            .form-select {
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        /* Animation */
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-5 {
+            animation-delay: 0.5s;
+        }
+
+        /* Form validation states */
+        .form-control.is-valid,
+        .form-select.is-valid {
+            border-color: var(--success);
+        }
+
+        .form-control.is-invalid,
+        .form-select.is-invalid {
+            border-color: #ef4444;
+        }
+
+        /* Tooltip */
+        .tooltip-wrapper {
+            position: relative;
+            display: inline-flex;
+        }
+
+        .tooltip-icon {
+            width: 16px;
+            height: 16px;
+            background: var(--bg-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            cursor: help;
         }
     </style>
 
@@ -483,94 +794,215 @@
             dataLayer.push(arguments);
         }
         gtag('js', new Date());
-
         gtag('config', 'G-KG6TYXERDJ');
     </script>
 </head>
 
 <body>
-    <div class="bg-elements">
-        <div class="bg-circle circle-1"></div>
-        <div class="bg-circle circle-2"></div>
-        <div class="bg-circle circle-3"></div>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-spinner"></div>
+        <p class="preloader-text">Loading application form...</p>
     </div>
 
-    <div class="registration-container">
-        <form action="{{ route('store') }}" method="POST" class="form-section">
+    <!-- Header -->
+    <header class="register-header">
+        <div class="header-content">
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('photo/logo-indoprima.webp') }}" alt="PT. Indoprima Gemilang" class="header-logo">
+            </a>
+            <div class="header-right">
+                <span style="color: var(--text-secondary); font-size: 0.9rem;">Already have an account?</span>
+                <a href="{{ url('auth/login') }}" class="login-link">
+                    <i class="ti ti-login"></i>
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-wrapper">
+            <div class="progress-header">
+                <span class="progress-text">Application Progress</span>
+                <span class="progress-percentage" id="progressPercentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="register-container">
+        <!-- Hero Section -->
+        <div class="register-hero fade-in-up">
+            <span class="hero-badge">
+                <i class="ti ti-sparkles"></i>
+                Join Our Team
+            </span>
+            <h1>Start Your Career Journey 🚀</h1>
+            <p>Complete the form below to begin your application process</p>
+        </div>
+
+        <!-- Benefits Grid -->
+        <div class="benefits-grid fade-in-up delay-1">
+            <div class="benefit-card">
+                <span class="benefit-icon"><i class="ti ti-clock"></i></span>
+                <div class="benefit-content">
+                    <h3>Quick Process</h3>
+                    <p>5 minutes to complete</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <span class="benefit-icon"><i class="ti ti-shield-check"></i></span>
+                <div class="benefit-content">
+                    <h3>Secure & Private</h3>
+                    <p>Your data is protected</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <span class="benefit-icon"><i class="ti ti-bell-ringing"></i></span>
+                <div class="benefit-content">
+                    <h3>Instant Updates</h3>
+                    <p>Real-time notifications</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <form action="{{ route('store') }}" method="POST" class="form-card fade-in-up delay-2" id="registerForm">
             @csrf
 
-            <div class="form-header">
-                <img src="{{ asset('photo/white-logo.png') }}" alt="PT. Indoprima Gemilang" class="logo">
-                <h1 class="form-title animate__animated animate__fadeInDown">Join Our Team</h1>
-                <p class="form-subtitle animate__animated animate__fadeInDown animate__delay-1s">Complete the form below
-                    to start your application process</p>
+            <!-- Section 1: Personal Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="section-icon"><i class="ti ti-user"></i></span>
+                    <div class="section-title">
+                        <h2>Personal Information</h2>
+                        <p>Tell us about yourself</p>
+                    </div>
+                    <span class="section-number">1</span>
+                </div>
 
-                <div class="divider animate__animated animate__fadeIn animate__delay-2s">
-                    <span>Application Form</span>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name" class="form-label">
+                            Full Name
+                            <span class="required-badge">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="text" name="name" id="name" class="form-control"
+                                placeholder="Enter your full name" required>
+                            <i class="ti ti-user input-icon"></i>
+                        </div>
+                        <p class="form-helper"><i class="ti ti-info-circle"></i> As shown on your ID card</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">
+                            Email Address
+                            <span class="required-badge">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="email" name="email" id="email" class="form-control"
+                                placeholder="your@email.com" required>
+                            <i class="ti ti-mail input-icon"></i>
+                        </div>
+                        <p class="form-helper"><i class="ti ti-info-circle"></i> We'll send updates here</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ktp" class="form-label">
+                            ID Number (NIK)
+                            <span class="required-badge">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="text" name="ktp" id="ktp" class="form-control"
+                                placeholder="3577xxxxxxxxxxxx" maxlength="16" required>
+                            <i class="ti ti-id input-icon"></i>
+                        </div>
+                        <p class="form-helper"><i class="ti ti-info-circle"></i> 16-digit National ID number</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="no_wa" class="form-label">
+                            WhatsApp Number
+                            <span class="required-badge">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="tel" name="no_wa" id="no_wa" class="form-control"
+                                placeholder="08xxxxxxxxxx" required>
+                            <i class="ti ti-brand-whatsapp input-icon"></i>
+                        </div>
+                        <p class="form-helper"><i class="ti ti-info-circle"></i> Active WhatsApp number</p>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="password" class="form-label">
+                            Password
+                            <span class="required-badge">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="password" name="password" id="password" class="form-control"
+                                placeholder="Create a secure password" required minlength="8">
+                            <i class="ti ti-lock input-icon"></i>
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="ti ti-eye" id="toggleIcon"></i>
+                            </button>
+                        </div>
+                        <p class="form-helper"><i class="ti ti-info-circle"></i> Minimum 8 characters</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-card glass">
-                <!-- Personal Information -->
-                <h3 class="form-section-title animate__animated animate__fadeIn animate__delay-2s">
-                    <i class="ti ti-user-circle"></i>
-                    Personal Information
-                </h3>
-
-                <div class="form-grid">
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-3s">
-                        <label for="name" class="form-label">Full Name</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="John Doe"
-                            required>
+            <!-- Section 2: Education Background -->
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="section-icon"><i class="ti ti-school"></i></span>
+                    <div class="section-title">
+                        <h2>Education Background</h2>
+                        <p>Your academic qualifications</p>
                     </div>
-
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-3s">
-                        <label for="email" class="form-label">Email Address</label>
-                        <input type="email" name="email" id="email" class="form-control"
-                            placeholder="your@email.com" required>
-                    </div>
-
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-4s">
-                        <label for="ktp" class="form-label">ID Number (NIK)</label>
-                        <input type="text" name="ktp" id="ktp" class="form-control"
-                            placeholder="3577******" required>
-                    </div>
-
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-4s">
-                        <label for="no_wa" class="form-label">WhatsApp Number</label>
-                        <input type="tel" name="no_wa" id="no_wa" class="form-control"
-                            placeholder="0812*******" required>
-                    </div>
-
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-5s">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" id="password" class="form-control"
-                            placeholder="••••••••" required>
-                    </div>
+                    <span class="section-number">2</span>
                 </div>
 
-                <!-- Education Background -->
-                <h3 class="form-section-title animate__animated animate__fadeIn animate__delay-5s">
-                    <i class="ti ti-school"></i>
-                    Education Background
-                </h3>
-
                 <div class="form-grid">
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-6s">
-                        <label for="pendidikan_terakhir" class="form-label">Highest Education</label>
+                    <div class="form-group">
+                        <label for="pendidikan_terakhir" class="form-label">
+                            Highest Education
+                            <span class="required-badge">*</span>
+                        </label>
                         <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-select" required>
-                            <option value="" selected disabled>Select your education</option>
-                            <option value="SMA SMK">High School/Vocational</option>
+                            <option value="" selected disabled>Select your education level</option>
+                            <option value="SMA SMK">High School / Vocational</option>
+                            <option value="D3">Diploma 3</option>
                             <option value="D4">Diploma 4</option>
-                            <option value="S1">Bachelor's Degree</option>
-                            <option value="S2">Master's Degree</option>
+                            <option value="S1">Bachelor's Degree (S1)</option>
+                            <option value="S2">Master's Degree (S2)</option>
                         </select>
                     </div>
 
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-6s">
-                        <label for="asal_instansi" class="form-label">Institution Name</label>
+                    <div class="form-group">
+                        <label for="ipk" class="form-label">
+                            GPA Score
+                            <span class="required-badge">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="number" name="ipk" id="ipk" class="form-control" step="0.01"
+                                min="0" max="4" placeholder="e.g. 3.50" required>
+                            <i class="ti ti-chart-bar input-icon"></i>
+                        </div>
+                        <p class="form-helper"><i class="ti ti-info-circle"></i> Scale 0 - 4.00</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="asal_instansi" class="form-label">
+                            Institution Name
+                        </label>
                         <select name="asal_instansi" id="asal_instansi" class="form-select">
-                            <option value="">Select</option>
+                            <option value="">Select your institution</option>
                             <option value="Universitas Indonesia">Universitas Indonesia</option>
                             <option value="Institut Teknologi Bandung">Institut Teknologi Bandung</option>
                             <option value="Universitas Gadjah Mada">Universitas Gadjah Mada</option>
@@ -609,16 +1041,17 @@
                         </select>
                     </div>
 
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-7s">
-                        <label for="jurusan" class="form-label">Major/Field of Study</label>
+                    <div class="form-group">
+                        <label for="jurusan" class="form-label">
+                            Major / Field of Study
+                        </label>
                         <select name="jurusan" id="jurusan" class="form-select">
-                            <option value="">Select Major/Field</option>
+                            <option value="">Select your major</option>
                             <option value="Akuntansi">Akuntansi</option>
                             <option value="Kimia">Kimia</option>
                             <option value="Manajemen">Manajemen</option>
                             <option value="Marketing">Marketing</option>
                             <option value="Matematika">Matematika</option>
-                            <option value="Others">Others</option>
                             <option value="Psikologi">Psikologi</option>
                             <option value="Sastra Inggris">Sastra Inggris</option>
                             <option value="Sastra Mandarin">Sastra Mandarin</option>
@@ -638,83 +1071,205 @@
                             <option value="Others">Others</option>
                         </select>
                     </div>
-
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-7s">
-                        <label for="ipk" class="form-label">GPA Score</label>
-                        <input type="number" name="ipk" id="ipk" class="form-control" step="0.01"
-                            min="0" max="4" placeholder="3.50" required>
-                    </div>
                 </div>
+            </div>
 
-                <!-- Physical Information -->
-                <h3 class="form-section-title animate__animated animate__fadeIn animate__delay-8s">
-                    <i class="ti ti-heartbeat"></i>
-                    Physical Information
-                </h3>
+            <!-- Section 3: Physical Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <span class="section-icon"><i class="ti ti-heart-rate-monitor"></i></span>
+                    <div class="section-title">
+                        <h2>Physical Information</h2>
+                        <p>Basic physical details</p>
+                    </div>
+                    <span class="section-number">3</span>
+                </div>
 
                 <div class="form-grid">
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-9s">
-                        <label for="tinggi_badan" class="form-label">Height (cm)</label>
-                        <input type="number" name="tinggi_badan" id="tinggi_badan" class="form-control"
-                            placeholder="170" step="any" required>
+                    <div class="form-group">
+                        <label for="tinggi_badan" class="form-label">
+                            Height
+                            <span class="required-badge">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="number" name="tinggi_badan" id="tinggi_badan" class="form-control"
+                                placeholder="e.g. 170" step="any" required>
+                            <i class="ti ti-ruler input-icon"></i>
+                        </div>
+                        <p class="form-helper"><i class="ti ti-info-circle"></i> In centimeters (cm)</p>
                     </div>
 
-                    <div class="input-group animate__animated animate__fadeIn animate__delay-9s">
-                        <label for="berat_badan" class="form-label">Weight (kg)</label>
-                        <input type="number" name="berat_badan" id="berat_badan" class="form-control"
-                            placeholder="65" step="any" required>
+                    <div class="form-group">
+                        <label for="berat_badan" class="form-label">
+                            Weight
+                            <span class="required-badge">*</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <input type="number" name="berat_badan" id="berat_badan" class="form-control"
+                                placeholder="e.g. 65" step="any" required>
+                            <i class="ti ti-scale input-icon"></i>
+                        </div>
+                        <p class="form-helper"><i class="ti ti-info-circle"></i> In kilograms (kg)</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Submit Button -->
-                <button type="submit" class="btn-primary mt-4 animate__animated animate__fadeIn animate__delay-10s"
-                    data-bs-toggle="modal" data-bs-target="#confirmationModal">
-                    Submit Application
-                    <i class="ti ti-arrow-right"></i>
-                </button>
+            <!-- Submit Section -->
+            <div class="submit-section">
+                <div class="submit-wrapper">
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy
+                                Policy</a>.
+                            I confirm that all information provided is accurate and truthful.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <span>Submit Application</span>
+                        <i class="ti ti-arrow-right"></i>
+                    </button>
+
+                    <div class="security-note">
+                        <i class="ti ti-shield-lock"></i>
+                        <span>Your data is encrypted and securely stored</span>
+                    </div>
+                </div>
             </div>
         </form>
+
+        <!-- Footer -->
+        <div class="register-footer fade-in-up delay-3">
+            <p>&copy; {{ date('Y') }} PT. Indoprima Gemilang. All rights reserved.</p>
+        </div>
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script>
-        // Enhanced form interactions
-        document.querySelectorAll('.form-control').forEach(input => {
+        // Remove preloader when page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('preloader').classList.add('fade-out');
+            }, 500);
+        });
+
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('ti-eye');
+                toggleIcon.classList.add('ti-eye-off');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('ti-eye-off');
+                toggleIcon.classList.add('ti-eye');
+            }
+        }
+
+        // Calculate progress
+        function updateProgress() {
+            const form = document.getElementById('registerForm');
+            const requiredFields = form.querySelectorAll('[required]');
+            let filledCount = 0;
+
+            requiredFields.forEach(field => {
+                if (field.type === 'checkbox') {
+                    if (field.checked) filledCount++;
+                } else if (field.value.trim() !== '') {
+                    filledCount++;
+                }
+            });
+
+            const percentage = Math.round((filledCount / requiredFields.length) * 100);
+            document.getElementById('progressPercentage').textContent = percentage + '%';
+            document.getElementById('progressFill').style.width = percentage + '%';
+        }
+
+        // Add event listeners to all form fields
+        document.querySelectorAll('#registerForm input, #registerForm select').forEach(field => {
+            field.addEventListener('input', updateProgress);
+            field.addEventListener('change', updateProgress);
+        });
+
+        // Initialize progress
+        updateProgress();
+
+        // Enhanced input focus effects
+        document.querySelectorAll('.form-control, .form-select').forEach(input => {
             input.addEventListener('focus', function() {
-                this.parentElement.querySelector('.form-label').style.color = 'var(--primary-light)';
-                this.style.borderColor = 'var(--primary)';
-                this.style.boxShadow = 'var(--glow)';
+                this.closest('.form-group')?.classList.add('focused');
             });
 
             input.addEventListener('blur', function() {
-                this.parentElement.querySelector('.form-label').style.color = 'var(--light)';
-                if (!this.value) {
-                    this.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                    this.style.boxShadow = 'none';
+                this.closest('.form-group')?.classList.remove('focused');
+                // Add validation class
+                if (this.hasAttribute('required') && this.value.trim() !== '') {
+                    this.classList.add('is-valid');
+                    this.classList.remove('is-invalid');
                 }
             });
         });
 
-        // Animate elements when they come into view
-        const animateOnScroll = () => {
-            const elements = document.querySelectorAll('.animate__animated');
+        // NIK input formatting (numbers only)
+        document.getElementById('ktp').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 16);
+        });
 
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
+        // Phone number formatting
+        document.getElementById('no_wa').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+        });
 
-                if (elementPosition < windowHeight - 100) {
-                    const animationClass = element.classList[1];
-                    element.classList.add(animationClass);
-                }
-            });
-        };
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML =
+                '<i class="ti ti-loader" style="animation: spin 1s linear infinite;"></i> Submitting...';
+            submitBtn.disabled = true;
+        });
 
-        window.addEventListener('scroll', animateOnScroll);
-        window.addEventListener('load', animateOnScroll);
+        // Add ripple effect to submit button
+        document.querySelector('.btn-submit').addEventListener('click', function(e) {
+            if (!this.disabled) {
+                const button = this;
+                const ripple = document.createElement('span');
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+
+                button.appendChild(ripple);
+
+                setTimeout(() => ripple.remove(), 600);
+            }
+        });
     </script>
+
+    <style>
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
 </body>
 
 </html>

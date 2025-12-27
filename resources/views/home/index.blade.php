@@ -1,125 +1,343 @@
-@extends('default')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-8 d-flex align-items-stretch">
-                <div class="card w-100 bg-primary overflow-hidden shadow-none card-hover">
-                    <div class="card-body position-relative">
-                        <div class="row">
-                            <div class="col-sm-7">
-                                <div class="d-flex align-items-center mb-7">
-                                    <h5 class="fw-semibold mb-0 fs-6 text-white">Recruitment PT. Indoprima Gemilang</h5>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <div class="border-end pe-4 border-muted border-opacity-10">
-                                        <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">100%</h3>
-                                        <p class="mb-0 text-dark">
-                                            Profile Completeness</p>
-                                    </div>
-                                    <div class="ps-4">
-                                        <h3 class="mb-1 fw-semibold fs-8 d-flex align-content-center">35</h3>
-                                        <p class="mb-0 text-dark">Taking Test</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-5">
-                                <div class="welcome-bg-img mb-n7 text-end">
-                                    <img src="{{ asset('package/dist/images/backgrounds/welcome-bg2.png') }}" alt=""
-                                        class="img-fluid">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dashboard - PT. Indoprima Gelimang</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="{{ asset('package/dist/images/logos/favicon.ico') }}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('package/dist/css/style.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('package/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Standalone Styles -->
+    <style>
+        :root {
+            --bs-body-font-family: 'Plus Jakarta Sans', sans-serif;
+            --bs-body-bg: #f5f7fa;
+        }
+
+        body {
+            background-color: var(--bs-body-bg);
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .main-container {
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        /* Modern Header */
+        .app-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        /* Utilities */
+        .object-fit-cover {
+            object-fit: cover;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .transition-all {
+            transition: all 0.25s ease-in-out;
+        }
+
+        /* Interactive Effects */
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+
+        .hover-bg-light:hover {
+            background-color: #f8f9fa !important;
+        }
+
+        /* Modern Cards */
+        .card-modern {
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+            background: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-modern:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Sticky Sidebar */
+        .sticky-sidebar {
+            position: sticky;
+            top: 100px;
+            z-index: 900;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(120deg, var(--bs-primary) 0%, #1e293b 100%);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .welcome-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    @include('sweetalert::alert')
+
+    <!-- Modern Header -->
+    <header class="app-header py-3 mb-4">
+        <div class="container-xxl d-flex align-items-center justify-content-between">
+            <a href="{{ url('/') }}"
+                class="d-flex align-items-center gap-2 text-decoration-none hover-scale transition-all">
+                <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" width="42" alt="Logo"
+                    class="rounded-3">
+                <div>
+                    <h6 class="fw-bolder text-dark mb-0 ls-tight">Recruitment Portal</h6>
+                    <small class="text-muted d-block" style="font-size: 0.75rem;">PT. Indoprima Gelimang</small>
                 </div>
-            </div>
+            </a>
 
-            <div class="col-md-4">
-                <div class="card bg-dark-subtle hover-img">
-                    <div class="card-body p-4 text-center border-bottom">
-                        @if (Auth::user()->photo != "")
-                        <img src="{{ asset(Auth::user()->photo) }}" alt=""
-                            class="rounded-circle mb-3" width="80" height="80">
+            <div class="d-flex align-items-center gap-3">
+                <div class="dropdown">
+                    <button class="btn btn-light rounded-pill border py-1 px-2 d-flex align-items-center gap-2"
+                        data-bs-toggle="dropdown">
+                        @if (Auth::user()->photo)
+                            <img src="{{ asset(Auth::user()->photo) }}" class="rounded-circle object-fit-cover"
+                                width="32" height="32" alt="User">
                         @else
-                        <img src="{{ asset('package/dist/images/profile/user-1.jpg') }}" alt=""
-                            class="rounded-circle mb-3" width="80" height="80">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold"
+                                style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
                         @endif
-                        <h5 class="fw-semibold mb-0 fs-5 text-white">{{ Auth::user()->name }}</h5>
-                        <span class="text-dark fs-2">{{Auth::user()->ktp}}</span>
+                        <span
+                            class="d-none d-md-block fw-semibold text-dark fs-3 me-1">{{ Str::limit(Auth::user()->name, 15) }}</span>
+                        <i class="ti ti-chevron-down text-muted fs-2"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2"
+                        style="width: 200px;">
+                        <li>
+                            <div class="dropdown-header text-uppercase fs-2 fw-bold text-primary">Account</div>
+                        </li>
+                        <li><a class="dropdown-item rounded-2 py-2 mb-1" href="{{ url('/') }}"><i
+                                    class="ti ti-home me-2"></i> Home</a></li>
+                        <li>
+                            <hr class="dropdown-divider my-1">
+                        </li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item rounded-2 py-2 text-danger"><i
+                                        class="ti ti-logout me-2"></i> Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container container-xxl pb-5">
+
+        <!-- Welcome Section -->
+        <div class="welcome-banner p-4 p-md-5 mb-5 text-white">
+            <div class="welcome-pattern"></div>
+            <div class="row align-items-center position-relative z-1">
+                <div class="col-lg-7">
+                    <span
+                        class="badge bg-white bg-opacity-20 border border-white border-opacity-25 text-muted mb-3 px-3 py-2 rounded-pill">
+                        <i class="ti ti-sparkles me-1"></i> Welcome Back, {{ explode(' ', Auth::user()->name)[0] }}!
+                    </span>
+                    <h2 class="fw-bolder mb-2 text-white display-6">Assessments Dashboard</h2>
+                    <p class="mb-0 text-white-50 fs-5" style="max-width: 600px;">Manage your applications and take
+                        recruitment tests.</p>
+                </div>
+                <div class="col-lg-5 text-end d-none d-lg-block">
+                    <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt="Decoration"
+                        class="img-fluid opacity-25" style="max-height: 140px; filter: grayscale(1) brightness(2);">
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 d-flex align-items-start">
+            <!-- Sidebar -->
+            <div class="col-lg-3 sticky-sidebar">
+                <div class="card-modern p-4 text-center mb-4 border-top border-4 border-primary">
+                    <div class="position-relative d-inline-block mb-3 mt-n5">
+                        <div class="p-1 bg-white rounded-circle">
+                            @if (Auth::user()->photo != null)
+                                <img src="{{ asset(Auth::user()->photo) }}"
+                                    class="rounded-circle shadow-lg object-fit-cover" width="120" height="120">
+                            @else
+                                <div class="rounded-circle bg-primary bg-gradient text-white d-flex align-items-center justify-content-center shadow-lg"
+                                    style="width: 120px; height: 120px; font-size: 3rem;">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                    <a href="{{url('forms')}}" class="px-2 py-2 list-unstyled d-flex align-items-center justify-content-center mb-0">
 
-                        <h6 class="card-text fw-normal text-white">
-                            Manage your curriculum vitae
-                        </h6>
+                    <h5 class="fw-bold text-dark mb-0">{{ Auth::user()->name }}</h5>
+                    <p class="text-primary fw-medium small mb-4">{{ Auth::user()->email }}</p>
 
-                        <i class="ti ti-arrow-right fs-8 text-white"></i>
-                    </a>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url('forms') }}"
+                            class="btn btn-outline-primary rounded-pill fw-bold btn-sm py-2 hover-bg-light">
+                            <i class="ti ti-user-edit me-2"></i> Manage Profile
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Info Card -->
+                <div class="card-modern p-4">
+                    <h6 class="fw-bold mb-3">Statistics</h6>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted small">Available Tests</span>
+                        <span class="fw-bold text-dark">{{ count($data['projects']) }}</span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="text-muted small">Status</span>
+                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill">Active</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-xl-12 col-md-12 d-flex align-items-strech">
-                <div class="card w-100 bg-light-primary">
-                    <div class="card-body">
-                        <div class="d-sm-flex d-block align-items-center justify-content-between mb-7">
-                            <div class="mb-3 mb-sm-0">
-                                <h5 class="card-title fw-semibold">Data Pilihan Recruitment</h5>
-                                <p class="card-subtitle mb-0">Pilih salah satu test recruitment yang ingin anda ikuti</p>
-                            </div>
-                        </div>
+            <!-- Main Content Area -->
+            <div class="col-lg-9">
+                <div class="card-modern shadow-sm overflow-hidden">
+                    <div
+                        class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold">Available Exams</h5>
+                    </div>
+                    <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table align-middle text-nowrap mb-0">
-                                <thead>
-                                    <tr class="text-muted fw-semibold text-center">
-                                        <th scope="col" class="ps-0">Assigned</th>
-                                        <th scope="col">Action</th>
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4 text-secondary text-uppercase py-3 small fw-bold">Project Name
+                                        </th>
+                                        <th class="text-secondary text-uppercase py-3 small fw-bold">Status</th>
+                                        <th class="text-end pe-4 text-secondary text-uppercase py-3 small fw-bold">
+                                            Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="border-top">
+                                <tbody>
                                     @forelse ($data['projects'] as $d)
                                         <tr>
-                                            <td class="text-center">
-                                                <div class="align-items-center">
+                                            <td class="ps-4 py-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div
+                                                        class="bg-primary bg-opacity-10 text-primary rounded-3 p-2 me-3">
+                                                        <i class="ti ti-briefcase fs-5"></i>
+                                                    </div>
                                                     <div>
-                                                        <h6 class="fw-semibold mb-1">{{ $d->project_name }}</h6>
-                                                        <p class="text-muted">Web Designer</p>
+                                                        <h6 class="mb-0 fw-semibold">{{ $d->project_name }}</h6>
+                                                        <small class="text-muted">Recruitment Batch</small>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-center">
+                                            <td class="py-3">
+                                                <span
+                                                    class="badge bg-success bg-opacity-10 text-success px-3 rounded-pill fw-semibold">Open</span>
+                                            </td>
+                                            <td class="text-end pe-4 py-3">
                                                 <button projectId="{{ EncryptData($d->id) }}"
-                                                    class="btn btn-outline-primary text-primary mt-3 btnConfirm">Take
-                                                    Test</button>
+                                                    class="btn btn-primary btn-sm rounded-pill px-4 fw-medium btnConfirm shadow-sm hover-lift">
+                                                    Take Test
+                                                </button>
                                             </td>
                                         </tr>
                                     @empty
+                                        <tr>
+                                            <td colspan="3" class="text-center py-5">
+                                                <div class="text-muted">
+                                                    <i class="ti ti-clipboard-x display-6 mb-3 d-block opacity-25"></i>
+                                                    <h6 class="fw-semibold">No Assessments Available</h6>
+                                                    <p class="small">There are no active recruitment tests at the
+                                                        moment.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
+                <!-- Simple Footer -->
+                <div class="text-center mt-5 py-3 border-top border-light-subtle">
+                    <small class="text-muted">&copy; {{ date('Y') }} PT. Indoprima Gelimang. All rights
+                        reserved.</small>
+                </div>
             </div>
-
-
         </div>
+
     </div>
-@endsection
 
+    <!-- Scripts -->
+    <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/app.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/app.horizontal.init.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/sweetalert2@11.js') }}"></script>
 
-@section('addJs')
     <script>
         $(document).ready(function() {
             $(".btnConfirm").click(function() {
                 let project_id = $(this).attr('projectId')
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "To take this test",
-                    icon: "warning",
+                    title: "Ready to Start?",
+                    text: "You are about to begin the assessment test.",
+                    icon: "info",
                     showCancelButton: true,
-                    confirmButtonColor: "#5D87FF",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes"
+                    confirmButtonColor: "#2563eb",
+                    cancelButtonColor: "#94a3b8",
+                    confirmButtonText: "Yes, Start Now",
+                    cancelButtonText: "Cancel",
+                    customClass: {
+                        popup: 'rounded-4 border-0 shadow-lg',
+                        confirmButton: 'rounded-pill px-4',
+                        cancelButton: 'rounded-pill px-4'
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location = "{{ url('examination') }}/" + project_id
@@ -128,4 +346,6 @@
             });
         });
     </script>
-@endsection
+</body>
+
+</html>
