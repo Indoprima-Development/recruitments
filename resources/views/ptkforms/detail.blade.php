@@ -171,17 +171,101 @@
 
                     <div class="card border-0 shadow-sm bg-primary text-white">
                         <div class="card-body p-4 text-center">
-                            <h2 class="display-6 fw-bold mb-0 text-white">{{ $ptkform->count_candidate ?? 0 }}</h2>
+                            <h2 class="display-6 fw-bold mb-0 text-white">{{ $ptkform->transactions->count() }}</h2>
                             <span class="opacity-75">Total Applicants</span>
                             <hr class="border-white opacity-25 my-3">
                             <div class="d-grid">
-                                <a href="#" class="btn btn-light text-primary fw-bold"
-                                    onclick="alert('Feature coming soon: View Candidate List')">
+                                <button type="button" class="btn btn-light text-primary fw-bold" data-bs-toggle="modal"
+                                    data-bs-target="#candidatesModal">
                                     <i class="ti ti-users me-2"></i> View Candidates
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidates Modal -->
+    <div class="modal fade" id="candidatesModal" tabindex="-1" aria-labelledby="candidatesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom p-4">
+                    <div>
+                        <h5 class="modal-title fw-bold" id="candidatesModalLabel">Candidate List</h5>
+                        <p class="mb-0 text-muted small">Applicants for <span
+                                class="fw-semibold text-primary">{{ $ptkform->jobtitle->jobtitle_name }}</span></p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light text-uppercase text-muted small">
+                                <tr>
+                                    <th class="ps-4 py-3" style="width: 5%;">No</th>
+                                    <th class="py-3">Candidate Name</th>
+                                    <th class="py-3">Details</th>
+                                    <th class="py-3">Applied On</th>
+                                    <th class="pe-4 py-3 text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($ptkform->transactions as $trx)
+                                    <tr>
+                                        <td class="ps-4 fw-semibold">{{ $loop->iteration }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-primary-subtle text-primary rounded-circle me-3 fw-bold d-flex align-items-center justify-content-center"
+                                                    style="width: 40px; height: 40px;">
+                                                    {{ strtoupper(substr($trx->user->name ?? 'U', 0, 1)) }}
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold text-dark">
+                                                        {{ $trx->user->name ?? 'Unknown User' }}</h6>
+                                                    <small class="text-muted">{{ $trx->user->email ?? '-' }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column small">
+                                                <span class="text-muted"><i class="ti ti-school me-1"></i>
+                                                    {{ $trx->user->pendidikan_terakhir ?? '-' }}</span>
+                                                <span class="text-muted"><i class="ti ti-book me-1"></i>
+                                                    {{ $trx->user->jurusan ?? '-' }}</span>
+                                                <span class="text-muted"><i class="ti ti-chart-bar me-1"></i> GPA:
+                                                    {{ $trx->user->ipk ?? '-' }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="badge bg-light text-dark border">{{ \Carbon\Carbon::parse($trx->created_at)->format('d M Y, H:i') }}</span>
+                                        </td>
+                                        <td class="pe-4 text-end">
+                                            <a href="{{ url('datadiris/data-users/' . ($trx->user->id ?? 0)) }}"
+                                                class="btn btn-sm btn-outline-primary rounded-pill px-3" target="_blank">
+                                                View Profile <i class="ti ti-external-link ms-1"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center py-5">
+                                            <div class="text-muted">
+                                                <i class="ti ti-users-off fs-1 d-block mb-3 opacity-50"></i>
+                                                <p class="mb-0">No candidates have applied for this position yet.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer border-top bg-light p-3">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4"
+                        data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

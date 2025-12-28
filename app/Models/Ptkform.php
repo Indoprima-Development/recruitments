@@ -38,4 +38,14 @@ class Ptkform extends Model
 	{
 		return $this->belongsTo('App\Models\Jobtitle');
 	}
+
+    public function ptkfields()
+    {
+        return $this->hasMany('App\Models\Ptkfield');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany('App\Models\Ptkformtransaction');
+    }
 }
