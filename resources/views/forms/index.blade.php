@@ -39,9 +39,11 @@
 
         /* Modern Header */
         .app-header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
             position: sticky;
             top: 0;
             z-index: 1020;
@@ -57,13 +59,13 @@
         }
 
         .transition-all {
-            transition: all 0.25s ease-in-out;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Interactive Effects */
         .hover-lift:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
         }
 
         .hover-scale:hover {
@@ -76,15 +78,17 @@
 
         /* Modern Cards */
         .card-modern {
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
-            background: white;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card-modern:hover {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
         }
 
         /* Tab Navigation - Clean Pill Style */
@@ -121,25 +125,31 @@
 
         /* Sticky Sidebar */
         .sticky-sidebar {
-            position: sticky;
-            top: 100px;
             z-index: 900;
+        }
+
+        @media (min-width: 992px) {
+            .sticky-sidebar {
+                position: sticky;
+                top: 100px;
+            }
         }
 
         /* Form Controls */
         .form-control,
         .form-select {
-            border-radius: 10px;
-            background-color: white;
+            border-radius: 12px;
+            background-color: #fff;
             border: 1px solid #e2e8f0;
             padding: 0.8rem 1rem;
             font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .form-control:focus,
         .form-select:focus {
             border-color: var(--bs-primary);
-            box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.1);
+            box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.1);
             background-color: #fff;
         }
 
@@ -149,11 +159,15 @@
 
         /* Welcome Banner */
         .welcome-banner {
-            background: linear-gradient(120deg, var(--bs-primary) 0%, #1e293b 100%);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%),
+                url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
             border-radius: 24px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(var(--bs-primary-rgb), 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .welcome-pattern {
@@ -164,7 +178,7 @@
             height: 100%;
             background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 30px 30px;
-            opacity: 0.5;
+            opacity: 0.3;
         }
     </style>
 </head>
@@ -209,6 +223,10 @@
                         </li>
                         <li><a class="dropdown-item rounded-2 py-2 mb-1" href="{{ url('/') }}"><i
                                     class="ti ti-home me-2"></i> Home</a></li>
+                        @if (Auth::user()->role == 'ADMIN')
+                            <li><a class="dropdown-item rounded-2 py-2 mb-1" href="{{ url('home') }}"><i
+                                        class="ti ti-layout-dashboard me-2"></i> Admin Page</a></li>
+                        @endif
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
@@ -234,7 +252,7 @@
             <div class="row align-items-center position-relative z-1">
                 <div class="col-lg-7">
                     <span
-                        class="badge bg-white bg-opacity-20 border border-white border-opacity-25 text-dark mb-3 px-3 py-2 rounded-pill">
+                        class="badge bg-white bg-opacity-10 border border-white border-opacity-20 text-white mb-3 px-3 py-2 rounded-pill">
                         <i class="ti ti-sparkles me-1"></i> Selamat Datang, Kandidat!
                     </span>
                     <h2 class="fw-bolder mb-2 text-white display-6">Lengkapi Profil Profesional Anda</h2>
@@ -242,8 +260,7 @@
                         meningkatkan peluang Anda untuk melanjutkan ke tahap rekrutmen selanjutnya.</p>
                 </div>
                 <div class="col-lg-5 text-end d-none d-lg-block">
-                    <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt="Decoration"
-                        class="img-fluid opacity-25" style="max-height: 140px; filter: grayscale(1) brightness(2);">
+                    <!-- Decoration Removed for Cleaner Look -->
                 </div>
             </div>
         </div>

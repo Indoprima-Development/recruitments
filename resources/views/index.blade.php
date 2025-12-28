@@ -62,11 +62,16 @@
 
         /* Navbar */
         .navbar {
-            backdrop-filter: blur(12px);
-            background-color: rgba(255, 255, 255, 0.9) !important;
-            border-bottom: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
             padding: 1rem 0;
             transition: var(--transition);
+            position: sticky;
+            top: 0;
+            z-index: 1020;
         }
 
         .navbar-brand img {
@@ -105,7 +110,7 @@
 
         /* Hero Section */
         .hero-section {
-            padding: 160px 0 100px;
+            padding: 80px 0 100px;
             background: radial-gradient(circle at top right, #eff6ff 0%, #ffffff 40%, #f0f9ff 100%);
             position: relative;
             overflow: hidden;
@@ -462,7 +467,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
                 <img src="{{ asset('photo/white-logo.png') }}" alt="Indoprima Gemilang">
@@ -682,8 +687,7 @@
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="about-image">
-                        <img src="https://images.unsplash.com/photo-1565514020176-db9318b76dfb?q=80&w=2070&auto=format&fit=crop"
-                            alt="Modern Office" class="img-fluid">
+                        <img src="{{ asset('home.avif') }}" alt="Modern Office" class="img-fluid">
                     </div>
                 </div>
             </div>
