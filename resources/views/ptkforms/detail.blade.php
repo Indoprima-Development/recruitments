@@ -175,8 +175,10 @@
                             <span class="opacity-75">Total Applicants</span>
                             <hr class="border-white opacity-25 my-3">
                             <div class="d-grid">
-                                <button class="btn btn-light text-primary fw-bold" disabled>View Candidates (Coming
-                                    Soon)</button>
+                                <a href="#" class="btn btn-light text-primary fw-bold"
+                                    onclick="alert('Feature coming soon: View Candidate List')">
+                                    <i class="ti ti-users me-2"></i> View Candidates
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -13,67 +13,29 @@
             <div class="card card-modern w-100 border-0 shadow-sm">
                 <div class="card-body p-4">
                     <div class="table-responsive">
-                        <table id="example" class="table align-middle table-hover text-nowrap w-100">
+                        <table id="example" class="table align-middle table-hover w-100" style="table-layout: fixed;">
                             <thead class="bg-light text-uppercase text-muted fs-2">
                                 <tr>
-                                    <th class="ps-4 rounded-start">No</th>
-                                    <th>Job Title</th>
-                                    <th>Department / Division</th>
-                                    <th>Section</th>
-                                    <th>Status</th>
-                                    <th>Candidates</th>
-                                    <th class="text-center rounded-end">Action</th>
+                                    <th class="ps-4 rounded-start" style="width: 5%;">No</th>
+                                    <th class="text-center" style="width: 10%;">Action</th>
+                                    <th style="width: 25%;">Job Title</th>
+                                    <th style="width: 25%;">Department / Division</th>
+                                    <th style="width: 15%;">Section</th>
+                                    <th style="width: 10%;">Status</th>
+                                    <th class="text-center rounded-end" style="width: 10%;">Candidates</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($ptkforms as $ptkform)
                                     <tr>
                                         <td class="ps-4 fw-semibold">{{ $loop->iteration }}</td>
-                                        <td>
-                                            <div class="d-flex flex-column">
-                                                <h6 class="mb-0 fw-bold text-dark">
-                                                    {{ $ptkform->jobtitle->jobtitle_name ?? '-' }}</h6>
-                                                <small class="text-muted">ID: {{ $ptkform->id }}</small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex flex-column">
-                                                <span
-                                                    class="fw-semibold text-dark">{{ $ptkform->department->department_name ?? '-' }}</span>
-                                                <span
-                                                    class="text-muted small">{{ $ptkform->division->division_name ?? '-' }}</span>
-                                            </div>
-                                        </td>
-                                        <td>{{ $ptkform->section->section_name ?? '-' }}</td>
-                                        <td>
-                                            @if ($ptkform->status == 1)
-                                                <span
-                                                    class="badge bg-success-subtle text-success fw-bold rounded-pill px-3 py-2">Open</span>
-                                            @elseif($ptkform->status == 0)
-                                                <span
-                                                    class="badge bg-danger-subtle text-danger fw-bold rounded-pill px-3 py-2">Closed</span>
-                                            @else
-                                                <span
-                                                    class="badge bg-warning-subtle text-warning fw-bold rounded-pill px-3 py-2">Draft</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span
-                                                    class="badge bg-primary rounded-circle p-2 d-flex align-items-center justify-content-center"
-                                                    style="width: 32px; height: 32px; font-size: 12px;">
-                                                    {{ $ptkform->count_candidate }}
-                                                </span>
-                                                <span class="text-muted small">Applicants</span>
-                                            </div>
-                                        </td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <button class="btn btn-light btn-sm rounded-circle shadow-none"
                                                     type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="ti ti-dots-vertical fs-5"></i>
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
+                                                <ul class="dropdown-menu border-0 shadow-lg">
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center gap-2 py-2"
                                                             href="{{ route('ptkforms.show', $ptkform->id) }}">
@@ -101,6 +63,45 @@
                                                         </form>
                                                     </li>
                                                 </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column text-wrap">
+                                                <h6 class="mb-0 fw-bold text-dark text-break">
+                                                    {{ $ptkform->jobtitle->jobtitle_name ?? '-' }}</h6>
+                                                <small class="text-muted">ID: {{ $ptkform->id }}</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column text-wrap">
+                                                <span
+                                                    class="fw-semibold text-dark text-break">{{ $ptkform->department->department_name ?? '-' }}</span>
+                                                <span
+                                                    class="text-muted small text-break">{{ $ptkform->division->division_name ?? '-' }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-wrap">
+                                            <span class="text-break">{{ $ptkform->section->section_name ?? '-' }}</span>
+                                        </td>
+                                        <td>
+                                            @if ($ptkform->status == 1)
+                                                <span
+                                                    class="badge bg-success-subtle text-success fw-bold rounded-pill px-3 py-2">Open</span>
+                                            @elseif($ptkform->status == 0)
+                                                <span
+                                                    class="badge bg-danger-subtle text-danger fw-bold rounded-pill px-3 py-2">Closed</span>
+                                            @else
+                                                <span
+                                                    class="badge bg-warning-subtle text-warning fw-bold rounded-pill px-3 py-2">Draft</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="d-flex align-items-center justify-content-center gap-2">
+                                                <span
+                                                    class="badge bg-primary rounded-circle p-2 d-flex align-items-center justify-content-center"
+                                                    style="width: 32px; height: 32px; font-size: 12px;">
+                                                    {{ $ptkform->count_candidate }}
+                                                </span>
                                             </div>
                                         </td>
                                     </tr>

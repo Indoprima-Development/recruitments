@@ -28,7 +28,7 @@ class PtkformsController extends Controller
      */
     public function index()
     {
-        $ptkforms = Ptkform::all();
+        $ptkforms = Ptkform::orderBy('id', 'desc')->get();
         return view('ptkforms.index', ['ptkforms' => $ptkforms]);
     }
 
