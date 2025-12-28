@@ -129,13 +129,13 @@ class AnalyticsController extends Controller
 
         $cityData = DB::table('users')
              ->join('datadiris', 'users.id', '=', 'datadiris.user_id')
-             ->whereNotNull('datadiris.kota')
-             ->select('datadiris.kota', DB::raw('count(*) as count'))
-             ->groupBy('datadiris.kota')
+             ->whereNotNull('datadiris.cities')
+             ->select('datadiris.cities', DB::raw('count(*) as count'))
+             ->groupBy('datadiris.cities')
              ->orderBy('count', 'desc')
              ->limit(10)
              ->get();
-        $cityLabels = $cityData->pluck('kota');
+        $cityLabels = $cityData->pluck('cities');
         $cityCounts = $cityData->pluck('count');
 
 
