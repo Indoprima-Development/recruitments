@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
 use App\Models\User;
-use App\Models\Datadiri;
-use App\Models\Datapendidikanformal;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -19,8 +17,6 @@ class AnalyticsController extends Controller
         $totalVacancies = Ptkform::count();
         $activeVacancies = Ptkform::where('status', 1)->count();
         $totalApplicants = Ptkformtransaction::count();
-
-        // Assuming 'join' column signifies hired when it has a value/date
         $hiredCandidates = Ptkformtransaction::whereNotNull('join')->count();
 
         // 2. Recruitment Funnel Data
@@ -38,7 +34,7 @@ class AnalyticsController extends Controller
             'hired' => $hiredCandidates
         ];
 
-        // 3. Applications Trend (Last 12 Months) - REQ_UPDATED: 12 Months
+        // 3. Applications Trend (Last 12 Months)
         $trendData = Ptkformtransaction::select(
             DB::raw('count(id) as count'),
             DB::raw("LEFT(CONVERT(varchar, created_at, 120), 7) as month_year"),
@@ -52,50 +48,147 @@ class AnalyticsController extends Controller
         $trendLabels = $trendData->pluck('month_name');
         $trendCounts = $trendData->pluck('count');
 
-        // 4. Applicants by Department (Top 5)
+        // 4. Applicants by Department
         $deptData = Ptkformtransaction::join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
             ->join('departments', 'ptkforms.department_id', '=', 'departments.id')
             ->select('departments.department_name', DB::raw('count(ptkformtransactions.id) as count'))
             ->groupBy('departments.department_name')
             ->orderBy('count', 'desc')
-            ->limit(5)
+            ->limit(10)
             ->get();
-
         $deptLabels = $deptData->pluck('department_name');
         $deptCounts = $deptData->pluck('count');
 
-        // 5. Demographics: Gender (from Datadiri linked via User)
-        // Note: Joining across DB might be complex if relationships are not standard, assuming standard join
-        // Ptkformtransaction -> User (user_id) -> Datadiri (user_id)
+        // 4b. Applicants by Section
+        $sectionData = Ptkformtransaction::join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
+            ->join('sections', 'ptkforms.section_id', '=', 'sections.id')
+            ->select('sections.section_name', DB::raw('count(ptkformtransactions.id) as count'))
+            ->groupBy('sections.section_name')
+            ->orderBy('count', 'desc')
+            ->limit(10)
+            ->get();
+        $sectionLabels = $sectionData->pluck('section_name');
+        $sectionCounts = $sectionData->pluck('count');
+
+        // 5. Gender
         $genderData = DB::table('ptkformtransactions')
             ->join('datadiris', 'ptkformtransactions.user_id', '=', 'datadiris.user_id')
             ->select('datadiris.gender', DB::raw('count(*) as count'))
             ->groupBy('datadiris.gender')
             ->get();
-
         $genderCounts = [
             'male' => $genderData->where('gender', 1)->first()->count ?? 0,
             'female' => $genderData->where('gender', 2)->first()->count ?? 0
         ];
 
-        // 6. Education Level Demographics
-        // Ptkformtransaction -> User -> Datapendidikanformal (latest?)
-        // Simplifying by taking the highest level from applicants
-        // This query might be heavy, so we limit or aggregate efficiently
+        // 6. Education Level
         $eduData = DB::table('ptkformtransactions')
             ->join('datapendidikanformals', 'ptkformtransactions.user_id', '=', 'datapendidikanformals.user_id')
-            // To avoid duplicates if user has multiple degrees, we might need a subquery or just basic distribution of all entered degrees
-            // Using a simple approximation for now: listing distinct users or just all degrees in pool
-            ->select('datapendidikanformals.tingkat', DB::raw('count(distinct ptkformtransactions.user_id) as count')) // Count unique users per degree level
+            ->select('datapendidikanformals.tingkat', DB::raw('count(distinct ptkformtransactions.user_id) as count'))
             ->groupBy('datapendidikanformals.tingkat')
             ->orderBy('count', 'desc')
             ->limit(5)
             ->get();
-
         $eduLabels = $eduData->pluck('tingkat');
         $eduCounts = $eduData->pluck('count');
 
-        // 7. Recent Activity
+        // 7. Institute Origin (Asal Instansi)
+        $instansiData = DB::table('users')
+            ->whereNotNull('asal_instansi')
+            ->select('asal_instansi', DB::raw('count(*) as count'))
+            ->groupBy('asal_instansi')
+            ->orderBy('count', 'desc')
+            ->limit(8)
+            ->get();
+        $instansiLabels = $instansiData->pluck('asal_instansi');
+        $instansiCounts = $instansiData->pluck('count');
+
+        // 8. Majors (Jurusan)
+        $jurusanData = DB::table('users')
+             ->whereNotNull('jurusan')
+             ->select('jurusan', DB::raw('count(*) as count'))
+             ->groupBy('jurusan')
+             ->orderBy('count', 'desc')
+             ->limit(8)
+             ->get();
+        $jurusanLabels = $jurusanData->pluck('jurusan');
+        $jurusanCounts = $jurusanData->pluck('count');
+
+        // 9. Ranges (GPA, Weight, Height) using Case When
+        $gpaRanges = DB::select("
+            SELECT
+                CASE
+                    WHEN ipk < 2.5 THEN '< 2.5'
+                    WHEN ipk BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
+                    WHEN ipk BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
+                    WHEN ipk > 3.5 THEN '> 3.5'
+                    ELSE 'Unknown'
+                END as range_label,
+                COUNT(*) as count
+            FROM users
+            WHERE ipk IS NOT NULL AND ipk > 0
+            GROUP BY
+                 CASE
+                    WHEN ipk < 2.5 THEN '< 2.5'
+                    WHEN ipk BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
+                    WHEN ipk BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
+                    WHEN ipk > 3.5 THEN '> 3.5'
+                    ELSE 'Unknown'
+                END
+        ");
+        $gpaData = collect($gpaRanges)->pluck('count', 'range_label');
+
+        $weightRanges = DB::select("
+            SELECT
+                CASE
+                    WHEN berat_badan < 50 THEN '< 50 kg'
+                    WHEN berat_badan BETWEEN 50 AND 60 THEN '50 - 60 kg'
+                    WHEN berat_badan BETWEEN 60 AND 70 THEN '60 - 70 kg'
+                    WHEN berat_badan BETWEEN 70 AND 80 THEN '70 - 80 kg'
+                    WHEN berat_badan > 80 THEN '> 80 kg'
+                    ELSE 'Unknown'
+                END as range_label,
+                COUNT(*) as count
+            FROM users
+            WHERE berat_badan IS NOT NULL AND berat_badan > 0
+            GROUP BY
+                 CASE
+                    WHEN berat_badan < 50 THEN '< 50 kg'
+                    WHEN berat_badan BETWEEN 50 AND 60 THEN '50 - 60 kg'
+                    WHEN berat_badan BETWEEN 60 AND 70 THEN '60 - 70 kg'
+                    WHEN berat_badan BETWEEN 70 AND 80 THEN '70 - 80 kg'
+                    WHEN berat_badan > 80 THEN '> 80 kg'
+                    ELSE 'Unknown'
+                END
+        ");
+        $weightData = collect($weightRanges)->pluck('count', 'range_label');
+
+        $heightRanges = DB::select("
+            SELECT
+                CASE
+                    WHEN tinggi_badan < 150 THEN '< 150 cm'
+                    WHEN tinggi_badan BETWEEN 150 AND 160 THEN '150 - 160 cm'
+                    WHEN tinggi_badan BETWEEN 160 AND 170 THEN '160 - 170 cm'
+                    WHEN tinggi_badan BETWEEN 170 AND 180 THEN '170 - 180 cm'
+                    WHEN tinggi_badan > 180 THEN '> 180 cm'
+                    ELSE 'Unknown'
+                END as range_label,
+                COUNT(*) as count
+            FROM users
+            WHERE tinggi_badan IS NOT NULL AND tinggi_badan > 0
+            GROUP BY
+                 CASE
+                    WHEN tinggi_badan < 150 THEN '< 150 cm'
+                    WHEN tinggi_badan BETWEEN 150 AND 160 THEN '150 - 160 cm'
+                    WHEN tinggi_badan BETWEEN 160 AND 170 THEN '160 - 170 cm'
+                    WHEN tinggi_badan BETWEEN 170 AND 180 THEN '170 - 180 cm'
+                    WHEN tinggi_badan > 180 THEN '> 180 cm'
+                    ELSE 'Unknown'
+                END
+        ");
+        $heightData = collect($heightRanges)->pluck('count', 'range_label');
+
+        // Recent Activity
         $recentActivities = Ptkformtransaction::with(['user', 'ptkform.jobtitle'])
             ->orderBy('created_at', 'desc')
             ->take(5)
@@ -111,9 +204,18 @@ class AnalyticsController extends Controller
             'trendCounts',
             'deptLabels',
             'deptCounts',
+            'sectionLabels',
+            'sectionCounts',
             'genderCounts',
             'eduLabels',
             'eduCounts',
+            'instansiLabels',
+            'instansiCounts',
+            'jurusanLabels',
+            'jurusanCounts',
+            'gpaData',
+            'weightData',
+            'heightData',
             'recentActivities'
         ));
     }

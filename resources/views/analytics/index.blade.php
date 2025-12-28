@@ -52,6 +52,7 @@
             margin-bottom: 1rem;
         }
 
+        /* Gradients */
         .bg-gradient-primary {
             background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
         }
@@ -74,6 +75,14 @@
 
         .bg-gradient-pink {
             background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        }
+
+        .bg-gradient-teal {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        }
+
+        .bg-gradient-orange {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
         }
 
         .text-val {
@@ -102,6 +111,7 @@
             margin-bottom: 1.5rem;
             height: 100%;
             border: 1px solid #f1f5f9;
+            min-height: 350px;
         }
 
         .chart-header {
@@ -255,17 +265,15 @@
         </div>
     </div>
 
-    <!-- Charts Row 1 -->
+    <!-- Charts Row 1: Trend & Funnel -->
     <div class="row g-4 mb-4">
         <div class="col-lg-8">
             <div class="chart-container">
                 <div class="chart-header">
                     <h5 class="chart-title"><i class="ti ti-chart-area-line text-primary"></i> Application Trends (12
                         Months)</h5>
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-light border dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown">Last 12 Months</button>
-                    </div>
+                    <!-- Removed problematic dropdown -->
+                    <span class="badge bg-light text-dark">Data: Last 12 Months</span>
                 </div>
                 <div id="trendChart"></div>
             </div>
@@ -280,7 +288,7 @@
         </div>
     </div>
 
-    <!-- New Analytics Row: Demographics -->
+    <!-- Row 2: Demographics (Gender, Edu, Major) -->
     <div class="row g-4 mb-4">
         <div class="col-lg-4">
             <div class="chart-container">
@@ -290,29 +298,65 @@
                 <div id="genderChart"></div>
                 <div class="d-flex justify-content-center gap-4 mt-3">
                     <div class="text-center">
-                        <h4 class="fw-bold mb-0">{{ $genderCounts['male'] ?? 0 }}</h4>
-                        <small class="text-muted">Male</small>
+                        <h4 class="fw-bold mb-0 text-dark">{{ $genderCounts['male'] ?? 0 }}</h4>
+                        <small class="text-muted"><i class="ti ti-gender-male text-info"></i> Male</small>
                     </div>
                     <div class="text-center">
-                        <h4 class="fw-bold mb-0">{{ $genderCounts['female'] ?? 0 }}</h4>
-                        <small class="text-muted">Female</small>
+                        <h4 class="fw-bold mb-0 text-dark">{{ $genderCounts['female'] ?? 0 }}</h4>
+                        <small class="text-muted"><i class="ti ti-gender-female text-danger"></i> Female</small>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-4">
             <div class="chart-container">
                 <div class="chart-header">
-                    <h5 class="chart-title"><i class="ti ti-school text-warning"></i> Education Distribution</h5>
+                    <h5 class="chart-title"><i class="ti ti-school text-warning"></i> Education Level</h5>
                 </div>
                 <div id="educationChart"></div>
             </div>
         </div>
+        <div class="col-lg-4">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h5 class="chart-title"><i class="ti ti-books text-teal"></i> Top Majors</h5>
+                </div>
+                <div id="jurusanChart"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- Charts Row 3 -->
+    <!-- Row 3: Physical & Academic Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h5 class="chart-title"><i class="ti ti-ruler-2 text-info"></i> Height Distribution</h5>
+                </div>
+                <div id="heightChart"></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h5 class="chart-title"><i class="ti ti-scale text-orange"></i> Weight Distribution</h5>
+                </div>
+                <div id="weightChart"></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h5 class="chart-title"><i class="ti ti-certificate text-danger"></i> GPA Range</h5>
+                </div>
+                <div id="gpaChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 4: Organizational Data & Activity -->
     <div class="row g-4">
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="chart-container">
                 <div class="chart-header">
                     <h5 class="chart-title"><i class="ti ti-building text-info"></i> Applications by Dept</h5>
@@ -320,12 +364,32 @@
                 <div id="deptChart"></div>
             </div>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-4">
             <div class="chart-container">
+                <div class="chart-header">
+                    <h5 class="chart-title"><i class="ti ti-layout-grid text-primary"></i> Applications by Section</h5>
+                </div>
+                <div id="sectionChart"></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h5 class="chart-title"><i class="ti ti-building-arch text-secondary"></i> Institute Origin</h5>
+                </div>
+                <div id="instansiChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row g-4 mt-1">
+        <div class="col-12">
+            <div class="chart-container" style="min-height: auto;">
                 <div class="chart-header">
                     <h5 class="chart-title"><i class="ti ti-activity text-danger"></i> Recent Activity</h5>
                     <a href="{{ route('ptkformtransactions.index') }}"
-                        class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
+                        class="btn btn-sm btn-outline-primary rounded-pill px-3">View All Transaction</a>
                 </div>
                 <ul class="activity-list">
                     @forelse($recentActivities as $activity)
@@ -368,10 +432,12 @@
         const infoColor = '#3b82f6';
         const purpleColor = '#a855f7';
         const pinkColor = '#ec4899';
+        const tealColor = '#14b8a6';
+        const orangeColor = '#f97316';
         const greyColor = '#94a3b8';
 
-        // 1. Trend Chart (Area)
-        var trendOptions = {
+        // 1. Trend Chart
+        new ApexCharts(document.querySelector("#trendChart"), {
             series: [{
                 name: 'Applications',
                 data: {!! json_encode($trendCounts) !!}
@@ -382,7 +448,7 @@
                 toolbar: {
                     show: false
                 },
-                fontFamily: 'Plus Jakarta Sans, sans-serif'
+                fontFamily: 'Plus Jakarta Sans'
             },
             dataLabels: {
                 enabled: false
@@ -394,17 +460,17 @@
             },
             xaxis: {
                 categories: {!! json_encode($trendLabels) !!},
-                axisBorder: {
-                    show: false
-                },
-                axisTicks: {
-                    show: false
-                },
                 labels: {
                     style: {
                         colors: greyColor,
                         fontSize: '11px'
                     }
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
                 }
             },
             yaxis: {
@@ -421,32 +487,26 @@
                     shadeIntensity: 1,
                     opacityFrom: 0.7,
                     opacityTo: 0.1,
-                    stops: [0, 90, 100],
-                    colorStops: []
+                    stops: [0, 90, 100]
                 }
             },
             colors: [primaryColor],
             grid: {
                 borderColor: '#f1f5f9',
-                strokeDashArray: 4,
+                strokeDashArray: 4
             },
             tooltip: {
                 theme: 'light'
             }
-        };
-        new ApexCharts(document.querySelector("#trendChart"), trendOptions).render();
+        }).render();
 
-        // 2. Funnel Chart (Bar)
-        var funnelOptions = {
+        // 2. Funnel Chart
+        new ApexCharts(document.querySelector("#funnelChart"), {
             series: [{
                 name: 'Candidates',
-                data: [
-                    {{ $funnelData['applied'] }},
-                    {{ $funnelData['screened'] }},
-                    {{ $funnelData['psychotest'] }},
-                    {{ $funnelData['interview'] }},
-                    {{ $funnelData['mcu'] }},
-                    {{ $funnelData['offering'] }},
+                data: [{{ $funnelData['applied'] }}, {{ $funnelData['screened'] }},
+                    {{ $funnelData['psychotest'] }}, {{ $funnelData['interview'] }},
+                    {{ $funnelData['mcu'] }}, {{ $funnelData['offering'] }},
                     {{ $funnelData['hired'] }}
                 ]
             }],
@@ -456,7 +516,7 @@
                 toolbar: {
                     show: false
                 },
-                fontFamily: 'Plus Jakarta Sans, sans-serif'
+                fontFamily: 'Plus Jakarta Sans'
             },
             plotOptions: {
                 bar: {
@@ -469,9 +529,7 @@
                     }
                 }
             },
-            colors: [
-                '#6366f1', '#818cf8', '#3b82f6', '#0ea5e9', '#06b6d4', '#22c55e', '#10b981'
-            ],
+            colors: ['#6366f1', '#818cf8', '#3b82f6', '#0ea5e9', '#06b6d4', '#22c55e', '#10b981'],
             dataLabels: {
                 enabled: true,
                 textAnchor: 'start',
@@ -480,10 +538,10 @@
                     fontSize: '12px',
                     fontWeight: 600
                 },
-                formatter: function(val, opt) {
+                formatter: function(val) {
                     return val
                 },
-                offsetX: 0,
+                offsetX: 0
             },
             xaxis: {
                 categories: ['Applied', 'CV Screen', 'Psychotest', 'Interview', 'MCU', 'Offering', 'Hired'],
@@ -497,32 +555,22 @@
                     show: false
                 }
             },
-            yaxis: {
-                labels: {
-                    style: {
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        colors: '#64748b'
-                    }
-                }
-            },
             grid: {
                 show: false
             },
             legend: {
                 show: false
             }
-        };
-        new ApexCharts(document.querySelector("#funnelChart"), funnelOptions).render();
+        }).render();
 
-        // 3. Department Chart (Donut)
-        var deptOptions = {
+        // 3. Dept Chart
+        new ApexCharts(document.querySelector("#deptChart"), {
             series: {!! json_encode($deptCounts) !!},
             labels: {!! json_encode($deptLabels) !!},
             chart: {
                 type: 'donut',
                 height: 320,
-                fontFamily: 'Plus Jakarta Sans, sans-serif'
+                fontFamily: 'Plus Jakarta Sans'
             },
             stroke: {
                 show: true,
@@ -533,24 +581,9 @@
             plotOptions: {
                 pie: {
                     donut: {
-                        size: '75%',
+                        size: '70%',
                         labels: {
                             show: true,
-                            name: {
-                                show: true,
-                                fontSize: '14px',
-                                fontFamily: 'Plus Jakarta Sans, sans-serif',
-                                fontWeight: 600,
-                                color: greyColor
-                            },
-                            value: {
-                                show: true,
-                                fontSize: '24px',
-                                fontFamily: 'Plus Jakarta Sans, sans-serif',
-                                fontWeight: 800,
-                                color: '#1e293b',
-                                offsetY: 5
-                            },
                             total: {
                                 show: true,
                                 label: 'Total',
@@ -567,23 +600,65 @@
             },
             legend: {
                 position: 'bottom',
-                fontFamily: 'Plus Jakarta Sans, sans-serif',
-                fontSize: '13px'
+                fontSize: '12px'
             },
             dataLabels: {
                 enabled: false
             }
-        };
-        new ApexCharts(document.querySelector("#deptChart"), deptOptions).render();
+        }).render();
 
-        // 4. Gender Chart (Pie)
-        var genderOptions = {
+        // 4. Section Chart
+        new ApexCharts(document.querySelector("#sectionChart"), {
+            series: {!! json_encode($sectionCounts) !!},
+            labels: {!! json_encode($sectionLabels) !!},
+            chart: {
+                type: 'donut',
+                height: 320,
+                fontFamily: 'Plus Jakarta Sans'
+            },
+            stroke: {
+                show: true,
+                colors: ['#fff'],
+                width: 2
+            },
+            colors: [purpleColor, orangeColor, tealColor, infoColor, pinkColor],
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '70%',
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: 'Total',
+                                color: greyColor,
+                                formatter: function(w) {
+                                    return w.globals.seriesTotals.reduce((a, b) => {
+                                        return a + b
+                                    }, 0)
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            legend: {
+                position: 'bottom',
+                fontSize: '12px'
+            },
+            dataLabels: {
+                enabled: false
+            }
+        }).render();
+
+        // 5. Gender Chart
+        new ApexCharts(document.querySelector("#genderChart"), {
             series: [{{ $genderCounts['male'] ?? 0 }}, {{ $genderCounts['female'] ?? 0 }}],
             labels: ['Male', 'Female'],
             chart: {
                 type: 'pie',
-                height: 250,
-                fontFamily: 'Plus Jakarta Sans, sans-serif'
+                height: 260,
+                fontFamily: 'Plus Jakarta Sans'
             },
             colors: [infoColor, pinkColor],
             legend: {
@@ -600,11 +675,10 @@
                 colors: ['#fff'],
                 width: 2
             }
-        };
-        new ApexCharts(document.querySelector("#genderChart"), genderOptions).render();
+        }).render();
 
-        // 5. Education Chart (Bar)
-        var eduOptions = {
+        // 6. Education Chart
+        new ApexCharts(document.querySelector("#educationChart"), {
             series: [{
                 name: 'Candidates',
                 data: {!! json_encode($eduCounts) !!}
@@ -615,7 +689,7 @@
                 toolbar: {
                     show: false
                 },
-                fontFamily: 'Plus Jakarta Sans, sans-serif'
+                fontFamily: 'Plus Jakarta Sans'
             },
             plotOptions: {
                 bar: {
@@ -647,16 +721,201 @@
                 show: false
             },
             grid: {
-                show: false,
-                padding: {
-                    top: 0,
-                    bottom: 0
-                }
+                show: false
             },
             legend: {
                 show: false
             }
-        };
-        new ApexCharts(document.querySelector("#educationChart"), eduOptions).render();
+        }).render();
+
+        // 7. Majors (Jurusan) Chart
+        new ApexCharts(document.querySelector("#jurusanChart"), {
+            series: [{
+                name: 'Candidates',
+                data: {!! json_encode($jurusanCounts) !!}
+            }],
+            chart: {
+                type: 'bar',
+                height: 280,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Plus Jakarta Sans'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: true,
+                    barHeight: '50%'
+                }
+            },
+            colors: [tealColor],
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontSize: '10px'
+                }
+            },
+            xaxis: {
+                categories: {!! json_encode($jurusanLabels) !!},
+                labels: {
+                    show: false
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                }
+            },
+            grid: {
+                show: false
+            },
+        }).render();
+
+        // 8. Height Chart
+        new ApexCharts(document.querySelector("#heightChart"), {
+            series: [{
+                name: 'Candidates',
+                data: {!! json_encode($heightData->values()) !!}
+            }],
+            chart: {
+                type: 'bar',
+                height: 250,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Plus Jakarta Sans'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    columnWidth: '40%'
+                }
+            },
+            colors: [infoColor],
+            xaxis: {
+                categories: {!! json_encode($heightData->keys()) !!},
+                labels: {
+                    style: {
+                        fontSize: '11px'
+                    }
+                }
+            },
+            yaxis: {
+                show: false
+            },
+            grid: {
+                show: false
+            }
+        }).render();
+
+        // 9. Weight Chart
+        new ApexCharts(document.querySelector("#weightChart"), {
+            series: [{
+                name: 'Candidates',
+                data: {!! json_encode($weightData->values()) !!}
+            }],
+            chart: {
+                type: 'bar',
+                height: 250,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Plus Jakarta Sans'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    columnWidth: '40%'
+                }
+            },
+            colors: [orangeColor],
+            xaxis: {
+                categories: {!! json_encode($weightData->keys()) !!},
+                labels: {
+                    style: {
+                        fontSize: '11px'
+                    }
+                }
+            },
+            yaxis: {
+                show: false
+            },
+            grid: {
+                show: false
+            }
+        }).render();
+
+        // 10. GPA Chart
+        new ApexCharts(document.querySelector("#gpaChart"), {
+            series: {!! json_encode($gpaData->values()) !!},
+            labels: {!! json_encode($gpaData->keys()) !!},
+            chart: {
+                type: 'donut',
+                height: 250,
+                fontFamily: 'Plus Jakarta Sans'
+            },
+            colors: [successColor, warningColor, primaryColor, pinkColor],
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '65%'
+                    }
+                }
+            },
+            legend: {
+                position: 'bottom',
+                fontSize: '11px'
+            },
+            dataLabels: {
+                enabled: false
+            }
+        }).render();
+
+        // 11. Institute Chart (using Bar)
+        new ApexCharts(document.querySelector("#instansiChart"), {
+            series: [{
+                name: 'Candidates',
+                data: {!! json_encode($instansiCounts) !!}
+            }],
+            chart: {
+                type: 'bar',
+                height: 320,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Plus Jakarta Sans'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: true,
+                    barHeight: '60%',
+                    distributed: true
+                }
+            },
+            colors: [primaryColor, successColor, infoColor, warningColor, purpleColor, pinkColor, tealColor,
+                orangeColor
+            ],
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontSize: '10px'
+                }
+            },
+            xaxis: {
+                categories: {!! json_encode($instansiLabels) !!},
+                labels: {
+                    show: false
+                }
+            },
+            grid: {
+                show: false
+            },
+            legend: {
+                show: false
+            }
+        }).render();
     </script>
 @endsection
