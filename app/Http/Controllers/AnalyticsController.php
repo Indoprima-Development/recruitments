@@ -140,27 +140,32 @@ class AnalyticsController extends Controller
 
 
         // 9. Ranges (GPA, Weight, Height)
+        // Handle potential comma usage in IPK (e.g. 3,50) and ensure numeric validity
         $gpaRanges = DB::select("
             SELECT
                 CASE
-                    WHEN CAST(ipk AS FLOAT) < 2.5 THEN '< 2.5'
-                    WHEN CAST(ipk AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
-                    WHEN CAST(ipk AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
-                    WHEN CAST(ipk AS FLOAT) > 3.5 THEN '> 3.5'
+                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) < 2.5 THEN '< 2.5'
+                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
+                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
+                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 3.5 THEN '> 3.5'
                     ELSE 'Unknown'
                 END as range_label,
                 COUNT(*) as count
             FROM users
-            WHERE ipk IS NOT NULL AND ipk NOT LIKE '%[^0-9.]%'
+            WHERE ipk IS NOT NULL
+              AND LEN(ipk) > 0
+              AND TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) IS NOT NULL
+              AND TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 0
             GROUP BY
                  CASE
-                    WHEN CAST(ipk AS FLOAT) < 2.5 THEN '< 2.5'
-                    WHEN CAST(ipk AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
-                    WHEN CAST(ipk AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
-                    WHEN CAST(ipk AS FLOAT) > 3.5 THEN '> 3.5'
+                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) < 2.5 THEN '< 2.5'
+                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
+                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
+                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 3.5 THEN '> 3.5'
                     ELSE 'Unknown'
                 END
         ");
+        $gpaData = collect($gpaRanges)->pluck('count', 'range_label');
         $gpaData = collect($gpaRanges)->pluck('count', 'range_label');
 
         $weightRanges = DB::select("

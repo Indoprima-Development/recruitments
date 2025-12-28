@@ -386,9 +386,9 @@
         </div>
     </div>
 
-    <!-- Row 5: Organizational Data & Activity -->
-    <div class="row g-4">
-        <div class="col-lg-4">
+    <!-- Row 5: Organizational Data -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
             <div class="chart-container">
                 <div class="chart-header">
                     <h5 class="chart-title"><i class="ti ti-building text-info"></i> Applications by Dept</h5>
@@ -396,7 +396,7 @@
                 <div id="deptChart"></div>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-6">
             <div class="chart-container">
                 <div class="chart-header">
                     <h5 class="chart-title"><i class="ti ti-layout-grid text-primary"></i> Applications by Section</h5>
@@ -404,7 +404,11 @@
                 <div id="sectionChart"></div>
             </div>
         </div>
-        <div class="col-lg-4">
+    </div>
+
+    <!-- Row 6: Recent Activity & Institute -->
+    <div class="row g-4 mt-1">
+        <div class="col-lg-6">
             <div class="chart-container">
                 <div class="chart-header">
                     <h5 class="chart-title"><i class="ti ti-building-arch text-secondary"></i> Institute Origin</h5>
@@ -412,11 +416,7 @@
                 <div id="instansiChart"></div>
             </div>
         </div>
-    </div>
-
-    <!-- Recent Activity -->
-    <div class="row g-4 mt-1">
-        <div class="col-12">
+        <div class="col-lg-6">
             <div class="chart-container" style="min-height: auto;">
                 <div class="chart-header">
                     <h5 class="chart-title"><i class="ti ti-activity text-danger"></i> Recent Activity</h5>
@@ -806,7 +806,7 @@
             },
         }).render();
 
-        // 8. Height Chart
+        // 8. Height Chart (Updated styling)
         new ApexCharts(document.querySelector("#heightChart"), {
             series: [{
                 name: 'Candidates',
@@ -823,10 +823,21 @@
             plotOptions: {
                 bar: {
                     borderRadius: 4,
-                    columnWidth: '40%'
+                    columnWidth: '40%',
+                    dataLabels: {
+                        position: 'top'
+                    }
                 }
             },
             colors: [infoColor],
+            dataLabels: {
+                enabled: true,
+                offsetY: -20,
+                style: {
+                    fontSize: '12px',
+                    colors: ["#304758"]
+                }
+            },
             xaxis: {
                 categories: {!! json_encode($heightData->keys()) !!},
                 labels: {
@@ -843,7 +854,7 @@
             }
         }).render();
 
-        // 9. Weight Chart
+        // 9. Weight Chart (Updated styling)
         new ApexCharts(document.querySelector("#weightChart"), {
             series: [{
                 name: 'Candidates',
@@ -860,10 +871,21 @@
             plotOptions: {
                 bar: {
                     borderRadius: 4,
-                    columnWidth: '40%'
+                    columnWidth: '40%',
+                    dataLabels: {
+                        position: 'top'
+                    }
                 }
             },
             colors: [orangeColor],
+            dataLabels: {
+                enabled: true,
+                offsetY: -20,
+                style: {
+                    fontSize: '12px',
+                    colors: ["#304758"]
+                }
+            },
             xaxis: {
                 categories: {!! json_encode($weightData->keys()) !!},
                 labels: {
@@ -906,7 +928,7 @@
             }
         }).render();
 
-        // 11. Institute Chart (using Bar)
+        // 11. Institute Chart (using Bar) (Updated Layout and Labels)
         new ApexCharts(document.querySelector("#instansiChart"), {
             series: [{
                 name: 'Candidates',
@@ -934,7 +956,8 @@
             dataLabels: {
                 enabled: true,
                 style: {
-                    fontSize: '10px'
+                    fontSize: '10px',
+                    colors: ['#000']
                 }
             },
             xaxis: {
