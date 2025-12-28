@@ -6,9 +6,6 @@
             <a href="{{ url('/') }}" class="text-nowrap logo-img">
                 <img src="{{ asset('photo/white-logo.png') }}" width="180" alt="" />
             </a>
-            <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                <i class="ti ti-x fs-8"></i>
-            </div>
         </div>
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
