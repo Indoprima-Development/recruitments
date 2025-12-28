@@ -118,13 +118,13 @@ class AnalyticsController extends Controller
          // 10. Geography (Provinces & Cities from datadiris)
         $provinceData = DB::table('users')
              ->join('datadiris', 'users.id', '=', 'datadiris.user_id')
-             ->whereNotNull('datadiris.provinsi')
-             ->select('datadiris.provinsi', DB::raw('count(*) as count'))
-             ->groupBy('datadiris.provinsi')
+             ->whereNotNull('datadiris.provinces')
+             ->select('datadiris.provinces', DB::raw('count(*) as count'))
+             ->groupBy('datadiris.provinces')
              ->orderBy('count', 'desc')
              ->limit(10)
              ->get();
-        $provinceLabels = $provinceData->pluck('provinsi');
+        $provinceLabels = $provinceData->pluck('provinces');
         $provinceCounts = $provinceData->pluck('count');
 
         $cityData = DB::table('users')
