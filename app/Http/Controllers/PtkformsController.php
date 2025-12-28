@@ -120,7 +120,7 @@ class PtkformsController extends Controller
         if (!empty($trs)) {
             $isApplied = true;
         }
-        return view('ptkforms.show', compact('isApplied','ptkform','jobtitle'));
+        return view('ptkforms.detail', compact('isApplied','ptkform','jobtitle'));
     }
 
     /**
@@ -132,7 +132,15 @@ class PtkformsController extends Controller
     public function edit($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        return view('ptkforms.edit', ['ptkform' => $ptkform]);
+        $divisions = Division::all();
+        $departments = Department::all();
+        $sections = Section::all();
+        $jobtitles = Jobtitle::all();
+        $educations = Education::all();
+        $majors = Major::all();
+        $fields = Field::all();
+
+        return view('ptkforms.edit', compact('ptkform', 'divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields'));
     }
 
     /**
@@ -177,8 +185,12 @@ class PtkformsController extends Controller
     public function destroy($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        $ptkform->delete();
-        AlertSuccess("Terhapus","Data berhasil dihapus");
+
+        // Soft delete logic - simply close the vacancy
+        $ptkform->status = 0; // 0 = Inactive/Closed
+        $ptkform->save();
+
+        AlertSuccess("Success", "Vacancy closed successfully (Hidden from public)");
         return redirect()->back();
     }
 

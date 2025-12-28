@@ -1,36 +1,35 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\DatadetailsController;
-use App\Http\Controllers\ExamsController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProjectsController;
-use App\Http\Controllers\QnasController;
-use App\Http\Controllers\FormsController;
 use App\Http\Controllers\DatadirisController;
-use App\Http\Controllers\DatapendidikanformalsController;
-use App\Http\Controllers\DatapendidikannonformalsController;
 use App\Http\Controllers\DatakeluargasController;
 use App\Http\Controllers\DatakemampuansController;
 use App\Http\Controllers\DatakesehatansController;
 use App\Http\Controllers\DataolahragasController;
-use App\Http\Controllers\DatapengalamankerjasController;
 use App\Http\Controllers\DataorganisasisController;
 use App\Http\Controllers\DatapeminatansController;
-use App\Http\Controllers\DivisionsController;
+use App\Http\Controllers\DatapendidikanformalsController;
+use App\Http\Controllers\DatapendidikannonformalsController;
+use App\Http\Controllers\DatapengalamankerjasController;
 use App\Http\Controllers\DepartmentsController;
-use App\Http\Controllers\SectionsController;
-use App\Http\Controllers\JobtitlesController;
+use App\Http\Controllers\DivisionsController;
 use App\Http\Controllers\EducationController;
-use App\Http\Controllers\MajorsController;
-use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\ExamsController;
 use App\Http\Controllers\FieldsController;
+use App\Http\Controllers\FormsController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobtitlesController;
+use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\MainController;
-use App\Http\Controllers\PtkformsController;
+use App\Http\Controllers\MajorsController;
+use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\PtkfieldsController;
+use App\Http\Controllers\PtkformsController;
 use App\Http\Controllers\PtkformtransactionsController;
-
+use App\Http\Controllers\QnasController;
+use App\Http\Controllers\SectionsController;
+use App\Mail\SendEmail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,12 +41,12 @@ use App\Http\Controllers\PtkformtransactionsController;
 |
 */
 use Illuminate\Support\Facades\Mail;
-use App\Mail\SendEmail;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/send-email', function () {
     $data = [
         'name' => 'Syahrizal As',
-        'body' => 'Testing Kirim Email di Santri Koding'
+        'body' => 'Testing Kirim Email di Santri Koding',
     ];
 
     Mail::to('findryankpradana@gmail.com')->send(new SendEmail($data));
@@ -69,9 +68,9 @@ Route::prefix('auth')->group(function () {
 });
 Route::get('/emails/konfirmation', [MainController::class, 'konfirmation']);
 
-Route::get('/',                 [MainController::class, 'index']);
-Route::get('/vacancies',        [MainController::class, 'vacancy']);
-Route::get('/vacancies/{id}',   [MainController::class, 'showVacancy']);
+Route::get('/', [MainController::class, 'index']);
+Route::get('/vacancies', [MainController::class, 'vacancy']);
+Route::get('/vacancies/{id}', [MainController::class, 'showVacancy']);
 
 //FIX
 
@@ -132,12 +131,10 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
     });
 });
 
-
-
 Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/ptkformtransactions', [PtkformtransactionsController::class, 'store'])->name('ptkformtransactions.store');
-    Route::get('/home',   [HomeController::class, 'home']);
+    Route::get('/home', [HomeController::class, 'home']);
     Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
 
     Route::controller(HomeController::class)->group(function () {

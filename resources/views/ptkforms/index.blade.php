@@ -1,161 +1,187 @@
 @extends('default')
 
 @section('content')
-@section('cardClass', 'bg-light-primary')
-<div class="container-fluid note-has-grid">
-    <div class="card bg-light-info shadow-none position-relative overflow-hidden">
-        <div class="card-body px-4 py-3">
-            <div class="row align-items-center">
-                <div class="col-9">
-                    <h4 class="fw-semibold mb-8">PTK</h4>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="text-muted text-decoration-none"
-                                    href="./index.html">Permintaan Tenaga Kerja</a></li>
-                        </ol>
-                    </nav>
-                </div>
-                <div class="col-3">
-                    <div class="text-center mb-n5">
-                        <img src="../../dist/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h4 class="mb-0 fw-bold text-dark">PTK Forms Management</h4>
+                <a href="{{ route('ptkforms.create') }}" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm">
+                    <i class="ti ti-plus"></i> Create New PTK
+                </a>
+            </div>
+
+            <div class="card card-modern w-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="table-responsive">
+                        <table id="example" class="table align-middle table-hover text-nowrap w-100">
+                            <thead class="bg-light text-uppercase text-muted fs-2">
+                                <tr>
+                                    <th class="ps-4 rounded-start">No</th>
+                                    <th>Job Title</th>
+                                    <th>Department / Division</th>
+                                    <th>Section</th>
+                                    <th>Status</th>
+                                    <th>Candidates</th>
+                                    <th class="text-center rounded-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($ptkforms as $ptkform)
+                                    <tr>
+                                        <td class="ps-4 fw-semibold">{{ $loop->iteration }}</td>
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <h6 class="mb-0 fw-bold text-dark">
+                                                    {{ $ptkform->jobtitle->jobtitle_name ?? '-' }}</h6>
+                                                <small class="text-muted">ID: {{ $ptkform->id }}</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <span
+                                                    class="fw-semibold text-dark">{{ $ptkform->department->department_name ?? '-' }}</span>
+                                                <span
+                                                    class="text-muted small">{{ $ptkform->division->division_name ?? '-' }}</span>
+                                            </div>
+                                        </td>
+                                        <td>{{ $ptkform->section->section_name ?? '-' }}</td>
+                                        <td>
+                                            @if ($ptkform->status == 1)
+                                                <span
+                                                    class="badge bg-success-subtle text-success fw-bold rounded-pill px-3 py-2">Open</span>
+                                            @elseif($ptkform->status == 0)
+                                                <span
+                                                    class="badge bg-danger-subtle text-danger fw-bold rounded-pill px-3 py-2">Closed</span>
+                                            @else
+                                                <span
+                                                    class="badge bg-warning-subtle text-warning fw-bold rounded-pill px-3 py-2">Draft</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span
+                                                    class="badge bg-primary rounded-circle p-2 d-flex align-items-center justify-content-center"
+                                                    style="width: 32px; height: 32px; font-size: 12px;">
+                                                    {{ $ptkform->count_candidate }}
+                                                </span>
+                                                <span class="text-muted small">Applicants</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="dropdown">
+                                                <button class="btn btn-light btn-sm rounded-circle shadow-none"
+                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ti ti-dots-vertical fs-5"></i>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                                                            href="{{ route('ptkforms.show', $ptkform->id) }}">
+                                                            <i class="ti ti-eye text-info fs-4"></i> View Details
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                                                            href="{{ route('ptkforms.edit', $ptkform->id) }}">
+                                                            <i class="ti ti-edit text-warning fs-4"></i> Edit Vacancy
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li>
+                                                        <form action="{{ route('ptkforms.destroy', $ptkform->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger confirm-delete">
+                                                                <i class="ti ti-archive fs-4"></i> Close/Hide
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <ul class="nav nav-pills p-3 mb-3 rounded align-items-center card flex-row">
-        <li class="nav-item">
-            <a href="javascript:void(0)"
-                class="
-                nav-link
-
-                note-link
-                d-flex
-                align-items-center
-                justify-content-center
-                active
-                px-3 px-md-3
-                me-0 me-md-2 text-body-color
-              "
-                id="all-category">
-                <i class="ti ti-list fill-white me-0 me-md-1"></i>
-                <span class="d-none d-md-block font-weight-medium">All Notes</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="javascript:void(0)"
-                class="
-                nav-link
-
-                note-link
-                d-flex
-                align-items-center
-                justify-content-center
-                px-3 px-md-3
-                me-0 me-md-2 text-body-color
-              "
-                id="note-business">
-                <i class="ti ti-briefcase fill-white me-0 me-md-1"></i>
-                <span class="d-none d-md-block font-weight-medium">Plant 1</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="javascript:void(0)"
-                class="
-                nav-link
-
-                note-link
-                d-flex
-                align-items-center
-                justify-content-center
-                px-3 px-md-3
-                me-0 me-md-2 text-body-color
-              "
-                id="note-social">
-                <i class="ti ti-share fill-white me-0 me-md-1"></i>
-                <span class="d-none d-md-block font-weight-medium">Plant 2</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="javascript:void(0)"
-                class="
-                nav-link
-
-                note-link
-                d-flex
-                align-items-center
-                justify-content-center
-                px-3 px-md-3
-                me-0 me-md-2 text-body-color
-              "
-                id="note-important">
-                <i class="ti ti-star fill-white me-0 me-md-1"></i>
-                <span class="d-none d-md-block font-weight-medium">Plant 5</span>
-            </a>
-        </li>
-        <li class="nav-item ms-auto">
-            <a href="{{ url('ptkforms/create') }}" class="btn btn-primary d-flex align-items-center px-3"
-                id="add-notes">
-                <i class="ti ti-file me-0 me-md-1 fs-4"></i>
-                <span class="d-none d-md-block font-weight-medium fs-3">+ Form PTK</span>
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div id="note-full-container" class="note-has-grid row">
-            @foreach ($ptkforms as $i => $ptkform)
-                <div class="col-md-4 single-note-item all-category note-important">
-                    <div class="card card-body">
-                        <span class="side-stick"></span>
-                        <h6 class="note-title text-truncate w-75 mb-0" data-noteHeading="Book a Ticket for Movie">
-                            {{ $ptkform->jobtitle->jobtitle_name ?? "-" }}
-                        </h6>
-                        <p class="note-date fs-2">{{ $ptkform->division->division_name ?? "-" }}</p>
-                        <div class="note-content">
-                            <p class="note-inner-content"
-                                data-noteContent="Blandit tempus porttitor aasfs. Integer posuere erat a ante venenatis.">
-                                {{ $ptkform->request_basis }}</p>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            @if ($ptkform->status == 0)
-                                <span class="badge bg-primary">Dibuat</span>
-                            @else
-                                <span class="badge bg-success">Disetujui</span>
-                            @endif
-                            <div class="ms-auto">
-                                <div class="category-selector btn-group">
-                                    <a class="nav-link category-dropdown label-group p-0" data-bs-toggle="dropdown"
-                                        href="#" role="button" aria-haspopup="true" aria-expanded="true">
-                                        <div class="category">
-                                            <div class="category-business"></div>
-                                            <div class="category-social"></div>
-                                            <div class="category-important"></div>
-                                            <span class="more-options text-dark">
-                                                <i class="ti ti-dots-vertical fs-5"></i>
-                                            </span>
-                                        </div>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right category-menu">
-                                        <a class="dropdown-item position-relative category-social d-flex align-items-center"
-                                            href="{{ route('ptkforms.show', [$ptkform->id]) }}">Show</a>
-
-                                            <a class="dropdown-item position-relative category-social d-flex align-items-center"
-                                            href="{{ route('ptkforms.edit', [$ptkform->id]) }}">Edit</a>
-
-                                            <a class="dropdown-item position-relative category-social d-flex align-items-center"
-                                            href="{{ url('ptkforms/destroy', [$ptkform->id]) }}">Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-</div>
-@stop
+@endsection
 
 @section('addJs')
-<script src="{{ asset('package/dist/js/apps/notes.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "order": [],
+                "language": {
+                    "search": "",
+                    "searchPlaceholder": "Search vacancies...",
+                    "lengthMenu": "_MENU_ per page"
+                },
+                "dom": '<"d-flex justify-content-between align-items-center mb-3"fl>rt<"d-flex justify-content-between align-items-center mt-3"ip>'
+            });
+
+            // Custom styling for Datatables
+            $('.dataTables_filter input').addClass('form-control shadow-sm border-0 bg-light my-1');
+            $('.dataTables_length select').addClass('form-select shadow-sm border-0 bg-light my-1');
+
+            // Allow sweetalert confirmation
+            $('.confirm-delete').click(function(e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                Swal.fire({
+                    title: 'Close this vacancy?',
+                    text: "It will be hidden from the public job board.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, close it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                })
+            });
+        });
+    </script>
+    <style>
+        .card-modern {
+            background: white;
+            border-radius: 16px;
+        }
+
+        .table thead th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #f1f5f9;
+            background-color: #f8fafc;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-light {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-light:hover {
+            background: #e2e8f0;
+        }
+    </style>
 @endsection

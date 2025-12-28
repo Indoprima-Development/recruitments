@@ -138,6 +138,13 @@
                         </li>
 
                         <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('ptkforms.index') }}" aria-expanded="false">
+                                <span><i class="ti ti-file-description"></i></span>
+                                <span class="hide-menu">PTK Forms (Manage)</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ url('vacancies') }}" aria-expanded="false">
                                 <span><i class="ti ti-briefcase"></i></span>
                                 <span class="hide-menu">Job Vacancies</span>
