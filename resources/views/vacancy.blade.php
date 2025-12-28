@@ -296,7 +296,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('photo/logo-indoprima.webp') }}" alt="Indoprima Gemilang">
+                <img src="{{ asset('photo/white-logo.png') }}" alt="Indoprima Gemilang">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

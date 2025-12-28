@@ -677,7 +677,7 @@
             <div class="form-container">
                 <!-- Mobile Header -->
                 <div class="mobile-header fade-in-up">
-                    <img src="{{ asset('photo/logo-indoprima.webp') }}" alt="Indoprima Gemilang" class="mobile-logo">
+                    <img src="{{ asset('photo/white-logo.png') }}" alt="Indoprima Gemilang" class="mobile-logo">
                 </div>
 
                 <!-- Form Header -->

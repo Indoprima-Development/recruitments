@@ -809,7 +809,7 @@
     <header class="register-header">
         <div class="header-content">
             <a href="{{ url('/') }}">
-                <img src="{{ asset('photo/logo-indoprima.webp') }}" alt="PT. Indoprima Gemilang" class="header-logo">
+                <img src="{{ asset('photo/white-logo.png') }}" alt="PT. Indoprima Gemilang" class="header-logo">
             </a>
             <div class="header-right">
                 <span style="color: var(--text-secondary); font-size: 0.9rem;">Already have an account?</span>

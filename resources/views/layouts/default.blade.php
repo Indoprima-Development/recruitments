@@ -2,251 +2,254 @@
 <html lang="en">
 
 <head>
-    <!-- Title -->
-    <title>Recruitment - PT. Indoprima Gelimang</title>
-    <!-- Required Meta Tag -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="handheldfriendly" content="true" />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="description" content="Mordenize" />
-    <meta name="author" content="" />
-    <meta name="keywords" content="Mordenize" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recruitment - PT. Indoprima Gemilang</title>
+
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('package/dist/images/logos/favicon.ico') }}" />
-    <!-- Owl Carousel -->
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
-    <!-- Core Css -->
     <link id="themeColors" rel="stylesheet" href="{{ asset('package/dist/css/style.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('package/dist/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}">
-    @yield('addCss')
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KG6TYXERDJ"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
 
-        function gtag() {
-            dataLayer.push(arguments);
+    <style>
+        :root {
+            --bs-body-bg: #f5f7fa;
+            --bs-body-font-family: 'Inter', sans-serif;
+            --bs-primary: #3a7bd5;
+            --bs-secondary: #00d2ff;
         }
-        gtag('js', new Date());
 
-        gtag('config', 'G-KG6TYXERDJ');
-    </script>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bs-body-bg);
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .h1,
+        .h2,
+        .h3,
+        .h4,
+        .h5,
+        .h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Glassmorphism */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Modern Card */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: transparent;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+        }
+
+        .left-sidebar {
+            background: white;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
+            z-index: 1040;
+        }
+
+        .sidebar-nav .sidebar-link {
+            border-radius: 12px;
+            margin-bottom: 5px;
+            padding: 12px 16px;
+            font-weight: 500;
+            color: #5a6a85;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-nav .sidebar-link:hover,
+        .sidebar-nav .sidebar-link.active {
+            background: linear-gradient(135deg, rgba(58, 123, 213, 0.1) 0%, rgba(0, 210, 255, 0.1) 100%);
+            color: #3a7bd5;
+        }
+
+        .sidebar-nav .sidebar-link i {
+            font-size: 1.25rem;
+            margin-right: 10px;
+        }
+
+        /* Content Area */
+        .body-wrapper {
+            background: transparent;
+            min-height: 100vh;
+            padding-top: 80px;
+            /* Space for fixed header */
+        }
+
+        /* Table Modernization */
+        .table thead th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            background-color: #f8fafc;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 8px 16px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+            border: none;
+            box-shadow: 0 4px 6px rgba(58, 123, 213, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 10px rgba(58, 123, 213, 0.4);
+        }
+
+        /* Badges */
+        .badge {
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+    </style>
+
+    @yield('addCss')
 </head>
 
 <body>
     @include('sweetalert::alert')
+
     <!-- Preloader -->
     <div class="preloader">
         <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" alt="loader" class="lds-ripple img-fluid" />
     </div>
+
     <!-- Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="horizontal" data-navbarbg="skin6" data-sidebartype="full"
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
 
-        @include('layouts.parts.headbar')
+        <!-- Sidebar -->
         @include('layouts.parts.sidebar')
 
-        <!-- Main wrapper -->
+        <!-- Main Content -->
         <div class="body-wrapper">
-            <div class="container-fluid">
+            <!-- Header -->
+            @include('layouts.parts.headbar')
+
+            <div class="container-fluid pt-4">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show mb-4 rounded-3 border-0 shadow-sm"
+                        role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="ti ti-circle-check fs-5 me-2"></i>
+                            <strong>Success!</strong> &nbsp; {{ session('success') }}
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                 @yield('content2')
-                <section class="datatables">
-                    <!-- basic table -->
-                    <div class="card @yield('cardClass')">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                @yield('content')
+
+                @hasSection('content')
+                    <section class="datatables">
+                        <div class="card @yield('cardClass')">
+                            <div class="card-body p-4">
+                                <div class="table-responsive">
+                                    @yield('content')
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                @endif
+
+                <!-- Footer -->
+                <div class="py-6 px-6 text-center">
+                    <p class="mb-0 fs-2 text-muted">© {{ date('Y') }} PT. Indoprima Gemilang. All rights reserved.
+                    </p>
+                </div>
             </div>
         </div>
-        <div class="dark-transparent sidebartoggler"></div>
+
     </div>
 
-    <!--  Mobilenavbar -->
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="mobilenavbar"
+    <!-- Mobile Navigation (if needed) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mobilenavbar"
         aria-labelledby="offcanvasWithBothOptionsLabel">
+        <!-- Re-use sidebar navigation here or include a mobile part -->
         <nav class="sidebar-nav scroll-sidebar">
             <div class="offcanvas-header justify-content-between">
                 <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" alt="" class="img-fluid">
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body profile-dropdown mobile-navbar" data-simplebar="" data-simplebar>
-                <ul id="sidebarnav">
-                    <li class="sidebar-item">
-                        <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-apps"></i>
-                            </span>
-                            <span class="hide-menu">Apps</span>
-                        </a>
-                        <ul aria-expanded="false" class="collapse first-level my-3">
-                            <li class="sidebar-item py-2">
-                                <a href="#" class="d-flex align-items-center">
-                                    <div
-                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-chat.svg') }}"
-                                            alt="" class="img-fluid" width="24" height="24">
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <h6 class="mb-1 bg-hover-primary">Chat Application</h6>
-                                        <span class="fs-2 d-block fw-normal text-muted">New messages arrived</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-item py-2">
-                                <a href="#" class="d-flex align-items-center">
-                                    <div
-                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-invoice.svg') }}"
-                                            alt="" class="img-fluid" width="24" height="24">
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <h6 class="mb-1 bg-hover-primary">Invoice App</h6>
-                                        <span class="fs-2 d-block fw-normal text-muted">Get latest invoice</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-item py-2">
-                                <a href="#" class="d-flex align-items-center">
-                                    <div
-                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-mobile.svg') }}"
-                                            alt="" class="img-fluid" width="24" height="24">
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <h6 class="mb-1 bg-hover-primary">Contact Application</h6>
-                                        <span class="fs-2 d-block fw-normal text-muted">2 Unsaved Contacts</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-item py-2">
-                                <a href="#" class="d-flex align-items-center">
-                                    <div
-                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-message-box.svg') }}"
-                                            alt="" class="img-fluid" width="24" height="24">
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <h6 class="mb-1 bg-hover-primary">Email App</h6>
-                                        <span class="fs-2 d-block fw-normal text-muted">Get new emails</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-item py-2">
-                                <a href="#" class="d-flex align-items-center">
-                                    <div
-                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-cart.svg') }}"
-                                            alt="" class="img-fluid" width="24" height="24">
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <h6 class="mb-1 bg-hover-primary">User Profile</h6>
-                                        <span class="fs-2 d-block fw-normal text-muted">learn more information</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-item py-2">
-                                <a href="#" class="d-flex align-items-center">
-                                    <div
-                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-date.svg') }}"
-                                            alt="" class="img-fluid" width="24" height="24">
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <h6 class="mb-1 bg-hover-primary">Calendar App</h6>
-                                        <span class="fs-2 d-block fw-normal text-muted">Get dates</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-item py-2">
-                                <a href="#" class="d-flex align-items-center">
-                                    <div
-                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-lifebuoy.svg') }}"
-                                            alt="" class="img-fluid" width="24" height="24">
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <h6 class="mb-1 bg-hover-primary">Contact List Table</h6>
-                                        <span class="fs-2 d-block fw-normal text-muted">Add new contact</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="sidebar-item py-2">
-                                <a href="#" class="d-flex align-items-center">
-                                    <div
-                                        class="bg-light rounded-1 me-3 p-6 d-flex align-items-center justify-content-center">
-                                        <img src="{{ asset('package/dist/images/svgs/icon-dd-application.svg') }}"
-                                            alt="" class="img-fluid" width="24" height="24">
-                                    </div>
-                                    <div class="d-inline-block">
-                                        <h6 class="mb-1 bg-hover-primary">Notes Application</h6>
-                                        <span class="fs-2 d-block fw-normal text-muted">To-do and Daily tasks</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <ul class="px-8 mt-7 mb-4">
-                                <li class="sidebar-item mb-3">
-                                    <h5 class="fs-5 fw-semibold">Quick Links</h5>
-                                </li>
-                                <li class="sidebar-item py-2">
-                                    <a class="fw-semibold text-dark" href="#">Pricing Page</a>
-                                </li>
-                                <li class="sidebar-item py-2">
-                                    <a class="fw-semibold text-dark" href="#">Authentication Design</a>
-                                </li>
-                                <li class="sidebar-item py-2">
-                                    <a class="fw-semibold text-dark" href="#">Register Now</a>
-                                </li>
-                                <li class="sidebar-item py-2">
-                                    <a class="fw-semibold text-dark" href="#">404 Error Page</a>
-                                </li>
-                                <li class="sidebar-item py-2">
-                                    <a class="fw-semibold text-dark" href="#">Notes App</a>
-                                </li>
-                                <li class="sidebar-item py-2">
-                                    <a class="fw-semibold text-dark" href="#">User Application</a>
-                                </li>
-                                <li class="sidebar-item py-2">
-                                    <a class="fw-semibold text-dark" href="#">Account Settings</a>
-                                </li>
-                            </ul>
-                        </ul>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="app-chat.html" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-message-dots"></i>
-                            </span>
-                            <span class="hide-menu">Chat</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="app-calendar.html" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-calendar"></i>
-                            </span>
-                            <span class="hide-menu">Calendar</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="app-email.html" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-mail"></i>
-                            </span>
-                            <span class="hide-menu">Email</span>
-                        </a>
-                    </li>
-                </ul>
+            <div class="offcanvas-body profile-dropdown mobile-navbar" data-simplebar>
+                <!-- Content similar to sidebar -->
             </div>
         </nav>
     </div>
 
-    @include('layouts.parts.js')
+    <!-- Scripts -->
+    <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+
+    <script src="{{ asset('package/dist/js/app.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/app.init.js') }}"></script>
+    <script src="{{ asset('package/dist/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset('package/dist/js/custom.js') }}"></script>
+
+    <script src="{{ asset('package/dist/libs/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('package/dist/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/sweetalert2@11.js') }}"></script>
+
+    @yield('addJs')
 </body>
 
 </html>
