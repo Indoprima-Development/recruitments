@@ -74,7 +74,12 @@ Route::get('/vacancies/{id}', [MainController::class, 'showVacancy']);
 
 //FIX
 
+use App\Http\Controllers\AnalyticsController;
+
 Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
+    // ANALYTICS
+    Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+
     //HOME
     Route::controller(HomeController::class)->group(function () {
         // Route::get('/home', 'home');
