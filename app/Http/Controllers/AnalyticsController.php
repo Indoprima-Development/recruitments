@@ -40,12 +40,12 @@ class AnalyticsController extends Controller
         // 3. Applications Trend (Last 6 Months)
         $trendData = Ptkformtransaction::select(
             DB::raw('count(id) as count'),
-            DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month_year"),
-            DB::raw("DATE_FORMAT(created_at, '%M') as month_name")
+            DB::raw("FORMAT(created_at, 'yyyy-MM') as month_year"),
+            DB::raw("FORMAT(created_at, 'MMMM') as month_name")
         )
         ->where('created_at', '>=', Carbon::now()->subMonths(6))
-        ->groupBy('month_year', 'month_name')
-        ->orderBy('month_year', 'asc')
+        ->groupBy(DB::raw("FORMAT(created_at, 'yyyy-MM')"), DB::raw("FORMAT(created_at, 'MMMM')"))
+        ->orderBy(DB::raw("FORMAT(created_at, 'yyyy-MM')"), 'asc')
         ->get();
 
         $trendLabels = $trendData->pluck('month_name');
