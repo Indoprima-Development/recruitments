@@ -235,6 +235,9 @@
         </nav>
     </div>
 
+    <!-- Modals -->
+    @yield('modals')
+
     <!-- Scripts -->
     <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('package/dist/libs/simplebar/dist/simplebar.min.js') }}"></script>

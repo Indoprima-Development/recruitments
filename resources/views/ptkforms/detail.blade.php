@@ -187,6 +187,9 @@
         </div>
     </div>
 
+@endsection
+
+@section('modals')
     <!-- Candidates Modal -->
     <div class="modal fade" id="candidatesModal" tabindex="-1" aria-labelledby="candidatesModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
