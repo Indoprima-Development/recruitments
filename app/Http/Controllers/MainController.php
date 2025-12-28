@@ -18,7 +18,8 @@ class MainController extends Controller
     {
         $date = date("Y-m-d");
 
-        $jobs = Ptkform::where("status", 1)
+        $jobs = Ptkform::with(['jobtitle', 'division', 'education'])
+            ->where("status", 1)
             ->whereDate('date_open_vacancy', '<=', $date . ' 00:00')
             ->whereDate('date_closed_vacancy', '>=', $date . ' 23:59')
             ->get()->take(4);
@@ -32,7 +33,8 @@ class MainController extends Controller
         $date = date("Y-m-d");
 
         //find from ptk which has status = 1
-        $jobs = Ptkform::where("status", 1)
+        $jobs = Ptkform::with(['jobtitle', 'division', 'education'])
+            ->where("status", 1)
             ->whereDate('date_open_vacancy', '<=', $date . ' 00:00')
             ->whereDate('date_closed_vacancy', '>=', $date . ' 23:59')
             ->get();
