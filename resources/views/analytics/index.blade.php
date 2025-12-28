@@ -85,6 +85,10 @@
             background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
         }
 
+        .bg-gradient-indigo {
+            background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+        }
+
         .text-val {
             font-size: 1.8rem;
             font-weight: 800;
@@ -167,6 +171,15 @@
             color: #3b82f6;
             flex-shrink: 0;
             font-size: 1.1rem;
+        }
+
+        .badge-subtle {
+            background-color: rgba(241, 245, 249, 1);
+            color: #475569;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 600;
+            border-radius: 0.25rem;
         }
     </style>
 @endsection
@@ -272,8 +285,7 @@
                 <div class="chart-header">
                     <h5 class="chart-title"><i class="ti ti-chart-area-line text-primary"></i> Application Trends (12
                         Months)</h5>
-                    <!-- Removed problematic dropdown -->
-                    <span class="badge bg-light text-dark">Data: Last 12 Months</span>
+                    <span class="badge badge-subtle">Recent Activity</span>
                 </div>
                 <div id="trendChart"></div>
             </div>
@@ -326,7 +338,27 @@
         </div>
     </div>
 
-    <!-- Row 3: Physical & Academic Stats -->
+    <!-- Row 3: Geography -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h5 class="chart-title"><i class="ti ti-map-pin text-danger"></i> Top Provinces</h5>
+                </div>
+                <div id="provinceChart"></div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h5 class="chart-title"><i class="ti ti-map text-info"></i> Top Cities</h5>
+                </div>
+                <div id="cityChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 4: Physical & Academic Stats -->
     <div class="row g-4 mb-4">
         <div class="col-lg-4">
             <div class="chart-container">
@@ -354,7 +386,7 @@
         </div>
     </div>
 
-    <!-- Row 4: Organizational Data & Activity -->
+    <!-- Row 5: Organizational Data & Activity -->
     <div class="row g-4">
         <div class="col-lg-4">
             <div class="chart-container">
@@ -435,6 +467,7 @@
         const tealColor = '#14b8a6';
         const orangeColor = '#f97316';
         const greyColor = '#94a3b8';
+        const indigoColor = '#6366f1';
 
         // 1. Trend Chart
         new ApexCharts(document.querySelector("#trendChart"), {
@@ -914,6 +947,84 @@
                 show: false
             },
             legend: {
+                show: false
+            }
+        }).render();
+
+        // 12. Province Chart
+        new ApexCharts(document.querySelector("#provinceChart"), {
+            series: [{
+                name: 'Candidates',
+                data: {!! json_encode($provinceCounts) !!}
+            }],
+            chart: {
+                type: 'bar',
+                height: 300,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Plus Jakarta Sans'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: true,
+                    barHeight: '60%'
+                }
+            },
+            colors: [indigoColor],
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontSize: '10px'
+                }
+            },
+            xaxis: {
+                categories: {!! json_encode($provinceLabels) !!},
+                labels: {
+                    show: false
+                }
+            },
+            grid: {
+                show: false
+            }
+        }).render();
+
+        // 13. City Chart
+        new ApexCharts(document.querySelector("#cityChart"), {
+            series: [{
+                name: 'Candidates',
+                data: {!! json_encode($cityCounts) !!}
+            }],
+            chart: {
+                type: 'bar',
+                height: 300,
+                toolbar: {
+                    show: false
+                },
+                fontFamily: 'Plus Jakarta Sans'
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: true,
+                    barHeight: '60%'
+                }
+            },
+            colors: [infoColor],
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontSize: '10px'
+                }
+            },
+            xaxis: {
+                categories: {!! json_encode($cityLabels) !!},
+                labels: {
+                    show: false
+                }
+            },
+            grid: {
                 show: false
             }
         }).render();

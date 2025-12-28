@@ -70,12 +70,13 @@ class AnalyticsController extends Controller
         $sectionLabels = $sectionData->pluck('section_name');
         $sectionCounts = $sectionData->pluck('count');
 
-        // 5. Gender
+        // 5. Gender (Updated from User->Datadiri per request "gender datanya diambil dari datadiris.gender")
         $genderData = DB::table('ptkformtransactions')
             ->join('datadiris', 'ptkformtransactions.user_id', '=', 'datadiris.user_id')
             ->select('datadiris.gender', DB::raw('count(*) as count'))
             ->groupBy('datadiris.gender')
             ->get();
+        // Assuming Datadiris gender: 1 = Male, 2 = Female
         $genderCounts = [
             'male' => $genderData->where('gender', 1)->first()->count ?? 0,
             'female' => $genderData->where('gender', 2)->first()->count ?? 0
@@ -114,7 +115,31 @@ class AnalyticsController extends Controller
         $jurusanLabels = $jurusanData->pluck('jurusan');
         $jurusanCounts = $jurusanData->pluck('count');
 
-        // 9. Ranges (GPA, Weight, Height) using Case When
+         // 10. Geography (Provinces & Cities from datadiris)
+        $provinceData = DB::table('users')
+             ->join('datadiris', 'users.id', '=', 'datadiris.user_id')
+             ->whereNotNull('datadiris.provinsi')
+             ->select('datadiris.provinsi', DB::raw('count(*) as count'))
+             ->groupBy('datadiris.provinsi')
+             ->orderBy('count', 'desc')
+             ->limit(10)
+             ->get();
+        $provinceLabels = $provinceData->pluck('provinsi');
+        $provinceCounts = $provinceData->pluck('count');
+
+        $cityData = DB::table('users')
+             ->join('datadiris', 'users.id', '=', 'datadiris.user_id')
+             ->whereNotNull('datadiris.kota')
+             ->select('datadiris.kota', DB::raw('count(*) as count'))
+             ->groupBy('datadiris.kota')
+             ->orderBy('count', 'desc')
+             ->limit(10)
+             ->get();
+        $cityLabels = $cityData->pluck('kota');
+        $cityCounts = $cityData->pluck('count');
+
+
+        // 9. Ranges (GPA, Weight, Height)
         $gpaRanges = DB::select("
             SELECT
                 CASE
@@ -216,7 +241,11 @@ class AnalyticsController extends Controller
             'gpaData',
             'weightData',
             'heightData',
-            'recentActivities'
+            'recentActivities',
+            'provinceLabels',
+            'provinceCounts',
+            'cityLabels',
+            'cityCounts'
         ));
     }
 }
