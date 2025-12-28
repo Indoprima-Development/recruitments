@@ -118,21 +118,21 @@ class AnalyticsController extends Controller
         $gpaRanges = DB::select("
             SELECT
                 CASE
-                    WHEN ipk < 2.5 THEN '< 2.5'
-                    WHEN ipk BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
-                    WHEN ipk BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
-                    WHEN ipk > 3.5 THEN '> 3.5'
+                    WHEN CAST(ipk AS FLOAT) < 2.5 THEN '< 2.5'
+                    WHEN CAST(ipk AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
+                    WHEN CAST(ipk AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
+                    WHEN CAST(ipk AS FLOAT) > 3.5 THEN '> 3.5'
                     ELSE 'Unknown'
                 END as range_label,
                 COUNT(*) as count
             FROM users
-            WHERE ipk IS NOT NULL AND ipk > 0
+            WHERE ipk IS NOT NULL AND ipk NOT LIKE '%[^0-9.]%'
             GROUP BY
                  CASE
-                    WHEN ipk < 2.5 THEN '< 2.5'
-                    WHEN ipk BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
-                    WHEN ipk BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
-                    WHEN ipk > 3.5 THEN '> 3.5'
+                    WHEN CAST(ipk AS FLOAT) < 2.5 THEN '< 2.5'
+                    WHEN CAST(ipk AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
+                    WHEN CAST(ipk AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
+                    WHEN CAST(ipk AS FLOAT) > 3.5 THEN '> 3.5'
                     ELSE 'Unknown'
                 END
         ");
