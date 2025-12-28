@@ -19,10 +19,10 @@
                                     <th class="ps-4 rounded-start" style="width: 5%;">No</th>
                                     <th class="text-center" style="width: 10%;">Action</th>
                                     <th style="width: 25%;">Job Title</th>
-                                    <th style="width: 25%;">Department / Division</th>
-                                    <th style="width: 15%;">Section</th>
+                                    <th style="width: 25%;" class="d-none d-md-table-cell">Dept / Div</th>
+                                    <th style="width: 15%;" class="d-none d-lg-table-cell">Section</th>
                                     <th style="width: 10%;">Status</th>
-                                    <th class="text-center rounded-end" style="width: 10%;">Candidates</th>
+                                    <th class="text-center rounded-end" style="width: 10%;">Count</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,9 +70,13 @@
                                                 <h6 class="mb-0 fw-bold text-dark text-break">
                                                     {{ $ptkform->jobtitle->jobtitle_name ?? '-' }}</h6>
                                                 <small class="text-muted">ID: {{ $ptkform->id }}</small>
+                                                <!-- Visible only on small screens -->
+                                                <small class="d-md-none text-muted mt-1">
+                                                    {{ $ptkform->department->department_name ?? '-' }}
+                                                </small>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td class="d-none d-md-table-cell">
                                             <div class="d-flex flex-column text-wrap">
                                                 <span
                                                     class="fw-semibold text-dark text-break">{{ $ptkform->department->department_name ?? '-' }}</span>
@@ -80,7 +84,7 @@
                                                     class="text-muted small text-break">{{ $ptkform->division->division_name ?? '-' }}</span>
                                             </div>
                                         </td>
-                                        <td class="text-wrap">
+                                        <td class="d-none d-lg-table-cell text-wrap">
                                             <span class="text-break">{{ $ptkform->section->section_name ?? '-' }}</span>
                                         </td>
                                         <td>
@@ -99,8 +103,9 @@
                                             <div class="d-flex align-items-center justify-content-center gap-2">
                                                 <span
                                                     class="badge bg-primary rounded-circle p-2 d-flex align-items-center justify-content-center"
-                                                    style="width: 32px; height: 32px; font-size: 12px;">
-                                                    {{ $ptkform->count_candidate }}
+                                                    style="width: 32px; height: 32px; font-size: 12px;"
+                                                    title="{{ $ptkform->transactions_count }} Applicants">
+                                                    {{ $ptkform->transactions_count }}
                                                 </span>
                                             </div>
                                         </td>

@@ -481,7 +481,7 @@
                 <!-- Skills & Org -->
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="section-card h-100">
+                        <div class="section-card">
                             <div class="section-header">
                                 <div class="section-icon"><i class="fas fa-tools"></i></div>
                                 <h4 class="section-title">Skills & Hobbies</h4>
@@ -503,7 +503,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="section-card h-100">
+                        <div class="section-card">
                             <div class="section-header">
                                 <div class="section-icon"><i class="fas fa-users"></i></div>
                                 <h4 class="section-title">Organization</h4>
