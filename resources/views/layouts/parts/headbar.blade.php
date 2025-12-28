@@ -1,3 +1,22 @@
+<style>
+    .app-header {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1020;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-collapse {
+        margin-right: 20px;
+    }
+</style>
+
 <header class="app-header">
     <nav class="navbar navbar-expand-lg navbar-light">
         <ul class="navbar-nav">
@@ -53,7 +72,31 @@
                                 </div>
                             </div>
                             <div class="message-body">
-                                <a href="{{ url('forms') }}" class="py-8 px-7 mt-8 d-flex align-items-center">
+                                <a href="{{ url('/') }}" class="py-8 px-7 mt-8 d-flex align-items-center">
+                                    <span
+                                        class="d-flex align-items-center justify-content-center bg-light rounded-1 p-6">
+                                        <i class="ti ti-home fs-6 text-primary"></i>
+                                    </span>
+                                    <div class="w-75 d-inline-block v-middle ps-3">
+                                        <h6 class="mb-1 bg-hover-primary fw-semibold">Home</h6>
+                                        <span class="d-block text-dark">Go to Landing Page</span>
+                                    </div>
+                                </a>
+
+                                @if (Auth::user()->role == 'ADMIN')
+                                    <a href="{{ url('home') }}" class="py-8 px-7 d-flex align-items-center">
+                                        <span
+                                            class="d-flex align-items-center justify-content-center bg-light rounded-1 p-6">
+                                            <i class="ti ti-layout-dashboard fs-6 text-primary"></i>
+                                        </span>
+                                        <div class="w-75 d-inline-block v-middle ps-3">
+                                            <h6 class="mb-1 bg-hover-primary fw-semibold">Admin Page</h6>
+                                            <span class="d-block text-dark">Manage System</span>
+                                        </div>
+                                    </a>
+                                @endif
+
+                                <a href="{{ url('forms') }}" class="py-8 px-7 d-flex align-items-center">
                                     <span
                                         class="d-flex align-items-center justify-content-center bg-light rounded-1 p-6">
                                         <img src="{{ asset('package/dist/images/svgs/icon-account.svg') }}"
@@ -80,18 +123,3 @@
         </div>
     </nav>
 </header>
-<script>
-    // Add Glassmorphism style dynamically if not present in CSS
-    document.addEventListener("DOMContentLoaded", function() {
-        var header = document.querySelector('.app-header');
-        if (header) {
-            header.style.background = 'rgba(255, 255, 255, 0.9)';
-            header.style.backdropFilter = 'blur(12px)';
-            header.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
-            header.style.position = 'sticky';
-            header.style.top = '0';
-            header.style.zIndex = '100'; // High z-index to stay on top
-            header.style.width = '100%';
-        }
-    });
-</script>
