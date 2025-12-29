@@ -141,27 +141,28 @@ class AnalyticsController extends Controller
 
         // 9. Ranges (GPA, Weight, Height)
         // Handle potential comma usage in IPK (e.g. 3,50) and ensure numeric validity
+        // Using ISNUMERIC since TRY_CAST is not available in older SQL Server versions
         $gpaRanges = DB::select("
             SELECT
                 CASE
-                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) < 2.5 THEN '< 2.5'
-                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
-                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
-                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 3.5 THEN '> 3.5'
+                    WHEN ISNUMERIC(REPLACE(ipk, ',', '.')) = 1 AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) < 2.5 THEN '< 2.5'
+                    WHEN ISNUMERIC(REPLACE(ipk, ',', '.')) = 1 AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
+                    WHEN ISNUMERIC(REPLACE(ipk, ',', '.')) = 1 AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
+                    WHEN ISNUMERIC(REPLACE(ipk, ',', '.')) = 1 AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 3.5 THEN '> 3.5'
                     ELSE 'Unknown'
                 END as range_label,
                 COUNT(*) as count
             FROM users
             WHERE ipk IS NOT NULL
               AND LEN(ipk) > 0
-              AND TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) IS NOT NULL
-              AND TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 0
+              AND ISNUMERIC(REPLACE(ipk, ',', '.')) = 1
+              AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 0
             GROUP BY
                  CASE
-                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) < 2.5 THEN '< 2.5'
-                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
-                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
-                    WHEN TRY_CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 3.5 THEN '> 3.5'
+                    WHEN ISNUMERIC(REPLACE(ipk, ',', '.')) = 1 AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) < 2.5 THEN '< 2.5'
+                    WHEN ISNUMERIC(REPLACE(ipk, ',', '.')) = 1 AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 2.5 AND 3.0 THEN '2.5 - 3.0'
+                    WHEN ISNUMERIC(REPLACE(ipk, ',', '.')) = 1 AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) BETWEEN 3.0 AND 3.5 THEN '3.0 - 3.5'
+                    WHEN ISNUMERIC(REPLACE(ipk, ',', '.')) = 1 AND CAST(REPLACE(ipk, ',', '.') AS FLOAT) > 3.5 THEN '> 3.5'
                     ELSE 'Unknown'
                 END
         ");
