@@ -47,6 +47,13 @@
                             </a>
                         </li>
 
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ url('vacancies') }}" aria-expanded="false">
+                                <span><i class="ti ti-briefcase"></i></span>
+                                <span class="hide-menu">Manage Vacancies</span>
+                            </a>
+                        </li>
+
                         <!-- Master Data -->
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
