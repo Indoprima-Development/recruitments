@@ -728,12 +728,19 @@
                 bar: {
                     borderRadius: 4,
                     columnWidth: '50%',
-                    distributed: true
+                    distributed: true,
+                    dataLabels: {
+                        position: 'top'
+                    }
                 }
             },
             colors: [primaryColor, purpleColor, infoColor, warningColor, successColor],
             dataLabels: {
-                enabled: false
+                enabled: true,
+                offsetY: -20,
+                style: {
+                    colors: ['#000000']
+                }
             },
             xaxis: {
                 categories: {!! json_encode($eduLabels) !!},
@@ -786,7 +793,8 @@
             dataLabels: {
                 enabled: true,
                 style: {
-                    fontSize: '10px'
+                    fontSize: '10px',
+                    colors: ['#000000']
                 }
             },
             xaxis: {

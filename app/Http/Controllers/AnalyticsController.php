@@ -99,7 +99,7 @@ class AnalyticsController extends Controller
             ->select('asal_instansi', DB::raw('count(*) as count'))
             ->groupBy('asal_instansi')
             ->orderBy('count', 'desc')
-            ->limit(8)
+            ->limit(7)
             ->get();
         $instansiLabels = $instansiData->pluck('asal_instansi');
         $instansiCounts = $instansiData->pluck('count');

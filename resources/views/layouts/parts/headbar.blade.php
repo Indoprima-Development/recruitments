@@ -26,11 +26,6 @@
                     <i class="ti ti-menu-2"></i>
                 </a>
             </li>
-            <li class="nav-item d-block d-xl-none ms-2">
-                <a href="{{ url('/') }}" class="text-nowrap logo-img">
-                    <img src="{{ asset('photo/white-logo.png') }}" width="140" alt="" />
-                </a>
-            </li>
         </ul>
 
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
