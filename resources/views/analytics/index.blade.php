@@ -331,7 +331,12 @@
         <div class="col-lg-4">
             <div class="chart-container">
                 <div class="chart-header">
-                    <h5 class="chart-title"><i class="ti ti-books text-teal"></i> Top Majors</h5>
+                    <h5 class="chart-title">
+                        <i class="ti ti-books text-teal"></i> Top Majors
+                        @if ($jurusanOtherCount > 0)
+                            <span class="badge bg-light text-dark border ms-2">+{{ $jurusanOtherCount }} Others</span>
+                        @endif
+                    </h5>
                 </div>
                 <div id="jurusanChart"></div>
             </div>
@@ -411,7 +416,12 @@
         <div class="col-lg-6">
             <div class="chart-container">
                 <div class="chart-header">
-                    <h5 class="chart-title"><i class="ti ti-building-arch text-secondary"></i> Institute Origin</h5>
+                    <h5 class="chart-title">
+                        <i class="ti ti-building-arch text-secondary"></i> Institute Origin
+                        @if ($instansiOtherCount > 0)
+                            <span class="badge bg-light text-dark border ms-2">+{{ $instansiOtherCount }} Others</span>
+                        @endif
+                    </h5>
                 </div>
                 <div id="instansiChart"></div>
             </div>

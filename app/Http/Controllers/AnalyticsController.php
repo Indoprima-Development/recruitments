@@ -101,6 +101,11 @@ class AnalyticsController extends Controller
             ->orderBy('count', 'desc')
             ->limit(7)
             ->get();
+
+        $totalInstansi = DB::table('users')->whereNotNull('asal_instansi')->count();
+        $visibleInstansiCount = $instansiData->sum('count');
+        $instansiOtherCount = $totalInstansi - $visibleInstansiCount;
+
         $instansiLabels = $instansiData->pluck('asal_instansi');
         $instansiCounts = $instansiData->pluck('count');
 
@@ -110,8 +115,13 @@ class AnalyticsController extends Controller
              ->select('jurusan', DB::raw('count(*) as count'))
              ->groupBy('jurusan')
              ->orderBy('count', 'desc')
-             ->limit(8)
+             ->limit(7)
              ->get();
+
+        $totalJurusan = DB::table('users')->whereNotNull('jurusan')->count();
+        $visibleJurusanCount = $jurusanData->sum('count');
+        $jurusanOtherCount = $totalJurusan - $visibleJurusanCount;
+
         $jurusanLabels = $jurusanData->pluck('jurusan');
         $jurusanCounts = $jurusanData->pluck('count');
 
@@ -247,8 +257,10 @@ class AnalyticsController extends Controller
             'eduCounts',
             'instansiLabels',
             'instansiCounts',
+            'instansiOtherCount',
             'jurusanLabels',
             'jurusanCounts',
+            'jurusanOtherCount',
             'gpaData',
             'weightData',
             'heightData',
