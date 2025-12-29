@@ -167,28 +167,30 @@ class AnalyticsController extends Controller
                 END
         ");
         $gpaData = collect($gpaRanges)->pluck('count', 'range_label');
-        $gpaData = collect($gpaRanges)->pluck('count', 'range_label');
 
         $weightRanges = DB::select("
             SELECT
                 CASE
-                    WHEN berat_badan < 50 THEN '< 50 kg'
-                    WHEN berat_badan BETWEEN 50 AND 60 THEN '50 - 60 kg'
-                    WHEN berat_badan BETWEEN 60 AND 70 THEN '60 - 70 kg'
-                    WHEN berat_badan BETWEEN 70 AND 80 THEN '70 - 80 kg'
-                    WHEN berat_badan > 80 THEN '> 80 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) < 50 THEN '< 50 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) BETWEEN 50 AND 60 THEN '50 - 60 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) BETWEEN 60 AND 70 THEN '60 - 70 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) BETWEEN 70 AND 80 THEN '70 - 80 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) > 80 THEN '> 80 kg'
                     ELSE 'Unknown'
                 END as range_label,
                 COUNT(*) as count
             FROM users
-            WHERE berat_badan IS NOT NULL AND berat_badan > 0
+            WHERE berat_badan IS NOT NULL
+              AND LEN(berat_badan) > 0
+              AND ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1
+              AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) > 0
             GROUP BY
                  CASE
-                    WHEN berat_badan < 50 THEN '< 50 kg'
-                    WHEN berat_badan BETWEEN 50 AND 60 THEN '50 - 60 kg'
-                    WHEN berat_badan BETWEEN 60 AND 70 THEN '60 - 70 kg'
-                    WHEN berat_badan BETWEEN 70 AND 80 THEN '70 - 80 kg'
-                    WHEN berat_badan > 80 THEN '> 80 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) < 50 THEN '< 50 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) BETWEEN 50 AND 60 THEN '50 - 60 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) BETWEEN 60 AND 70 THEN '60 - 70 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) BETWEEN 70 AND 80 THEN '70 - 80 kg'
+                    WHEN ISNUMERIC(REPLACE(berat_badan, ',', '.')) = 1 AND CAST(REPLACE(berat_badan, ',', '.') AS FLOAT) > 80 THEN '> 80 kg'
                     ELSE 'Unknown'
                 END
         ");
@@ -197,23 +199,26 @@ class AnalyticsController extends Controller
         $heightRanges = DB::select("
             SELECT
                 CASE
-                    WHEN tinggi_badan < 150 THEN '< 150 cm'
-                    WHEN tinggi_badan BETWEEN 150 AND 160 THEN '150 - 160 cm'
-                    WHEN tinggi_badan BETWEEN 160 AND 170 THEN '160 - 170 cm'
-                    WHEN tinggi_badan BETWEEN 170 AND 180 THEN '170 - 180 cm'
-                    WHEN tinggi_badan > 180 THEN '> 180 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) < 150 THEN '< 150 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) BETWEEN 150 AND 160 THEN '150 - 160 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) BETWEEN 160 AND 170 THEN '160 - 170 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) BETWEEN 170 AND 180 THEN '170 - 180 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) > 180 THEN '> 180 cm'
                     ELSE 'Unknown'
                 END as range_label,
                 COUNT(*) as count
             FROM users
-            WHERE tinggi_badan IS NOT NULL AND tinggi_badan > 0
+            WHERE tinggi_badan IS NOT NULL
+              AND LEN(tinggi_badan) > 0
+              AND ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1
+              AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) > 0
             GROUP BY
                  CASE
-                    WHEN tinggi_badan < 150 THEN '< 150 cm'
-                    WHEN tinggi_badan BETWEEN 150 AND 160 THEN '150 - 160 cm'
-                    WHEN tinggi_badan BETWEEN 160 AND 170 THEN '160 - 170 cm'
-                    WHEN tinggi_badan BETWEEN 170 AND 180 THEN '170 - 180 cm'
-                    WHEN tinggi_badan > 180 THEN '> 180 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) < 150 THEN '< 150 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) BETWEEN 150 AND 160 THEN '150 - 160 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) BETWEEN 160 AND 170 THEN '160 - 170 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) BETWEEN 170 AND 180 THEN '170 - 180 cm'
+                    WHEN ISNUMERIC(REPLACE(tinggi_badan, ',', '.')) = 1 AND CAST(REPLACE(tinggi_badan, ',', '.') AS FLOAT) > 180 THEN '> 180 cm'
                     ELSE 'Unknown'
                 END
         ");
