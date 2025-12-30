@@ -349,6 +349,11 @@
                                     </li>
                                 @endif
                                 <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="{{ route('password.change') }}">
+                                        <i class="ti ti-key me-2 text-primary"></i> Change Password
+                                    </a>
+                                </li>
+                                <li>
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>

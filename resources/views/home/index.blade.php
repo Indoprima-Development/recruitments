@@ -191,6 +191,8 @@
                             <li><a class="dropdown-item rounded-2 py-2 mb-1" href="{{ url('home') }}"><i
                                         class="ti ti-layout-dashboard me-2"></i> Admin Page</a></li>
                         @endif
+                        <li><a class="dropdown-item rounded-2 py-2 mb-1" href="{{ route('password.change') }}"><i
+                                    class="ti ti-key me-2"></i> Change Password</a></li>
                         <li>
                             <hr class="dropdown-divider my-1">
                         </li>
