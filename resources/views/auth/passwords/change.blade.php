@@ -155,9 +155,13 @@
                                         <i class="ti ti-key text-muted"></i>
                                     </span>
                                     <input id="current_password" type="password"
-                                        class="form-control border-start-0 ps-2 @error('current_password') is-invalid @enderror"
+                                        class="form-control border-start-0 ps-2 border-end-0 @error('current_password') is-invalid @enderror"
                                         name="current_password" required autocomplete="current-password"
                                         placeholder="Masukkan password lama">
+                                    <span class="input-group-text bg-light border-start-0 ps-2" style="cursor: pointer;"
+                                        onclick="togglePassword('current_password', 'toggleCurrentIcon')">
+                                        <i id="toggleCurrentIcon" class="ti ti-eye text-muted"></i>
+                                    </span>
                                     @error('current_password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -173,9 +177,14 @@
                                         <i class="ti ti-lock text-muted"></i>
                                     </span>
                                     <input id="new_password" type="password"
-                                        class="form-control border-start-0 ps-2 @error('new_password') is-invalid @enderror"
+                                        class="form-control border-start-0 ps-2 border-end-0 @error('new_password') is-invalid @enderror"
                                         name="new_password" required autocomplete="new-password"
                                         placeholder="Minimal 8 karakter">
+                                    <span class="input-group-text bg-light border-start-0 ps-2"
+                                        style="cursor: pointer;"
+                                        onclick="togglePassword('new_password', 'toggleNewIcon')">
+                                        <i id="toggleNewIcon" class="ti ti-eye text-muted"></i>
+                                    </span>
                                     @error('new_password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -192,13 +201,22 @@
                                         <i class="ti ti-lock-check text-muted"></i>
                                     </span>
                                     <input id="new_password_confirmation" type="password"
-                                        class="form-control border-start-0 ps-2" name="new_password_confirmation"
-                                        required autocomplete="new-password" placeholder="Ulangi password baru">
+                                        class="form-control border-start-0 ps-2 border-end-0"
+                                        name="new_password_confirmation" required autocomplete="new-password"
+                                        placeholder="Ulangi password baru">
+                                    <span class="input-group-text bg-light border-start-0 ps-2"
+                                        style="cursor: pointer;"
+                                        onclick="togglePassword('new_password_confirmation', 'toggleConfirmIcon')">
+                                        <i id="toggleConfirmIcon" class="ti ti-eye text-muted"></i>
+                                    </span>
+                                    <div class="invalid-feedback" id="passwordMismatchError" style="display: none;">
+                                        Konfirmasi password tidak sesuai!
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit"
+                                <button type="submit" id="btnSubmit"
                                     class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm hover-scale transition-all">
                                     <i class="ti ti-device-floppy me-2"></i> Simpan Password Baru
                                 </button>
@@ -231,6 +249,49 @@
     <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('package/dist/js/sweetalert2@11.js') }}"></script>
+
+    <script>
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("ti-eye");
+                icon.classList.add("ti-eye-off");
+            } else {
+                input.type = "password";
+                icon.classList.remove("ti-eye-off");
+                icon.classList.add("ti-eye");
+            }
+        }
+
+        $(document).ready(function() {
+            // Real-time password confirmation check
+            $('#new_password, #new_password_confirmation').on('keyup', function() {
+                const password = $('#new_password').val();
+                const confirmPassword = $('#new_password_confirmation').val();
+                const mismatchError = $('#passwordMismatchError');
+                const btnSubmit = $('#btnSubmit');
+
+                if (confirmPassword.length > 0) {
+                    if (password !== confirmPassword) {
+                        $('#new_password_confirmation').addClass('is-invalid');
+                        mismatchError.show();
+                        btnSubmit.prop('disabled', true);
+                    } else {
+                        $('#new_password_confirmation').removeClass('is-invalid');
+                        mismatchError.hide();
+                        btnSubmit.prop('disabled', false);
+                    }
+                } else {
+                    $('#new_password_confirmation').removeClass('is-invalid');
+                    mismatchError.hide();
+                    btnSubmit.prop('disabled', false);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
