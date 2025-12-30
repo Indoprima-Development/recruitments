@@ -213,6 +213,13 @@
                                 <span class="hide-menu">User Accounts</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ url('log-viewer') }}" target="_blank"
+                                aria-expanded="false">
+                                <span><i class="ti ti-bug"></i></span>
+                                <span class="hide-menu">System Logs</span>
+                            </a>
+                        </li>
                     @endif
 
                     <!-- User Features (Available to all logged in) -->
