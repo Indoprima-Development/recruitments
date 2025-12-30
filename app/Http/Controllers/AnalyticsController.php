@@ -56,6 +56,13 @@ class AnalyticsController extends Controller
             ->orderBy('count', 'desc')
             ->limit(10)
             ->get();
+
+        $totalDept = Ptkformtransaction::join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
+            ->join('departments', 'ptkforms.department_id', '=', 'departments.id')
+            ->count();
+        $visibleDeptCount = $deptData->sum('count');
+        $deptOtherCount = $totalDept - $visibleDeptCount;
+
         $deptLabels = $deptData->pluck('department_name');
         $deptCounts = $deptData->pluck('count');
 
@@ -67,6 +74,13 @@ class AnalyticsController extends Controller
             ->orderBy('count', 'desc')
             ->limit(10)
             ->get();
+
+        $totalSection = Ptkformtransaction::join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
+            ->join('sections', 'ptkforms.section_id', '=', 'sections.id')
+            ->count();
+        $visibleSectionCount = $sectionData->sum('count');
+        $sectionOtherCount = $totalSection - $visibleSectionCount;
+
         $sectionLabels = $sectionData->pluck('section_name');
         $sectionCounts = $sectionData->pluck('count');
 
@@ -134,6 +148,14 @@ class AnalyticsController extends Controller
              ->orderBy('count', 'desc')
              ->limit(10)
              ->get();
+
+        $totalProvince = DB::table('users')
+             ->join('datadiris', 'users.id', '=', 'datadiris.user_id')
+             ->whereNotNull('datadiris.provinces')
+             ->count();
+        $visibleProvinceCount = $provinceData->sum('count');
+        $provinceOtherCount = $totalProvince - $visibleProvinceCount;
+
         $provinceLabels = $provinceData->pluck('provinces');
         $provinceCounts = $provinceData->pluck('count');
 
@@ -145,6 +167,14 @@ class AnalyticsController extends Controller
              ->orderBy('count', 'desc')
              ->limit(10)
              ->get();
+
+        $totalCity = DB::table('users')
+             ->join('datadiris', 'users.id', '=', 'datadiris.user_id')
+             ->whereNotNull('datadiris.cities')
+             ->count();
+        $visibleCityCount = $cityData->sum('count');
+        $cityOtherCount = $totalCity - $visibleCityCount;
+
         $cityLabels = $cityData->pluck('cities');
         $cityCounts = $cityData->pluck('count');
 
@@ -268,7 +298,12 @@ class AnalyticsController extends Controller
             'provinceLabels',
             'provinceCounts',
             'cityLabels',
-            'cityCounts'
+            'cityLabels',
+            'cityCounts',
+            'deptOtherCount',
+            'sectionOtherCount',
+            'provinceOtherCount',
+            'cityOtherCount'
         ));
     }
 }

@@ -348,7 +348,12 @@
         <div class="col-lg-6">
             <div class="chart-container">
                 <div class="chart-header">
-                    <h5 class="chart-title"><i class="ti ti-map-pin text-danger"></i> Top Provinces</h5>
+                    <h5 class="chart-title">
+                        <i class="ti ti-map-pin text-danger"></i> Top Provinces
+                        @if ($provinceOtherCount > 0)
+                            <span class="badge bg-light text-dark border ms-2">+{{ $provinceOtherCount }} Others</span>
+                        @endif
+                    </h5>
                 </div>
                 <div id="provinceChart"></div>
             </div>
@@ -356,7 +361,12 @@
         <div class="col-lg-6">
             <div class="chart-container">
                 <div class="chart-header">
-                    <h5 class="chart-title"><i class="ti ti-map text-info"></i> Top Cities</h5>
+                    <h5 class="chart-title">
+                        <i class="ti ti-map text-info"></i> Top Cities
+                        @if ($cityOtherCount > 0)
+                            <span class="badge bg-light text-dark border ms-2">+{{ $cityOtherCount }} Others</span>
+                        @endif
+                    </h5>
                 </div>
                 <div id="cityChart"></div>
             </div>
@@ -396,7 +406,12 @@
         <div class="col-lg-6">
             <div class="chart-container">
                 <div class="chart-header">
-                    <h5 class="chart-title"><i class="ti ti-building text-info"></i> Applications by Dept</h5>
+                    <h5 class="chart-title">
+                        <i class="ti ti-building text-info"></i> Applications by Dept
+                        @if ($deptOtherCount > 0)
+                            <span class="badge bg-light text-dark border ms-2">+{{ $deptOtherCount }} Others</span>
+                        @endif
+                    </h5>
                 </div>
                 <div id="deptChart"></div>
             </div>
@@ -404,7 +419,12 @@
         <div class="col-lg-6">
             <div class="chart-container">
                 <div class="chart-header">
-                    <h5 class="chart-title"><i class="ti ti-layout-grid text-primary"></i> Applications by Section</h5>
+                    <h5 class="chart-title">
+                        <i class="ti ti-layout-grid text-primary"></i> Applications by Section
+                        @if ($sectionOtherCount > 0)
+                            <span class="badge bg-light text-dark border ms-2">+{{ $sectionOtherCount }} Others</span>
+                        @endif
+                    </h5>
                 </div>
                 <div id="sectionChart"></div>
             </div>

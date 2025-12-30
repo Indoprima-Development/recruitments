@@ -319,10 +319,49 @@
                             </a>
                         </li>
                     @else
-                        <li class="nav-item ms-lg-3">
-                            <a class="btn-nav" href="{{ url('dashboard') }}">
-                                <i class="fas fa-columns me-2"></i>Dashboard
+                        <li class="nav-item ms-lg-3 dropdown">
+                            <a class="btn btn-light rounded-pill border py-1 px-2 d-flex align-items-center gap-2 dropdown-toggle"
+                                href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                @if (Auth::user()->photo)
+                                    <img src="{{ asset(Auth::user()->photo) }}" class="rounded-circle object-fit-cover"
+                                        width="32" height="32" alt="" />
+                                @else
+                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold"
+                                        style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                        {{ substr(Auth::user()->name, 0, 1) }}
+                                    </div>
+                                @endif
+                                <span class="fw-semibold small text-dark me-1">{{ Auth::user()->name }}</span>
                             </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2"
+                                aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="{{ url('dashboard') }}">
+                                        <i class="ti ti-layout-dashboard me-2 text-primary"></i> Dashboard User
+                                    </a>
+                                </li>
+                                @if (Auth::user()->role == 'ADMIN')
+                                    <li>
+                                        <a class="dropdown-item rounded-3 py-2" href="{{ url('home') }}">
+                                            <i class="ti ti-chart-pie me-2 text-primary"></i> Admin Page
+                                        </a>
+                                    </li>
+                                @endif
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2 text-danger" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="ti ti-logout me-2"></i> Logout
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     @endif
                 </ul>
@@ -364,8 +403,8 @@
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="nonstaff-tab" data-bs-toggle="pill" data-bs-target="#nonstaff"
-                                type="button" role="tab">
+                            <button class="nav-link" id="nonstaff-tab" data-bs-toggle="pill"
+                                data-bs-target="#nonstaff" type="button" role="tab">
                                 Non Staff
                             </button>
                         </li>
