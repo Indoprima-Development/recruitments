@@ -637,6 +637,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="preloader-spinner"></div>
@@ -766,6 +767,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="{{ asset('package/dist/js/sweetalert2@11.js') }}"></script>
     <script>
         // Remove preloader when page loads
         window.addEventListener('load', function() {

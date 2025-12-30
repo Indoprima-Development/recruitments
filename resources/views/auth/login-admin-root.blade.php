@@ -440,6 +440,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <!-- Preloader -->
     <div class="preloader">
         <img src="{{ asset('package/dist/images/logos/favicon.ico') }}" alt="Loading..." class="lds-ripple img-fluid">
@@ -510,6 +511,7 @@
     <!-- Scripts -->
     <script src="{{ asset('package/dist/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('package/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('package/dist/js/sweetalert2@11.js') }}"></script>
     <script src="{{ asset('package/dist/js/app.min.js') }}"></script>
     <script src="{{ asset('package/dist/js/custom.js') }}"></script>
 
