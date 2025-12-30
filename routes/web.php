@@ -139,6 +139,11 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
 Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/ptkformtransactions', [PtkformtransactionsController::class, 'store'])->name('ptkformtransactions.store');
+
+    // Change Password
+    Route::get('/change-password', [App\Http\Controllers\ChangePasswordController::class, 'index'])->name('password.change');
+    Route::post('/change-password', [App\Http\Controllers\ChangePasswordController::class, 'update'])->name('password.change.update');
+
     Route::get('/home', [HomeController::class, 'home']);
     Route::post('/logout', [LoginRegisterController::class, 'logout'])->name('logout');
 
