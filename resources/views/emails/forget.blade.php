@@ -1,97 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PT. Indoprima Gemilang</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
+        /* General Resets */
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
         }
 
-        .email-container {
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            outline: none;
+            text-decoration: none;
+        }
+
+        /* Main Styles */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            color: #334155;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #f1f5f9;
+            padding-bottom: 40px;
+        }
+
+        .main-table {
+            background-color: #ffffff;
+            margin: 0 auto;
+            width: 100%;
             max-width: 600px;
-            margin: 20px auto;
-            background: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border-spacing: 0;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
             overflow: hidden;
         }
 
         .header {
-            background: #007bff;
-            padding: 20px;
+            padding: 40px 0 20px 0;
             text-align: center;
-            color: #fff;
-        }
-
-        .header img {
-            max-width: 150px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
         }
 
         .content {
-            padding: 20px;
+            padding: 40px 40px;
             text-align: center;
         }
 
-        .content p {
+        h3 {
+            color: #1e293b;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            letter-spacing: -0.5px;
+        }
+
+        p {
             font-size: 16px;
-            color: #333;
-            margin: 0 0 20px;
+            line-height: 1.6;
+            margin: 0 0 24px 0;
+            color: #475569;
         }
 
-        .button-container {
-            text-align: center;
-            margin: 20px 0;
+        .btn-container {
+            margin: 32px 0;
         }
 
-        .button-container a {
+        .btn {
+            background-color: #2563eb;
+            /* Modern Blue */
+            color: #ffffff;
+            padding: 14px 32px;
+            border-radius: 8px;
             text-decoration: none;
-            background: #28a745;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
+            font-weight: 600;
             font-size: 16px;
-            font-weight: bold;
+            display: inline-block;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+            transition: background-color 0.2s;
         }
 
-        .button-container a:hover {
-            background: #218838;
+        .btn:hover {
+            background-color: #1d4ed8;
         }
 
         .footer {
-            padding: 10px;
-            background: #f4f4f9;
+            background-color: #f8fafc;
+            padding: 24px;
             text-align: center;
             font-size: 12px;
-            color: #666;
+            color: #94a3b8;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+
+            .header {
+                padding: 30px 0 10px 0;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="email-container">
-        <div class="header">
-            <img src="http://ixp1.indoprimagemilang.com:81/recruitments/public/package/dist/images/logos/logo.png"
-                alt="Logo">
-        </div>
-        <div class="content">
-            <h3>Hi {{ $data['name'] }},</h3>
-            <p>
-                Silahkan klik link berikut untuk melakukan reset password.
-            </p>
-            <div class="button-container">
-                <a
-                    href="{{url('auth/forget-password-from-link')}}?token={{ $data['body'] }}">Forget Password</a>
-            </div>
-        </div>
-        <div class="footer">
-            &copy; {{date('Y')}} PT. Indoprima Gemilang. Semua Hak Dilindungi.
-        </div>
+    <div class="wrapper">
+        <table class="main-table" role="presentation">
+            <!-- Header -->
+            <tr>
+                <td class="header">
+                    <img src="http://ixp1.indoprimagemilang.com:81/recruitments/public/package/dist/images/logos/logo.png"
+                        alt="Indo Prima Gemilang" width="160" style="display: block; margin: 0 auto;">
+                </td>
+            </tr>
+
+            <!-- Content -->
+            <tr>
+                <td class="content">
+                    <h3>Hi {{ $data['name'] }},</h3>
+                    <p>
+                        Silahkan klik link berikut untuk melakukan reset password.
+                    </p>
+
+                    <div class="btn-container">
+                        <a href="{{ url('auth/forget-password-from-link') }}?token={{ $data['body'] }}" class="btn">
+                            Forget Password
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+                <td class="footer">
+                    &copy; {{ date('Y') }} PT. Indoprima Gemilang. Semua Hak Dilindungi.
+                </td>
+            </tr>
+        </table>
     </div>
 </body>
 
