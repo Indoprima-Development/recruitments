@@ -11,51 +11,34 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
+    <!-- Libraries -->
+    <link rel="stylesheet"
+        href="{{ asset('package/landing/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('package/landing/dist/libs/aos/dist/aos.css') }}">
+
     <style>
         :root {
             --primary: #2563eb;
-            --primary-light: #3b82f6;
-            --primary-dark: #1d4ed8;
-            --primary-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
-            --accent: #06b6d4;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --text-primary: #111827;
-            --text-secondary: #4b5563;
-            --text-muted: #9ca3af;
-            --bg-white: #ffffff;
+            --primary-dark: #1e40af;
+            --secondary: #0ea5e9;
+            --accent: #3b82f6;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
             --bg-light: #f8fafc;
-            --bg-card: #ffffff;
-            --border-color: #e5e7eb;
-            --border-radius: 16px;
-            --border-radius-lg: 24px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --white: #ffffff;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-fast: all 0.15s ease;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-white);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
             overflow-x: hidden;
         }
 
@@ -66,246 +49,205 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--bg-white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: white;
             z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
         }
 
-        .preloader.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .preloader-spinner {
+        .loader {
             width: 48px;
             height: 48px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--primary);
+            border: 5px solid #ececec;
+            border-bottom-color: var(--primary);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: rotation 1s linear infinite;
         }
 
-        @keyframes spin {
-            to {
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
                 transform: rotate(360deg);
             }
         }
 
-        /* Main Layout */
-        .login-wrapper {
-            min-height: 100vh;
-            display: flex;
-            position: relative;
+        .preloader.fade-out {
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* Hero Section - Desktop Only */
-        .hero-section {
-            flex: 1;
-            background: var(--primary-gradient);
+        /* Main Container */
+        .login-container {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* Left Side - Slider */
+        .info-side {
+            width: 50%;
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 3rem;
-            position: relative;
+            justify-content: space-between;
+            padding: 4rem;
+            color: white;
             overflow: hidden;
         }
 
-        .hero-section::before {
+        .info-side::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.7;
         }
 
-        .hero-content {
+        .abstract-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: -50px;
+            right: -50px;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 50px;
+            left: -50px;
+        }
+
+        .brand-logo {
             position: relative;
-            z-index: 1;
-            text-align: center;
-            color: white;
-            max-width: 480px;
+            z-index: 2;
         }
 
-        .hero-logo {
-            width: 180px;
-            margin-bottom: 2rem;
+        .brand-logo img {
+            height: 40px;
             /* filter: brightness(0) invert(1); */
         }
 
-        .hero-illustration {
-            width: 100%;
-            max-width: 350px;
-            margin: 2rem 0;
-            animation: float 6s ease-in-out infinite;
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
+        .slider-content {
+            position: relative;
+            z-index: 2;
+            max-width: 500px;
         }
 
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-15px);
-            }
-        }
-
-        .hero-title {
-            font-size: 2rem;
+        .slide-item h2 {
+            font-size: 2.5rem;
             font-weight: 800;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
-
-        .hero-subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-            line-height: 1.7;
-        }
-
-        .hero-features {
-            margin-top: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .feature-icon {
-            width: 32px;
-            height: 32px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-        }
-
-        /* Form Section */
-        .form-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            background: var(--bg-white);
-            min-height: 100vh;
-        }
-
-        .form-container {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        /* Mobile Header */
-        .mobile-header {
-            display: none;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .mobile-logo {
-            width: 140px;
-            margin-bottom: 1rem;
-        }
-
-        /* Form Header */
-        .form-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .form-header h1 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
-        }
-
-        .form-header p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        /* Security Badge */
-        .security-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-            border: 1px solid #a7f3d0;
-            border-radius: 100px;
-            color: #047857;
-            font-size: 0.8rem;
-            font-weight: 500;
+            line-height: 1.2;
             margin-bottom: 1.5rem;
         }
 
-        .security-badge i {
-            font-size: 0.9rem;
+        .slide-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
         }
 
-        /* Form Elements */
-        .auth-form {
-            width: 100%;
+        .slider-dots .owl-dots {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 2rem;
         }
 
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-label {
+        .slider-dots .owl-dot span {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
             display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.875rem 1rem 0.875rem 2.75rem;
-            background: var(--bg-white);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
             transition: var(--transition);
         }
 
-        .form-input::placeholder {
+        .slider-dots .owl-dot.active span {
+            background: white;
+            width: 30px;
+            border-radius: 10px;
+        }
+
+        .info-footer {
+            position: relative;
+            z-index: 2;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Right Side - Form */
+        .form-side {
+            width: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            max-width: 450px;
+            padding: 2rem;
+        }
+
+        .mobile-logo {
+            display: none;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .mobile-logo img {
+            height: 40px;
+        }
+
+        .welcome-text h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
             color: var(--text-muted);
+            margin-bottom: 2rem;
         }
 
-        .form-input:hover {
-            border-color: #d1d5db;
+        /* Floating Label Input */
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
         }
 
-        .form-input:focus {
+        .input-field {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--text-main);
+            background: white;
+            transition: var(--transition);
             outline: none;
+        }
+
+        .input-field:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
@@ -315,530 +257,361 @@
             left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1.1rem;
+            color: #94a3b8;
+            font-size: 1.25rem;
             transition: var(--transition);
-            pointer-events: none;
         }
 
-        .form-input:focus~.input-icon {
+        .input-field:focus~.input-icon {
             color: var(--primary);
         }
 
-        /* Password Toggle */
-        .password-toggle {
+        .toggle-password {
             position: absolute;
             right: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-muted);
+            color: #94a3b8;
             cursor: pointer;
             padding: 0.25rem;
             transition: var(--transition);
         }
 
-        .password-toggle:hover {
-            color: var(--primary);
+        .toggle-password:hover {
+            color: var(--text-main);
         }
 
-        /* Remember & Forgot */
         .form-options {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+            margin-bottom: 2rem;
         }
 
-        .checkbox-wrapper {
+        .remember-me {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            cursor: pointer;
         }
 
-        .checkbox-wrapper input[type="checkbox"] {
+        .remember-me input {
             width: 18px;
             height: 18px;
             accent-color: var(--primary);
             cursor: pointer;
         }
 
-        .checkbox-wrapper label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
+        .remember-me label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
             cursor: pointer;
+            user-select: none;
         }
 
-        .forgot-link {
-            font-size: 0.875rem;
+        .forgot-pass {
             color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
             text-decoration: none;
-            font-weight: 500;
             transition: var(--transition);
         }
 
-        .forgot-link:hover {
+        .forgot-pass:hover {
             color: var(--primary-dark);
             text-decoration: underline;
         }
 
-        /* Submit Button */
-        .login-btn {
+        .btn-submit {
             width: 100%;
-            padding: 1rem 1.5rem;
-            background: var(--primary-gradient);
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
             border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
         }
 
-        .login-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .login-btn:hover {
+        .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-lg), 0 0 20px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
         }
 
-        .login-btn:hover::before {
-            left: 100%;
-        }
-
-        .login-btn:active {
+        .btn-submit:active {
             transform: translateY(0);
         }
 
-        .login-btn i {
-            transition: transform 0.3s ease;
-        }
-
-        .login-btn:hover i {
-            transform: translateX(4px);
-        }
-
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-color);
-        }
-
-        .divider::before {
-            margin-right: 1rem;
-        }
-
-        .divider::after {
-            margin-left: 1rem;
-        }
-
-        /* Register Link */
-        .register-section {
+        .register-text {
             text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
-        .register-section p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .register-link {
+        .register-text a {
             color: var(--primary);
+            font-weight: 700;
             text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
+            margin-left: 0.25rem;
         }
 
-        .register-link:hover {
-            color: var(--primary-dark);
+        .register-text a:hover {
             text-decoration: underline;
         }
 
-        /* Info Cards */
-        .info-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
+        .feature-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid #f1f5f9;
         }
 
-        .info-card {
+        .f-card {
+            padding: 1rem;
+            border-radius: 12px;
+            background: #f8fafc;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            background: var(--bg-light);
-            border-radius: 12px;
             transition: var(--transition);
+            border: 1px solid transparent;
         }
 
-        .info-card:hover {
-            background: #f1f5f9;
-            transform: translateX(4px);
+        .f-card:hover {
+            background: #eff6ff;
+            border-color: #dbeafe;
+            transform: translateY(-2px);
         }
 
-        .info-card-icon {
+        .f-icon {
             width: 36px;
             height: 36px;
-            background: var(--primary-gradient);
-            border-radius: 10px;
+            background: white;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1rem;
-            flex-shrink: 0;
+            color: var(--primary);
+            font-size: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        .info-card-content {
-            flex: 1;
-        }
-
-        .info-card-title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .info-card-text {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        .form-footer {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 1rem;
-        }
-
-        .form-footer p {
-            color: var(--text-muted);
+        .f-text span {
+            display: block;
             font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .f-text small {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-section {
+        @media (max-width: 991px) {
+            .info-side {
                 display: none;
             }
 
-            .form-section {
-                flex: none;
+            .form-side {
                 width: 100%;
+                background: #f8fafc;
             }
 
-            .mobile-header {
+            .form-wrapper {
+                background: white;
+                padding: 2.5rem;
+                border-radius: 24px;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            }
+
+            .mobile-logo {
                 display: block;
             }
         }
 
-        @media (max-width: 576px) {
-            .form-section {
+        @media (max-width: 480px) {
+            .form-wrapper {
                 padding: 1.5rem;
+                box-shadow: none;
+                background: transparent;
             }
 
-            .form-header h1 {
-                font-size: 1.5rem;
+            .feature-cards {
+                grid-template-columns: 1fr;
             }
-
-            .form-options {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .info-cards {
-                gap: 0.5rem;
-            }
-        }
-
-        /* Animation */
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .delay-1 {
-            animation-delay: 0.1s;
-        }
-
-        .delay-2 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-3 {
-            animation-delay: 0.3s;
-        }
-
-        .delay-4 {
-            animation-delay: 0.4s;
-        }
-
-        .delay-5 {
-            animation-delay: 0.5s;
         }
     </style>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KG6TYXERDJ"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-KG6TYXERDJ');
-    </script>
 </head>
 
 <body>
     @include('sweetalert::alert')
-    <!-- Preloader -->
+
     <div class="preloader" id="preloader">
-        <div class="preloader-spinner"></div>
+        <div class="loader"></div>
     </div>
 
-    <!-- Main Wrapper -->
-    <div class="login-wrapper">
-        <!-- Hero Section - Desktop Only -->
-        <section class="hero-section">
-            <div class="hero-content">
-                <img src="{{ asset('photo/white-logo.png') }}" alt="Indoprima Gemilang" class="hero-logo">
+    <div class="login-container">
+        <!-- Left Side: Interactive Slider -->
+        <div class="info-side">
+            <div class="abstract-shape shape-1"></div>
+            <div class="abstract-shape shape-2"></div>
 
-                <img src="{{ asset('photo/login.png') }}" alt="Career Illustration" class="hero-illustration">
+            <div class="brand-logo" data-aos="fade-down">
+                <img src="{{ asset('photo/white-logo.png') }}" alt="Logo">
+            </div>
 
-                <h2 class="hero-title">Unlock Your Potential</h2>
-                <p class="hero-subtitle">Join our elite team of professionals shaping the future of automotive
-                    manufacturing</p>
-
-                <div class="hero-features">
-                    <div class="feature-item">
-                        <span class="feature-icon"><i class="ti ti-rocket"></i></span>
-                        <span>Fast-track your career growth</span>
+            <div class="slider-content" data-aos="fade-up" data-aos-delay="200">
+                <div class="owl-carousel" id="infoSlider">
+                    <div class="slide-item">
+                        <h2>Grow Your Career with<br>Industry Leaders</h2>
+                        <p>Join a team that values innovation, dedication, and professional growth. Your journey to
+                            excellence starts here.</p>
                     </div>
-                    <div class="feature-item">
-                        <span class="feature-icon"><i class="ti ti-users"></i></span>
-                        <span>Join 500+ talented professionals</span>
+                    <div class="slide-item">
+                        <h2>Inclusive & Dynamic<br>Work Culture</h2>
+                        <p>Experience a workplace where every voice matters. We foster collaboration, creativity, and
+                            mutual respect.</p>
                     </div>
-                    <div class="feature-item">
-                        <span class="feature-icon"><i class="ti ti-award"></i></span>
-                        <span>Industry-leading benefits package</span>
+                    <div class="slide-item">
+                        <h2>Impactful Work<br>Global Reach</h2>
+                        <p>Contribute to projects that move the world. Our automotive solutions are trusted globally.
+                        </p>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Form Section -->
-        <section class="form-section">
-            <div class="form-container">
-                <!-- Mobile Header -->
-                <div class="mobile-header fade-in-up">
-                    <img src="{{ asset('photo/white-logo.png') }}" alt="Indoprima Gemilang" class="mobile-logo">
+            <div class="info-footer">
+                &copy; {{ date('Y') }} Indoprima Gemilang. All Rights Reserved.
+            </div>
+        </div>
+
+        <!-- Right Side: Login Form -->
+        <div class="form-side">
+            <div class="form-wrapper">
+                <div class="mobile-logo">
+                    <img src="{{ asset('package/dist/images/logos/dark-logo.svg') }}" alt="Logo">
                 </div>
 
-                <!-- Form Header -->
-                <div class="form-header fade-in-up delay-1">
-                    <h1>Welcome Back! 👋</h1>
-                    <p>Sign in to access your recruitment portal</p>
+                <div class="welcome-text" data-aos="fade-up">
+                    <h1>Welcome Back 👋</h1>
+                    <p>Enter your credentials to access your account.</p>
                 </div>
 
-                <!-- Security Badge -->
-                <div class="text-center fade-in-up delay-2" style="text-align: center;">
-                    <span class="security-badge">
-                        <i class="ti ti-shield-check"></i>
-                        Secure SSL Encrypted Login
-                    </span>
-                </div>
-
-                <!-- Login Form -->
-                <form action="{{ route('authenticate') }}" method="POST" class="auth-form">
+                <form action="{{ route('authenticate') }}" method="POST" class="mt-4">
                     @csrf
 
-                    <div class="form-group fade-in-up delay-2">
-                        <label for="email" class="form-label">Email Address</label>
-                        <div class="input-wrapper">
-                            <input type="email" name="email" id="email" class="form-input"
-                                placeholder="yourname@example.com" required>
-                            <i class="ti ti-mail input-icon"></i>
-                        </div>
+                    <div class="input-group" data-aos="fade-up" data-aos-delay="100">
+                        <input type="email" name="email" class="input-field" placeholder="Email Address" required>
+                        <i class="ti ti-mail input-icon"></i>
                     </div>
 
-                    <div class="form-group fade-in-up delay-3">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="input-wrapper">
-                            <input type="password" name="password" id="password" class="form-input"
-                                placeholder="Enter your password" required>
-                            <i class="ti ti-lock input-icon"></i>
-                            <button type="button" class="password-toggle" onclick="togglePassword()">
-                                <i class="ti ti-eye" id="toggleIcon"></i>
-                            </button>
-                        </div>
+                    <div class="input-group" data-aos="fade-up" data-aos-delay="200">
+                        <input type="password" name="password" id="password" class="input-field" placeholder="Password"
+                            required>
+                        <i class="ti ti-lock input-icon"></i>
+                        <i class="ti ti-eye toggle-password" onclick="togglePassword()"></i>
                     </div>
 
-                    <div class="form-options fade-in-up delay-3">
-                        <div class="checkbox-wrapper">
+                    <div class="form-options" data-aos="fade-up" data-aos-delay="300">
+                        <div class="remember-me">
                             <input type="checkbox" id="remember" name="remember">
                             <label for="remember">Remember me</label>
                         </div>
-                        <a href="{{ url('auth/forget-password') }}" class="forgot-link">Forgot password?</a>
+                        <a href="{{ url('auth/forget-password') }}" class="forgot-pass">Forgot Password?</a>
                     </div>
 
-                    <button type="submit" class="login-btn fade-in-up delay-4">
-                        <span>Sign In</span>
-                        <i class="ti ti-arrow-right"></i>
+                    <button type="submit" class="btn-submit" data-aos="fade-up" data-aos-delay="400">
+                        Sign In <i class="ti ti-arrow-right"></i>
                     </button>
+
+                    <div class="register-text" data-aos="fade-up" data-aos-delay="500">
+                        Don't have an account? <a href="{{ url('auth/register') }}">Create Account</a>
+                    </div>
                 </form>
 
-                <!-- Register Section -->
-                <div class="register-section fade-in-up delay-4">
-                    <p>Don't have an account? <a href="{{ url('auth/register') }}" class="register-link">Create one
-                            now</a></p>
-                </div>
-
-                <!-- Info Cards -->
-                <div class="info-cards fade-in-up delay-5">
-                    <div class="info-card">
-                        <span class="info-card-icon"><i class="ti ti-briefcase"></i></span>
-                        <div class="info-card-content">
-                            <div class="info-card-title">Browse Open Positions</div>
-                            <div class="info-card-text">Explore career opportunities</div>
+                <div class="feature-cards" data-aos="fade-up" data-aos-delay="600">
+                    <div class="f-card">
+                        <div class="f-icon">
+                            <i class="ti ti-briefcase"></i>
+                        </div>
+                        <div class="f-text">
+                            <span>Open Positions</span>
+                            <small>Explore Jobs</small>
                         </div>
                     </div>
-                    <div class="info-card">
-                        <span class="info-card-icon"><i class="ti ti-clipboard-check"></i></span>
-                        <div class="info-card-content">
-                            <div class="info-card-title">Track Your Application</div>
-                            <div class="info-card-text">Monitor your progress in real-time</div>
+                    <div class="f-card">
+                        <div class="f-icon">
+                            <i class="ti ti-file-check"></i>
+                        </div>
+                        <div class="f-text">
+                            <span>Application</span>
+                            <small>Check Status</small>
                         </div>
                     </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="form-footer fade-in-up delay-5">
-                    <p>&copy; {{ date('Y') }} PT. Indoprima Gemilang. All rights reserved.</p>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
 
     <!-- Scripts -->
+    <script src="{{ asset('package/landing/dist/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('package/landing/dist/libs/owl.carousel/dist/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('package/landing/dist/libs/aos/dist/aos.js') }}"></script>
     <script src="{{ asset('package/dist/js/sweetalert2@11.js') }}"></script>
+
     <script>
-        // Remove preloader when page loads
-        window.addEventListener('load', function() {
+        $(document).ready(function() {
+            // Remove Preloader
             setTimeout(function() {
-                document.getElementById('preloader').classList.add('fade-out');
-            }, 300);
+                $('#preloader').addClass('fade-out');
+            }, 500);
+
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 50
+            });
+
+            // Initialize Slider
+            $('#infoSlider').owlCarousel({
+                items: 1,
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                animateOut: 'fadeOut',
+                dots: true,
+                dotsClass: 'slider-dots owl-dots',
+                dotClass: 'owl-dot'
+            });
         });
 
-        // Toggle password visibility
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const toggleIcon = document.getElementById('toggleIcon');
+            const icon = document.querySelector('.toggle-password');
 
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleIcon.classList.remove('ti-eye');
-                toggleIcon.classList.add('ti-eye-off');
+                icon.classList.remove('ti-eye');
+                icon.classList.add('ti-eye-off');
             } else {
                 passwordInput.type = 'password';
-                toggleIcon.classList.remove('ti-eye-off');
-                toggleIcon.classList.add('ti-eye');
+                icon.classList.remove('ti-eye-off');
+                icon.classList.add('ti-eye');
             }
         }
-
-        // Enhanced input focus effects
-        document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.closest('.form-group').classList.add('focused');
-            });
-
-            input.addEventListener('blur', function() {
-                this.closest('.form-group').classList.remove('focused');
-            });
-        });
-
-        // Add ripple effect to button
-        document.querySelector('.login-btn').addEventListener('click', function(e) {
-            const button = this;
-            const ripple = document.createElement('span');
-            const rect = button.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-
-            ripple.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                left: ${x}px;
-                top: ${y}px;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: ripple 0.6s ease-out;
-                pointer-events: none;
-            `;
-
-            button.appendChild(ripple);
-
-            setTimeout(() => ripple.remove(), 600);
-        });
     </script>
-
-    <style>
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    </style>
 </body>
 
 </html>

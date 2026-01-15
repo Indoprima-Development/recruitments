@@ -244,85 +244,144 @@
             font-weight: 800;
         }
 
+        /* Job Cards Redesign */
         .job-card {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
+            background: #ffffff;
+            border: 1px solid #f1f5f9;
+            border-radius: 24px;
             padding: 2rem;
-            transition: var(--transition);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             height: 100%;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
         }
 
         .job-card:hover {
-            border-color: var(--primary-light);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+            border-color: transparent;
         }
 
-        .job-badge {
+        .job-card:hover::before {
+            opacity: 1;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .job-icon {
+            width: 50px;
+            height: 50px;
             background: #eff6ff;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--primary);
-            padding: 0.35rem 1rem;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .job-card:hover .job-icon {
+            background: var(--primary);
+            color: white;
+            transform: rotate(15deg);
+        }
+
+        .job-type-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
             border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 1rem;
+            background: #f8fafc;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .job-title {
-            font-size: 1.25rem;
-            font-weight: 700;
+            font-size: 1.35rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .job-card:hover .job-title {
+            color: var(--primary);
         }
 
         .job-dept {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 500;
         }
 
-        .job-features {
-            display: flex;
-            flex-wrap: wrap;
+        .job-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
             margin-bottom: 2rem;
         }
 
-        .feature-item {
+        .meta-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
             font-size: 0.85rem;
             color: var(--text-secondary);
         }
 
-        .feature-item i {
+        .meta-item i {
             color: var(--primary);
+            opacity: 0.7;
         }
 
-        .btn-job {
+        .btn-job-apply {
+            margin-top: auto;
             width: 100%;
-            padding: 0.875rem;
-            border: 1px solid var(--border-color);
-            background: white;
-            color: var(--text-primary);
-            border-radius: 12px;
+            padding: 1rem;
+            border-radius: 14px;
+            background: var(--text-primary);
+            color: white;
             font-weight: 600;
-            transition: var(--transition);
             text-align: center;
+            border: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
         }
 
-        .btn-job:hover {
+        .btn-job-apply:hover {
             background: var(--primary);
             color: white;
-            border-color: var(--primary);
+            transform: scale(1.02);
         }
 
         /* Process Section */
@@ -448,6 +507,328 @@
 
             .hero-stats {
                 justify-content: center;
+            }
+        }
+
+        /* Why Us Slider */
+        .why-us-section {
+            padding: 100px 0;
+            background: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .why-us-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: radial-gradient(circle at top right, #eff6ff 0%, #ffffff 70%);
+            z-index: 0;
+        }
+
+        .why-us-card {
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .why-us-content {
+            padding-right: 2rem;
+        }
+
+        .why-us-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .why-us-desc {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .detail-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-pill {
+            background: white;
+            color: var(--primary);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-pill i {
+            font-size: 1.1rem;
+        }
+
+        .feature-pill:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Image Collage - Reverted to Step 18 */
+        .image-collage {
+            position: relative;
+            height: 550px;
+            width: 100%;
+        }
+
+        .collage-img {
+            position: absolute;
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            object-fit: cover;
+            transition: all 0.5s ease;
+            border: 4px solid white;
+        }
+
+        .collage-img:hover {
+            z-index: 10;
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .img-main {
+            width: 65%;
+            height: 75%;
+            top: 12.5%;
+            left: 0;
+            z-index: 2;
+        }
+
+        .img-sub-1 {
+            width: 45%;
+            height: 45%;
+            top: 0;
+            right: 0;
+            z-index: 1;
+        }
+
+        .img-sub-2 {
+            width: 45%;
+            height: 45%;
+            bottom: 0;
+            right: 0;
+            z-index: 1;
+        }
+
+        /* About Us Redesign */
+        .about-section {
+            padding: 120px 0;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .about-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        /* About Features Grid */
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon-box {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon-box {
+            background: var(--primary);
+            color: white;
+        }
+
+        .feature-card h5 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* About Image Styling */
+        .about-img-wrapper {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .about-main-img {
+            border-radius: 24px;
+            width: 100%;
+            height: auto;
+            position: relative;
+            z-index: 1;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .experience-badge {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            z-index: 2;
+            text-align: center;
+            min-width: 200px;
+            border: 4px solid white;
+        }
+
+        .experience-years {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .experience-label {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* Decorative Background */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background-image: radial-gradient(#e0e7ff 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        /* Custom Nav Buttons */
+        .owl-nav-custom {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .owl-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background: white;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .owl-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 991px) {
+            .why-us-title {
+                font-size: 2rem;
+            }
+
+            .image-collage {
+                height: 400px;
+                margin-top: 2rem;
+            }
+
+            .why-us-content {
+                padding-right: 0;
             }
         }
     </style>
@@ -584,42 +965,53 @@
 
             <div class="row g-4">
                 @foreach ($jobs as $job)
-                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                        <div class="job-card">
-                            <span class="job-badge">{{ $job->status_pegawai }}</span>
+                    <div class="col-md-6 col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
+                        <div class="job-card w-100">
+                            <span class="job-badge d-none">{{ $job->status_pegawai }}</span>
+                            <!-- Hidden for now, using new badge -->
+
+                            <div class="job-header">
+                                <div class="job-icon">
+                                    <i class="ti ti-briefcase"></i>
+                                </div>
+                                <span class="job-type-badge">{{ $job->status_pegawai }}</span>
+                            </div>
+
                             <h3 class="job-title">{{ $job->jobtitle->jobtitle_name ?? '-' }}</h3>
+
                             <div class="job-dept">
-                                <i class="ti ti-building-skyscraper"></i>
+                                <i class="ti ti-building-skyscraper text-primary"></i>
                                 {{ $job->division->division_name ?? '-' }}
                             </div>
 
-                            <div class="job-features">
-                                <div class="feature-item">
+                            <div class="job-meta">
+                                <div class="meta-item">
                                     <i class="ti ti-school"></i>
                                     {{ $job->education->education_name ?? '-' }}
                                 </div>
-                                <div class="feature-item">
+                                <div class="meta-item">
                                     <i class="ti ti-calendar"></i>
-                                    {{ $job->date_startwork }}
+                                    {{ \Carbon\Carbon::parse($job->date_startwork)->format('M d, Y') }}
                                 </div>
-                                <div class="feature-item">
+                                <div class="meta-item">
                                     <i class="ti ti-users"></i>
                                     @if ($job->gender == 1)
                                         Male
                                     @elseif ($job->gender == 2)
                                         Female
                                     @else
-                                        Male/Female
+                                        All Gender
                                     @endif
+                                </div>
+                                <div class="meta-item">
+                                    <i class="ti ti-map-pin"></i>
+                                    Java, ID
                                 </div>
                             </div>
 
-                            <div class="mt-auto">
-                                <a href="{{ url('vacancies', $job->id) }}"
-                                    class="btn-job d-block text-decoration-none">
-                                    View Details
-                                </a>
-                            </div>
+                            <a href="{{ url('vacancies', $job->id) }}" class="btn-job-apply">
+                                Apply Now <i class="ti ti-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 @endforeach
@@ -633,61 +1025,209 @@
         </div>
     </section>
 
-    <!-- Recruitment Process -->
-    <section class="process-section">
+    <!-- Why Us Section -->
+    <section class="why-us-section">
         <div class="container">
-            <div class="section-title" data-aos="fade-up">
-                <span>HOW IT WORKS</span>
-                <h2>Admission Process</h2>
-                <p class="text-muted mt-2">Smooth and transparent recruitment journey</p>
+            <div class="section-title text-start mb-5" data-aos="fade-up">
+                <span>WHY CHOOSE US</span>
+                <h2>Why Indoprima Gemilang?</h2>
             </div>
 
-            <div class="row g-4">
-                @php
-                    $steps = [
-                        ['icon' => 'ti ti-user-plus', 'label' => 'Create Account'],
-                        ['icon' => 'ti ti-file-text', 'label' => 'Apply & Test'],
-                        ['icon' => 'ti ti-users', 'label' => 'Interview'],
-                        ['icon' => 'ti ti-check', 'label' => 'Onboarding'],
-                    ];
-                @endphp
+            <div class="why-us-carousel owl-carousel owl-theme">
 
-                @foreach ($steps as $index => $step)
-                    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
-                        <div class="process-card">
-                            <span class="process-number">{{ $index + 1 }}</span>
-                            <div class="process-icon-wrapper">
-                                <i class="{{ $step['icon'] }}"></i>
+                <!-- Slide 1 -->
+                <div class="item">
+                    <div class="why-us-card">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6" data-aos="fade-right">
+                                <div class="why-us-content">
+                                    <h3 class="why-us-title">Development That Grows With You</h3>
+                                    <p class="why-us-desc">
+                                        At IPG, development is not a one-time program. It is a continuous journey
+                                        designed
+                                        to prepare our people for their future career paths. We cultivate an
+                                        always-learning
+                                        environment supported by structured people development, regular training, and
+                                        individualized learning paths.
+                                    </p>
+                                    <div class="detail-features">
+                                        <div class="feature-pill">
+                                            <i class="ti ti-book"></i> Always Learning Environment
+                                        </div>
+                                        <div class="feature-pill">
+                                            <i class="ti ti-users-group"></i> People Development
+                                        </div>
+                                        <div class="feature-pill">
+                                            <i class="ti ti-certificate"></i> Regular Training
+                                        </div>
+                                        <div class="feature-pill">
+                                            <i class="ti ti-stairs-up"></i> Individual Training Path
+                                        </div>
+                                    </div>
+                                    <div class="owl-nav-custom">
+                                        <button class="owl-btn owl-prev-btn"><i class="ti ti-arrow-left"></i></button>
+                                        <button class="owl-btn owl-next-btn"><i
+                                                class="ti ti-arrow-right"></i></button>
+                                    </div>
+                                </div>
                             </div>
-                            <h4 class="fw-bold mb-2">{{ $step['label'] }}</h4>
-                            <p class="text-muted small mb-0">Completing step {{ $index + 1 }} of the process</p>
+                            <div class="col-lg-6" data-aos="fade-left">
+                                <div class="image-collage">
+                                    <img src="{{ asset('photo/slides1/1.png') }}" class="collage-img img-main"
+                                        alt="Development">
+                                    <img src="{{ asset('photo/slides1/2.png') }}" class="collage-img img-sub-1"
+                                        alt="Training">
+                                    <img src="{{ asset('photo/slides1/3.png') }}" class="collage-img img-sub-2"
+                                        alt="Growth">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="item">
+                    <div class="why-us-card">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="why-us-content">
+                                    <h3 class="why-us-title">Learning Through Real Impact</h3>
+                                    <p class="why-us-desc">
+                                        At IPG, development goes beyond training programs. We provide opportunities for
+                                        employees to grow through project-based development, where learning happens by
+                                        solving real business challenges and delivering meaningful impact.
+                                    </p>
+                                    <div class="detail-features">
+                                        <div class="feature-pill">
+                                            <i class="ti ti-bulb"></i> Project Based Development
+                                        </div>
+                                        <div class="feature-pill">
+                                            <i class="ti ti-target"></i> Real Business Challenges
+                                        </div>
+                                        <div class="feature-pill">
+                                            <i class="ti ti-trophy"></i> Meaningful Impact
+                                        </div>
+                                    </div>
+                                    <div class="owl-nav-custom">
+                                        <button class="owl-btn owl-prev-btn"><i class="ti ti-arrow-left"></i></button>
+                                        <button class="owl-btn owl-next-btn"><i
+                                                class="ti ti-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="image-collage">
+                                    <img src="{{ asset('photo/slides2/1.png') }}" class="collage-img img-main"
+                                        alt="Project">
+                                    <img src="{{ asset('photo/slides2/2.png') }}" class="collage-img img-sub-1"
+                                        alt="Impact">
+                                    <img src="{{ asset('photo/slides2/3.png') }}" class="collage-img img-sub-2"
+                                        alt="Challenge">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="item">
+                    <div class="why-us-card">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="why-us-content">
+                                    <h3 class="why-us-title">Building Connection Beyond Work</h3>
+                                    <p class="why-us-desc">
+                                        At IPG, we believe strong engagement creates a strong culture. Through various
+                                        employee engagement activities, we encourage collaboration, togetherness, and a
+                                        sense of belonging across the organization.
+                                    </p>
+                                    <div class="detail-features">
+                                        <div class="feature-pill">
+                                            <i class="ti ti-flag"></i> 17 Agustusan
+                                        </div>
+                                        <div class="feature-pill">
+                                            <i class="ti ti-friends"></i> All Hands
+                                        </div>
+                                        <div class="feature-pill">
+                                            <i class="ti ti-ball-football"></i> Sports Competitions
+                                        </div>
+                                        <div class="feature-pill">
+                                            <i class="ti ti-music"></i> Dance Competitions
+                                        </div>
+                                    </div>
+                                    <div class="owl-nav-custom">
+                                        <button class="owl-btn owl-prev-btn"><i class="ti ti-arrow-left"></i></button>
+                                        <button class="owl-btn owl-next-btn"><i
+                                                class="ti ti-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="image-collage">
+                                    <img src="{{ asset('photo/slides3/1.png') }}" class="collage-img img-main"
+                                        alt="Engagement">
+                                    <img src="{{ asset('photo/slides3/2.png') }}" class="collage-img img-sub-1"
+                                        alt="Culture">
+                                    <img src="{{ asset('photo/slides3/3.png') }}" class="collage-img img-sub-2"
+                                        alt="Activity">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
     <!-- About Section -->
     <section class="about-section">
+        <div class="bg-pattern"></div>
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-right">
-                    <span class="text-primary fw-bold text-uppercase letter-spacing-1 mb-2 d-block">About Us</span>
-                    <h2 class="fw-bold mb-4 display-6">Excellence in Automotive Components</h2>
-                    <p class="lead text-secondary mb-4">
-                        PT Indoprima Gemilang is a leading manufacturer of motorized vehicle components, serving
-                        international automotive companies with excellence and innovation.
-                    </p>
-                    <p class="text-secondary mb-4">
-                        We are fully committed to maintaining the highest quality standards in production. From material
-                        selection to quality control, every process is meticulously executed to ensure perfection.
-                    </p>
-                    <a href="#" class="btn btn-outline-primary rounded-pill px-4">Learn More</a>
+                    <div class="about-content">
+                        <div class="about-badge">
+                            <i class="ti ti-building-factory-2"></i> About Us
+                        </div>
+                        <h2 class="about-title">Excellence in Automotive Components</h2>
+                        <p class="about-text">
+                            PT Indoprima Gemilang is a leading manufacturer of motorized vehicle components, serving
+                            international automotive companies with excellence and innovation since its inception.
+                            We combine advanced technology with human expertise to deliver products that set industry
+                            standards.
+                        </p>
+
+                        <div class="about-features">
+                            <div class="feature-card">
+                                <div class="feature-icon-box">
+                                    <i class="ti ti-award"></i>
+                                </div>
+                                <h5>World Class Quality</h5>
+                                <p>Strict quality control ensuring 99.9% product precisions.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon-box">
+                                    <i class="ti ti-world"></i>
+                                </div>
+                                <h5>Global Reach</h5>
+                                <p>Exporting to major automotive markets worldwide.</p>
+                            </div>
+                        </div>
+
+                        <a href="{{ url('/') }}" class="btn-primary-hero text-decoration-none d-inline-block">
+                            Learn More About Us <i class="ti ti-arrow-right ms-2"></i>
+                        </a>
+                    </div>
                 </div>
+
                 <div class="col-lg-6" data-aos="fade-left">
-                    <div class="about-image">
-                        <img src="{{ asset('home.avif') }}" alt="Modern Office" class="img-fluid">
+                    <div class="about-img-wrapper">
+                        <img src="{{ asset('home.avif') }}" alt="Indoprima Factory" class="about-main-img">
+                        <div class="experience-badge bounce-in">
+                            <span class="experience-years">30+</span>
+                            <span class="experience-label">Years of<br>Excellence</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -742,6 +1282,31 @@
             } else {
                 $('.navbar').removeClass('shadow-sm');
             }
+        });
+
+        // Why Us Slider Init
+        $(document).ready(function() {
+            var whyUsOwl = $('.why-us-carousel');
+            whyUsOwl.owlCarousel({
+                items: 1,
+                loop: true,
+                nav: false,
+                dots: true,
+                autoplay: true,
+                autoplayTimeout: 8000,
+                smartSpeed: 1000,
+                margin: 0,
+                touchDrag: true,
+                mouseDrag: true
+            });
+
+            // Custom Navigation Events
+            $('.owl-next-btn').click(function() {
+                whyUsOwl.trigger('next.owl.carousel');
+            });
+            $('.owl-prev-btn').click(function() {
+                whyUsOwl.trigger('prev.owl.carousel');
+            });
         });
     </script>
 </body>
