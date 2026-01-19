@@ -127,7 +127,20 @@ class HomeController extends Controller
             })->count();
         }
 
-        return view("home.home", compact("totalApplications", "hireRate", "avgTimeToHire", "offerAcceptance", "funnelData", "deptStats", "month", "year"));
+        // Original Dashboard Data (Total Counts per Status)
+        $dataCounts = Ptkformtransaction::select(DB::raw('count(id) as jumlah, status'))
+            ->orderBy('status', 'ASC')
+            ->groupBy('status')
+            ->get();
+
+        $dataResults = [0, 0, 0, 0, 0, 0, 0, 0];
+        foreach ($dataCounts as $key => $d) {
+            if(isset($dataResults[$d->status])) {
+                $dataResults[$d->status] = $d->jumlah;
+            }
+        }
+
+        return view("home.home", compact("totalApplications", "hireRate", "avgTimeToHire", "offerAcceptance", "funnelData", "deptStats", "month", "year", "dataResults"));
     }
 
     public function index()
