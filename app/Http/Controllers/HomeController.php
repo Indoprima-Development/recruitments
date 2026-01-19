@@ -124,7 +124,7 @@ class HomeController extends Controller
             // This is a bit outside transaction scope, but let's just create a nice table.
             $stat['open'] = Ptkform::whereHas('jobtitle', function($q) use ($stat) {
                 $q->where('jobtitle_name', $stat['name']);
-            })->sum('jumlah');
+            })->count();
         }
 
         return view("home.home", compact("totalApplications", "hireRate", "avgTimeToHire", "offerAcceptance", "funnelData", "deptStats", "month", "year"));
