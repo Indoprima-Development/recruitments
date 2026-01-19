@@ -61,4 +61,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Datapendidikanformal', "user_id", "id");
     }
+
+    public function datadiri()
+    {
+        return $this->hasOne('App\Models\Datadiri', "user_id", "id");
+    }
+
+    public function datapengalamankerja()
+    {
+        return $this->hasMany('App\Models\Datapengalamankerja', "user_id", "id");
+    }
 }

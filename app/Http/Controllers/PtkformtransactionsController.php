@@ -129,6 +129,8 @@ class PtkformtransactionsController extends Controller
 
         $ptkformtransactions = Ptkformtransaction::with([
             'user.datapendidikanformal',
+            'user.datapengalamankerja',
+            'user.datadiri',
             'ptkform.jobtitle'
         ])
             ->when($status !== "all", function ($query) use ($status) {
