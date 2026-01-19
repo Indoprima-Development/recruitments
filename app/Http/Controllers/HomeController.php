@@ -81,7 +81,7 @@ class HomeController extends Controller
         // Group by ptkform.jobtitle.department (if exists) or just jobtitle name for now simple
         $departmentData = Ptkformtransaction::select('ptkforms.id', DB::raw('count(*) as apps'))
             ->join('ptkforms', 'ptkforms.id', 'ptkformtransactions.ptkform_id')
-            ->join('jobtitles', 'jobtitles.id', 'ptkforms.job_title_id') // Corrected table name
+            ->join('jobtitles', 'jobtitles.id', 'ptkforms.jobtitle_id') // Corrected column name to jobtitle_id
             ->whereYear('ptkformtransactions.created_at', $year)
             ->whereMonth('ptkformtransactions.created_at', $month)
             ->groupBy('ptkforms.id')
