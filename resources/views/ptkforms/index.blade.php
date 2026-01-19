@@ -125,12 +125,14 @@
         $(document).ready(function() {
             $('#example').DataTable({
                 "order": [],
+                "paging": false,
+                "scrollY": "500px",
+                "scrollCollapse": true,
                 "language": {
                     "search": "",
-                    "searchPlaceholder": "Search vacancies...",
-                    "lengthMenu": "_MENU_ per page"
+                    "searchPlaceholder": "Search vacancies..."
                 },
-                "dom": '<"d-flex justify-content-between align-items-center mb-3"fl>rt<"d-flex justify-content-between align-items-center mt-3"ip>'
+                "dom": '<"d-flex justify-content-between align-items-center mb-3"f>rt<"d-flex justify-content-start align-items-center mt-3"i>'
             });
 
             // Custom styling for Datatables
