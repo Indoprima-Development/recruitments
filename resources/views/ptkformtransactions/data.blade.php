@@ -235,8 +235,46 @@
                 <h4>Riwayat Aktivitas</h4>
                 <p class="text-muted text-small mb-0">Kelola dan pantau proses recruitment kandidat</p>
             </div>
-            <div class="col-auto">
-                <!-- Additional filters map go here, keeping it clean for now -->
+        </div>
+
+        <!-- Custom Tabs -->
+        <div class="tabs-container mb-4 overflow-auto">
+            <div class="d-flex flex-nowrap gap-2 pb-2">
+                @php
+                    $tabs = [
+                        ['id' => 'all', 'label' => 'Semua', 'icon' => 'ti ti-file'],
+                        ['id' => '0', 'label' => 'Lamaran (CV Masuk)', 'icon' => 'ti ti-file-text'],
+                        ['id' => '1', 'label' => 'Interview HC', 'icon' => 'ti ti-users'],
+                        ['id' => '3', 'label' => 'Interview User', 'icon' => 'ti ti-user-check'],
+                        ['id' => '2', 'label' => 'Psikotes', 'icon' => 'ti ti-brain'],
+                        ['id' => '4', 'label' => 'Interview Direksi', 'icon' => 'ti ti-building-skyscraper'],
+                        ['id' => '6', 'label' => 'MCU', 'icon' => 'ti ti-heart-rate-monitor'],
+                        ['id' => '5', 'label' => 'Offering', 'icon' => 'ti ti-cash'],
+                        ['id' => '7', 'label' => 'Masuk (Join)', 'icon' => 'ti ti-user-plus'],
+                    ];
+                    // Mapping "Interview Committee" if needed, but current specific codes are 0-7.
+                    // Assuming standard flow: 0=CV, 1=HC, 2=Psiko, 3=User, 4=Dir, 5=Final/Offer, 6=MCU, 7=Join
+                    // Note: In controller previously: 0=CV, 1=HC, 2=Psiko, 3=User, 4=Dir, 5=Final, 6=MCU, 7=Join
+                    // So tabs above match mostly.
+                @endphp
+
+                @foreach ($tabs as $tab)
+                    @php
+                        $isActive =
+                            (isset($status) && $status == $tab['id']) ||
+                            (!isset($status) && $tab['id'] == 'all') ||
+                            (isset($status) && $status == 'all' && $tab['id'] == 'all');
+                        $activeClass = $isActive ? 'bg-primary text-white shadow-sm' : 'bg-white text-muted border';
+                    @endphp
+                    <a href="{{ url('ptkformtransactions/' . $tab['id'] . '/data') }}"
+                        class="text-decoration-none px-3 py-2 rounded-pill d-flex align-items-center gap-2 text-small fw-bold {{ $activeClass }}"
+                        style="white-space: nowrap; transition: all 0.2s;">
+                        <i class="{{ $tab['icon'] }}"></i> {{ $tab['label'] }}
+                        @if ($isActive)
+                            <!-- Badge count could go here if we had counts passed from controller -->
+                        @endif
+                    </a>
+                @endforeach
             </div>
         </div>
 
@@ -330,6 +368,9 @@
                         }
 
                         $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->kota_ktp ?? '-');
+
+                        // Truncate Name to 20 chars
+                        $displayName = \Illuminate\Support\Str::limit($item->user->name, 20);
                     @endphp
                     <tr>
                         <td class="text-center"><input type="checkbox"></td>
@@ -338,11 +379,12 @@
                         <td><span class="days-badge {{ $daysClass }}">{{ $diffDays }} hari</span></td>
                         <td class="col-position">{{ $item->ptkform->jobtitle->jobtitle_name ?? '-' }}</td>
                         <td>
-                            <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->id }})">
-                                {{ $item->user->name }}
+                            <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->id }})"
+                                title="{{ $item->user->name }}">
+                                {{ $displayName }}
                             </a>
                         </td>
-                        <td>{{ \Illuminate\Support\Str::limit($uni, 20) }}</td>
+                        <td title="{{ $uni }}">{{ \Illuminate\Support\Str::limit($uni, 25) }}</td>
                         <td class="text-center">{{ $item->user->ipk ?? '-' }}</td>
                         <td class="text-center">
                             @if ($hasExp)

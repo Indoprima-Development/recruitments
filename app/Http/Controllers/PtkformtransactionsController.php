@@ -139,7 +139,7 @@ class PtkformtransactionsController extends Controller
             ->orderBy('id', 'desc') // penting untuk SQL Server
             ->get();
 
-        return view('ptkformtransactions.data', compact('ptkformtransactions'));
+        return view('ptkformtransactions.data', compact('ptkformtransactions', 'status'));
     }
 
     public function changeStatus(Request $request)
