@@ -1073,11 +1073,11 @@
                             </div>
                             <div class="col-lg-6" data-aos="fade-left">
                                 <div class="image-collage">
-                                    <img src="{{ asset('photo/slides1/1.png') }}" class="collage-img img-main"
+                                    <img src="{{ asset('photo/slides1/1.jpg') }}" class="collage-img img-main"
                                         alt="Development">
-                                    <img src="{{ asset('photo/slides1/2.png') }}" class="collage-img img-sub-1"
+                                    <img src="{{ asset('photo/slides1/2.jpg') }}" class="collage-img img-sub-1"
                                         alt="Training">
-                                    <img src="{{ asset('photo/slides1/3.png') }}" class="collage-img img-sub-2"
+                                    <img src="{{ asset('photo/slides1/3.jpg') }}" class="collage-img img-sub-2"
                                         alt="Growth">
                                 </div>
                             </div>
@@ -1117,11 +1117,11 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="image-collage">
-                                    <img src="{{ asset('photo/slides2/1.png') }}" class="collage-img img-main"
+                                    <img src="{{ asset('photo/slides2/1.jpg') }}" class="collage-img img-main"
                                         alt="Project">
-                                    <img src="{{ asset('photo/slides2/2.png') }}" class="collage-img img-sub-1"
+                                    <img src="{{ asset('photo/slides2/2.jpg') }}" class="collage-img img-sub-1"
                                         alt="Impact">
-                                    <img src="{{ asset('photo/slides2/3.png') }}" class="collage-img img-sub-2"
+                                    <img src="{{ asset('photo/slides2/3.jpg') }}" class="collage-img img-sub-2"
                                         alt="Challenge">
                                 </div>
                             </div>
@@ -1164,11 +1164,11 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="image-collage">
-                                    <img src="{{ asset('photo/slides3/1.png') }}" class="collage-img img-main"
+                                    <img src="{{ asset('photo/slides3/1.jpg') }}" class="collage-img img-main"
                                         alt="Engagement">
-                                    <img src="{{ asset('photo/slides3/2.png') }}" class="collage-img img-sub-1"
+                                    <img src="{{ asset('photo/slides3/2.jpg') }}" class="collage-img img-sub-1"
                                         alt="Culture">
-                                    <img src="{{ asset('photo/slides3/3.png') }}" class="collage-img img-sub-2"
+                                    <img src="{{ asset('photo/slides3/3.jpg') }}" class="collage-img img-sub-2"
                                         alt="Activity">
                                 </div>
                             </div>
