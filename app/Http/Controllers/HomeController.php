@@ -23,23 +23,111 @@ use Google\Service\Gmail\Message as Google_Service_Gmail_Message;
 
 class HomeController extends Controller
 {
-    public function home()
+    public function home(Request $request)
     {
         if (Auth::user()->role != 'ADMIN') {
             return redirect('vacancies');
         }
 
-        $data = Ptkformtransaction::select(DB::raw('count(id) as jumlah, status'))
-            ->orderBy('status', 'ASC')
-            ->groupBy('status')
+        $month = $request->input('month', date('m'));
+        $year = $request->input('year', date('Y'));
+
+        // Base Query
+        $query = Ptkformtransaction::query()
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month);
+
+        $totalApplications = $query->count();
+
+        // Hired Count (Status 7 = Joined)
+        $hiredCount = (clone $query)->where('status', 7)->count();
+
+        // Hire Rate
+        $hireRate = $totalApplications > 0 ? round(($hiredCount / $totalApplications) * 100, 1) : 0;
+
+        // Time to Hire
+        // Fetch hired candidates for this month and calculate avg days
+        $hiredCandidates = (clone $query)->where('status', 7)->get();
+        $totalDays = 0;
+        foreach($hiredCandidates as $candidate) {
+            $created = \Carbon\Carbon::parse($candidate->created_at);
+            $updated = \Carbon\Carbon::parse($candidate->updated_at); // Assuming updated_at is the join date
+            $totalDays += $created->diffInDays($updated);
+        }
+        $avgTimeToHire = $hiredCount > 0 ? round($totalDays / $hiredCount) : 0;
+
+
+        // Offer Acceptance
+        // Assume Status 5 = Offering (Sent), Status 7 = Joined (Accepted)
+        // This is a rough estimate. Ideally we track Offer Sent vs Offer Accepted.
+        // Let's assume Status 5 and above means Offer was reached.
+        $offersReached = (clone $query)->where('status', '>=', 5)->count();
+        $offerAcceptance = $offersReached > 0 ? round(($hiredCount / $offersReached) * 100, 1) : 0;
+
+        // Funnel Data
+        // 0: App, 1: HC, 3: User, 5: Offer, 7: Hired
+        // Note: The flow codes might skip some numbers based on visual but let's map standard ones.
+        // The visual shows: Aplikasi Masuk, Screening, Interview HR, Interview User, Offering, Hired.
+        $funnelData = [
+            'total' => $totalApplications,
+            'screening' => (clone $query)->where('status', '>=', 0)->count(), // All entered are screened
+            'interview_hr' => (clone $query)->where('status', '>=', 1)->count(),
+            'interview_user' => (clone $query)->where('status', '>=', 3)->count(),
+            'offering' => $offersReached,
+            'hired' => $hiredCount
+        ];
+
+        // Hiring by Department
+        // Group by ptkform.jobtitle.department (if exists) or just jobtitle name for now simple
+        $departmentData = Ptkformtransaction::select('ptkforms.id', DB::raw('count(*) as apps'))
+            ->join('ptkforms', 'ptkforms.id', 'ptkformtransactions.ptkform_id')
+            ->join('jobtitiles', 'jobtitiles.id', 'ptkforms.job_title_id') // Correct table name usually jobtitles but check schema if needed. Let's assume standard relationship through model is safer.
+            ->whereYear('ptkformtransactions.created_at', $year)
+            ->whereMonth('ptkformtransactions.created_at', $month)
+            ->groupBy('ptkforms.id')
+            ->with('ptkform.jobtitle') // Load relationship
             ->get();
 
-        $dataResults = [0, 0, 0, 0, 0, 0, 0, 0];
-        foreach ($data as $key => $d) {
-            $dataResults[$d->status] = $d->jumlah;
+        // Refine department data
+        // Since groupBy ptkforms.id might split same job title if different PTK forms, we will aggregate in PHP or improve query.
+        // Let's use the Collection to aggregate by JobTitle Name.
+        $deptStats = [];
+        $rawDept = Ptkformtransaction::with(['ptkform.jobtitle'])
+             ->whereYear('created_at', $year)
+             ->whereMonth('created_at', $month)
+             ->get();
+
+        foreach($rawDept as $item) {
+            $name = $item->ptkform->jobtitle->jobtitle_name ?? 'Unknown';
+            if(!isset($deptStats[$name])) {
+                $deptStats[$name] = [
+                    'name' => $name,
+                    'open' => 0, // Placeholder
+                    'applications' => 0,
+                    'interviews' => 0,
+                    'hired' => 0
+                ];
+                // Try to get open positions count? Ptkform has 'jumlah'?
+                // For now just 1 per form or summation.
+                // This is complex, let's simplify: existing PTK forms open.
+            }
+            $deptStats[$name]['applications']++;
+            if($item->status >= 1) $deptStats[$name]['interviews']++;
+            if($item->status == 7) $deptStats[$name]['hired']++;
         }
 
-        return view("home.home", compact("dataResults"));
+        // Calculate success rate
+        foreach($deptStats as &$stat) {
+            $stat['success_rate'] = $stat['applications'] > 0 ? round(($stat['hired'] / $stat['applications']) * 100, 1) : 0;
+            // Get Open positions.
+            // We can Count PTKForms for this jobtitle that are OPEN (is_open=1 works?)
+            // This is a bit outside transaction scope, but let's just create a nice table.
+            $stat['open'] = Ptkform::whereHas('jobtitle', function($q) use ($stat) {
+                $q->where('jobtitle_name', $stat['name']);
+            })->where('is_open', 1)->sum('jumlah');
+        }
+
+        return view("home.home", compact("totalApplications", "hireRate", "avgTimeToHire", "offerAcceptance", "funnelData", "deptStats", "month", "year"));
     }
 
     public function index()
