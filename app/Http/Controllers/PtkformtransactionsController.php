@@ -128,9 +128,10 @@ class PtkformtransactionsController extends Controller
         ini_set('memory_limit', '256M');
 
         $ptkformtransactions = Ptkformtransaction::with([
-            'user.datapendidikanformal',
-            'user.datapengalamankerja',
-            'user.datadiri',
+            'user' => function($q) {
+                $q->with('latestEducation', 'datadiri')
+                  ->withCount('datapengalamankerja');
+            },
             'ptkform.jobtitle'
         ])
             ->when($status !== "all", function ($query) use ($status) {

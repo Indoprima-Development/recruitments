@@ -62,6 +62,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Datapendidikanformal', "user_id", "id");
     }
 
+    public function latestEducation()
+    {
+        return $this->hasOne('App\Models\Datapendidikanformal', "user_id", "id")->latestOfMany();
+    }
+
     public function datadiri()
     {
         return $this->hasOne('App\Models\Datadiri', "user_id", "id");

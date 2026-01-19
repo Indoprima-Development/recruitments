@@ -318,56 +318,55 @@
                         }
 
                         // Experience logic
-                        $expCount = $item->user->datapengalamankerja ? $item->user->datapengalamankerja->count() : 0;
+                        $expCount = $item->user->datapengalamankerja_count ?? 0;
                         $hasExp = $expCount > 0;
 
                         // Duration (placeholder logic: sum of years?)
                         // For display purpose using random or real if available.
                         // We will try to sum up duration if we had start/end dates, but let's just show count "X Exp" for now or "-"
-// Assuming user wants visuals, let's just say "$expCount Jobs"
-                        $duration = $expCount > 0 ? $expCount . ' Jobs' : '-';
+$duration = $expCount > 0 ? $expCount . ' Jobs' : '-';
 
-                        // Education
-                        $lastEdu = $item->user->datapendidikanformal ? $item->user->datapendidikanformal->last() : null;
-                        $uni = $lastEdu ? $lastEdu->instansi : '-';
+// Education
+$lastEdu = $item->user->latestEducation;
+$uni = $lastEdu ? $lastEdu->instansi : '-';
 
-                        // Status
-                        $statusBadge = 'status-new';
-                        $statusLabel = 'New';
-                        switch ($item->status) {
-                            case 0:
-                                $statusBadge = 'status-new';
-                                $statusLabel = 'New';
-                                break;
-                            case 1:
-                            case 2:
-                            case 3:
-                            case 4:
-                            case 5:
-                            case 6:
-                                $statusBadge = 'status-hold';
-                                $statusLabel = 'In Progress';
-                                break;
-                            case 7:
-                            case 8:
-                                $statusBadge = 'status-approved';
-                                $statusLabel = 'Approved';
-                                break;
-                            case 9:
-                                $statusBadge = 'status-rejected';
-                                $statusLabel = 'Rejected';
-                                break;
-                        }
+// Status
+$statusBadge = 'status-new';
+$statusLabel = 'New';
+switch ($item->status) {
+    case 0:
+        $statusBadge = 'status-new';
+        $statusLabel = 'New';
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+        $statusBadge = 'status-hold';
+        $statusLabel = 'In Progress';
+        break;
+    case 7:
+    case 8:
+        $statusBadge = 'status-approved';
+        $statusLabel = 'Approved';
+        break;
+    case 9:
+        $statusBadge = 'status-rejected';
+        $statusLabel = 'Rejected';
+        break;
+}
 
-                        $score = $item->score_candidate ?? 0;
-                        $scoreClass = 'text-low';
-                        if ($score >= 80) {
-                            $scoreClass = 'text-high';
-                        } elseif ($score >= 60) {
-                            $scoreClass = 'text-med';
-                        }
+$score = $item->score_candidate ?? 0;
+$scoreClass = 'text-low';
+if ($score >= 80) {
+    $scoreClass = 'text-high';
+} elseif ($score >= 60) {
+    $scoreClass = 'text-med';
+}
 
-                        $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->kota_ktp ?? '-');
+$domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->kota_ktp ?? '-');
 
                         // Truncate Name to 20 chars
                         $displayName = \Illuminate\Support\Str::limit($item->user->name, 20);
@@ -417,8 +416,8 @@
                         <td class="text-center">
                             <div class="d-flex justify-content-center">
                                 <button class="btn-icon btn-check btnEditStatus" ptkformtrid="{{ $item->id }}"
-                                    status="{{ $item->status }}" types="approve" title="Approve"><i
-                                        class="fas fa-check"></i></button>
+                                    status="{{ $item->status }}" types="approve" data-bs-toggle="tooltip"
+                                    title="Approve / Next Stage"><i class="fas fa-check"></i></button>
                                 <button class="btn-icon btn-clock" title="Hold"><i class="fas fa-clock"></i></button>
                                 <button class="btn-icon btn-cross" title="Reject"><i class="fas fa-times"></i></button>
                             </div>
