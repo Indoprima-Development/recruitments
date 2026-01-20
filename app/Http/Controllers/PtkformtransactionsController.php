@@ -145,19 +145,25 @@ class PtkformtransactionsController extends Controller
 
     public function changeStatus(Request $request)
     {
-        $status = 9;
+        $status = 9; // Default Rejected
         if ($request->statusokornot == 'OK') {
+            // Approve: Lanjut ke tahap berikutnya
             $status = $request->status + 1;
         }
 
-        $data = Ptkformtransaction::where("id", $request->ptkformtrid)->first();
+        $data = Ptkformtransaction::where("id", $request->ptkformtrid)->firstOrFail();
+
         if ($data->pic == "") {
             $update["pic"] = Auth::user()->name;
         }
 
         $update["status"] = $status;
-        $update[$request->type] = date("Y-m-d");
-        $update["score_" . $request->type] = $request->score;
+
+        // Log tanggal dan score untuk tahap ini
+        if ($request->has('type') && $request->type) {
+            $update[$request->type] = date("Y-m-d");
+            $update["score_" . $request->type] = $request->score;
+        }
 
         $data->update($update);
 
@@ -167,7 +173,7 @@ class PtkformtransactionsController extends Controller
             "keterangan"    => $request->keterangan
         ]);
 
-        AlertSuccess("Success", "Status berhasil diubah");
+        AlertSuccess("Success", "Status berhasil diubah (Lanjut tahap berikutnya)");
         return redirect()->back();
     }
 }

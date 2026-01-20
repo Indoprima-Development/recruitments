@@ -423,6 +423,18 @@
                 </div>
             </div>
 
+            <!-- Search Bar -->
+            <div class="row justify-content-center mb-5" data-aos="fade-up" data-aos-delay="150">
+                <div class="col-lg-6">
+                    <div class="input-group shadow-sm rounded-pill overflow-hidden bg-white border">
+                        <span class="input-group-text bg-white border-0 ps-4 text-secondary"><i
+                                class="ti ti-search"></i></span>
+                        <input type="text" id="jobSearch" class="form-control border-0 py-3"
+                            placeholder="Search by job title or department...">
+                    </div>
+                </div>
+            </div>
+
             <!-- Admin Create Button (Only if Admin) -->
             @if (Auth::check() && Auth::user()->role == 'ADMIN')
                 <div class="text-end mb-4">
@@ -594,6 +606,22 @@
             } else {
                 $('.navbar').removeClass('shadow-sm');
             }
+        });
+
+        // Search Functionality
+        $('#jobSearch').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $('.job-card-horizontal').each(function() {
+                var title = $(this).find('.job-title-slim').text().toLowerCase();
+                var dept = $(this).find('.job-dept-slim').text().toLowerCase();
+                var parentCol = $(this).parent();
+
+                if (title.indexOf(value) > -1 || dept.indexOf(value) > -1) {
+                    parentCol.show();
+                } else {
+                    parentCol.hide();
+                }
+            });
         });
     </script>
 </body>

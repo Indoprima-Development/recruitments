@@ -414,10 +414,11 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                             <span class="badge-status {{ $statusBadge }}">{{ $statusLabel }}</span>
                         </td>
                         <td class="text-center">
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-center gap-1">
                                 <button class="btn-icon btn-check btnEditStatus" ptkformtrid="{{ $item->id }}"
-                                    status="{{ $item->status }}" types="approve" data-bs-toggle="tooltip"
-                                    title="Approve / Next Stage"><i class="fas fa-check"></i></button>
+                                    status="{{ $item->status }}" data-bs-toggle="tooltip"
+                                    title="Approve / Lanjut Tahap Berikutnya"><i class="fas fa-check"></i></button>
+
                                 <button class="btn-icon btn-clock" title="Hold"><i class="fas fa-clock"></i></button>
                                 <button class="btn-icon btn-cross" title="Reject"><i class="fas fa-times"></i></button>
                             </div>

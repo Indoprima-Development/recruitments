@@ -319,35 +319,66 @@
                             <i class="ti ti-arrow-left me-2"></i> Back to All Jobs
                         </a>
 
-                        <div>
-                            <span class="job-badge">{{ $ptkform->status_pegawai }}</span>
-                            <h1 class="job-title">{{ $ptkform->jobtitle->jobtitle_name }}</h1>
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                            <div>
+                                <span class="job-badge">{{ $ptkform->status_pegawai }}</span>
+                                <h1 class="job-title mb-0">{{ $ptkform->jobtitle->jobtitle_name }}</h1>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary rounded-pill px-4" id="btnShare">
+                                <i class="ti ti-share me-2"></i> Share
+                            </button>
+                        </div>
 
-                            <div class="job-meta-row">
-                                <div class="job-meta-item">
-                                    <i class="ti ti-building"></i>
-                                    <span>{{ $ptkform->division->division_name }}</span>
+                        <div class="job-meta-row">
+                            <div class="job-meta-item">
+                                <div class="icon-box-sm bg-blue-light text-primary rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 32px; height: 32px;">
+                                    <i class="ti ti-building fs-5"></i>
                                 </div>
-                                <div class="job-meta-item">
-                                    <i class="ti ti-map-pin"></i>
-                                    <span>Surabaya, Indonesia</span>
+                                <span>{{ $ptkform->division->division_name }}</span>
+                            </div>
+                            <div class="job-meta-item">
+                                <div class="icon-box-sm bg-green-light text-success rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 32px; height: 32px;">
+                                    <i class="ti ti-map-pin fs-5"></i>
                                 </div>
-                                <div class="job-meta-item">
-                                    <i class="ti ti-clock"></i>
-                                    <span>Full Time</span>
+                                <span>Surabaya, Indonesia</span>
+                            </div>
+                            <div class="job-meta-item">
+                                <div class="icon-box-sm bg-orange-light text-warning rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 32px; height: 32px;">
+                                    <i class="ti ti-clock fs-5"></i>
                                 </div>
-                                <div class="job-meta-item">
-                                    <i class="ti ti-calendar"></i>
-                                    <span>Posted
-                                        {{ \Carbon\Carbon::parse($ptkform->created_at)->diffForHumans() }}</span>
+                                <span>Full Time</span>
+                            </div>
+                            <div class="job-meta-item">
+                                <div class="icon-box-sm bg-purple-light text-info rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 32px; height: 32px;">
+                                    <i class="ti ti-calendar fs-5"></i>
                                 </div>
+                                <span>Posted {{ \Carbon\Carbon::parse($ptkform->created_at)->diffForHumans() }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </div>
     </header>
+
+    <!-- Share Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="shareToast" class="toast align-items-center text-white bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="ti ti-check me-2"></i> Link copied to clipboard!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <section class="py-5">
@@ -510,7 +541,8 @@
                                                 Apply Now <i class="ti ti-arrow-right ms-2"></i>
                                             </button>
                                             <p class="small text-muted mb-0">You are applying as
-                                                <strong>{{ Auth::user()->name }}</strong></p>
+                                                <strong>{{ Auth::user()->name }}</strong>
+                                            </p>
                                         @else
                                             <button type="button"
                                                 class="btn btn-success btn-apply rounded-pill shadow-lg mb-3" disabled>
@@ -635,7 +667,8 @@
                                     </div>
                                     <h5>Ready to Apply?</h5>
                                     <p class="text-muted">Click the button below to confirm your application for
-                                        <strong>{{ $ptkform->jobtitle->jobtitle_name }}</strong>.</p>
+                                        <strong>{{ $ptkform->jobtitle->jobtitle_name }}</strong>.
+                                    </p>
                                 </div>
                             @endif
 
@@ -717,6 +750,21 @@
             var btn = $("#btnSubmitApplication");
             btn.html('<span class="spinner-border spinner-border-sm me-2"></span>Processing...');
             btn.prop("disabled", true);
+        });
+
+        // Share Button Logic
+        document.getElementById('btnShare').addEventListener('click', function() {
+            var dummy = document.createElement('input'),
+                text = window.location.href;
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            var toastEl = document.getElementById('shareToast');
+            var toast = new bootstrap.Toast(toastEl);
+            toast.show();
         });
     </script>
 </body>
