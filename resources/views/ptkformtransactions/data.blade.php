@@ -378,7 +378,7 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                         <td><span class="days-badge {{ $daysClass }}">{{ $diffDays }} hari</span></td>
                         <td class="col-position">{{ $item->ptkform->jobtitle->jobtitle_name ?? '-' }}</td>
                         <td>
-                            <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->id }})"
+                            <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->user_id }})"
                                 title="{{ $item->user->name }}">
                                 {{ $displayName }}
                             </a>
@@ -485,7 +485,9 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
     <script>
         $(document).ready(function() {
             var table = $('#recruitmentTable').DataTable({
-                paging: false,
+                paging: true,
+                deferRender: true,
+                pageLength: 25,
                 scrollY: '600px',
                 scrollCollapse: true,
                 scrollX: true,
