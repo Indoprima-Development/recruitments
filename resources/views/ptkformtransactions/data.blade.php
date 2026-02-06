@@ -278,6 +278,35 @@
             </div>
         </div>
 
+        <!-- Filters -->
+        <div class="row mb-3 g-2">
+            <div class="col-md-3">
+                <select id="filterGpa" class="form-select text-small">
+                    <option value="">All GPA</option>
+                    <option value="3.50">GPA >= 3.50</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="filterUniversity" class="form-select text-small">
+                    <option value="">All Universities</option>
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="filterExperience" class="form-select text-small">
+                    <option value="">All Experience</option>
+                    <option value="Ya">Ya</option>
+                    <option value="Tidak">Tidak</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="filterDomicile" class="form-select text-small">
+                    <option value="">All Domiciles</option>
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+        </div>
+
         <table id="recruitmentTable" class="stripe row-border order-column" style="width:100%">
             <thead>
                 <tr>
@@ -483,64 +512,124 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
     <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            var table = $('#recruitmentTable').DataTable({
-                paging: true,
-                deferRender: true,
-                pageLength: 25,
-                scrollY: '600px',
-                scrollCollapse: true,
-                scrollX: true,
-                autoWidth: false,
-                fixedColumns: {
-                    start: 2 // Fix checkbox and date
-                },
-                language: {
-                    search: "",
-                    searchPlaceholder: "Cari kandidat, universitas, posisi...",
-                    info: "Showing _TOTAL_ candidates"
-                },
-                columnDefs: [{
-                        orderable: false,
-                        targets: [0, 17]
-                    }, // Disable sort for checkbox and action
-                    {
-                        width: '30px',
-                        targets: 0
-                    }
-                ],
-                initComplete: function() {
-                    this.api().columns.adjust();
+        // Custom Filtering Function for GPA
+        $.fn.dataTable.ext.search.push(
+            function(settings, data, dataIndex) {
+                // GPA Filter
+                var minGpa = parseFloat($('#filterGpa').val());
+                var gpa = parseFloat(data[7]) || 0; // Use data for the GPA column (index 7)
+
+                if (!isNaN(minGpa) && gpa < minGpa) {
+                    return false;
                 }
-            });
+                return true;
+            }
+        );
 
-            // Adjust columns on window resize to ensure alignment
-            $(window).on('resize', function() {
-                table.columns.adjust();
-            });
+        var table = $('#recruitmentTable').DataTable({
+            paging: true,
+            deferRender: true,
+            pageLength: 25,
+            // scrollY removed
+            // scrollCollapse removed
+            scrollX: true,
+            autoWidth: false,
+            fixedColumns: {
+                start: 2 // Fix checkbox and date
+            },
+            language: {
+                search: "",
+                searchPlaceholder: "Cari kandidat, universitas, posisi...",
+                info: "Showing _TOTAL_ candidates"
+            },
+            columnDefs: [{
+                    orderable: false,
+                    targets: [0, 17]
+                }, // Disable sort for checkbox and action
+                {
+                    width: '30px',
+                    targets: 0
+                }
+            ],
+            initComplete: function() {
+                this.api().columns.adjust();
 
-            // Status Edit Click
-            $(document).on("click", ".btnEditStatus", function() {
-                var tr = $(this).closest('tr');
-                var name = tr.find('.col-candidate').text().trim();
-                var id = $(this).attr('ptkformtrid');
-                var status = $(this).attr('status');
+                // Populate University Filter (Index 6)
+                var uniColumn = this.api().column(6);
+                var uniSelect = $('#filterUniversity');
+                uniColumn.data().unique().sort().each(function(d, j) {
+                    var val = $.fn.dataTable.util.escapeRegex(d);
+                    // Clean HTML if necessary (simple text extraction)
+                    var text = $('<div>').html(val).text();
+                    if (text.trim() !== '' && text !== '-') {
+                        uniSelect.append('<option value="' + text + '">' + text + '</option>');
+                    }
+                });
 
-                $('#ptkformtridModalEditStatus').val(id);
-                $('#statusModalEditStatus').val(status);
-                $('#nameModalEditStatus').val(name);
+                // Populate Domicile Filter (Index 10)
+                var domColumn = this.api().column(10);
+                var domSelect = $('#filterDomicile');
+                domColumn.data().unique().sort().each(function(d, j) {
+                    var val = $.fn.dataTable.util.escapeRegex(d);
+                    var text = $('<div>').html(val).text();
+                    if (text.trim() !== '' && text !== '-') {
+                        domSelect.append('<option value="' + text + '">' + text + '</option>');
+                    }
+                });
+            }
+        });
 
-                // Determine next step type based on status
-                var types = ['cv_review', 'interview_hc', 'psikotest', 'interview_user',
-                    'interview_direksi', 'finalisasi', 'mcu', 'join'
-                ];
-                var currentStatusIdx = parseInt(status);
-                var nextType = types[currentStatusIdx] || 'udpate';
+        // Event Listeners for Filters
+        $('#filterGpa').on('change', function() {
+            table.draw();
+        });
 
-                $('#typeModalEditStatus').val(nextType);
+        $('#filterUniversity').on('change', function() {
+            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            table.column(6).search(val ? val : '', true, false)
+                .draw(); // Exact match or contains? usually exact for dropdown
+        });
 
-                $('#modalEditStatus').modal('show');
-            });
+        $('#filterExperience').on('change', function() {
+            var val = $(this).val();
+            // Column 8 contains "Ya" or "Tidak" inside span
+            // We search for the text
+            table.column(8).search(val).draw();
+        });
+
+        $('#filterDomicile').on('change', function() {
+            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            table.column(10).search(val ? val : '', true, false).draw();
+        });
+
+
+        // Adjust columns on window resize to ensure alignment
+        $(window).on('resize', function() {
+            table.columns.adjust();
+        });
+
+        // Status Edit Click
+        $(document).on("click", ".btnEditStatus", function() {
+        var tr = $(this).closest('tr');
+        var name = tr.find('.col-candidate').text().trim();
+        var id = $(this).attr('ptkformtrid');
+        var status = $(this).attr('status');
+
+        $('#ptkformtridModalEditStatus').val(id);
+        $('#statusModalEditStatus').val(status);
+        $('#nameModalEditStatus').val(name);
+
+        // Determine next step type based on status
+        var types = ['cv_review', 'interview_hc', 'psikotest', 'interview_user',
+            'interview_direksi', 'finalisasi', 'mcu', 'join'
+        ];
+        var currentStatusIdx = parseInt(status);
+        var nextType = types[currentStatusIdx] || 'udpate';
+
+        $('#typeModalEditStatus').val(nextType);
+
+        $('#modalEditStatus').modal('show');
+        });
         });
 
         function viewCandidate(id) {
