@@ -10,6 +10,12 @@ class BlockIpMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        // Whitelist localhost
+        $whitelistedIps = ['127.0.0.1', '::1'];
+        if (in_array($request->ip(), $whitelistedIps)) {
+            return $next($request);
+        }
+
         $blockedIps = DB::table('blocked_ips')->pluck('ip_address')->toArray();
 
         if (in_array($request->ip(), $blockedIps)) {

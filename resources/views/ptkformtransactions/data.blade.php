@@ -403,9 +403,10 @@
             );
 
             var table = $('#recruitmentTable').DataTable({
-                paging: true,
+                paging: false,
                 deferRender: true,
-                pageLength: 25,
+                scrollY: '60vh',
+                scrollCollapse: true,
                 scrollX: true,
                 autoWidth: false,
                 fixedColumns: {
@@ -612,7 +613,14 @@
                 });
 
                 table.rows.add(rows).draw();
+
+                // Adjust columns to fix alignment issues
                 table.columns.adjust();
+
+                // Extra adjustment for FixedColumns and ScrollY
+                setTimeout(function() {
+                    table.columns.adjust();
+                }, 200);
 
                 populateFilters();
             }

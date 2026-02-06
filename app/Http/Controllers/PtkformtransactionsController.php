@@ -126,12 +126,6 @@ class PtkformtransactionsController extends Controller
 
     public function dataByStatus($status)
     {
-        ini_set('max_execution_time', 10000);
-        ini_set('memory_limit', '256M');
-
-        // Generate the JSON file
-        $this->saveDataJson($status);
-
         return view('ptkformtransactions.data', compact('status'));
     }
 
