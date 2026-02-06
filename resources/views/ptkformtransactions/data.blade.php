@@ -517,124 +517,127 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
     <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.min.js"></script>
 
     <script>
-        // Custom Filtering Function for GPA
-        $.fn.dataTable.ext.search.push(
-            function(settings, data, dataIndex) {
-                // GPA Filter
-                var minGpa = parseFloat($('#filterGpa').val());
-                var gpa = parseFloat(data[7]) || 0; // Use data for the GPA column (index 7)
+        $(document).ready(function() {
+            // Custom Filtering Function for GPA
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    // GPA Filter
+                    var minGpa = parseFloat($('#filterGpa').val());
+                    var gpa = parseFloat(data[7]) || 0; // Use data for the GPA column (index 7)
 
-                if (!isNaN(minGpa) && gpa < minGpa) {
-                    return false;
-                }
-                return true;
-            }
-        );
-
-        var table = $('#recruitmentTable').DataTable({
-            paging: true,
-            deferRender: true,
-            pageLength: 25,
-            // scrollY removed
-            // scrollCollapse removed
-            scrollX: true,
-            autoWidth: false,
-            fixedColumns: {
-                start: 2 // Fix checkbox and date
-            },
-            language: {
-                search: "",
-                searchPlaceholder: "Cari kandidat, universitas, posisi...",
-                info: "Showing _TOTAL_ candidates"
-            },
-            columnDefs: [{
-                    orderable: false,
-                    targets: [0, 17]
-                }, // Disable sort for checkbox and action
-                {
-                    width: '30px',
-                    targets: 0
-                }
-            ],
-            initComplete: function() {
-                this.api().columns.adjust();
-
-                // Populate University Filter (Index 6)
-                var uniColumn = this.api().column(6);
-                var uniSelect = $('#filterUniversity');
-                uniColumn.data().unique().sort().each(function(d, j) {
-                    var val = $.fn.dataTable.util.escapeRegex(d);
-                    // Clean HTML if necessary (simple text extraction)
-                    var text = $('<div>').html(val).text();
-                    if (text.trim() !== '' && text !== '-') {
-                        uniSelect.append('<option value="' + text + '">' + text + '</option>');
+                    if (!isNaN(minGpa) && gpa < minGpa) {
+                        return false;
                     }
-                });
+                    return true;
+                }
+            );
 
-                // Populate Domicile Filter (Index 10)
-                var domColumn = this.api().column(10);
-                var domSelect = $('#filterDomicile');
-                domColumn.data().unique().sort().each(function(d, j) {
-                    var val = $.fn.dataTable.util.escapeRegex(d);
-                    var text = $('<div>').html(val).text();
-                    if (text.trim() !== '' && text !== '-') {
-                        domSelect.append('<option value="' + text + '">' + text + '</option>');
+            var table = $('#recruitmentTable').DataTable({
+                paging: true,
+                deferRender: true,
+                pageLength: 25,
+                // scrollY removed
+                // scrollCollapse removed
+                scrollX: true,
+                autoWidth: false,
+                fixedColumns: {
+                    start: 2 // Fix checkbox and date
+                },
+                language: {
+                    search: "",
+                    searchPlaceholder: "Cari kandidat, universitas, posisi...",
+                    info: "Showing _TOTAL_ candidates"
+                },
+                columnDefs: [{
+                        orderable: false,
+                        targets: [0, 17]
+                    }, // Disable sort for checkbox and action
+                    {
+                        width: '30px',
+                        targets: 0
                     }
-                });
-            }
-        });
+                ],
+                initComplete: function() {
+                    this.api().columns.adjust();
 
-        // Event Listeners for Filters
-        $('#filterGpa').on('change', function() {
-            table.draw();
-        });
+                    // Populate University Filter (Index 6)
+                    var uniColumn = this.api().column(6);
+                    var uniSelect = $('#filterUniversity');
+                    uniColumn.data().unique().sort().each(function(d, j) {
+                        var val = $.fn.dataTable.util.escapeRegex(d);
+                        // Clean HTML if necessary (simple text extraction)
+                        var text = $('<div>').html(val).text();
+                        if (text.trim() !== '' && text !== '-') {
+                            uniSelect.append('<option value="' + text + '">' + text +
+                                '</option>');
+                        }
+                    });
 
-        $('#filterUniversity').on('change', function() {
-            var val = $.fn.dataTable.util.escapeRegex($(this).val());
-            table.column(6).search(val ? val : '', true, false)
-                .draw(); // Exact match or contains? usually exact for dropdown
-        });
+                    // Populate Domicile Filter (Index 10)
+                    var domColumn = this.api().column(10);
+                    var domSelect = $('#filterDomicile');
+                    domColumn.data().unique().sort().each(function(d, j) {
+                        var val = $.fn.dataTable.util.escapeRegex(d);
+                        var text = $('<div>').html(val).text();
+                        if (text.trim() !== '' && text !== '-') {
+                            domSelect.append('<option value="' + text + '">' + text +
+                                '</option>');
+                        }
+                    });
+                }
+            });
 
-        $('#filterExperience').on('change', function() {
-            var val = $(this).val();
-            // Column 8 contains "Ya" or "Tidak" inside span
-            // We search for the text
-            table.column(8).search(val).draw();
-        });
+            // Event Listeners for Filters
+            $('#filterGpa').on('change', function() {
+                table.draw();
+            });
 
-        $('#filterDomicile').on('change', function() {
-            var val = $.fn.dataTable.util.escapeRegex($(this).val());
-            table.column(10).search(val ? val : '', true, false).draw();
-        });
+            $('#filterUniversity').on('change', function() {
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                table.column(6).search(val ? val : '', true, false)
+                    .draw(); // Exact match or contains? usually exact for dropdown
+            });
+
+            $('#filterExperience').on('change', function() {
+                var val = $(this).val();
+                // Column 8 contains "Ya" or "Tidak" inside span
+                // We search for the text
+                table.column(8).search(val).draw();
+            });
+
+            $('#filterDomicile').on('change', function() {
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                table.column(10).search(val ? val : '', true, false).draw();
+            });
 
 
-        // Adjust columns on window resize to ensure alignment
-        $(window).on('resize', function() {
-            table.columns.adjust();
-        });
+            // Adjust columns on window resize to ensure alignment
+            $(window).on('resize', function() {
+                table.columns.adjust();
+            });
 
-        // Status Edit Click
-        $(document).on("click", ".btnEditStatus", function() {
-        var tr = $(this).closest('tr');
-        var name = tr.find('.col-candidate').text().trim();
-        var id = $(this).attr('ptkformtrid');
-        var status = $(this).attr('status');
+            // Status Edit Click
+            $(document).on("click", ".btnEditStatus", function() {
+                var tr = $(this).closest('tr');
+                var name = tr.find('.col-candidate').text().trim();
+                var id = $(this).attr('ptkformtrid');
+                var status = $(this).attr('status');
 
-        $('#ptkformtridModalEditStatus').val(id);
-        $('#statusModalEditStatus').val(status);
-        $('#nameModalEditStatus').val(name);
+                $('#ptkformtridModalEditStatus').val(id);
+                $('#statusModalEditStatus').val(status);
+                $('#nameModalEditStatus').val(name);
 
-        // Determine next step type based on status
-        var types = ['cv_review', 'interview_hc', 'psikotest', 'interview_user',
-            'interview_direksi', 'finalisasi', 'mcu', 'join'
-        ];
-        var currentStatusIdx = parseInt(status);
-        var nextType = types[currentStatusIdx] || 'udpate';
+                // Determine next step type based on status
+                var types = ['cv_review', 'interview_hc', 'psikotest', 'interview_user',
+                    'interview_direksi', 'finalisasi', 'mcu', 'join'
+                ];
+                var currentStatusIdx = parseInt(status);
+                var nextType = types[currentStatusIdx] || 'udpate';
 
-        $('#typeModalEditStatus').val(nextType);
+                $('#typeModalEditStatus').val(nextType);
 
-        $('#modalEditStatus').modal('show');
-        });
+                $('#modalEditStatus').modal('show');
+            });
         });
 
         function viewCandidate(id) {
