@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('ptkformtransactions', function (Blueprint $table) {
+            $table->integer('experience_years')->nullable()->after('user_id');
+            $table->integer('experience_months')->nullable()->after('experience_years');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('ptkformtransactions', function (Blueprint $table) {
+            $table->dropColumn('experience_years');
+            $table->dropColumn('experience_months');
+        });
+    }
+};

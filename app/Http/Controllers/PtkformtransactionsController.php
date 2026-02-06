@@ -60,6 +60,8 @@ class PtkformtransactionsController extends Controller
         $ptkformtransaction->status = 0;
         $ptkformtransaction->score_candidate = $score;
         $ptkformtransaction->user_id = Auth::user()->id;
+        $ptkformtransaction->experience_years = $request->input('experience_years');
+        $ptkformtransaction->experience_months = $request->input('experience_months');
         $ptkformtransaction->save();
 
         AlertSuccess("Success", "Berhasil melamar pekerjaan");
