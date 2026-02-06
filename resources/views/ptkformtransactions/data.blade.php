@@ -430,7 +430,12 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                                 style="font-size: 0.65rem;">Web</span>
                         </td>
                         <td class="text-center">
-                            <a href="#" class="link-blue"><i class="fas fa-eye me-1"></i> View</a>
+                            @if ($item->user->cv)
+                                <a href="{{ asset($item->user->cv) }}" target="_blank" class="link-blue"><i
+                                        class="fas fa-eye me-1"></i> View</a>
+                            @else
+                                <span class="text-muted text-small">-</span>
+                            @endif
                         </td>
                         <td class="text-center">
                             <a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>
