@@ -671,49 +671,49 @@
                                     </p>
                                 </div>
                             @endif
-    @endif
 
-    <!-- Experience Question (Always Added) -->
-    <div class="mt-4 mb-3">
-        <label class="form-label fw-bold">Berapa lama pengalaman di bidang ini?</label>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input type="number" name="experience_years" class="form-control" min="0"
-                        placeholder="0" required>
-                    <span class="input-group-text">Tahun</span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input type="number" name="experience_months" class="form-control" min="0"
-                        max="11" placeholder="0" required>
-                    <span class="input-group-text">Bulan</span>
+                            <!-- Experience Question (Always Added) -->
+                            <div class="mt-4 mb-3">
+                                <label class="form-label fw-bold">Berapa lama pengalaman di bidang ini?</label>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="number" name="experience_years" class="form-control"
+                                                min="0" placeholder="0" required>
+                                            <span class="input-group-text">Tahun</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="number" name="experience_months" class="form-control"
+                                                min="0" max="11" placeholder="0" required>
+                                            <span class="input-group-text">Bulan</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-check mt-3 bg-light p-3 rounded-3">
+                                <input class="form-check-input" type="checkbox" id="agreementCheck" required>
+                                <label class="form-check-label small" for="agreementCheck">
+                                    I, <strong>{{ Auth::user()->name }}</strong>, agree to participate in the entire
+                                    selection process in accordance with company policies and declare that the data
+                                    provided is true.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer p-3 bg-light border-0">
+                            <input type="hidden" name="ptkform_id" value="{{ $ptkform->id }}">
+                            <button type="button" class="btn btn-link text-muted text-decoration-none me-2"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold"
+                                id="btnSubmitApplication">Submit
+                                Application</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="form-check mt-3 bg-light p-3 rounded-3">
-        <input class="form-check-input" type="checkbox" id="agreementCheck" required>
-        <label class="form-check-label small" for="agreementCheck">
-            I, <strong>{{ Auth::user()->name }}</strong>, agree to participate in the entire
-            selection process in accordance with company policies and declare that the data
-            provided is true.
-        </label>
-    </div>
-    </div>
-    <div class="modal-footer p-3 bg-light border-0">
-        <input type="hidden" name="ptkform_id" value="{{ $ptkform->id }}">
-        <button type="button" class="btn btn-link text-muted text-decoration-none me-2"
-            data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold" id="btnSubmitApplication">Submit
-            Application</button>
-    </div>
-    </form>
-    </div>
-    </div>
-    </div>
     @endif
 
     <!-- Admin Approval Modal -->
