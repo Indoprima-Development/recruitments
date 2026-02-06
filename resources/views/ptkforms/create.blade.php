@@ -470,7 +470,8 @@
                             <option value="Staff">Staff</option>
                             <option value="Non Staff">Non Staff</option>
                             <option value="Internship">Internship</option>
-                            <option value="LTC">LTC</option>
+                            <option value="Apprenticeship">Apprenticeship</option>
+                            <option value="Graduate Development Program">Graduate Development Program</option>
                         </select>
                         <div class="help-text">Type of employment contract.</div>
                     </div>
