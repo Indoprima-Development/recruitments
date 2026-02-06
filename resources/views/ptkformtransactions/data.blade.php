@@ -331,137 +331,6 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($ptkformtransactions as $item)
-                    @php
-                        // Calculate days
-                        $created = \Carbon\Carbon::parse($item->created_at);
-                        $updated = \Carbon\Carbon::parse($item->updated_at);
-                        $diffDays = $created->diffInDays(now());
-
-                        $daysClass = 'days-green';
-                        if ($diffDays > 7) {
-                            $daysClass = 'days-yellow';
-                        }
-                        if ($diffDays > 14) {
-                            $daysClass = 'days-red';
-                        }
-
-                        // Experience logic
-                        $expCount = $item->user->datapengalamankerja_count ?? 0;
-                        $hasExp = $expCount > 0;
-
-                        // Duration (placeholder logic: sum of years?)
-                        // For display purpose using random or real if available.
-                        // We will try to sum up duration if we had start/end dates, but let's just show count "X Exp" for now or "-"
-$duration = $expCount > 0 ? $expCount . ' Jobs' : '-';
-
-// Education
-$lastEdu = $item->user->latestEducation;
-$uni = $lastEdu ? $lastEdu->instansi : '-';
-
-// Status
-$statusBadge = 'status-new';
-$statusLabel = 'New';
-switch ($item->status) {
-    case 0:
-        $statusBadge = 'status-new';
-        $statusLabel = 'New';
-        break;
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-        $statusBadge = 'status-hold';
-        $statusLabel = 'In Progress';
-        break;
-    case 7:
-    case 8:
-        $statusBadge = 'status-approved';
-        $statusLabel = 'Approved';
-        break;
-    case 9:
-        $statusBadge = 'status-rejected';
-        $statusLabel = 'Rejected';
-        break;
-}
-
-$score = $item->score_candidate ?? 0;
-$scoreClass = 'text-low';
-if ($score >= 80) {
-    $scoreClass = 'text-high';
-} elseif ($score >= 60) {
-    $scoreClass = 'text-med';
-}
-
-$domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->kota_ktp ?? '-');
-
-                        // Truncate Name to 20 chars
-                        $displayName = \Illuminate\Support\Str::limit($item->user->name, 20);
-                    @endphp
-                    <tr>
-                        <td class="text-center"><input type="checkbox"></td>
-                        <td>
-                            <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->user_id }})"
-                                title="{{ $item->user->name }}">
-                                {{ $displayName }}
-                            </a>
-                        </td>
-                        <td>{{ $updated->format('d M Y') }}</td>
-                        <td><span class="days-badge {{ $daysClass }}">{{ $diffDays }} hari</span></td>
-                        <td class="col-position">{{ $item->ptkform->jobtitle->jobtitle_name ?? '-' }}</td>
-                        <td>{{ $created->format('d M Y') }}</td>
-                        <td title="{{ $uni }}">{{ \Illuminate\Support\Str::limit($uni, 25) }}</td>
-                        <td class="text-center">{{ $item->user->ipk ?? '-' }}</td>
-                        <td class="text-center">
-                            @if ($hasExp)
-                                <span class="badge bg-light text-success border border-success px-2 py-1"
-                                    style="font-size: 0.65rem;">Ya</span>
-                            @else
-                                <span class="badge bg-light text-muted border px-2 py-1"
-                                    style="font-size: 0.65rem;">Tidak</span>
-                            @endif
-                        </td>
-                        <td>{{ $duration }}</td>
-                        <td title="{{ $domisili }}">{{ \Illuminate\Support\Str::limit($domisili, 15) }}</td>
-                        <td class="text-center">
-                            <span class="badge bg-light text-primary border border-primary px-2"
-                                style="font-size: 0.65rem;">Web</span>
-                        </td>
-                        <td class="text-center">
-                            @if ($item->user->cv)
-                                <a href="{{ asset($item->user->cv) }}" target="_blank" class="link-blue"><i
-                                        class="fas fa-eye me-1"></i> View</a>
-                            @else
-                                <span class="text-muted text-small">-</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            <a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>
-                        </td>
-                        <td class="text-center">
-                            <span class="badge-score {{ $scoreClass }}">{{ $score }}/100</span>
-                        </td>
-                        <td><span class="text-muted">-</span></td>
-                        <td class="text-center">
-                            <span class="badge-status {{ $statusBadge }}">{{ $statusLabel }}</span>
-                        </td>
-                        <td class="text-center">
-                            <div class="d-flex justify-content-center gap-1">
-                                <button class="btn-icon btn-check btnEditStatus" ptkformtrid="{{ $item->id }}"
-                                    status="{{ $item->status }}" data-bs-toggle="tooltip"
-                                    title="Approve / Lanjut Tahap Berikutnya"><i class="fas fa-check"></i></button>
-
-                                <button class="btn-icon btn-clock" title="Hold"><i class="fas fa-clock"></i></button>
-                                <button class="btn-icon btn-cross" title="Reject"><i class="fas fa-times"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Include Modal Trigger Logic inside loop is not efficient for DOM but standard in this project structure -->
-                    <!-- We will use a shared modal outside -->
-                @endforeach
             </tbody>
         </table>
     </div>
@@ -515,10 +384,10 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
 @section('addJs')
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            // Check if script is loaded
             console.log("PTKForm Transaction Script Loaded");
 
             // Custom Filtering Function for GPA
@@ -557,33 +426,225 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                     }
                 ],
                 initComplete: function() {
+                    // Adjust columns after init
                     this.api().columns.adjust();
-
-                    // Populate University Filter
-                    var uniColumn = this.api().column(6);
-                    var uniSelect = $('#filterUniversity');
-                    uniColumn.data().unique().sort().each(function(d, j) {
-                        var val = $.fn.dataTable.util.escapeRegex(d);
-                        var text = $('<div>').html(val).text();
-                        if (text.trim() !== '' && text !== '-') {
-                            uniSelect.append('<option value="' + text + '">' + text +
-                                '</option>');
-                        }
-                    });
-
-                    // Populate Domicile Filter
-                    var domColumn = this.api().column(10);
-                    var domSelect = $('#filterDomicile');
-                    domColumn.data().unique().sort().each(function(d, j) {
-                        var val = $.fn.dataTable.util.escapeRegex(d);
-                        var text = $('<div>').html(val).text();
-                        if (text.trim() !== '' && text !== '-') {
-                            domSelect.append('<option value="' + text + '">' + text +
-                                '</option>');
-                        }
-                    });
                 }
             });
+
+            // Fetch and Render Data
+            var status = "{{ $status }}";
+            var dataUrl = "{{ asset('data/ptkformtransactions-') }}" + status + ".json.gz?t=" + new Date()
+                .getTime();
+
+            fetch(dataUrl)
+                .then(response => response.arrayBuffer())
+                .then(buffer => {
+                    try {
+                        // Decompress
+                        const decompressed = pako.inflate(buffer);
+                        const stringData = new TextDecoder().decode(decompressed);
+                        const jsonData = JSON.parse(stringData);
+
+                        populateTable(jsonData);
+                    } catch (err) {
+                        console.error("Error processing data:", err);
+                        alert("Failed to load data. Please try again.");
+                    }
+                })
+                .catch(err => console.error("Fetch error:", err));
+
+
+            function populateTable(data) {
+                table.clear();
+
+                var rows = [];
+
+                data.forEach(item => {
+                    // Logic Logic Logic
+                    var user = item.user || {};
+                    var ptkform = item.ptkform || {};
+                    var jobtitle = ptkform.jobtitle || {};
+                    var latestEducation = user.latest_education ||
+                    {}; // Note: JSON might have snake_case depending on serialization or relation name.
+                    // Eloquent `latestEducation` relation usually serializes as `latest_education` key if appended, or `latestEducation` if loaded?
+                    // Actually standard serialization uses snake_case for attributes, but camelCase for relations?
+                    // Wait, `json_encode` on model uses `toArray()`. `toArray()` converts keys to snake_case usually.
+                    // Let's check: `latestEducation` relation. In array it becomes `latest_education` if it's following convention.
+                    // But if it was `with('latestEducation')`, the key in array is `latest_education`.
+
+                    var eduInst = latestEducation ? latestEducation.instansi : '-';
+                    // User name
+                    var displayName = user.name ? (user.name.length > 20 ? user.name.substring(0, 20) +
+                        '...' : user.name) : '-';
+                    var uniName = eduInst;
+
+                    // Date Diff
+                    var created = new Date(item.created_at);
+                    var updated = new Date(item.updated_at);
+                    var now = new Date();
+                    var diffTime = Math.abs(now - created);
+                    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    var daysClass = 'days-green';
+                    if (diffDays > 7) daysClass = 'days-yellow';
+                    if (diffDays > 14) daysClass = 'days-red';
+
+                    // Formats
+                    var dateFormat = {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                    };
+                    var createdStr = created.toLocaleDateString('en-GB', dateFormat);
+                    var updatedStr = updated.toLocaleDateString('en-GB', dateFormat);
+
+                    // Posisi
+                    var position = jobtitle.jobtitle_name || '-';
+
+                    // GPA
+                    var gpa = user.ipk || '-';
+
+                    // Experience
+                    var expCount = user.datapengalamankerja_count || 0;
+                    var hasExp = expCount > 0;
+                    var expBadge = hasExp ?
+                        '<span class="badge bg-light text-success border border-success px-2 py-1" style="font-size: 0.65rem;">Ya</span>' :
+                        '<span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.65rem;">Tidak</span>';
+
+                    var duration = expCount > 0 ? expCount + ' Jobs' : '-';
+
+                    // Domicile
+                    var datadiri = user.datadiri || {};
+                    var domisili = datadiri.alamat_domisili || datadiri.kota_ktp || '-';
+                    var domisiliShort = domisili.length > 15 ? domisili.substring(0, 15) + '...' : domisili;
+
+                    // Source - static 'Web'
+                    var sourceBadge =
+                        '<span class="badge bg-light text-primary border border-primary px-2" style="font-size: 0.65rem;">Web</span>';
+
+                    // CV
+                    var cvLink = user.cv ?
+                        '<a href="{{ asset('') }}' + user.cv +
+                        '" target="_blank" class="link-blue"><i class="fas fa-eye me-1"></i> View</a>' :
+                        '<span class="text-muted text-small">-</span>';
+
+                    // Score
+                    var score = item.score_candidate || 0;
+                    var scoreClass = 'text-low';
+                    if (score >= 80) scoreClass = 'text-high';
+                    else if (score >= 60) scoreClass = 'text-med';
+                    var scoreBadge = '<span class="badge-score ' + scoreClass + '">' + score +
+                        '/100</span>';
+
+                    // Status
+                    var status = parseInt(item.status);
+                    var statusBadgeClass = 'status-new';
+                    var statusLabel = 'New';
+                    if ([1, 2, 3, 4, 5, 6].includes(status)) {
+                        statusBadgeClass = 'status-hold';
+                        statusLabel = 'In Progress';
+                    } else if ([7, 8].includes(status)) {
+                        statusBadgeClass = 'status-approved';
+                        statusLabel = 'Approved';
+                    } else if (status === 9) {
+                        statusBadgeClass = 'status-rejected';
+                        statusLabel = 'Rejected';
+                    }
+                    var statusHtml = '<span class="badge-status ' + statusBadgeClass + '">' + statusLabel +
+                        '</span>';
+
+                    // Actions
+                    var actions = `
+                        <div class="d-flex justify-content-center gap-1">
+                            <button class="btn-icon btn-check btnEditStatus" ptkformtrid="${item.id}" status="${item.status}" data-bs-toggle="tooltip" title="Approve / Lanjut Tahap Berikutnya"><i class="fas fa-check"></i></button>
+                            <button class="btn-icon btn-clock" title="Hold"><i class="fas fa-clock"></i></button>
+                            <button class="btn-icon btn-cross" title="Reject"><i class="fas fa-times"></i></button>
+                        </div>
+                    `;
+
+                    // Checkbox
+                    var checkbox = '<div class="text-center"><input type="checkbox"></div>';
+
+                    // Name Link
+                    var nameLink =
+                        `<a href="#" class="col-candidate" onclick="viewCandidate(${item.user_id})" title="${user.name}">${displayName}</a>`;
+
+                    // Add Row Data (Must match column order!)
+                    // 0: Checkbox
+                    // 1: Name
+                    // 2: Modified
+                    // 3: Total Days
+                    // 4: Position
+                    // 5: Date Applied
+                    // 6: University
+                    // 7: GPA
+                    // 8: Experience
+                    // 9: Duration
+                    // 10: Domicile
+                    // 11: Source
+                    // 12: CV
+                    // 13: AI Rev
+                    // 14: Score
+                    // 15: Notes
+                    // 16: Status
+                    // 17: Action
+
+                    rows.push([
+                        checkbox,
+                        nameLink,
+                        updatedStr,
+                        `<span class="days-badge ${daysClass}">${diffDays} hari</span>`,
+                        position,
+                        createdStr,
+                        `<span title="${eduInst}">${uniName}</span>`,
+                        gpa,
+                        expBadge,
+                        duration,
+                        `<span title="${domisili}">${domisiliShort}</span>`,
+                        sourceBadge,
+                        cvLink,
+                        '<a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>',
+                        scoreBadge,
+                        '<span class="text-muted">-</span>',
+                        statusHtml,
+                        actions
+                    ]);
+                });
+
+                table.rows.add(rows).draw();
+                table.columns.adjust();
+
+                populateFilters();
+            }
+
+            function populateFilters() {
+                // Populate University Filter
+                var uniColumn = table.column(6);
+                var uniSelect = $('#filterUniversity');
+                uniSelect.empty().append('<option value="">All Universities</option>');
+
+                uniColumn.data().unique().sort().each(function(d, j) {
+                    var val = $.fn.dataTable.util.escapeRegex(d);
+                    var text = $('<div>').html(val).text(); // stripping html
+                    if (text.trim() !== '' && text !== '-') {
+                        uniSelect.append('<option value="' + text + '">' + text + '</option>');
+                    }
+                });
+
+                // Populate Domicile Filter
+                var domColumn = table.column(10);
+                var domSelect = $('#filterDomicile');
+                domSelect.empty().append('<option value="">All Domiciles</option>');
+
+                domColumn.data().unique().sort().each(function(d, j) {
+                    var val = $.fn.dataTable.util.escapeRegex(d);
+                    var text = $('<div>').html(val).text();
+                    if (text.trim() !== '' && text !== '-') {
+                        domSelect.append('<option value="' + text + '">' + text + '</option>');
+                    }
+                });
+            }
+
 
             // Listeners
             $('#filterGpa').on('change', function() {
