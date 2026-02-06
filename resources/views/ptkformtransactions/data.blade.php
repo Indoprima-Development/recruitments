@@ -281,7 +281,7 @@
         <table id="recruitmentTable" class="stripe row-border order-column" style="width:100%">
             <thead>
                 <tr>
-                    <th class="text-center" width="20"><input type="checkbox"></th>
+                    <th class="text-center"><input type="checkbox"></th>
                     <th>Date Applied</th>
                     <th>Last Modified</th>
                     <th>Total Days</th>
@@ -491,6 +491,7 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 scrollY: '600px',
                 scrollCollapse: true,
                 scrollX: true,
+                autoWidth: false,
                 fixedColumns: {
                     start: 2 // Fix checkbox and date
                 },
@@ -502,8 +503,20 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 columnDefs: [{
                         orderable: false,
                         targets: [0, 17]
-                    } // Disable sort for checkbox and action
-                ]
+                    }, // Disable sort for checkbox and action
+                    {
+                        width: '30px',
+                        targets: 0
+                    }
+                ],
+                initComplete: function() {
+                    this.api().columns.adjust();
+                }
+            });
+
+            // Adjust columns on window resize to ensure alignment
+            $(window).on('resize', function() {
+                table.columns.adjust();
             });
 
             // Status Edit Click
