@@ -311,11 +311,11 @@
             <thead>
                 <tr>
                     <th class="text-center"><input type="checkbox"></th>
-                    <th>Date Applied</th>
+                    <th>Nama</th>
                     <th>Last Modified</th>
                     <th>Total Days</th>
                     <th>Posisi</th>
-                    <th>Nama</th>
+                    <th>Date Applied</th>
                     <th>Universitas</th>
                     <th class="text-center">GPA</th>
                     <th class="text-center">Pengalaman</th>
@@ -402,16 +402,16 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                     @endphp
                     <tr>
                         <td class="text-center"><input type="checkbox"></td>
-                        <td>{{ $created->format('d M Y') }}</td>
-                        <td>{{ $updated->format('d M Y') }}</td>
-                        <td><span class="days-badge {{ $daysClass }}">{{ $diffDays }} hari</span></td>
-                        <td class="col-position">{{ $item->ptkform->jobtitle->jobtitle_name ?? '-' }}</td>
                         <td>
                             <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->user_id }})"
                                 title="{{ $item->user->name }}">
                                 {{ $displayName }}
                             </a>
                         </td>
+                        <td>{{ $updated->format('d M Y') }}</td>
+                        <td><span class="days-badge {{ $daysClass }}">{{ $diffDays }} hari</span></td>
+                        <td class="col-position">{{ $item->ptkform->jobtitle->jobtitle_name ?? '-' }}</td>
+                        <td>{{ $created->format('d M Y') }}</td>
                         <td title="{{ $uni }}">{{ \Illuminate\Support\Str::limit($uni, 25) }}</td>
                         <td class="text-center">{{ $item->user->ipk ?? '-' }}</td>
                         <td class="text-center">
