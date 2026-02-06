@@ -129,6 +129,13 @@ class PtkformtransactionsController extends Controller
         ini_set('max_execution_time', 10000);
         ini_set('memory_limit', '256M');
 
+        $ptkformtransactions = $this->saveDataJson($status);
+
+        return view('ptkformtransactions.data', compact('ptkformtransactions', 'status'));
+    }
+
+    public function saveDataJson($status)
+    {
         $ptkformtransactions = Ptkformtransaction::with([
             'user' => function($q) {
                 $q->with('latestEducation', 'datadiri')
@@ -139,10 +146,25 @@ class PtkformtransactionsController extends Controller
             ->when($status !== "all", function ($query) use ($status) {
                 return $query->where("status", $status);
             })
-            ->orderBy('id', 'desc') // penting untuk SQL Server
+            ->orderBy('id', 'desc')
             ->get();
 
-        return view('ptkformtransactions.data', compact('ptkformtransactions', 'status'));
+        $filename = "ptkformtransactions-{$status}.json";
+        $path = public_path("data/{$filename}");
+
+        if (!file_exists(dirname($path))) {
+            mkdir(dirname($path), 0755, true);
+        }
+
+        // encode JSON tanpa escape yang tidak perlu
+        $jsonData = is_string($ptkformtransactions)
+            ? $ptkformtransactions
+            : json_encode($ptkformtransactions, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        // simpan versi terkompresi
+        file_put_contents($path . '.gz', gzencode($jsonData, 9));
+
+        return $ptkformtransactions;
     }
 
     public function changeStatus(Request $request)
