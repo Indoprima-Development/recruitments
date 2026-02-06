@@ -12,6 +12,7 @@ use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
 use App\Models\Qna;
 use App\Models\Qna_transaction;
+use App\Models\SavedJob;
 use Illuminate\Support\Facades\DB;
 use League\OAuth2\Client\Provider\Google;
 
@@ -146,6 +147,19 @@ class HomeController extends Controller
     public function index()
     {
         $data['projects'] = Project::where('is_open', true)->get();
+
+        // Get user's application history
+        $data['applications'] = Ptkformtransaction::where('user_id', Auth::user()->id)
+            ->with(['ptkform.jobtitle', 'ptkform.department'])
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        // Get user's saved jobs
+        $data['savedJobs'] = SavedJob::where('user_id', Auth::user()->id)
+            ->with(['ptkform.jobtitle', 'ptkform.department'])
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
         return view('home.index', compact('data'));
     }
 
@@ -360,5 +374,48 @@ class HomeController extends Controller
     public function sendMail()
     {
 
+    }
+
+    public function toggleSaveJob(Request $request)
+    {
+        $ptkformId = $request->input('ptkform_id');
+        $userId = Auth::user()->id;
+
+        $savedJob = SavedJob::where('user_id', $userId)
+            ->where('ptkform_id', $ptkformId)
+            ->first();
+
+        if ($savedJob) {
+            // Unsave the job
+            $savedJob->delete();
+            return response()->json([
+                'success' => true,
+                'saved' => false,
+                'message' => 'Lowongan berhasil dihapus dari daftar simpanan'
+            ]);
+        } else {
+            // Save the job
+            SavedJob::create([
+                'user_id' => $userId,
+                'ptkform_id' => $ptkformId
+            ]);
+            return response()->json([
+                'success' => true,
+                'saved' => true,
+                'message' => 'Lowongan berhasil disimpan'
+            ]);
+        }
+    }
+
+    public function getSavedJobIds()
+    {
+        $savedJobIds = SavedJob::where('user_id', Auth::user()->id)
+            ->pluck('ptkform_id')
+            ->toArray();
+
+        return response()->json([
+            'success' => true,
+            'savedJobIds' => $savedJobIds
+        ]);
     }
 }

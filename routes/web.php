@@ -133,6 +133,7 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
     Route::controller(PtkformtransactionsController::class)->group(function () {
         Route::get('/ptkformtransactions/{status}/data', 'dataByStatus');
         Route::post('/ptkformtransactions/change-status', 'changeStatus');
+        Route::post('/ptkformtransactions/update-note', 'updateNote');
     });
 });
 
@@ -159,6 +160,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('exam-histories', 'examHistories');
         Route::get('off-vacancy/{id}', 'offVacancy');
         Route::get('exam-users', 'examUsers');
+        Route::post('/toggle-save-job', 'toggleSaveJob');
+        Route::get('/get-saved-job-ids', 'getSavedJobIds');
     });
 
     // Formulir

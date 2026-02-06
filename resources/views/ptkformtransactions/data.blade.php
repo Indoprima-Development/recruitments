@@ -46,10 +46,10 @@
         }
 
         /* Table Styling */
+        /* Table Styling */
         #recruitmentTable {
             width: 100% !important;
-            border-collapse: separate;
-            border-spacing: 0;
+            border-collapse: collapse;
         }
 
         #recruitmentTable thead th {
@@ -60,8 +60,10 @@
             font-weight: 700;
             padding: 12px 10px;
             border-bottom: 1px solid var(--border-light);
+            border-right: 1px solid var(--border-light);
             background: #fff;
             white-space: nowrap;
+            box-sizing: border-box;
         }
 
         #recruitmentTable tbody td {
@@ -71,7 +73,9 @@
             color: #2d3436;
             vertical-align: middle;
             border-bottom: 1px solid #f1f2f6;
+            border-right: 1px solid #f1f2f6;
             white-space: nowrap;
+            box-sizing: border-box;
         }
 
         #recruitmentTable tbody tr:hover {
@@ -158,6 +162,15 @@
             background: #fff5f5;
         }
 
+        .editable-note {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .editable-note:hover {
+            background-color: #f1f2f6;
+        }
+
         .btn-icon {
             border: none;
             background: transparent;
@@ -225,10 +238,40 @@
             font-size: 13px;
             width: 250px;
         }
+
+        /* Loading Overlay */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            backdrop-filter: blur(2px);
+        }
+
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            border-width: 0.25em;
+        }
     </style>
 @endsection
 
 @section('content2')
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay">
+        <div class="spinner-border text-primary loading-spinner" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="mt-3 fw-bold text-primary">Memuat Data...</div>
+    </div>
+
     <div class="card-custom">
         <div class="row mb-4 align-items-center">
             <div class="col">
@@ -343,7 +386,7 @@
                     <h5 class="modal-title">Update Status</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="{{ url('ptkformtransactions/change-status') }}">
+                <form id="formEditStatus">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="ptkformtrid" id="ptkformtridModalEditStatus">
@@ -437,6 +480,9 @@
             var dataUrl = "{{ asset('data/ptkformtransactions-') }}" + status + ".json.gz?t=" + new Date()
                 .getTime();
 
+            // Show loading
+            $('#loadingOverlay').fadeIn(200);
+
             fetch(dataUrl)
                 .then(response => response.arrayBuffer())
                 .then(buffer => {
@@ -452,7 +498,14 @@
                         alert("Failed to load data. Please try again.");
                     }
                 })
-                .catch(err => console.error("Fetch error:", err));
+                .catch(err => {
+                    console.error("Fetch error:", err);
+                    alert("Failed to fetch data.");
+                })
+                .finally(() => {
+                    // Hide loading
+                    $('#loadingOverlay').fadeOut(300);
+                });
 
 
             function populateTable(data) {
@@ -537,6 +590,11 @@
                     var scoreBadge = '<span class="badge-score ' + scoreClass + '">' + score +
                         '/100</span>';
 
+                    // Notes
+                    var noteText = item.notes || '-';
+                    var noteHtml =
+                        `<div class="editable-note text-muted text-small" data-id="${item.id}" title="Double click to edit">${noteText}</div>`;
+
                     // Status
                     var status = parseInt(item.status);
                     var statusBadgeClass = 'status-new';
@@ -557,9 +615,10 @@
                     // Actions
                     var actions = `
                         <div class="d-flex justify-content-center gap-1">
-                            <button class="btn-icon btn-check btnEditStatus" ptkformtrid="${item.id}" status="${item.status}" data-bs-toggle="tooltip" title="Approve / Lanjut Tahap Berikutnya"><i class="fas fa-check"></i></button>
-                            <button class="btn-icon btn-clock" title="Hold"><i class="fas fa-clock"></i></button>
-                            <button class="btn-icon btn-cross" title="Reject"><i class="fas fa-times"></i></button>
+                            <button class="btn-icon btn-check btnApproveDirect" ptkformtrid="${item.id}" status="${item.status}" data-bs-toggle="tooltip" title="Approve & Next Stage"><i class="fas fa-arrow-right text-primary"></i></button>
+                            <button class="btn-icon btnEditStatus" ptkformtrid="${item.id}" status="${item.status}" data-bs-toggle="tooltip" title="Update Status (Modal)"><i class="fas fa-edit text-secondary"></i></button>
+                            <button class="btn-icon btn-clock btnHold" ptkformtrid="${item.id}" status="${item.status}" title="Hold"><i class="fas fa-clock"></i></button>
+                            <button class="btn-icon btn-cross btnReject" ptkformtrid="${item.id}" status="${item.status}" title="Reject"><i class="fas fa-times"></i></button>
                         </div>
                     `;
 
@@ -606,7 +665,7 @@
                         cvLink,
                         '<a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>',
                         scoreBadge,
-                        '<span class="text-muted">-</span>',
+                        noteHtml,
                         statusHtml,
                         actions
                     ]);
@@ -702,6 +761,172 @@
             window.viewCandidate = function(id) {
                 window.location.href = "{{ url('datadiris/data-users') }}/" + id;
             };
+
+            // Double click to edit note
+            $(document).on('dblclick', '.editable-note', function() {
+                var $this = $(this);
+                if ($this.find('input').length > 0) return; // Already editing
+
+                var currentText = $this.text().trim();
+                if (currentText === '-') currentText = '';
+
+                var id = $this.data('id');
+                var input = $(
+                        '<input type="text" class="form-control form-control-sm" style="width: 150px;">')
+                    .val(currentText)
+                    .on('blur keypress', function(e) {
+                        if (e.type === 'keypress' && e.which !== 13) return;
+
+                        var newNote = $(this).val();
+                        var $container = $(this).parent();
+
+                        // Save via AJAX
+                        $.ajax({
+                            url: "{{ url('ptkformtransactions/update-note') }}",
+                            method: "POST",
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                id: id,
+                                note: newNote
+                            },
+                            success: function(response) {
+                                $container.text(newNote || '-');
+                            },
+                            error: function() {
+                                alert('Failed to save note');
+                                $container.text(currentText || '-');
+                            }
+                        });
+                    });
+
+                $this.empty().append(input);
+                input.focus();
+            });
+
+            // Direct Approve Button
+            $(document).on('click', '.btnApproveDirect', function(e) {
+                e.preventDefault();
+                if (!confirm('Are you sure you want to approve and move to next stage?')) return;
+
+                var id = $(this).attr('ptkformtrid');
+                var currentStatus = $(this).attr('status');
+                var $row = $(this).closest('tr');
+
+                $.ajax({
+                    url: "{{ url('ptkformtransactions/change-status') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        ptkformtrid: id,
+                        status: currentStatus,
+                        statusokornot: 'OK',
+                        keterangan: 'Direct Approved',
+                        score: 0
+                    },
+                    success: function(response) {
+                        // Remove row from DataTable
+                        table.row($row).remove().draw();
+                    },
+                    error: function() {
+                        alert('Failed to approve');
+                    }
+                });
+            });
+
+            // Hold Button
+            $(document).on('click', '.btnHold', function(e) {
+                e.preventDefault();
+                var reason = prompt('Reason for holding this candidate?');
+                if (!reason) return;
+
+                var id = $(this).attr('ptkformtrid');
+                var currentStatus = $(this).attr('status');
+                var $row = $(this).closest('tr');
+
+                $.ajax({
+                    url: "{{ url('ptkformtransactions/change-status') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        ptkformtrid: id,
+                        status: currentStatus,
+                        statusokornot: 'HOLD',
+                        keterangan: 'On Hold: ' + reason,
+                        score: 0
+                    },
+                    success: function(response) {
+                        // Remove row from DataTable
+                        table.row($row).remove().draw();
+                    },
+                    error: function() {
+                        alert('Failed to hold');
+                    }
+                });
+            });
+
+            // Reject Button
+            $(document).on('click', '.btnReject', function(e) {
+                e.preventDefault();
+                if (!confirm('Are you sure you want to REJECT this candidate?')) return;
+
+                var reason = prompt('Reason for rejection?');
+                if (!reason) return;
+
+                var id = $(this).attr('ptkformtrid');
+                var currentStatus = $(this).attr('status');
+                var $row = $(this).closest('tr');
+
+                $.ajax({
+                    url: "{{ url('ptkformtransactions/change-status') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        ptkformtrid: id,
+                        status: currentStatus,
+                        statusokornot: 'NOT OK',
+                        keterangan: 'Rejected: ' + reason,
+                        score: 0
+                    },
+                    success: function(response) {
+                        // Remove row from DataTable
+                        table.row($row).remove().draw();
+                    },
+                    error: function() {
+                        alert('Failed to reject');
+                    }
+                });
+            });
+
+            // Handle Review Modal Submission via AJAX
+            $('#formEditStatus').on('submit', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                var btn = $(this).find('button[type="submit"]');
+                var originalText = btn.text();
+                var ptkformtrid = $('#ptkformtridModalEditStatus').val();
+
+                btn.prop('disabled', true).text('Saving...');
+
+                $.ajax({
+                    url: "{{ url('ptkformtransactions/change-status') }}",
+                    method: "POST",
+                    data: formData,
+                    success: function(response) {
+                        $('#modalEditStatus').modal('hide');
+                        // Find and remove the row
+                        var $row = $('.btnEditStatus[ptkformtrid="' + ptkformtrid + '"]')
+                            .closest('tr');
+                        table.row($row).remove().draw();
+                    },
+                    error: function(xhr) {
+                        alert('Failed to update status');
+                        console.error(xhr);
+                    },
+                    complete: function() {
+                        btn.prop('disabled', false).text(originalText);
+                    }
+                });
+            });
         });
     </script>
 @endsection

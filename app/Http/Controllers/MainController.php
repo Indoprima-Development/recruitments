@@ -6,6 +6,7 @@ use App\Models\Jobtitle;
 use App\Models\Ptkfield;
 use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
+use App\Models\SavedJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +51,8 @@ class MainController extends Controller
         // dd(Auth::check());
 
         $isApplied = false;
+        $isSaved = false;
+
         if (Auth::check()) {
             $trs = Ptkformtransaction::where('ptkform_id', $id)
                 ->where('user_id', Auth::user()->id)
@@ -58,12 +61,21 @@ class MainController extends Controller
             if (!empty($trs)) {
                 $isApplied = true;
             }
+
+            // Check if job is saved
+            $savedJob = SavedJob::where('ptkform_id', $id)
+                ->where('user_id', Auth::user()->id)
+                ->first();
+
+            if (!empty($savedJob)) {
+                $isSaved = true;
+            }
         }
 
         $jobtitle = Jobtitle::findOrFail($ptkform->jobtitle_id);
         $ptkfields = Ptkfield::where('ptkform_id',$id)->get();
 
-        return view('ptkforms.show', compact('ptkform', 'isApplied', 'jobtitle','ptkfields'));
+        return view('ptkforms.show', compact('ptkform', 'isApplied', 'isSaved', 'jobtitle','ptkfields'));
     }
 
     public function konfirmation(Request $request){

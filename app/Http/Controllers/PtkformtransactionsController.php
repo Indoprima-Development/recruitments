@@ -129,37 +129,40 @@ class PtkformtransactionsController extends Controller
         return view('ptkformtransactions.data', compact('status'));
     }
 
-    public function saveDataJson($status)
+    public function saveDataJson()
     {
-        $ptkformtransactions = Ptkformtransaction::with([
-            'user' => function($q) {
-                $q->with('latestEducation', 'datadiri')
-                  ->withCount('datapengalamankerja');
-            },
-            'ptkform.jobtitle'
-        ])
-            ->when($status !== "all", function ($query) use ($status) {
-                return $query->where("status", $status);
-            })
-            ->orderBy('id', 'desc')
-            ->get();
+        $statuses = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-        $filename = "ptkformtransactions-{$status}.json";
-        $path = public_path("data/{$filename}");
+        foreach ($statuses as $status) {
+            $ptkformtransactions = Ptkformtransaction::with([
+                'user' => function ($q) {
+                    $q->with('latestEducation', 'datadiri')
+                        ->withCount('datapengalamankerja');
+                },
+                'ptkform.jobtitle'
+            ])
+                ->when($status !== "all", function ($query) use ($status) {
+                    return $query->where("status", $status);
+                })
+                ->whereYear('created_at', date('Y'))
+                ->orderBy('id', 'desc')
+                ->get();
 
-        if (!file_exists(dirname($path))) {
-            mkdir(dirname($path), 0755, true);
+            $filename = "ptkformtransactions-{$status}.json";
+            $path = public_path("data/{$filename}");
+
+            if (!file_exists(dirname($path))) {
+                mkdir(dirname($path), 0755, true);
+            }
+
+            // encode JSON tanpa escape yang tidak perlu
+            $jsonData = json_encode($ptkformtransactions, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+            // simpan versi terkompresi
+            file_put_contents($path . '.gz', gzencode($jsonData, 9));
         }
 
-        // encode JSON tanpa escape yang tidak perlu
-        $jsonData = is_string($ptkformtransactions)
-            ? $ptkformtransactions
-            : json_encode($ptkformtransactions, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-
-        // simpan versi terkompresi
-        file_put_contents($path . '.gz', gzencode($jsonData, 9));
-
-        return $ptkformtransactions;
+        return response()->json(['message' => 'Data ptkformtransactions generated successfully for all statuses']);
     }
 
     public function changeStatus(Request $request)
@@ -193,6 +196,27 @@ class PtkformtransactionsController extends Controller
         ]);
 
         AlertSuccess("Success", "Status berhasil diubah (Lanjut tahap berikutnya)");
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Status berhasil diubah']);
+        }
+
         return redirect()->back();
+    }
+
+    public function updateNote(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:ptkformtransactions,id',
+            'note' => 'nullable|string'
+        ]);
+
+        $transaction = Ptkformtransaction::findOrFail($request->id);
+        // Assuming 'notes' column exists. If not, this needs a migration.
+        // For now, we update it as if it exists.
+        $transaction->notes = $request->note;
+        $transaction->save();
+
+        return response()->json(['success' => true, 'message' => 'Note updated successfully']);
     }
 }

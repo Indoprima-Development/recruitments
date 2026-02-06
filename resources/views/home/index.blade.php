@@ -337,6 +337,167 @@
                     </div>
                 </div>
 
+                <!-- Application History Section -->
+                <div class="card-modern shadow-sm overflow-hidden mt-4">
+                    <div
+                        class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold">Riwayat Lamaran</h5>
+                        <span
+                            class="badge bg-primary bg-opacity-10 text-primary rounded-pill">{{ count($data['applications']) }}
+                            Lamaran</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4 text-secondary text-uppercase py-3 small fw-bold">Posisi</th>
+                                        <th class="text-secondary text-uppercase py-3 small fw-bold">Departemen</th>
+
+                                        <th class="text-secondary text-uppercase py-3 small fw-bold">Status</th>
+                                        <th class="text-secondary text-uppercase py-3 small fw-bold">Tanggal Lamar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($data['applications'] as $app)
+                                        <tr>
+                                            <td class="ps-4 py-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div
+                                                        class="bg-success bg-opacity-10 text-success rounded-3 p-2 me-3">
+                                                        <i class="ti ti-briefcase fs-5"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0 fw-semibold">
+                                                            {{ $app->ptkform->jobtitle->jobtitle_name ?? 'N/A' }}</h6>
+                                                        <small class="text-muted">Job Application</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="py-3">
+                                                <span
+                                                    class="text-dark">{{ $app->ptkform->department->department_name ?? 'N/A' }}</span>
+                                            </td>
+
+                                            <td class="py-3">
+                                                @php
+                                                    $statusLabels = [
+                                                        0 => ['label' => 'Aplikasi Masuk', 'color' => 'info'],
+                                                        1 => ['label' => 'Interview HC', 'color' => 'primary'],
+                                                        2 => ['label' => 'Psikotest', 'color' => 'warning'],
+                                                        3 => ['label' => 'Interview User', 'color' => 'primary'],
+                                                        4 => ['label' => 'Interview Direksi', 'color' => 'primary'],
+                                                        5 => ['label' => 'Offering', 'color' => 'success'],
+                                                        6 => ['label' => 'MCU', 'color' => 'info'],
+                                                        7 => ['label' => 'Joined', 'color' => 'success'],
+                                                        8 => ['label' => 'Rejected', 'color' => 'danger'],
+                                                    ];
+                                                    $status = $statusLabels[$app->status] ?? [
+                                                        'label' => 'Unknown',
+                                                        'color' => 'secondary',
+                                                    ];
+                                                @endphp
+                                                <span
+                                                    class="badge bg-{{ $status['color'] }} bg-opacity-10 text-{{ $status['color'] }} px-3 rounded-pill fw-semibold">
+                                                    {{ $status['label'] }}
+                                                </span>
+                                            </td>
+                                            <td class="py-3">
+                                                <span
+                                                    class="text-muted small">{{ \Carbon\Carbon::parse($app->created_at)->format('d M Y') }}</span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center py-5">
+                                                <div class="text-muted">
+                                                    <i class="ti ti-inbox display-6 mb-3 d-block opacity-25"></i>
+                                                    <h6 class="fw-semibold">Belum Ada Riwayat Lamaran</h6>
+                                                    <p class="small">Anda belum melamar pekerjaan apapun.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Jobs Section -->
+                <div class="card-modern shadow-sm overflow-hidden mt-4">
+                    <div
+                        class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold">Lowongan Tersimpan</h5>
+                        <span
+                            class="badge bg-warning bg-opacity-10 text-warning rounded-pill">{{ count($data['savedJobs']) }}
+                            Tersimpan</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4 text-secondary text-uppercase py-3 small fw-bold">Posisi</th>
+                                        <th class="text-secondary text-uppercase py-3 small fw-bold">Departemen</th>
+
+                                        <th class="text-secondary text-uppercase py-3 small fw-bold">Disimpan Pada</th>
+                                        <th class="text-end pe-4 text-secondary text-uppercase py-3 small fw-bold">Aksi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($data['savedJobs'] as $saved)
+                                        <tr>
+                                            <td class="ps-4 py-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div
+                                                        class="bg-warning bg-opacity-10 text-warning rounded-3 p-2 me-3">
+                                                        <i class="ti ti-bookmark fs-5"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0 fw-semibold">
+                                                            {{ $saved->ptkform->jobtitle->jobtitle_name ?? 'N/A' }}
+                                                        </h6>
+                                                        <small class="text-muted">Saved Position</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="py-3">
+                                                <span
+                                                    class="text-dark">{{ $saved->ptkform->department->department_name ?? 'N/A' }}</span>
+                                            </td>
+
+                                            <td class="py-3">
+                                                <span
+                                                    class="text-muted small">{{ \Carbon\Carbon::parse($saved->created_at)->format('d M Y') }}</span>
+                                            </td>
+                                            <td class="text-end pe-4 py-3">
+                                                <button
+                                                    class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-medium btnUnsave"
+                                                    data-ptkform-id="{{ $saved->ptkform_id }}">
+                                                    <i class="ti ti-bookmark-off me-1"></i> Hapus
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center py-5">
+                                                <div class="text-muted">
+                                                    <i
+                                                        class="ti ti-bookmark-off display-6 mb-3 d-block opacity-25"></i>
+                                                    <h6 class="fw-semibold">Belum Ada Lowongan Tersimpan</h6>
+                                                    <p class="small">Simpan lowongan yang menarik untuk Anda.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Simple Footer -->
                 <div class="text-center mt-5 py-3 border-top border-light-subtle">
                     <small class="text-muted">&copy; {{ date('Y') }} PT. Indoprima Gelimang. All rights
@@ -377,6 +538,83 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location = "{{ url('examination') }}/" + project_id
+                    }
+                });
+            });
+
+            // Handle unsave job
+            $(".btnUnsave").click(function() {
+                let ptkformId = $(this).data('ptkform-id');
+                let $button = $(this);
+                let $row = $button.closest('tr');
+
+                Swal.fire({
+                    title: "Hapus dari Simpanan?",
+                    text: "Lowongan ini akan dihapus dari daftar simpanan Anda.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#dc3545",
+                    cancelButtonColor: "#94a3b8",
+                    confirmButtonText: "Ya, Hapus",
+                    cancelButtonText: "Batal",
+                    customClass: {
+                        popup: 'rounded-4 border-0 shadow-lg',
+                        confirmButton: 'rounded-pill px-4',
+                        cancelButton: 'rounded-pill px-4'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ url('/toggle-save-job') }}",
+                            type: "POST",
+                            data: {
+                                ptkform_id: ptkformId,
+                                _token: "{{ csrf_token() }}"
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    // Remove row with animation
+                                    $row.fadeOut(300, function() {
+                                        $(this).remove();
+
+                                        // Update badge count
+                                        let currentCount = parseInt($(
+                                            '.badge.bg-warning').text());
+                                        $('.badge.bg-warning').text((
+                                                currentCount - 1) +
+                                            ' Tersimpan');
+
+                                        // Check if table is empty
+                                        if ($('.btnUnsave').length === 0) {
+                                            location.reload();
+                                        }
+                                    });
+
+                                    Swal.fire({
+                                        title: "Berhasil!",
+                                        text: response.message,
+                                        icon: "success",
+                                        timer: 2000,
+                                        showConfirmButton: false,
+                                        customClass: {
+                                            popup: 'rounded-4 border-0 shadow-lg'
+                                        }
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Terjadi kesalahan saat menghapus lowongan.",
+                                    icon: "error",
+                                    confirmButtonColor: "#2563eb",
+                                    customClass: {
+                                        popup: 'rounded-4 border-0 shadow-lg',
+                                        confirmButton: 'rounded-pill px-4'
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             });

@@ -560,6 +560,15 @@
                                         <a href="{{ url('auth/register') }}"
                                             class="btn btn-outline-primary w-100 rounded-pill">Create Account</a>
                                     @endif
+
+                                    @if (Auth::check())
+                                        <button type="button" class="btn btn-outline-primary w-100 rounded-pill mt-2"
+                                            id="btnSaveJob" data-ptkform-id="{{ $ptkform->id }}"
+                                            data-is-saved="{{ $isSaved ? 'true' : 'false' }}">
+                                            <i class="ti ti-bookmark{{ $isSaved ? '-filled' : '' }} me-2"></i>
+                                            <span>{{ $isSaved ? 'Tersimpan' : 'Simpan Lowongan' }}</span>
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -788,6 +797,65 @@
             var toast = new bootstrap.Toast(toastEl);
             toast.show();
         });
+
+        // Save Job Functionality
+        @if (Auth::check())
+            $('#btnSaveJob').click(function() {
+                var $btn = $(this);
+                var ptkformId = $btn.data('ptkform-id');
+                var isSaved = $btn.data('is-saved') === 'true';
+
+                $.ajax({
+                    url: "{{ url('/toggle-save-job') }}",
+                    type: "POST",
+                    data: {
+                        ptkform_id: ptkformId,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Update button state
+                            if (response.saved) {
+                                $btn.find('i').removeClass('ti-bookmark').addClass(
+                                'ti-bookmark-filled');
+                                $btn.find('span').text('Tersimpan');
+                                $btn.data('is-saved', 'true');
+                            } else {
+                                $btn.find('i').removeClass('ti-bookmark-filled').addClass(
+                                'ti-bookmark');
+                                $btn.find('span').text('Simpan Lowongan');
+                                $btn.data('is-saved', 'false');
+                            }
+
+                            // Show toast notification
+                            var toastHtml = `
+                            <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                        <i class="ti ti-check me-2"></i> ${response.message}
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        `;
+
+                            var toastContainer = $('.position-fixed.bottom-0.end-0.p-3');
+                            toastContainer.append(toastHtml);
+                            var newToast = new bootstrap.Toast(toastContainer.find('.toast').last()[0]);
+                            newToast.show();
+
+                            // Remove toast after it's hidden
+                            toastContainer.find('.toast').last().on('hidden.bs.toast', function() {
+                                $(this).remove();
+                            });
+                        }
+                    },
+                    error: function() {
+                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                    }
+                });
+            });
+        @endif
     </script>
 </body>
 

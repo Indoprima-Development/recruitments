@@ -5,6 +5,7 @@
 /public/storage
 /public/claim
 /public/suratpengalaman
+/public/data
 /storage/*.key
 /vendor
 .env
