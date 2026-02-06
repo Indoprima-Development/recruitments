@@ -518,13 +518,14 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
 
     <script>
         $(document).ready(function() {
+            // Check if script is loaded
+            console.log("PTKForm Transaction Script Loaded");
+
             // Custom Filtering Function for GPA
             $.fn.dataTable.ext.search.push(
                 function(settings, data, dataIndex) {
-                    // GPA Filter
                     var minGpa = parseFloat($('#filterGpa').val());
-                    var gpa = parseFloat(data[7]) || 0; // Use data for the GPA column (index 7)
-
+                    var gpa = parseFloat(data[7]) || 0;
                     if (!isNaN(minGpa) && gpa < minGpa) {
                         return false;
                     }
@@ -536,12 +537,10 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 paging: true,
                 deferRender: true,
                 pageLength: 25,
-                // scrollY removed
-                // scrollCollapse removed
                 scrollX: true,
                 autoWidth: false,
                 fixedColumns: {
-                    start: 2 // Fix checkbox and date
+                    start: 2
                 },
                 language: {
                     search: "",
@@ -551,7 +550,7 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 columnDefs: [{
                         orderable: false,
                         targets: [0, 17]
-                    }, // Disable sort for checkbox and action
+                    },
                     {
                         width: '30px',
                         targets: 0
@@ -560,12 +559,11 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 initComplete: function() {
                     this.api().columns.adjust();
 
-                    // Populate University Filter (Index 6)
+                    // Populate University Filter
                     var uniColumn = this.api().column(6);
                     var uniSelect = $('#filterUniversity');
                     uniColumn.data().unique().sort().each(function(d, j) {
                         var val = $.fn.dataTable.util.escapeRegex(d);
-                        // Clean HTML if necessary (simple text extraction)
                         var text = $('<div>').html(val).text();
                         if (text.trim() !== '' && text !== '-') {
                             uniSelect.append('<option value="' + text + '">' + text +
@@ -573,7 +571,7 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                         }
                     });
 
-                    // Populate Domicile Filter (Index 10)
+                    // Populate Domicile Filter
                     var domColumn = this.api().column(10);
                     var domSelect = $('#filterDomicile');
                     domColumn.data().unique().sort().each(function(d, j) {
@@ -587,21 +585,18 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 }
             });
 
-            // Event Listeners for Filters
+            // Listeners
             $('#filterGpa').on('change', function() {
                 table.draw();
             });
 
             $('#filterUniversity').on('change', function() {
                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                table.column(6).search(val ? val : '', true, false)
-                    .draw(); // Exact match or contains? usually exact for dropdown
+                table.column(6).search(val ? val : '', true, false).draw();
             });
 
             $('#filterExperience').on('change', function() {
                 var val = $(this).val();
-                // Column 8 contains "Ya" or "Tidak" inside span
-                // We search for the text
                 table.column(8).search(val).draw();
             });
 
@@ -610,13 +605,10 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 table.column(10).search(val ? val : '', true, false).draw();
             });
 
-
-            // Adjust columns on window resize to ensure alignment
             $(window).on('resize', function() {
                 table.columns.adjust();
             });
 
-            // Status Edit Click
             $(document).on("click", ".btnEditStatus", function() {
                 var tr = $(this).closest('tr');
                 var name = tr.find('.col-candidate').text().trim();
@@ -627,7 +619,6 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 $('#statusModalEditStatus').val(status);
                 $('#nameModalEditStatus').val(name);
 
-                // Determine next step type based on status
                 var types = ['cv_review', 'interview_hc', 'psikotest', 'interview_user',
                     'interview_direksi', 'finalisasi', 'mcu', 'join'
                 ];
@@ -635,15 +626,13 @@ $domisili = $item->user->datadiri->alamat_domisili ?? ($item->user->datadiri->ko
                 var nextType = types[currentStatusIdx] || 'udpate';
 
                 $('#typeModalEditStatus').val(nextType);
-
                 $('#modalEditStatus').modal('show');
             });
-        });
 
-        function viewCandidate(id) {
-            // Check if there is a route for showing user detail
-            // Based on previous code:
-            window.location.href = "{{ url('datadiris/data-users') }}/" + id;
-        }
+            // Global function for viewCandidate
+            window.viewCandidate = function(id) {
+                window.location.href = "{{ url('datadiris/data-users') }}/" + id;
+            };
+        });
     </script>
 @endsection
