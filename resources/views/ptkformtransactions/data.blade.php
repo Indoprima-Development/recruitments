@@ -260,6 +260,16 @@
             height: 3rem;
             border-width: 0.25em;
         }
+
+        /* Sticky Header for DataTables with FixedColumns */
+        .dataTables_scrollHead {
+            position: sticky !important;
+            top: 70px !important;
+            /* Offset for fixed navbar */
+            z-index: 100 !important;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
     </style>
 @endsection
 
@@ -448,8 +458,6 @@
             var table = $('#recruitmentTable').DataTable({
                 paging: false,
                 deferRender: true,
-                scrollY: '60vh',
-                scrollCollapse: true,
                 scrollX: true,
                 autoWidth: false,
                 fixedColumns: {
