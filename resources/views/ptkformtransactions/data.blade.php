@@ -294,11 +294,10 @@
         .dataTables_scrollHeadInner,
         .dataTables_scrollHeadInner table,
         .dataTables_scrollBody table {
-            width: 100% !important;
-            /* Note: width: 100% might conflict if content is much wider, but helps alignment.
-                   If columns are misaligned, usually it's because header/body widths differ. */
-        }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 @endsection
 
 @section('content2')
@@ -373,7 +372,16 @@
                     <!-- Populated by JS -->
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 me-2">
+                <select id="filterEducation" class="form-select text-small">
+                    <option value="">All Education</option>
+                    <option value="SMA/SMK">SMA / SMK</option>
+                    <option value="D3">D3</option>
+                    <option value="S1/D4">S1 / D4</option>
+                    <option value="S2">S2</option>
+                </select>
+            </div>
+            <div class="col-md-3 me-2">
                 <select id="filterExperience" class="form-select text-small">
                     <option value="">All Experience</option>
                     <option value="Ya">Ya</option>
@@ -466,19 +474,63 @@
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
         $(document).ready(function() {
+            // Init Select2 on Filters
+            $('#filterUniversity').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: "Cari Universitas...",
+                allowClear: true
+            });
+
+            $('#filterDomicile').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: "Cari Domisili...",
+                allowClear: true
+            });
+
+
             console.log("PTKForm Transaction Script Loaded");
 
-            // Custom Filtering Function for GPA
+            // Custom Filtering Function for GPA and Education
             $.fn.dataTable.ext.search.push(
                 function(settings, data, dataIndex) {
+                    // GPA Filter
                     var minGpa = parseFloat($('#filterGpa').val());
                     var gpa = parseFloat(data[7]) || 0;
                     if (!isNaN(minGpa) && gpa < minGpa) {
                         return false;
                     }
+
+                    // Education Filter
+                    var filterEdu = $('#filterEducation').val();
+                    if (filterEdu) {
+                        // We stored the level in a hidden span in column 6 (University), but DataTables search data strips HTML?
+                        // Actually, DataTables `data` argument usually contains the rendered data as stripHtml'd text if orthogonal data is not used.
+                        // However, to be safe and precise, we can access the cell using `settings.aoData[dataIndex]._aData[6]` but that's the full HTML string.
+                        // Let's rely on the text content which should contain the hidden text if DataTables defaults hold (hidden elements' text is included in search data usually).
+                        // Let's check `data[6]`.
+
+                        // Wait, if I use `d-none` class, usually `innerText` (which DataTables uses for search index) implies visible text only?
+                        // Actually standard DataTables search index includes all text.
+                        // Let's assume data[6] contains "LEVEL UniversityName".
+
+                        var cellText = data[6].toUpperCase(); // This is the search data for column 6
+
+                        if (filterEdu === 'SMA/SMK') {
+                            if (!(cellText.includes('SMA') || cellText.includes('SMK') || cellText.includes(
+                                    'SLTA') || cellText.includes('STM'))) return false;
+                        } else if (filterEdu === 'S1/D4') {
+                            if (!(cellText.includes('S1') || cellText.includes('D4'))) return false;
+                        } else {
+                            if (!cellText.includes(filterEdu.toUpperCase())) return false;
+                        }
+                    }
+
                     return true;
                 }
             );
@@ -563,6 +615,8 @@
                     // But if it was `with('latestEducation')`, the key in array is `latest_education`.
 
                     var eduInst = latestEducation ? latestEducation.instansi : '-';
+                    var eduLevel = latestEducation.tingkat || ''; // e.g. S1, D3, SMA
+
                     // User name
                     var displayName = user.name ? (user.name.length > 20 ? user.name.substring(0, 20) +
                         '...' : user.name) : '-';
@@ -603,10 +657,21 @@
 
                     var duration = expCount > 0 ? expCount + ' Jobs' : '-';
 
-                    // Domicile
+                    // Domicile (Updated to Use City and Province)
                     var datadiri = user.datadiri || {};
-                    var domisili = datadiri.alamat_domisili || datadiri.kota_ktp || '-';
-                    var domisiliShort = domisili.length > 15 ? domisili.substring(0, 15) + '...' : domisili;
+                    // Fallback to old keys just in case, but prioritize cities/provinces
+                    var city = datadiri.cities || datadiri.kota_ktp || '';
+                    var province = datadiri.provinces || '';
+
+                    var domisiliFull = '';
+                    if (city) domisiliFull += city;
+                    if (city && province) domisiliFull += ', ';
+                    if (province) domisiliFull += province;
+
+                    if (!domisiliFull) domisiliFull = '-';
+
+                    var domisiliShort = domisiliFull.length > 20 ? domisiliFull.substring(0, 20) + '...' :
+                        domisiliFull;
 
                     // Source - static 'Web'
                     var sourceBadge =
@@ -692,11 +757,11 @@
                         `<span class="days-badge ${daysClass}">${diffDays} hari</span>`,
                         position,
                         createdStr,
-                        `<span title="${eduInst}">${uniName}</span>`,
+                        `<span class="edu-level d-none">${eduLevel}</span> <span title="${eduInst}">${uniName}</span>`,
                         gpa,
                         expBadge,
                         duration,
-                        `<span title="${domisili}">${domisiliShort}</span>`,
+                        `<span title="${domisiliFull}">${domisiliShort}</span>`,
                         sourceBadge,
                         cvLink,
                         '<a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>',
@@ -724,33 +789,65 @@
                 // Populate University Filter
                 var uniColumn = table.column(6);
                 var uniSelect = $('#filterUniversity');
-                uniSelect.empty().append('<option value="">All Universities</option>');
+                // uniSelect.empty().append('<option value="">All Universities</option>'); // Don't clear if you want to keep placeholder of Select2 or re-init?
+                // Better to clear options but keep the first one
+                uniSelect.html('<option value="">All Universities</option>');
 
+                var uniData = [];
                 uniColumn.data().unique().sort().each(function(d, j) {
-                    var val = $.fn.dataTable.util.escapeRegex(d);
-                    var text = $('<div>').html(val).text(); // stripping html
-                    if (text.trim() !== '' && text !== '-') {
-                        uniSelect.append('<option value="' + text + '">' + text + '</option>');
+                    // Strip HTML from d
+                    var tmp = document.createElement("DIV");
+                    tmp.innerHTML = d;
+                    // Remove hidden education level to avoid it polluting the University name filter
+                    var hiddenLevel = tmp.querySelector('.edu-level');
+                    if (hiddenLevel) hiddenLevel.remove();
+
+                    var text = tmp.textContent || tmp.innerText || "";
+                    text = text.trim();
+
+                    if (text !== '' && text !== '-') {
+                        uniData.push(text);
                     }
                 });
+
+                // Deduplicate strings after stripping HTML
+                uniData = [...new Set(uniData)].sort();
+
+                uniData.forEach(function(text) {
+                    uniSelect.append(new Option(text, text));
+                });
+
 
                 // Populate Domicile Filter
                 var domColumn = table.column(10);
                 var domSelect = $('#filterDomicile');
-                domSelect.empty().append('<option value="">All Domiciles</option>');
+                domSelect.html('<option value="">All Domiciles</option>');
 
+                var domData = [];
                 domColumn.data().unique().sort().each(function(d, j) {
-                    var val = $.fn.dataTable.util.escapeRegex(d);
-                    var text = $('<div>').html(val).text();
-                    if (text.trim() !== '' && text !== '-') {
-                        domSelect.append('<option value="' + text + '">' + text + '</option>');
+                    var tmp = document.createElement("DIV");
+                    tmp.innerHTML = d;
+                    var text = tmp.textContent || tmp.innerText || "";
+                    text = text.trim();
+
+                    if (text !== '' && text !== '-') {
+                        domData.push(text);
                     }
+                });
+
+                domData = [...new Set(domData)].sort();
+                domData.forEach(function(text) {
+                    domSelect.append(new Option(text, text));
                 });
             }
 
 
             // Listeners
             $('#filterGpa').on('change', function() {
+                table.draw();
+            });
+
+            $('#filterEducation').on('change', function() {
                 table.draw();
             });
 
