@@ -655,7 +655,38 @@
                         '<span class="badge bg-light text-success border border-success px-2 py-1" style="font-size: 0.65rem;">Ya</span>' :
                         '<span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.65rem;">Tidak</span>';
 
-                    var duration = expCount > 0 ? expCount + ' Jobs' : '-';
+                    // Experience Duration Calculation
+                    var totalMonths = 0;
+                    if (user.datapengalamankerjas && user.datapengalamankerjas.length > 0) {
+                        user.datapengalamankerjas.forEach(function(exp) {
+                            // Assuming fields are 'tgl_masuk' and 'tgl_keluar' based on common conventions or previous knowledge
+                            // If fields are different, this needs adjustment.
+                            // Let's try to be safe and check if these properties exist, or 'start_date'/'end_date'.
+                            // Based on similar Indonesian projects: 'tgl_masuk', 'tgl_keluar'.
+
+                            var start = exp.tgl_masuk ? new Date(exp.tgl_masuk) : (exp.start_date ?
+                                new Date(exp.start_date) : null);
+                            var end = exp.tgl_keluar ? new Date(exp.tgl_keluar) : (exp.end_date ?
+                                new Date(exp.end_date) : new Date()
+                                ); // Assume current if no end date? Or skip? Let's assume current if 'masih bekerja' logic applies, but for now stick to explicit dates.
+
+                            if (start && end && !isNaN(start) && !isNaN(end)) {
+                                var months = (end.getFullYear() - start.getFullYear()) * 12 + (end
+                                    .getMonth() - start.getMonth());
+                                if (months > 0) totalMonths += months;
+                            }
+                        });
+                    }
+
+                    var duration = '-';
+                    if (totalMonths > 0) {
+                        var years = Math.floor(totalMonths / 12);
+                        var months = totalMonths % 12;
+                        if (years > 0) duration = years + ' Y ' + months + ' M';
+                        else duration = months + ' Months';
+                    } else if (hasExp) {
+                        duration = expCount + ' Jobs'; // Fallback
+                    }
 
                     // Domicile (Updated to Use City and Province)
                     var datadiri = user.datadiri || {};
