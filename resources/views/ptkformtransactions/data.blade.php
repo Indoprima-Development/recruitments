@@ -47,9 +47,11 @@
 
         /* Table Styling */
         /* Table Styling */
+        /* Table Styling */
         #recruitmentTable {
-            width: 100% !important;
+            /* width: 100% !important;  <-- Removing this to allow scrollX to determine width freely */
             border-collapse: collapse;
+            margin: 0 auto;
         }
 
         #recruitmentTable thead th {
@@ -261,14 +263,40 @@
             border-width: 0.25em;
         }
 
-        /* Sticky Header for DataTables with FixedColumns */
+
+        /* Sticky Header Fixes */
+        /* Ensure parents don't clip the sticky header */
+        .table-responsive,
+        .dataTables_wrapper,
+        .dataTables_scroll {
+            overflow: visible !important;
+        }
+
+        /* The header wrapper needs to be sticky */
         .dataTables_scrollHead {
+            position: -webkit-sticky !important;
             position: sticky !important;
             top: 70px !important;
-            /* Offset for fixed navbar */
-            z-index: 100 !important;
+            z-index: 1000 !important;
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Alignment Fixes: Ensure text doesn't wrap and sizing is consistent */
+        table.dataTable thead th,
+        table.dataTable tbody td {
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
+            vertical-align: middle;
+        }
+
+        /* Force internal tables to fill space to help alignment */
+        .dataTables_scrollHeadInner,
+        .dataTables_scrollHeadInner table,
+        .dataTables_scrollBody table {
+            width: 100% !important;
+            /* Note: width: 100% might conflict if content is much wider, but helps alignment.
+                   If columns are misaligned, usually it's because header/body widths differ. */
         }
     </style>
 @endsection
@@ -459,7 +487,7 @@
                 paging: false,
                 deferRender: true,
                 scrollX: true,
-                autoWidth: false,
+                // autoWidth: false, // Let DataTables calculate widths
                 fixedColumns: {
                     start: 2
                 },
