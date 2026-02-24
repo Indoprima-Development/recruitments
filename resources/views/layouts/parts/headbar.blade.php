@@ -18,6 +18,19 @@
 </style>
 
 <header class="app-header">
+    {{-- Impersonation Banner --}}
+    @if (session('impersonator_id'))
+        <div
+            style="background: linear-gradient(90deg, #ff6b35, #f7931e); color: #fff; padding: 8px 20px; text-align: center; font-size: 0.85rem; font-weight: 600; z-index: 9999; position: relative;">
+            <i class="ti ti-alert-triangle me-1"></i>
+            Anda sedang login sebagai <strong>{{ Auth::user()->name }}</strong> (Impersonate Mode)
+            <a href="{{ route('stop-impersonate') }}" class="btn btn-sm btn-light ms-3"
+                style="font-size: 0.75rem; padding: 2px 12px;">
+                <i class="ti ti-arrow-back me-1"></i> Kembali ke Admin
+            </a>
+        </div>
+    @endif
+
     <nav class="navbar navbar-expand-lg navbar-light">
         <ul class="navbar-nav flex-row align-items-center">
             <li class="nav-item d-block d-xl-none">
@@ -30,6 +43,25 @@
 
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+
+                {{-- Impersonate User Selector (Admin Only) --}}
+                @if (Auth::check() && strtoupper(Auth::user()->role) === 'ADMIN' && !session('impersonator_id'))
+                    <li class="nav-item me-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <select id="impersonateUserSelect" class="form-select form-select-sm"
+                                style="width: 220px; font-size: 0.8rem; border-radius: 20px;">
+                                <option value="">🔀 Login sebagai user...</option>
+                                @php
+                                    $allUsers = \App\Models\User::where('role', '!=', 'ADMIN')->orderBy('name')->get();
+                                @endphp
+                                @foreach ($allUsers as $u)
+                                    <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->email }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
+                @endif
                 <li class="nav-item dropdown">
                     <a class="nav-link pe-0" href="javascript:void(0)" id="drop1" data-bs-toggle="dropdown"
                         aria-expanded="false">
@@ -134,3 +166,21 @@
         </div>
     </nav>
 </header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var impersonateSelect = document.getElementById('impersonateUserSelect');
+        if (impersonateSelect) {
+            impersonateSelect.addEventListener('change', function() {
+                var userId = this.value;
+                if (userId) {
+                    if (confirm('Apakah anda yakin ingin login sebagai user ini?')) {
+                        window.location.href = '{{ url('impersonate') }}/' + userId;
+                    } else {
+                        this.value = '';
+                    }
+                }
+            });
+        }
+    });
+</script>

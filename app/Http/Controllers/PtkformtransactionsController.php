@@ -219,4 +219,26 @@ class PtkformtransactionsController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Note updated successfully']);
     }
+
+    /**
+     * Delete lamaran (application) by admin.
+     * Menghapus lamaran dan activity terkait.
+     */
+    public function deleteLamaran($id)
+    {
+        $ptkformtransaction = Ptkformtransaction::findOrFail($id);
+
+        // Hapus activity logs terkait
+        Ptkformactivity::where('ptkformtransaction_id', $id)->delete();
+
+        // Hapus lamaran
+        $ptkformtransaction->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Lamaran berhasil dihapus']);
+        }
+
+        AlertSuccess("Terhapus", "Lamaran berhasil dihapus");
+        return redirect()->back();
+    }
 }

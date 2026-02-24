@@ -668,7 +668,7 @@
                                 new Date(exp.start_date) : null);
                             var end = exp.tgl_keluar ? new Date(exp.tgl_keluar) : (exp.end_date ?
                                 new Date(exp.end_date) : new Date()
-                                ); // Assume current if no end date? Or skip? Let's assume current if 'masih bekerja' logic applies, but for now stick to explicit dates.
+                            ); // Assume current if no end date? Or skip? Let's assume current if 'masih bekerja' logic applies, but for now stick to explicit dates.
 
                             if (start && end && !isNaN(start) && !isNaN(end)) {
                                 var months = (end.getFullYear() - start.getFullYear()) * 12 + (end
@@ -751,6 +751,7 @@
                             <button class="btn-icon btnEditStatus" ptkformtrid="${item.id}" status="${item.status}" data-bs-toggle="tooltip" title="Update Status (Modal)"><i class="fas fa-edit text-secondary"></i></button>
                             <button class="btn-icon btn-clock btnHold" ptkformtrid="${item.id}" status="${item.status}" title="Hold"><i class="fas fa-clock"></i></button>
                             <button class="btn-icon btn-cross btnReject" ptkformtrid="${item.id}" status="${item.status}" title="Reject"><i class="fas fa-times"></i></button>
+                            <button class="btn-icon btn-cross btnDeleteLamaran" ptkformtrid="${item.id}" title="Hapus Lamaran" style="border-color: #6c757d;"><i class="fas fa-trash text-danger"></i></button>
                         </div>
                     `;
 
@@ -1088,6 +1089,31 @@
                     },
                     complete: function() {
                         btn.prop('disabled', false).text(originalText);
+                    }
+                });
+            });
+
+            // Delete Lamaran Button
+            $(document).on('click', '.btnDeleteLamaran', function(e) {
+                e.preventDefault();
+                if (!confirm(
+                        'Apakah anda yakin ingin MENGHAPUS lamaran ini? Data tidak dapat dikembalikan!'))
+                    return;
+
+                var id = $(this).attr('ptkformtrid');
+                var $row = $(this).closest('tr');
+
+                $.ajax({
+                    url: "{{ url('ptkformtransactions') }}/" + id + "/delete-lamaran",
+                    method: "DELETE",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        table.row($row).remove().draw();
+                    },
+                    error: function() {
+                        alert('Gagal menghapus lamaran');
                     }
                 });
             });

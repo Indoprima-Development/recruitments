@@ -20,7 +20,9 @@ class LoginRegisterController extends Controller
     {
         $this->middleware('guest')->except([
             'logout',
-            'dashboard'
+            'dashboard',
+            'impersonateUser',
+            'stopImpersonate'
         ]);
     }
 
@@ -134,11 +136,61 @@ class LoginRegisterController extends Controller
      */
     public function logout(Request $request)
     {
+        // If impersonating, clear impersonation session
+        $request->session()->forget('impersonator_id');
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login')
             ->withSuccess('You have logged out successfully!');;
+    }
+
+    /**
+     * Admin impersonates a user (login as user).
+     */
+    public function impersonateUser(Request $request, $userId)
+    {
+        // Only admin can impersonate
+        if (strtoupper(Auth::user()->role) !== 'ADMIN') {
+            abort(403, 'Hanya admin yang dapat menggunakan fitur ini.');
+        }
+
+        $targetUser = User::findOrFail($userId);
+
+        // Store original admin ID in session
+        $request->session()->put('impersonator_id', Auth::user()->id);
+
+        // Login as the target user
+        Auth::login($targetUser);
+
+        Alert::success('Impersonate', 'Anda sekarang login sebagai: ' . $targetUser->name);
+
+        return redirect('/dashboard');
+    }
+
+    /**
+     * Stop impersonating and return to admin account.
+     */
+    public function stopImpersonate(Request $request)
+    {
+        $adminId = $request->session()->get('impersonator_id');
+
+        if (!$adminId) {
+            Alert::error('Error', 'Anda tidak sedang melakukan impersonate.');
+            return redirect()->back();
+        }
+
+        $admin = User::findOrFail($adminId);
+
+        // Clear impersonation session
+        $request->session()->forget('impersonator_id');
+
+        // Login back as admin
+        Auth::login($admin);
+
+        Alert::success('Kembali', 'Anda kembali sebagai admin: ' . $admin->name);
+
+        return redirect('/home');
     }
 
     public function authenticateAdminRoot(Request $request)

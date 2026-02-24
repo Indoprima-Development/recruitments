@@ -80,6 +80,12 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
     // ANALYTICS
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
 
+    // IMPERSONATE - Admin login as user
+    Route::get('/impersonate/{userId}', [LoginRegisterController::class, 'impersonateUser'])->name('impersonate');
+
+    // DELETE LAMARAN - Admin menghapus lamaran user
+    Route::delete('/ptkformtransactions/{id}/delete-lamaran', [PtkformtransactionsController::class, 'deleteLamaran'])->name('ptkformtransactions.deleteLamaran');
+
     //HOME
     Route::controller(HomeController::class)->group(function () {
         // Route::get('/home', 'home');
@@ -138,6 +144,9 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+
+    // STOP IMPERSONATE - Kembali ke admin
+    Route::get('/stop-impersonate', [LoginRegisterController::class, 'stopImpersonate'])->name('stop-impersonate');
 
     Route::post('/ptkformtransactions', [PtkformtransactionsController::class, 'store'])->name('ptkformtransactions.store');
 
