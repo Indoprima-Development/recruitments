@@ -44,13 +44,16 @@ class PtkformtransactionsController extends Controller
     {
         $questions = json_decode($request->questions);
         $score = 0;
-        for ($i = 0; $i < count($questions->score); $i++) {
-            $var = "jawaban_" . $i;
-            if ($questions->type[$i] == 'Rating') {
-                $score += (int)$request->$var / 5 * (int)$questions->score[$i];
-            } else {
-                if ($questions->jawaban[$i] == $request->$var) {
-                    $score += (int)$questions->score[$i];
+
+        if ($questions && isset($questions->score)) {
+            for ($i = 0; $i < count($questions->score); $i++) {
+                $var = "jawaban_" . $i;
+                if (isset($questions->type[$i]) && $questions->type[$i] == 'Rating') {
+                    $score += (int)$request->$var / 5 * (int)$questions->score[$i];
+                } else {
+                    if (isset($questions->jawaban[$i]) && $questions->jawaban[$i] == $request->$var) {
+                        $score += (int)$questions->score[$i];
+                    }
                 }
             }
         }

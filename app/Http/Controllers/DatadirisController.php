@@ -143,7 +143,13 @@ class DatadirisController extends Controller
         $datadiri->ktp = $request->input('ktp');
         $datadiri->kendaraan = $request->input('kendaraan');
         $datadiri->sim = $request->input('sim');
-        $datadiri->ekspektasi_gaji = $request->input('ekspektasi_gaji');
+
+        // Clean ekspektasi_gaji from currency formatting (e.g "5.000.000" or "5000.000")
+        $ekspektasi_gaji = $request->input('ekspektasi_gaji');
+        if ($ekspektasi_gaji) {
+            $datadiri->ekspektasi_gaji = (int) preg_replace('/[^0-9]/', '', $ekspektasi_gaji);
+        }
+
         $datadiri->fasilitas_harapan = $request->input('fasilitas_harapan');
         $datadiri->kesediaan_penempatan = $request->input('kesediaan_penempatan');
         $datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');
@@ -183,7 +189,12 @@ class DatadirisController extends Controller
             $datadiri->user_id = Auth::user()->id; // wajib isi kalau field ini required
         }
 
-        $datadiri->ekspektasi_gaji = $request->input('ekspektasi_gaji');
+        // Clean ekspektasi_gaji from currency formatting
+        $ekspektasi_gaji = $request->input('ekspektasi_gaji');
+        if ($ekspektasi_gaji) {
+            $datadiri->ekspektasi_gaji = (int) preg_replace('/[^0-9]/', '', $ekspektasi_gaji);
+        }
+
         $datadiri->fasilitas_harapan = $request->input('fasilitas_harapan');
         $datadiri->kesediaan_penempatan = $request->input('kesediaan_penempatan');
         $datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');

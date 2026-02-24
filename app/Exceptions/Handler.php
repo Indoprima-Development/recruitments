@@ -74,6 +74,11 @@ class Handler extends ExceptionHandler
             }
         }
 
+        // Handle decryption payload invalid exceptions globally
+        if ($exception instanceof \Illuminate\Contracts\Encryption\DecryptException) {
+            return redirect('/home')->with('error', 'Sesi atau link tidak valid atau sudah kadaluarsa. Silakan coba lagi.');
+        }
+
         return parent::render($request, $exception);
     }
 }
