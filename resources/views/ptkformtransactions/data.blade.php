@@ -359,40 +359,53 @@
         </div>
 
         <!-- Filters -->
-        <div class="row mb-3 g-2">
-            <div class="col-md-3">
-                <select id="filterGpa" class="form-select text-small">
-                    <option value="">All GPA</option>
-                    <option value="3.50">GPA >= 3.50</option>
-                </select>
+        <div class="filter-bar mb-3 p-3" style="background: #f8fafc; border-radius: 10px; border: 1px solid #eef2f6;">
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="ti ti-filter text-primary" style="font-size: 1rem;"></i>
+                <span class="fw-bold text-small text-muted text-uppercase" style="letter-spacing: 0.5px;">Filter
+                    Kandidat</span>
             </div>
-            <div class="col-md-3">
-                <select id="filterUniversity" class="form-select text-small">
-                    <option value="">All Universities</option>
-                    <!-- Populated by JS -->
-                </select>
-            </div>
-            <div class="col-md-3 me-2">
-                <select id="filterEducation" class="form-select text-small">
-                    <option value="">All Education</option>
-                    <option value="SMA/SMK">SMA / SMK</option>
-                    <option value="D3">D3</option>
-                    <option value="S1/D4">S1 / D4</option>
-                    <option value="S2">S2</option>
-                </select>
-            </div>
-            <div class="col-md-3 me-2">
-                <select id="filterExperience" class="form-select text-small">
-                    <option value="">All Experience</option>
-                    <option value="Ya">Ya</option>
-                    <option value="Tidak">Tidak</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select id="filterDomicile" class="form-select text-small">
-                    <option value="">All Domiciles</option>
-                    <!-- Populated by JS -->
-                </select>
+            <div class="row g-2">
+                <div class="col-6 col-md">
+                    <select id="filterGpa" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">📊 Semua GPA</option>
+                        <option value="3.50">GPA ≥ 3.50</option>
+                        <option value="3.00">GPA ≥ 3.00</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md">
+                    <select id="filterUniversity" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">🏫 Semua Universitas</option>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div class="col-6 col-md">
+                    <select id="filterEducation" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">🎓 Semua Pendidikan</option>
+                        <option value="SMA/SMK">SMA / SMK</option>
+                        <option value="D3">D3</option>
+                        <option value="S1/D4">S1 / D4</option>
+                        <option value="S2">S2</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md">
+                    <select id="filterExperience" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">💼 Semua Pengalaman</option>
+                        <option value="Ya">Berpengalaman</option>
+                        <option value="Tidak">Tanpa Pengalaman</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md">
+                    <select id="filterDomicile" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">📍 Semua Domisili</option>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
             </div>
         </div>
 
