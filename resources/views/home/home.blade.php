@@ -1,5 +1,65 @@
 @extends('layouts.default')
 
+@section('addCss')
+    <style>
+        /* Modern Enhancements for Home */
+        .card.bg-primary-subtle {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+            border-radius: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card.bg-primary-subtle h4 {
+            color: white !important;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .card.bg-primary-subtle .breadcrumb-item,
+        .card.bg-primary-subtle .breadcrumb-item a {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .card.bg-primary-subtle .breadcrumb-item.active {
+            color: white !important;
+            font-weight: 600;
+        }
+
+        /* Stats Cards Hover Effect */
+        .card.hover-img {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            background: white;
+        }
+
+        .card.hover-img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            border-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .card.hover-img .rounded-circle {
+            transition: all 0.3s ease;
+        }
+
+        .card.hover-img:hover .rounded-circle {
+            transform: scale(1.1);
+        }
+
+        .card {
+            border-radius: 16px;
+        }
+
+        .progress {
+            background-color: #f1f5f9;
+        }
+    </style>
+@endsection
+
 @section('content2')
     <!-- Welcome Banner -->
     <div class="card bg-primary-subtle shadow-none position-relative overflow-hidden mb-4">
