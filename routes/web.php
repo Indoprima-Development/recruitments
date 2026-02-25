@@ -64,6 +64,7 @@ Route::prefix('auth')->group(function () {
         Route::get('/login-admin-root', 'loginAdminRoot')->name('authenticateAdminRoot');
         Route::post('/authenticate', 'authenticate')->name('authenticate');
         Route::post('/authenticate-admin-root', 'authenticateAdminRoot');
+        Route::post('/resend-activation', 'resendActivationEmail')->name('resendActivationEmail');
     });
 });
 Route::get('/emails/konfirmation', [MainController::class, 'konfirmation']);

@@ -1,0 +1,21 @@
+PHPUnit 10.5.11 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Projects\laravel\recruitments\phpunit.xml
+
+F                                                                   1 / 1 (100%)
+
+Time: 00:00.422, Memory: 38.00 MB
+
+There was 1 failure:
+
+1) Tests\Feature\DatadiriTest::test_ekspektasi_gaji_cleans_currency_format_before_save
+Expected response status code [201, 301, 302, 303, 307, 308] but received 404.
+Failed asserting that false is true.
+
+C:\Projects\laravel\recruitments\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:173
+C:\Projects\laravel\recruitments\tests\Feature\DatadiriTest.php:49
+C:\Projects\laravel\recruitments\vendor\laravel\framework\src\Illuminate\Foundation\Testing\TestCase.php:61
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1.

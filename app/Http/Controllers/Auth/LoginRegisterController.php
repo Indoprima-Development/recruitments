@@ -88,7 +88,7 @@ class LoginRegisterController extends Controller
         $user = User::where('email', $request->email)->first();
         if (!empty($user)) {
             if ($user->is_active != 1) {
-                return view('auth.emailActivation');
+                return view('auth.emailActivation', compact('user'));
             }
 
             if (Hash::check($request->password, $user->password)) {
@@ -207,7 +207,7 @@ class LoginRegisterController extends Controller
 
         if (!empty($user)) {
             if ($user->is_active != 1) {
-                return view('auth.emailActivation');
+                return view('auth.emailActivation', compact('user'));
             }
 
             if ($user->is_active == "" || $user->is_active == 0) {
@@ -262,5 +262,28 @@ class LoginRegisterController extends Controller
         ]);
 
         return redirect('auth/login');
+    }
+
+    public function resendActivationEmail(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if (empty($user)) {
+            Alert::error('Gagal', 'Pengguna tidak ditemukan.');
+            return redirect()->back();
+        }
+
+        if ($user->is_active == 1) {
+            Alert::info('Info', 'Akun ini sudah aktif. Silakan login.');
+            return redirect('auth/login');
+        }
+
+        $tokenGenerate = GenerateRandomString();
+        $user->active_token = $tokenGenerate;
+        $user->save();
+
+        SendMail($user->name, $tokenGenerate, $user->email, 'Verifikasi Pendaftaran Akun');
+
+        Alert::success('Berhasil', 'Email aktivasi telah dikirim ulang ke ' . $user->email . '. Silakan cek kotak masuk atau folder spam Anda.');
+        return view('auth.emailActivation', compact('user'));
     }
 }

@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Already Exists</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Aktivasi Akun Tertunda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --error: #DC2626;
-            --warning: #F59E0B;
-            --light: #F9FAFB;
-            --dark: #111827;
-            --gray: #6B7280;
-            --blue: #2563EB;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --blue: #3b82f6;
+            --blue-hover: #2563eb;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--light);
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             color: var(--dark);
             display: flex;
             justify-content: center;
@@ -25,133 +27,175 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            line-height: 1.5;
+            overflow-x: hidden;
         }
 
         .alert-container {
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+            padding: 48px 40px;
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            border-left: 6px solid var(--error);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .alert-icon {
-            width: 80px;
-            height: 80px;
-            background-color: #FEE2E2;
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 24px;
-            position: relative;
+            margin: 0 auto 28px;
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
+            animation: pulse 2.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+            }
+
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
         }
 
         .alert-icon svg {
-            width: 40px;
-            height: 40px;
-            color: var(--error);
+            width: 44px;
+            height: 44px;
+            color: var(--blue);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         h1 {
             color: var(--dark);
             font-weight: 700;
             margin-bottom: 16px;
-            font-size: 24px;
+            font-size: 28px;
+            letter-spacing: -0.5px;
         }
 
         .alert-message {
             color: var(--gray);
-            margin-bottom: 24px;
+            margin-bottom: 32px;
             font-size: 16px;
             line-height: 1.6;
         }
 
         .highlight {
             font-weight: 600;
-            color: var(--dark);
-            background-color: #F3F4F6;
-            padding: 4px 8px;
-            border-radius: 4px;
+            color: var(--blue);
+            background-color: #eff6ff;
+            padding: 4px 10px;
+            border-radius: 6px;
             display: inline-block;
-            margin: 4px 0;
-            font-family: 'Courier New', monospace;
+            margin: 4px;
+            font-family: inherit;
+            border: 1px solid #bfdbfe;
+            word-break: break-all;
         }
 
         .action-buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-top: 32px;
+            gap: 16px;
         }
 
         .btn {
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 15px;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            width: 100%;
         }
 
         .btn-primary {
             background-color: var(--blue);
             color: white;
-            border: none;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
         .btn-primary:hover {
-            background-color: #1D4ED8;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+            background-color: var(--blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
         }
 
-        .btn-secondary {
-            background-color: white;
-            color: var(--blue);
-            border: 1px solid #E5E7EB;
-        }
-
-        .btn-secondary:hover {
-            background-color: #F9FAFB;
-            border-color: #D1D5DB;
-        }
-
-        .solution-section {
-            background-color: #FEFCE8;
-            border-radius: 8px;
-            padding: 16px;
-            margin: 24px 0;
-            text-align: left;
-        }
-
-        .solution-section h3 {
-            color: var(--dark);
-            font-size: 16px;
-            margin-top: 0;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .solution-section ul {
-            margin: 0;
-            padding-left: 20px;
+        .btn-outline {
+            background-color: transparent;
             color: var(--gray);
+            border: 2px solid #e2e8f0;
         }
 
-        .solution-section li {
-            margin-bottom: 8px;
+        .btn-outline:hover {
+            background-color: #f8fafc;
+            color: var(--dark);
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .logo {
+            height: 40px;
+            margin-bottom: 24px;
+            opacity: 0.8;
+            filter: brightness(0) invert(0);
         }
 
         @media (max-width: 480px) {
@@ -160,47 +204,88 @@
             }
 
             h1 {
-                font-size: 22px;
+                font-size: 24px;
             }
         }
-        .logo {
-            height: 48px;
-        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
+    @include('sweetalert::alert')
     <div class="alert-container">
-        <img src="{{ asset('photo/white-logo.png') }}" alt="PT. Indoprima Gemilang" class="logo">
+        <!-- Optional Logo -->
+        <!-- <img src="{{ asset('photo/white-logo.png') }}" alt="Logo" class="logo"> -->
 
         <div class="alert-icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
         </div>
 
-        <h1>Account Already Registered</h1>
+        <h1>Aktivasi Akun Tertunda</h1>
 
         <div class="alert-message">
-            The <span class="highlight">{{$user->email ?? '-'}}</span> Not Active. Please check your email to confirm your account.
-        </div>
-
-        <div class="solution-section">
-            <h3>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
-                What you can do next
-            </h3>
-            <ul>
-                <li>Contact support if you believe this is an error</li>
-            </ul>
+            Email <span class="highlight">{{ $user->email ?? 'anda' }}</span> belum diaktifkan.<br>
+            Silakan periksa kotak masuk atau folder <b>Spam</b> Anda untuk instruksi menyelesaikannya.
         </div>
 
         <div class="action-buttons">
-            <a href="{{url('auth/login')}}" class="btn btn-primary">Go to Login Page</a>
+            <form action="{{ route('resendActivationEmail') }}" method="POST" id="resendForm" style="margin: 0;">
+                @csrf
+                <input type="hidden" name="email" value="{{ $user->email ?? '' }}">
+                <button type="submit" class="btn btn-primary" id="resendBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 2v6h-6"></path>
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    </svg>
+                    Kirim Ulang Email Aktivasi
+                </button>
+            </form>
+
+            <a href="{{ url('auth/login') }}" class="btn btn-outline">
+                Kembali ke Halaman Login
+            </a>
+        </div>
+
+        <div class="footer-note">
+            Butuh bantuan lain? Silakan hubungi tim dukungan kami.
         </div>
     </div>
+
+    <script>
+        document.getElementById('resendForm').addEventListener('submit', function(e) {
+            const emailValue = document.querySelector('input[name="email"]').value;
+            if (!emailValue) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Data Email tidak ditemukan.',
+                });
+                return;
+            }
+
+            const btn = document.getElementById('resendBtn');
+            btn.disabled = true;
+            btn.innerHTML = `
+                <svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
+                    <path d="M21 12a9 9 0 11-6.219-8.56"></path>
+                </svg>
+                Mengirim Proses...
+            `;
+        });
+    </script>
+    <style>
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </body>
+
 </html>
