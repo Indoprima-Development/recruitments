@@ -10,7 +10,7 @@
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
@@ -20,21 +20,26 @@
 
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-light: #3b82f6;
-            --primary-dark: #1d4ed8;
-            --text-primary: #111827;
-            --text-secondary: #4b5563;
+            --primary: #3b82f6;
+            --primary-light: #eff6ff;
+            --primary-dark: #2563eb;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
             --bg-light: #f8fafc;
-            --border-color: #e5e7eb;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-color: #e2e8f0;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Outfit', sans-serif;
             background-color: var(--bg-light);
+            background-image:
+                radial-gradient(at 100% 0%, hsla(253, 16%, 7%, 0.03) 0, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(225, 39%, 30%, 0.03) 0, transparent 50%);
+            background-attachment: fixed;
             color: var(--text-primary);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         h1,
@@ -42,7 +47,7 @@
         h3,
         h4,
         h5 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Outfit', sans-serif;
             color: var(--text-primary);
         }
 
@@ -83,13 +88,26 @@
         .btn-nav:hover {
             background-color: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
         /* Job Header */
         .job-header {
-            background: white;
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
             padding: 140px 0 3rem;
             border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .job-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .back-link {
@@ -148,11 +166,17 @@
 
         /* Content Layout */
         .content-card {
-            background: white;
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
             padding: 2.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        .content-card:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
         }
 
         .content-section {
@@ -193,12 +217,19 @@
         }
 
         .sidebar-card {
-            background: white;
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
             padding: 1.5rem;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            transition: var(--transition);
+        }
+
+        .sidebar-card:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
         }
 
         .sidebar-row {
@@ -817,12 +848,12 @@
                             // Update button state
                             if (response.saved) {
                                 $btn.find('i').removeClass('ti-bookmark').addClass(
-                                'ti-bookmark-filled');
+                                    'ti-bookmark-filled');
                                 $btn.find('span').text('Tersimpan');
                                 $btn.data('is-saved', 'true');
                             } else {
                                 $btn.find('i').removeClass('ti-bookmark-filled').addClass(
-                                'ti-bookmark');
+                                    'ti-bookmark');
                                 $btn.find('span').text('Simpan Lowongan');
                                 $btn.data('is-saved', 'false');
                             }

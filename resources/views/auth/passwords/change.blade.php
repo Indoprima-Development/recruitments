@@ -13,35 +13,87 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('package/dist/css/style.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
     <!-- Custom Standalone Styles -->
     <style>
         :root {
-            --bs-body-font-family: 'Plus Jakarta Sans', sans-serif;
-            --bs-body-bg: #f5f7fa;
+            --bs-body-font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+            --bs-body-bg: #f8fafc;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #eff6ff;
+            --card-bg: rgba(255, 255, 255, 0.95);
         }
 
         body {
             background-color: var(--bs-body-bg);
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 24px 24px;
+            background-image:
+                radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 0.03) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.03) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 0.03) 0, transparent 50%);
+            background-attachment: fixed;
+            font-family: var(--bs-body-font-family);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Abstract Background floating shapes */
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            animation: float 10s infinite ease-in-out;
+            opacity: 0.5;
+        }
+
+        .bg-shape-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(59, 130, 246, 0.2);
+            top: -100px;
+            left: -100px;
+        }
+
+        .bg-shape-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(139, 92, 246, 0.2);
+            bottom: 100px;
+            right: -50px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-30px) scale(1.05);
+            }
         }
 
         .main-container {
             max-width: 1320px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         /* Modern Header */
         .app-header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
             position: sticky;
             top: 0;
             z-index: 1020;
@@ -52,25 +104,70 @@
             object-fit: cover;
         }
 
-        .hover-scale:hover {
-            transform: scale(1.02);
+        .transition-all {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .transition-all {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.03);
         }
 
         .card-modern {
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-control {
+            border-radius: 14px;
+            padding: 0.8rem 1rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-group-text {
+            background-color: #f8fafc;
+            border-color: #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus~.input-group-text,
+        .input-group-text:has(~ .form-control:focus) {
+            border-color: var(--primary);
+            background-color: #ffffff;
         }
     </style>
 </head>
 
 <body>
+    <div class="bg-shape bg-shape-1"></div>
+    <div class="bg-shape bg-shape-2"></div>
     @include('sweetalert::alert')
 
     <!-- Modern Header -->
@@ -133,9 +230,10 @@
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
                 <div class="card-modern overflow-hidden">
-                    <div class="bg-primary bg-gradient p-4 text-center">
+                    <div class="bg-primary p-4 text-center rounded-top-4"
+                        style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); border-top-left-radius: 28px; border-top-right-radius: 28px;">
                         <h4 class="mb-0 text-white fw-bold"><i class="ti ti-lock me-2"></i> Ganti Password</h4>
-                        <p class="mb-0 text-white-50 small">Amankan akun Anda dengan password baru</p>
+                        <p class="mb-0 text-white-50 small mt-1">Amankan akun Anda dengan password baru</p>
                     </div>
                     <div class="p-4 p-md-5">
                         @if (session('status'))

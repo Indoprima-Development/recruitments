@@ -16,34 +16,46 @@
     <link rel="stylesheet" href="{{ asset('package/dist/libs/owl.carousel/dist/assets/owl.carousel.min.css') }}">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- Custom Standalone Styles -->
     <style>
         :root {
-            --bs-body-font-family: 'Plus Jakarta Sans', sans-serif;
-            --bs-body-bg: #f5f7fa;
+            --bs-body-font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+            --bs-body-bg: #f8fafc;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #eff6ff;
+            --accent: #8b5cf6;
+            --card-bg: rgba(255, 255, 255, 0.95);
         }
 
         body {
             background-color: var(--bs-body-bg);
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 24px 24px;
+            background-image:
+                radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 0.03) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.03) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 0.03) 0, transparent 50%);
+            background-attachment: fixed;
+            font-family: var(--bs-body-font-family);
         }
 
         .main-container {
             max-width: 1320px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         /* Modern Header */
         .app-header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
             position: sticky;
             top: 0;
             z-index: 1020;
@@ -59,79 +71,87 @@
         }
 
         .transition-all {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* Interactive Effects */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         .hover-lift:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15) !important;
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
         }
 
         .hover-scale:hover {
-            transform: scale(1.02);
-        }
-
-        .hover-bg-light:hover {
-            background-color: #f8f9fa !important;
+            transform: scale(1.03);
         }
 
         /* Modern Cards */
         .card-modern {
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .card-modern:hover {
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
-            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.06);
+            transform: translateY(-3px);
+            border-color: rgba(59, 130, 246, 0.1);
         }
 
-        /* Sticky Sidebar */
-        .sticky-sidebar {
-            z-index: 900;
-        }
-
-        @media (min-width: 992px) {
-            .sticky-sidebar {
-                position: sticky;
-                top: 100px;
-            }
+        .card-header {
+            background-color: transparent !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03) !important;
         }
 
         /* Form Controls */
         .form-control,
         .form-select {
-            border-radius: 12px;
-            background-color: #fff;
+            border-radius: 14px;
+            background-color: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 0.8rem 1rem;
+            padding: 0.8rem 1.2rem;
             font-size: 0.95rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus,
         .form-select:focus {
-            border-color: var(--bs-primary);
-            box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.1);
-            background-color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            background-color: #ffffff;
         }
 
         /* Welcome Banner */
         .welcome-banner {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.9) 100%),
-                url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            border-radius: 24px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-radius: 28px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            transform: rotate(-45deg);
+            pointer-events: none;
         }
 
         .welcome-pattern {
@@ -140,9 +160,64 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.5em 1em;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* Table Styles */
+        .table> :not(caption)>*>* {
+            padding: 1rem 1.2rem;
+            border-bottom-color: rgba(0, 0, 0, 0.03);
+            background-color: transparent !important;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: var(--primary-light) !important;
+            transform: scale(1.01);
+            border-radius: 12px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse-soft {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .avatar-pulse {
+            animation: pulse-soft 3s infinite ease-in-out;
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
         }
     </style>
 </head>
@@ -235,14 +310,14 @@
             <!-- Sidebar -->
             <div class="col-lg-3 sticky-sidebar">
                 <div class="card-modern p-4 text-center mb-4 border-top border-4 border-primary">
-                    <div class="position-relative d-inline-block mb-3 mt-n5">
-                        <div class="p-1 bg-white rounded-circle">
+                    <div class="position-relative d-inline-block mb-3 mt-n5 avatar-pulse">
+                        <div class="p-1 bg-white rounded-circle shadow-sm">
                             @if (Auth::user()->photo != null)
-                                <img src="{{ asset(Auth::user()->photo) }}"
-                                    class="rounded-circle shadow-lg object-fit-cover" width="120" height="120">
+                                <img src="{{ asset(Auth::user()->photo) }}" class="rounded-circle object-fit-cover"
+                                    width="120" height="120" style="border: 4px solid #eff6ff;">
                             @else
-                                <div class="rounded-circle bg-primary bg-gradient text-white d-flex align-items-center justify-content-center shadow-lg"
-                                    style="width: 120px; height: 120px; font-size: 3rem;">
+                                <div class="rounded-circle bg-primary bg-gradient text-white d-flex align-items-center justify-content-center"
+                                    style="width: 120px; height: 120px; font-size: 3rem; border: 4px solid #eff6ff;">
                                     {{ substr(Auth::user()->name, 0, 1) }}
                                 </div>
                             @endif
