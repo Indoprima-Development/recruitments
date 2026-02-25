@@ -348,6 +348,13 @@
             transform: translateY(0);
         }
 
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
         .register-text {
             text-align: center;
             margin-top: 2rem;
@@ -594,6 +601,17 @@
                 dots: true,
                 dotsClass: 'slider-dots owl-dots',
                 dotClass: 'owl-dot'
+            });
+
+            // Prevent multiple form submissions
+            $('form').on('submit', function() {
+                var btn = $(this).find('button[type="submit"]');
+                if (!btn.prop('disabled')) {
+                    btn.prop('disabled', true);
+                    btn.html(
+                        'Signing in... <i class="ti ti-loader" style="display:inline-block; animation: rotation 1s linear infinite;"></i>'
+                        );
+                }
             });
         });
 

@@ -284,6 +284,13 @@
             box-shadow: 0 10px 20px rgba(0, 247, 255, 0.2);
         }
 
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
         .login-btn::before {
             content: '';
             position: absolute;
@@ -536,6 +543,16 @@
                 }
                 this.nextElementSibling.style.color = 'var(--light-muted)';
             });
+        });
+
+        // Prevent multiple form submissions
+        document.querySelector('.auth-form').addEventListener('submit', function() {
+            var btn = this.querySelector('button[type="submit"]');
+            if (!btn.disabled) {
+                btn.disabled = true;
+                btn.innerHTML =
+                    '<span>Signing in...</span> <i class="ti ti-loader" style="display:inline-block; animation: rotation 1s linear infinite;"></i>';
+            }
         });
     </script>
 </body>
