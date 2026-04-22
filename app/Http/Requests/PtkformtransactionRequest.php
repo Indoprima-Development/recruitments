@@ -23,9 +23,9 @@ class PtkformtransactionRequest extends FormRequest
      */
     public function rules()
     {
-        return
-        [
-			'ptkform_id' => 'required',
+        return [
+            'ptkform_id' => 'required',
+            'cv' => auth()->user()->cv ? 'nullable|file|mimes:pdf,doc,docx|max:2048' : 'required|file|mimes:pdf,doc,docx|max:2048',
         ];
     }
 }

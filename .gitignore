@@ -7,6 +7,7 @@
 /public/suratpengalaman
 /public/data
 /public/cv
+/public/storage/cv
 /storage/*.key
 /vendor
 .env

@@ -645,7 +645,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-                    <form method="POST" action="{{ url('ptkformtransactions') }}" id="formApplication">
+                    <form method="POST" action="{{ url('ptkformtransactions') }}" id="formApplication" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body p-4">
                             <input type="hidden" name="questions" value="{{ $jobtitle->questions }}">
@@ -730,6 +730,27 @@
                                             <span class="input-group-text">Bulan</span>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- CV Upload -->
+                            <div class="mt-4 mb-3">
+                                @if (empty(Auth::user()->cv))
+                                    <label class="form-label fw-bold">Attach CV (max 2MB) <span
+                                            class="text-danger">*</span></label>
+                                    <input type="file" name="cv" class="form-control" accept=".pdf,.doc,.docx"
+                                        required>
+                                @else
+                                    <label class="form-label fw-bold">Upload Latest CV (optional)</label>
+                                    <input type="file" name="cv" class="form-control" accept=".pdf,.doc,.docx">
+                                    <div class="mt-2">
+                                        <small class="text-muted">Current CV: <a
+                                                href="{{ asset('storage/cv/' . Auth::user()->cv) }}" target="_blank"
+                                                class="text-primary fw-semibold"><i class="ti ti-file-text me-1"></i>View
+                                                Current CV</a></small>
+                                    </div>
+                                @endif
+                                <div class="help-text small text-muted mt-1">Allowed formats: PDF, DOC, DOCX. Max size: 2MB.
                                 </div>
                             </div>
 

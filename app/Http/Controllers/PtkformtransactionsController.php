@@ -67,6 +67,29 @@ class PtkformtransactionsController extends Controller
         $ptkformtransaction->experience_months = $request->input('experience_months');
         $ptkformtransaction->save();
 
+        // Handle CV Upload
+        if ($request->hasFile('cv')) {
+            $user = Auth::user();
+            $file = $request->file('cv');
+            $filename = time() . '_' . $user->id . '.' . $file->getClientOriginalExtension();
+            
+            // Ensure directory exists
+            $path = public_path('storage/cv');
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+            
+            $file->move($path, $filename);
+
+            // Delete old CV if exists
+            if ($user->cv && file_exists(public_path('storage/cv/' . $user->cv))) {
+                @unlink(public_path('storage/cv/' . $user->cv));
+            }
+
+            $user->cv = $filename;
+            $user->save();
+        }
+
         AlertSuccess("Success", "Berhasil melamar pekerjaan");
         return redirect()->back();
     }
