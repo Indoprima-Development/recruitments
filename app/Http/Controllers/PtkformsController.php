@@ -173,8 +173,21 @@ class PtkformsController extends Controller
         $ptkform->general_others = $request->input('general_others');
         $ptkform->request_basis = $request->input('request_basis');
         $ptkform->request_basis_for = $request->input('request_basis_for');
+        $ptkform->status_pegawai = $request->input('status_pegawai');
         $ptkform->status = $request->input('status');
         $ptkform->save();
+        
+        // Update experience requirements
+        \App\Models\Ptkfield::where('ptkform_id', $id)->delete();
+        if ($request->fields != null) {
+            for ($i = 0; $i < count($request->fields); $i++) {
+                \App\Models\Ptkfield::create([
+                    "ptkform_id"    => $ptkform->id,
+                    "field_id"      => $request->fields[$i],
+                    "year"          => $request->tahun[$i]
+                ]);
+            }
+        }
 
         AlertSuccess("Success","Data berhasil diubah");
         return redirect('vacancies');
