@@ -151,17 +151,25 @@
             background: transparent;
             border: none;
             box-shadow: none;
-            min-height: 600px;
-            /* Increase minimum height */
-            overflow: visible;
-            /* Allow overflow */
+            min-height: 400px;
+            height: auto !important;
+            overflow: visible !important;
             display: block;
-            /* Ensure it takes up space */
         }
 
-        /* Override potential fixed height from plugin JS if inline styles are applied, or ensure wrapper expands */
+        .wizard-content .wizard>.content>.body {
+            float: none;
+            position: static;
+            width: 100%;
+            height: auto !important;
+            overflow: visible !important;
+            padding: 0;
+        }
+
+        /* Override potential fixed height from plugin JS */
         .wizard-content .wizard {
             overflow: visible;
+            height: auto !important;
         }
 
         /* Form Controls */
