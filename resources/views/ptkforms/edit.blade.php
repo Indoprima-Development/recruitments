@@ -52,36 +52,98 @@
         }
 
         /* Wizard Overrides */
-        .wizard-content .wizard>.steps {
-            margin-bottom: 2rem;
-        }
-
-        .wizard-content .wizard>.steps .current a {
-            background: var(--primary-color);
-            color: #fff;
-            border-radius: 50px;
-            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
-            border: none;
-        }
-
-        .wizard-content .wizard>.steps .done a {
-            background: #e0f2fe;
-            /* Light Blue */
-            color: var(--primary-color);
-            border-radius: 50px;
-            border: none;
-        }
-
-        .wizard-content .wizard>.steps .disabled a {
-            background: #f1f5f9;
-            color: #94a3b8;
-            border-radius: 50px;
-            border: none;
+        .wizard-content .wizard>.steps ul {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            position: relative;
         }
 
         .wizard-content .wizard>.steps ul li {
-            padding: 0 10px;
-            /* Space between steps */
+            flex: 1;
+            padding: 0;
+            position: relative;
+            text-align: center;
+        }
+
+        /* Connector line */
+        .wizard-content .wizard>.steps ul li::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+
+        .wizard-content .wizard>.steps ul li:last-child::after {
+            display: none;
+        }
+
+        .wizard-content .wizard>.steps ul li.current::after,
+        .wizard-content .wizard>.steps ul li.done::after {
+            background: var(--primary-color);
+        }
+
+        .wizard-content .wizard>.steps a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+            padding: 0;
+            background: transparent !important;
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .wizard-content .wizard>.steps .step {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #94a3b8;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .wizard-content .wizard>.steps .current .step {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+            transform: scale(1.1);
+        }
+
+        .wizard-content .wizard>.steps .current a {
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .wizard-content .wizard>.steps .done .step {
+            border-color: var(--primary-color);
+            background-color: #e0f2fe;
+            color: var(--primary-color);
+        }
+
+        .wizard-content .wizard>.steps .done a {
+            color: var(--primary-color);
         }
 
 
@@ -358,7 +420,7 @@
                                     {{ Form::label('status_pegawai', 'Employment Status', ['class' => 'form-label']) }}
                                     <div class="input-group">
                                         <span class="input-group-text bg-white text-muted"><i class="ti ti-id"></i></span>
-                                        {{ Form::select('status_pegawai', ['Staff' => 'Staff', 'Non Staff' => 'Non Staff', 'Internship' => 'Internship', 'LTC' => 'LTC'], null, ['class' => 'form-select']) }}
+                                        {{ Form::select('status_pegawai', ['Staff' => 'Staff', 'Non Staff' => 'Non Staff', 'Internship' => 'Internship', 'LTC' => 'LTC', 'Graduate Development Program' => 'Graduate Development Program'], null, ['class' => 'form-select']) }}
                                     </div>
                                 </div>
                                 <div class="col-md-4">

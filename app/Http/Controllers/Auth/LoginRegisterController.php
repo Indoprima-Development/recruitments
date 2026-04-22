@@ -41,8 +41,6 @@ class LoginRegisterController extends Controller
             return view('auth.alreadyRegistered', compact('user'));
         }
 
-        $tokenGenerate = GenerateRandomString();
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -55,16 +53,12 @@ class LoginRegisterController extends Controller
             'ipk'                 => $request->ipk,
             'berat_badan'         => (int)$request->berat_badan,
             'tinggi_badan'        => (int)$request->tinggi_badan,
-            'is_active'           => 0,
-            'active_token'        => $tokenGenerate,
+            'is_active'           => 1,
         ]);
 
-        Alert::success('Success', 'Akun berhasil dibuat. Silahkan melakukan konfirmasi email');
+        Alert::success('Success', 'Akun berhasil dibuat. Silakan login untuk melanjutkan.');
 
-        SendMail($request->name, $tokenGenerate, $request->email, 'Verifikasi Pendaftaran Akun');
-
-        $email = $request->email;
-        return view('auth.successRegister', compact('email'));
+        return redirect()->route('login');
     }
 
     public function login()
@@ -87,17 +81,7 @@ class LoginRegisterController extends Controller
         // $user = User::where('ktp', $request->ktp)->orWhere('nohp', $request->nohp)->first();
         $user = User::where('email', $request->email)->first();
         if (!empty($user)) {
-            if ($user->is_active != 1) {
-                return view('auth.emailActivation', compact('user'));
-            }
-
             if (Hash::check($request->password, $user->password)) {
-
-                if ($user->is_active == "" || $user->is_active == 0) {
-                    Alert::error('Gagal!', 'Akun belum diaktifkan, harap memeriksa email untuk konfirmasi akun');
-                    return redirect()->back();
-                }
-
                 Auth::attempt($credentials);
                 $request->session()->regenerate();
                 return redirect('vacancies');
