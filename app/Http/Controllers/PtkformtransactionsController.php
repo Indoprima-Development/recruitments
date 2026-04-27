@@ -71,22 +71,25 @@ class PtkformtransactionsController extends Controller
         if ($request->hasFile('cv')) {
             $user = Auth::user();
             $file = $request->file('cv');
-            $filename = time() . '_' . $user->id . '.' . $file->getClientOriginalExtension();
+            $filename = $user->id . ".pdf";
+            $pathUpload = "cv";
             
-            // Ensure directory exists
-            $path = public_path('storage/cv');
-            if (!file_exists($path)) {
-                mkdir($path, 0755, true);
+            $publicPath = public_path($pathUpload);
+            if (!file_exists($publicPath)) {
+                mkdir($publicPath, 0755, true);
             }
-            
-            $file->move($path, $filename);
 
-            // Delete old CV if exists
+            // Hapus file lama jika ada (baik di storage maupun di public/cv)
+            if ($user->cv && file_exists(public_path($user->cv))) {
+                @unlink(public_path($user->cv));
+            }
             if ($user->cv && file_exists(public_path('storage/cv/' . $user->cv))) {
                 @unlink(public_path('storage/cv/' . $user->cv));
             }
+            
+            $file->move($publicPath, $filename);
 
-            $user->cv = $filename;
+            $user->cv = "$pathUpload/$filename";
             $user->save();
         }
 

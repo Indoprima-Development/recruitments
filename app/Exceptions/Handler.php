@@ -46,32 +46,6 @@ class Handler extends ExceptionHandler
     {
         if ($this->isHttpException($exception)) {
             $status = $exception->getStatusCode();
-
-            // Daftar status code yang akan dipantau
-            $monitorCodes = [400, 402, 403, 404, 405, 406, 407, 408, 409, 410, 412, 414, 415, 422, 429, 431];
-
-            if (in_array($status, $monitorCodes)) {
-                $ip = $request->ip();
-
-                // Hitung jumlah percobaan akses error tertentu per IP
-                $count = Cache::increment("error_count_{$status}_{$ip}");
-
-                // Set kadaluarsa counter (1 jam)
-                Cache::put("error_count_{$status}_{$ip}", $count, now()->addHour());
-
-                // Random limit antara 6–10
-                $limit = rand(6, 10);
-
-                if ($count >= $limit) {
-                    DB::table('blocked_ips')->updateOrInsert(
-                        ['ip_address' => $ip],
-                        ['created_at' => now(), 'updated_at' => now()]
-                    );
-
-                    // Langsung blokir request
-                    abort(403, 'Access denied. Your IP has been blocked.');
-                }
-            }
         }
 
         // Handle decryption payload invalid exceptions globally

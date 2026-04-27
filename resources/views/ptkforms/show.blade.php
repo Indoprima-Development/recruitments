@@ -745,7 +745,7 @@
                                     <input type="file" name="cv" class="form-control" accept=".pdf,.doc,.docx">
                                     <div class="mt-2">
                                         <small class="text-muted">Current CV: <a
-                                                href="{{ asset('storage/cv/' . Auth::user()->cv) }}" target="_blank"
+                                                href="{{ asset(Auth::user()->cv) }}" target="_blank"
                                                 class="text-primary fw-semibold"><i class="ti ti-file-text me-1"></i>View
                                                 Current CV</a></small>
                                     </div>
