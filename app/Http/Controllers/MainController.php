@@ -21,8 +21,8 @@ class MainController extends Controller
 
         $jobs = Ptkform::with(['jobtitle', 'division', 'education'])
             ->where("status", 1)
-            ->whereDate('date_open_vacancy', '<=', $date . ' 00:00')
-            ->whereDate('date_closed_vacancy', '>=', $date . ' 23:59')
+            ->whereDate('date_open_vacancy', '<=', $date)
+            ->whereDate('date_closed_vacancy', '>=', $date)
             ->get()->take(4);
 
         return view('index',compact("jobs"));
@@ -36,8 +36,8 @@ class MainController extends Controller
         //find from ptk which has status = 1
         $jobs = Ptkform::with(['jobtitle', 'division', 'education'])
             ->where("status", 1)
-            ->whereDate('date_open_vacancy', '<=', $date . ' 00:00')
-            ->whereDate('date_closed_vacancy', '>=', $date . ' 23:59')
+            ->whereDate('date_open_vacancy', '<=', $date)
+            ->whereDate('date_closed_vacancy', '>=', $date)
             ->get();
 
         return view('vacancy', compact("jobs"));

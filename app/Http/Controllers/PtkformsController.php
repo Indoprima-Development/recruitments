@@ -85,8 +85,8 @@ class PtkformsController extends Controller
         //if create by admin, by pass to approved status
         if (Auth::user()->role == 'ADMIN') {
             $ptkform->status = 1;
-            $ptkform->date_open_vacancy   = '2000-01-01 00:00';
-            $ptkform->date_closed_vacancy = '2030-12-31 23:59';
+            $ptkform->date_open_vacancy   = '2000-01-01';
+            $ptkform->date_closed_vacancy = '2030-12-31';
         }
 
         $ptkform->save();

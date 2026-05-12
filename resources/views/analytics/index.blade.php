@@ -197,6 +197,36 @@
         </div>
     </div>
 
+    <!-- Filter Section (New Analytics) -->
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-body py-3">
+            <form method="GET" action="{{ route('analytics.index') }}" class="row align-items-center g-3">
+                <div class="col-md-3">
+                    <h5 class="mb-0 fw-bold text-dark">Analytics Filter</h5>
+                </div>
+                <div class="col-md-9 d-flex justify-content-end gap-2">
+                    <select name="month" class="form-select form-select-sm w-auto">
+                        <option value="all" {{ $month == 'all' ? 'selected' : '' }}>All Months</option>
+                        @for ($m = 1; $m <= 12; $m++)
+                            <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
+                                {{ date('F', mktime(0, 0, 0, $m, 1)) }}
+                            </option>
+                        @endfor
+                    </select>
+                    <select name="year" class="form-select form-select-sm w-auto">
+                        <option value="all" {{ $year == 'all' ? 'selected' : '' }}>All Years</option>
+                        @for ($y = date('Y') - 2; $y <= date('Y') + 1; $y++)
+                            <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>
+                                {{ $y }}
+                            </option>
+                        @endfor
+                    </select>
+                    <button type="submit" class="btn btn-primary btn-sm px-3">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Key Metrics Row -->
     <div class="row g-4 mb-4">
         <!-- Total Applicants -->

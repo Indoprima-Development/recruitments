@@ -92,7 +92,11 @@
         </a>
         <a href="{{ url('ptkformtransactions', 9) }}/data"
             class="btn btn-outline-danger shadow-sm d-flex align-items-center">
-            <i class="ti ti-ban me-2"></i> Canceled Applications
+            <i class="ti ti-x me-2"></i> Rejected Candidates
+        </a>
+        <a href="{{ url('ptkformtransactions', 10) }}/data"
+            class="btn btn-outline-warning shadow-sm d-flex align-items-center">
+            <i class="ti ti-player-pause me-2"></i> On Hold Candidates
         </a>
     </div>
 
@@ -247,6 +251,7 @@
                 </div>
                 <div class="col-md-9 d-flex justify-content-end gap-2">
                     <select name="month" class="form-select form-select-sm w-auto">
+                        <option value="all" {{ $month == 'all' ? 'selected' : '' }}>All Months</option>
                         @for ($m = 1; $m <= 12; $m++)
                             <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
                                 {{ date('F', mktime(0, 0, 0, $m, 1)) }}
@@ -254,6 +259,7 @@
                         @endfor
                     </select>
                     <select name="year" class="form-select form-select-sm w-auto">
+                        <option value="all" {{ $year == 'all' ? 'selected' : '' }}>All Years</option>
                         @for ($y = date('Y') - 2; $y <= date('Y') + 1; $y++)
                             <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>
                                 {{ $y }}

@@ -1,4 +1,4 @@
-<div class="tab-pane fade show active" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
+<div class="tab-pane fade {{ $section == 'account' ? 'show active' : '' }}" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
 
     <!-- Hero / Intro Section for Data Diri -->
     <div class="mb-4">
@@ -119,7 +119,7 @@
 
                     <div class="col-md-6">
                         <div class="form-floating">
-                            {{ Form::text('no_wa', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'No WA', 'id' => 'no_wa']) }}
+                            {{ Form::text('no_wa', null, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'No WA', 'required', 'id' => 'no_wa']) }}
                             {{ Form::label('no_wa', 'Nomor WhatsApp') }}
                         </div>
                     </div>

@@ -50,10 +50,12 @@ class DatadirisController extends Controller
      * @param  DatadiriRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(DatadiriRequest $request)
+    public function store(DatadiriRequest $request, $id = null)
     {
+        $userId = $id ?: Auth::user()->id;
+        
         $dataRequest = [];
-        $dataRequest["user_id"] = Auth::user()->id;
+        $dataRequest["user_id"] = $userId;
         $dataRequest["name"] = $request->input('name');
         $dataRequest["gender"] = $request->input('gender');
         $dataRequest["tempat_lahir"] = $request->input('tempat_lahir');
@@ -70,27 +72,17 @@ class DatadirisController extends Controller
         $dataRequest["provinces"] = $request->input('provinces');
         $dataRequest["cities"] = $request->input('cities');
 
-        $kendaraan = [];
-        if ($request->input('kendaraan') != null) {
-            $kendaraan = $request->input('kendaraan');
-        }
+        $dataRequest["kendaraan"] = json_encode($request->input('kendaraan', []));
+        $dataRequest["sim"] = json_encode($request->input('sim', []));
 
-        $sim = [];
-        if ($request->input('sim') != null) {
-            $sim = $request->input('sim');
-        }
-
-        $dataRequest["kendaraan"] = json_encode($kendaraan);
-        $dataRequest["sim"] = json_encode($sim);
-
-        $datadiri = Datadiri::where('user_id', Auth::user()->id)->first();
+        $datadiri = Datadiri::where('user_id', $userId)->first();
         if (empty($datadiri)) {
             Datadiri::create($dataRequest);
         } else {
             $datadiri->update($dataRequest);
         }
 
-        return redirect('forms');
+        return redirect()->back()->with('success', 'Data diri berhasil disimpan.');
     }
 
     /**
@@ -127,7 +119,7 @@ class DatadirisController extends Controller
     public function update(DatadiriRequest $request, $id)
     {
         $datadiri = Datadiri::findOrFail($id);
-        $datadiri->user_id = $request->input('user_id');
+        $datadiri->user_id = $request->input('user_id', $datadiri->user_id);
         $datadiri->name = $request->input('name');
         $datadiri->gender = $request->input('gender');
         $datadiri->tempat_lahir = $request->input('tempat_lahir');
@@ -141,10 +133,11 @@ class DatadirisController extends Controller
         $datadiri->tinggi_badan = $request->input('tinggi_badan');
         $datadiri->berat_badan = $request->input('berat_badan');
         $datadiri->ktp = $request->input('ktp');
-        $datadiri->kendaraan = $request->input('kendaraan');
-        $datadiri->sim = $request->input('sim');
+        
+        $datadiri->kendaraan = json_encode($request->input('kendaraan', []));
+        $datadiri->sim = json_encode($request->input('sim', []));
 
-        // Clean ekspektasi_gaji from currency formatting (e.g "5.000.000" or "5000.000")
+        // Clean ekspektasi_gaji from currency formatting
         $ekspektasi_gaji = $request->input('ekspektasi_gaji');
         if ($ekspektasi_gaji) {
             $datadiri->ekspektasi_gaji = (int) preg_replace('/[^0-9]/', '', $ekspektasi_gaji);
@@ -153,19 +146,17 @@ class DatadirisController extends Controller
         $datadiri->fasilitas_harapan = $request->input('fasilitas_harapan');
         $datadiri->kesediaan_penempatan = $request->input('kesediaan_penempatan');
         $datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');
-        $datadiri->image_jabatan_terakhir = $request->input('image_jabatan_terakhir');
         $datadiri->keterangan_jabatan_terakhir = $request->input('keterangan_jabatan_terakhir');
         $datadiri->provinces = $request->input('provinces');
         $datadiri->cities = $request->input('cities');
         $datadiri->save();
 
-        return redirect('forms');
+        return redirect('forms')->with('success', 'Data berhasil diperbarui.');
     }
 
     public function pernyataan(Request $request, $id)
     {
         try {
-            // Validasi file maksimal 1 MB dan hanya gambar tertentu
             $request->validate(
                 [
                     'image_jabatan_terakhir' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
@@ -181,15 +172,14 @@ class DatadirisController extends Controller
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
 
-        // Ambil data berdasarkan user login
-        $datadiri = Datadiri::where('user_id', Auth::user()->id)->first();
+        $userId = $id ?: Auth::user()->id;
+        $datadiri = Datadiri::where('user_id', $userId)->first();
 
         if (!$datadiri) {
             $datadiri = new Datadiri();
-            $datadiri->user_id = Auth::user()->id; // wajib isi kalau field ini required
+            $datadiri->user_id = $userId;
         }
 
-        // Clean ekspektasi_gaji from currency formatting
         $ekspektasi_gaji = $request->input('ekspektasi_gaji');
         if ($ekspektasi_gaji) {
             $datadiri->ekspektasi_gaji = (int) preg_replace('/[^0-9]/', '', $ekspektasi_gaji);
@@ -200,11 +190,17 @@ class DatadirisController extends Controller
         $datadiri->kesediaan_mulai_bekerja = $request->input('kesediaan_mulai_bekerja');
         $datadiri->keterangan_jabatan_terakhir = $request->input('keterangan_jabatan_terakhir');
 
-        // Upload file jika ada
         if ($request->hasFile('image_jabatan_terakhir')) {
-            $filename = Auth::user()->id . ".png"; // atau pakai $datadiri->id setelah save
+            $file = $request->file('image_jabatan_terakhir');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $userId . "_" . time() . "." . $extension;
             $pathUpload = "jabatan";
-            UploadFile($request->file('image_jabatan_terakhir'), $pathUpload, $filename);
+            
+            if (!file_exists(public_path($pathUpload))) {
+                mkdir(public_path($pathUpload), 0755, true);
+            }
+            
+            UploadFile($file, $pathUpload, $filename);
             $datadiri->image_jabatan_terakhir = "$pathUpload/$filename";
         }
 
@@ -217,7 +213,6 @@ class DatadirisController extends Controller
     public function photo(Request $request)
     {
         try {
-            // Validasi file (opsional + max 1 MB + hanya gambar)
             $request->validate(
                 [
                     'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
@@ -233,21 +228,25 @@ class DatadirisController extends Controller
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
 
-        // Ambil data user yang login
-        $datadiri = User::findOrFail(Auth::user()->id);
+        $user = User::findOrFail(Auth::user()->id);
 
-        // Upload file jika ada
         if ($request->hasFile('photo')) {
-            $filename = $datadiri->id . ".png";
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            $filename = $user->id . "_" . time() . "." . $extension;
             $pathUpload = "photo";
-            UploadFile($request->file('photo'), $pathUpload, $filename);
-            $datadiri->photo = "$pathUpload/$filename";
+            
+            if (!file_exists(public_path($pathUpload))) {
+                mkdir(public_path($pathUpload), 0755, true);
+            }
+            
+            UploadFile($file, $pathUpload, $filename);
+            $user->photo = "$pathUpload/$filename";
         }
 
-        $datadiri->save();
+        $user->save();
 
         Alert::success('Success!', 'Photo has been updated successfully.');
-
         return redirect('forms');
     }
 
@@ -255,9 +254,8 @@ class DatadirisController extends Controller
     public function cv(Request $request)
     {
         try {
-            // File validation (optional + max 2 MB + PDF only)
             $request->validate([
-                'cv' => 'nullable|mimes:pdf|max:2048', // max 2 MB
+                'cv' => 'nullable|mimes:pdf|max:2048',
             ], [
                 'cv.max' => 'The file size must not exceed 2 MB.',
                 'cv.mimes' => 'The file must be in PDF format.',
@@ -267,19 +265,22 @@ class DatadirisController extends Controller
             return redirect()->back()->withErrors($e->validator)->withInput();
         }
 
+        $user = User::findOrFail(Auth::user()->id);
 
-        // Ambil data user login
-        $datadiri = User::findOrFail(Auth::user()->id);
-
-        // Upload file jika ada
         if ($request->hasFile('cv')) {
-            $filename = $datadiri->id . ".pdf";
+            $file = $request->file('cv');
+            $filename = $user->id . ".pdf";
             $pathUpload = "cv";
-            UploadFile($request->file('cv'), $pathUpload, $filename);
-            $datadiri->cv = "$pathUpload/$filename";
+            
+            if (!file_exists(public_path($pathUpload))) {
+                mkdir(public_path($pathUpload), 0755, true);
+            }
+            
+            UploadFile($file, $pathUpload, $filename);
+            $user->cv = "$pathUpload/$filename";
         }
 
-        $datadiri->save();
+        $user->save();
 
         Alert::success('Success!', 'CV has been updated successfully.');
         return redirect('forms');

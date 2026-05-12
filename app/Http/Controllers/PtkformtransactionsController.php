@@ -160,7 +160,7 @@ class PtkformtransactionsController extends Controller
 
     public function saveDataJson()
     {
-        $statuses = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        $statuses = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
         foreach ($statuses as $status) {
             $ptkformtransactions = Ptkformtransaction::with([
@@ -200,6 +200,8 @@ class PtkformtransactionsController extends Controller
         if ($request->statusokornot == 'OK') {
             // Approve: Lanjut ke tahap berikutnya
             $status = $request->status + 1;
+        } elseif ($request->statusokornot == 'HOLD') {
+            $status = 10;
         }
 
         $data = Ptkformtransaction::where("id", $request->ptkformtrid)->firstOrFail();

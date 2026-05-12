@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="pills-pendidikan" role="tabpanel" aria-labelledby="pills-pendidikan-tab" tabindex="0">
+<div class="tab-pane fade {{ $section == 'pendidikan' ? 'show active' : '' }}" id="pills-pendidikan" role="tabpanel" aria-labelledby="pills-pendidikan-tab" tabindex="0">
 
     <!-- Hero Section -->
     <div class="mb-4">

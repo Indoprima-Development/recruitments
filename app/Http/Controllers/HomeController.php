@@ -34,9 +34,13 @@ class HomeController extends Controller
         $year = $request->input('year', date('Y'));
 
         // Base Query
-        $query = Ptkformtransaction::query()
-            ->whereYear('created_at', $year)
-            ->whereMonth('created_at', $month);
+        $query = Ptkformtransaction::query();
+        if ($year != 'all') {
+            $query->whereYear('created_at', $year);
+        }
+        if ($month != 'all') {
+            $query->whereMonth('created_at', $month);
+        }
 
         $totalApplications = $query->count();
 
@@ -80,12 +84,18 @@ class HomeController extends Controller
 
         // Hiring by Department
         // Group by ptkform.jobtitle.department (if exists) or just jobtitle name for now simple
-        $departmentData = Ptkformtransaction::select('ptkforms.id', DB::raw('count(*) as apps'))
+        $deptQuery = Ptkformtransaction::select('ptkforms.id', DB::raw('count(*) as apps'))
             ->join('ptkforms', 'ptkforms.id', 'ptkformtransactions.ptkform_id')
-            ->join('jobtitles', 'jobtitles.id', 'ptkforms.jobtitle_id') // Corrected column name to jobtitle_id
-            ->whereYear('ptkformtransactions.created_at', $year)
-            ->whereMonth('ptkformtransactions.created_at', $month)
-            ->groupBy('ptkforms.id')
+            ->join('jobtitles', 'jobtitles.id', 'ptkforms.jobtitle_id');
+            
+        if ($year != 'all') {
+            $deptQuery->whereYear('ptkformtransactions.created_at', $year);
+        }
+        if ($month != 'all') {
+            $deptQuery->whereMonth('ptkformtransactions.created_at', $month);
+        }
+            
+        $departmentData = $deptQuery->groupBy('ptkforms.id')
             ->with('ptkform.jobtitle') // Load relationship
             ->get();
 
@@ -93,10 +103,15 @@ class HomeController extends Controller
         // Since groupBy ptkforms.id might split same job title if different PTK forms, we will aggregate in PHP or improve query.
         // Let's use the Collection to aggregate by JobTitle Name.
         $deptStats = [];
-        $rawDept = Ptkformtransaction::with(['ptkform.jobtitle'])
-             ->whereYear('created_at', $year)
-             ->whereMonth('created_at', $month)
-             ->get();
+        
+        $rawDeptQuery = Ptkformtransaction::with(['ptkform.jobtitle']);
+        if ($year != 'all') {
+            $rawDeptQuery->whereYear('created_at', $year);
+        }
+        if ($month != 'all') {
+            $rawDeptQuery->whereMonth('created_at', $month);
+        }
+        $rawDept = $rawDeptQuery->get();
 
         foreach($rawDept as $item) {
             $name = $item->ptkform->jobtitle->jobtitle_name ?? 'Unknown';

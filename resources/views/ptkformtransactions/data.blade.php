@@ -406,6 +406,13 @@
                         <!-- Populated by JS -->
                     </select>
                 </div>
+                <div class="col-6 col-md">
+                    <select id="filterPosition" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">🎯 Semua Posisi</option>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -522,16 +529,6 @@
                     // Education Filter
                     var filterEdu = $('#filterEducation').val();
                     if (filterEdu) {
-                        // We stored the level in a hidden span in column 6 (University), but DataTables search data strips HTML?
-                        // Actually, DataTables `data` argument usually contains the rendered data as stripHtml'd text if orthogonal data is not used.
-                        // However, to be safe and precise, we can access the cell using `settings.aoData[dataIndex]._aData[6]` but that's the full HTML string.
-                        // Let's rely on the text content which should contain the hidden text if DataTables defaults hold (hidden elements' text is included in search data usually).
-                        // Let's check `data[6]`.
-
-                        // Wait, if I use `d-none` class, usually `innerText` (which DataTables uses for search index) implies visible text only?
-                        // Actually standard DataTables search index includes all text.
-                        // Let's assume data[6] contains "LEVEL UniversityName".
-
                         var cellText = data[6].toUpperCase(); // This is the search data for column 6
 
                         if (filterEdu === 'SMA/SMK') {
@@ -544,9 +541,23 @@
                         }
                     }
 
+                    // Position Filter
+                    var filterPos = $('#filterPosition').val();
+                    if (filterPos) {
+                        var posText = data[4] || ""; // column 4 is Position
+                        if (posText !== filterPos) {
+                            return false;
+                        }
+                    }
+
                     return true;
                 }
             );
+
+            // Trigger search when Position changes
+            $('#filterPosition').on('change', function() {
+                table.draw();
+            });
 
             var table = $('#recruitmentTable').DataTable({
                 paging: false,
@@ -578,8 +589,9 @@
 
             // Fetch and Render Data
             var status = "{{ $status }}";
-            var dataUrl = "{{ asset('data/ptkformtransactions-') }}" + status + ".json.gz?t=" + new Date()
-                .getTime();
+            // Cache for 10 minutes (600,000 ms)
+            var cacheBuster = Math.floor(new Date().getTime() / 600000);
+            var dataUrl = "{{ asset('data/ptkformtransactions-') }}" + status + ".json.gz?t=" + cacheBuster;
 
             // Show loading
             $('#loadingOverlay').fadeIn(200);
@@ -594,6 +606,7 @@
                         const jsonData = JSON.parse(stringData);
 
                         populateTable(jsonData);
+                        populatePositionFilter(jsonData);
                     } catch (err) {
                         console.error("Error processing data:", err);
                         alert("Failed to load data. Please try again.");
@@ -609,6 +622,26 @@
                 });
 
 
+            function populatePositionFilter(data) {
+                var select = $('#filterPosition');
+                // get unique positions
+                var positions = [];
+                data.forEach(item => {
+                    var ptkform = item.ptkform || {};
+                    var jobtitle = ptkform.jobtitle || {};
+                    var posName = jobtitle.jobtitle_name || '-';
+                    if (posName !== '-' && !positions.includes(posName)) {
+                        positions.push(posName);
+                    }
+                });
+                
+                positions.sort();
+                
+                positions.forEach(pos => {
+                    select.append('<option value="' + pos + '">' + pos + '</option>');
+                });
+            }
+
             function populateTable(data) {
                 table.clear();
 
@@ -619,16 +652,10 @@
                     var user = item.user || {};
                     var ptkform = item.ptkform || {};
                     var jobtitle = ptkform.jobtitle || {};
-                    var latestEducation = user.latest_education ||
-                    {}; // Note: JSON might have snake_case depending on serialization or relation name.
-                    // Eloquent `latestEducation` relation usually serializes as `latest_education` key if appended, or `latestEducation` if loaded?
-                    // Actually standard serialization uses snake_case for attributes, but camelCase for relations?
-                    // Wait, `json_encode` on model uses `toArray()`. `toArray()` converts keys to snake_case usually.
-                    // Let's check: `latestEducation` relation. In array it becomes `latest_education` if it's following convention.
-                    // But if it was `with('latestEducation')`, the key in array is `latest_education`.
+                    var latestEducation = user.latest_education || null;
 
-                    var eduInst = latestEducation ? latestEducation.instansi : '-';
-                    var eduLevel = latestEducation.tingkat || ''; // e.g. S1, D3, SMA
+                    var eduInst = latestEducation && latestEducation.instansi ? latestEducation.instansi : '-';
+                    var eduLevel = latestEducation && latestEducation.tingkat ? latestEducation.tingkat : '';
 
                     // User name
                     var displayName = user.name ? (user.name.length > 20 ? user.name.substring(0, 20) +
@@ -753,6 +780,9 @@
                     } else if (status === 9) {
                         statusBadgeClass = 'status-rejected';
                         statusLabel = 'Rejected';
+                    } else if (status === 10) {
+                        statusBadgeClass = 'status-hold';
+                        statusLabel = 'On Hold';
                     }
                     var statusHtml = '<span class="badge-status ' + statusBadgeClass + '">' + statusLabel +
                         '</span>';
@@ -773,7 +803,7 @@
 
                     // Name Link
                     var nameLink =
-                        `<a href="#" class="col-candidate" onclick="viewCandidate(${item.user_id})" title="${user.name}">${displayName}</a>`;
+                        `<a href="#" class="col-candidate" onclick="viewCandidate(${item.user_id})" title="${user.name || '-'}">${displayName}</a>`;
 
                     // Add Row Data (Must match column order!)
                     // 0: Checkbox

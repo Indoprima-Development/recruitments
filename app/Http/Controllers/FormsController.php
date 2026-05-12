@@ -23,7 +23,7 @@ class FormsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $datadiri = Datadiri::where("user_id",Auth::user()->id)->first();
         $datakesehatans = Datakesehatan::where("user_id",Auth::user()->id)->get();
@@ -37,8 +37,9 @@ class FormsController extends Controller
         $dataorganisasis = Dataorganisasi::where("user_id",Auth::user()->id)->get();
         $datapeminatans = Datapeminatan::where("user_id",Auth::user()->id)->get();
         $users = User::find(Auth::user()->id);
+        $section = $request->query('section', 'account');
 
-        return view("forms.index",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","datapeminatans",'users'));
+        return view("forms.index",compact("datadiri","datapendidikanformals","datapendidikannonformals","datakeluargas","datapengalamankerjas","datakemampuans","dataorganisasis","dataolahragas","datadetails","datakesehatans","datapeminatans",'users', 'section'));
     }
 
     /**

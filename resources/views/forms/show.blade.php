@@ -267,7 +267,7 @@
                         </div>
                         <h3 class="fw-bold text-dark mb-1">{{ $users->name }}</h3>
                         <p class="text-primary fw-bold mb-3 fs-5">
-                            {{ $ptkformtransactions[0]->ptkform->jobtitle->jobtitle_name ?? 'Applicant' }}
+                            {{ optional($ptkformtransactions->first())->ptkform->jobtitle->jobtitle_name ?? 'Applicant' }}
                         </p>
 
                         <div class="d-flex justify-content-center flex-wrap gap-2 mb-4">

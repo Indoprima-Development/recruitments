@@ -11,26 +11,37 @@ use Carbon\Carbon;
 
 class AnalyticsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $month = $request->input('month', date('m'));
+        $year = $request->input('year', date('Y'));
+
+        $query = Ptkformtransaction::query();
+        if ($year != 'all') {
+            $query->whereYear('created_at', $year);
+        }
+        if ($month != 'all') {
+            $query->whereMonth('created_at', $month);
+        }
+
         // 1. Key Metrics
         $totalVacancies = Ptkform::count();
         $activeVacancies = Ptkform::where('status', 1)->count();
-        $totalApplicants = Ptkformtransaction::count();
-        $hiredCandidates = Ptkformtransaction::whereNotNull('join')->count();
+        $totalApplicants = (clone $query)->count();
+        $hiredCandidates = (clone $query)->whereNotNull('join')->count();
 
         // 2. Recruitment Funnel Data
         $funnelData = [
             'applied' => $totalApplicants,
-            'screened' => Ptkformtransaction::whereNotNull('cv_review')->count(),
-            'psychotest' => Ptkformtransaction::whereNotNull('psikotest')->count(),
-            'interview' => Ptkformtransaction::where(function($q) {
+            'screened' => (clone $query)->whereNotNull('cv_review')->count(),
+            'psychotest' => (clone $query)->whereNotNull('psikotest')->count(),
+            'interview' => (clone $query)->where(function($q) {
                 $q->whereNotNull('interview_hc')
                   ->orWhereNotNull('interview_user')
                   ->orWhereNotNull('interview_direksi');
             })->count(),
-            'mcu' => Ptkformtransaction::whereNotNull('mcu')->count(),
-            'offering' => Ptkformtransaction::whereNotNull('finalisasi')->count(),
+            'mcu' => (clone $query)->whereNotNull('mcu')->count(),
+            'offering' => (clone $query)->whereNotNull('finalisasi')->count(),
             'hired' => $hiredCandidates
         ];
 
@@ -271,6 +282,8 @@ class AnalyticsController extends Controller
             ->get();
 
         return view('analytics.index', compact(
+            'month',
+            'year',
             'totalVacancies',
             'activeVacancies',
             'totalApplicants',

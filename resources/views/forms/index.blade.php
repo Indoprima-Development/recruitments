@@ -443,41 +443,49 @@
                     var currentProv = $('#dataProvince').val();
                     if (currentProv && currentProv !== '-') {
                         const foundIndex = data.findIndex(p => p.name === currentProv);
-                        if (foundIndex !== -1) provincesDropdown.val(foundIndex);
+                        if (foundIndex !== -1) {
+                            provincesDropdown.val(foundIndex);
+                            // Trigger manual fetch for cities
+                            fetchCities(data[foundIndex].id, $('#cities').val());
+                        }
                     }
                 });
+            }
+
+            function fetchCities(provinceId, selectedCity = null) {
+                if (!provinceId) return;
+                $.getJSON(
+                    `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
+                    function(data) {
+                        var citiesDropdown = $('#cities');
+                        citiesDropdown.empty();
+                        citiesDropdown.append($('<option>', {
+                            value: '',
+                            text: 'Pilih Kota'
+                        }));
+                        $.each(data, function(index, city) {
+                            citiesDropdown.append($('<option>', {
+                                value: city.name,
+                                text: city.name,
+                                selected: (selectedCity && city.name === selectedCity)
+                            }));
+                        });
+                    });
             }
 
             // City Fetcher
             $('#provinces').change(function() {
                 var index = $(this).val();
-                if (!index) return;
-                var provinceId = dataProvince[index].id;
-                $('#dataProvince').val(dataProvince[index].name);
-
-                if (provinceId) {
-                    $.getJSON(
-                        `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
-                        function(data) {
-                            var citiesDropdown = $('#cities');
-                            citiesDropdown.empty();
-                            citiesDropdown.append($('<option>', {
-                                value: '',
-                                text: 'Pilih Kota'
-                            }));
-                            $.each(data, function(index, city) {
-                                citiesDropdown.append($('<option>', {
-                                    value: city.name,
-                                    text: city.name
-                                }));
-                            });
-                        });
-                } else {
+                if (!index) {
                     $('#cities').empty().append($('<option>', {
                         value: '',
                         text: 'Pilih Kota'
                     }));
+                    return;
                 }
+                var provinceId = dataProvince[index].id;
+                $('#dataProvince').val(dataProvince[index].name);
+                fetchCities(provinceId);
             });
 
             // Bootstrap Validation
