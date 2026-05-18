@@ -272,4 +272,50 @@ class PtkformtransactionsController extends Controller
         AlertSuccess("Terhapus", "Lamaran berhasil dihapus");
         return redirect()->back();
     }
+
+    public function vacancyData($ptkform_id, $status = 'all')
+    {
+        $ptkform = \App\Models\Ptkform::with('jobtitle')->findOrFail($ptkform_id);
+
+        $ptkformtransactions = Ptkformtransaction::with([
+            'user' => function ($q) {
+                $q->with('latestEducation', 'datadiri', 'datapengalamankerja')
+                    ->withCount('datapengalamankerja');
+            },
+            'ptkform.jobtitle'
+        ])
+            ->where('ptkform_id', $ptkform_id)
+            ->when($status !== "all", function ($query) use ($status) {
+                return $query->where("status", $status);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $counts = Ptkformtransaction::where('ptkform_id', $ptkform_id)
+            ->selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status')
+            ->toArray();
+
+        return view('ptkformtransactions.vacancy_data', compact('ptkform_id', 'status', 'ptkform', 'ptkformtransactions', 'counts'));
+    }
+
+    public function vacancyJson($ptkform_id, $status)
+    {
+        $ptkformtransactions = Ptkformtransaction::with([
+            'user' => function ($q) {
+                $q->with('latestEducation', 'datadiri', 'datapengalamankerja')
+                    ->withCount('datapengalamankerja');
+            },
+            'ptkform.jobtitle'
+        ])
+            ->where('ptkform_id', $ptkform_id)
+            ->when($status !== "all", function ($query) use ($status) {
+                return $query->where("status", $status);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json($ptkformtransactions);
+    }
 }

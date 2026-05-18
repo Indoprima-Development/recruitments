@@ -355,9 +355,16 @@
                                 <span class="job-badge">{{ $ptkform->status_pegawai }}</span>
                                 <h1 class="job-title mb-0">{{ $ptkform->jobtitle->jobtitle_name }}</h1>
                             </div>
-                            <button type="button" class="btn btn-outline-primary rounded-pill px-4" id="btnShare">
-                                <i class="ti ti-share me-2"></i> Share
-                            </button>
+                            <div class="d-flex flex-column align-items-end gap-2">
+                                <button type="button" class="btn btn-outline-primary rounded-pill px-4" id="btnShare">
+                                    <i class="ti ti-share me-2"></i> Share
+                                </button>
+                                @if (Auth::check() && strtoupper(Auth::user()->role) == 'ADMIN')
+                                    <a href="{{ route('ptkformtransactions.vacancyData', $ptkform->id) }}" class="btn btn-primary rounded-pill px-4 text-white">
+                                        <i class="ti ti-users me-2"></i> View Applicants
+                                    </a>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="job-meta-row">

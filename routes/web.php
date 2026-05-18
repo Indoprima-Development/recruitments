@@ -141,6 +141,9 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
         Route::get('/ptkformtransactions/{status}/data', 'dataByStatus');
         Route::post('/ptkformtransactions/change-status', 'changeStatus');
         Route::post('/ptkformtransactions/update-note', 'updateNote');
+        Route::get('/ptkformtransactions/vacancy/{ptkform_id}/data', 'vacancyData')->name('ptkformtransactions.vacancyData');
+        Route::get('/ptkformtransactions/vacancy/{ptkform_id}/{status}/data', 'vacancyData')->name('ptkformtransactions.vacancyDataWithStatus');
+        Route::get('/ptkformtransactions/vacancy/{ptkform_id}/{status}/json', 'vacancyJson')->name('ptkformtransactions.vacancyJson');
     });
 });
 
