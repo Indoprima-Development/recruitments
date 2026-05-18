@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('ktp')->nullable();
             $table->string('nohp')->nullable();
             $table->string('role')->nullable();
+            $table->string('cv')->nullable();
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

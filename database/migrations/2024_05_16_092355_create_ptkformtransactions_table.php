@@ -27,6 +27,7 @@ class CreatePtkformtransactionsTable extends Migration
             $table->dateTime('mcu')->nullable();
             $table->dateTime('join')->nullable();
             $table->float('score_applicant')->nullable();
+            $table->float('score_candidate')->nullable();
             $table->float('score_interview_hc')->nullable();
             $table->float('score_psikotest')->nullable();
             $table->float('score_interview_user')->nullable();

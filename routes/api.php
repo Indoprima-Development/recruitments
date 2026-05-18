@@ -20,6 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/save-data-json', [\App\Http\Controllers\PtkformtransactionsController::class, 'saveDataJson']);
 
+Route::get('/vacancies', [\App\Http\Controllers\VacancyApiController::class, 'listVacancies']);
+Route::get('/vacancies/{id}/participants', [\App\Http\Controllers\VacancyApiController::class, 'listParticipants']);
+
 Route::group(['middleware' => ['is-ipg']], function () {
 
 });
