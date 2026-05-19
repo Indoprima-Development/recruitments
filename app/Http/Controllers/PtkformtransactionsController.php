@@ -158,9 +158,13 @@ class PtkformtransactionsController extends Controller
         return view('ptkformtransactions.data', compact('status'));
     }
 
-    public function saveDataJson()
+    public function saveDataJson($specificStatuses = null)
     {
-        $statuses = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+        $statuses = $specificStatuses ?? ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+        if (!is_array($statuses)) {
+            $statuses = [$statuses];
+        }
+        $statuses = array_unique($statuses);
 
         foreach ($statuses as $status) {
             $ptkformtransactions = Ptkformtransaction::with([

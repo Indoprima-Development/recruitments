@@ -128,7 +128,7 @@ class VacancyApiController extends Controller
 
         // Automatically regenerate cache JSON to keep the main dashboard instantly synchronized
         try {
-            app(\App\Http\Controllers\PtkformtransactionsController::class)->saveDataJson();
+            app(\App\Http\Controllers\PtkformtransactionsController::class)->saveDataJson([$transaction->status]);
         } catch (\Exception $e) {
             \Log::error('Failed to auto-generate JSON data on updateAiScore: ' . $e->getMessage());
         }
@@ -167,13 +167,6 @@ class VacancyApiController extends Controller
 
         $transaction->status = $request->input('status');
         $transaction->save();
-
-        // Automatically regenerate cache JSON to keep the main dashboard instantly synchronized
-        try {
-            app(\App\Http\Controllers\PtkformtransactionsController::class)->saveDataJson();
-        } catch (\Exception $e) {
-            \Log::error('Failed to auto-generate JSON data on updateStatus: ' . $e->getMessage());
-        }
 
         return response()->json([
             'success' => true,
