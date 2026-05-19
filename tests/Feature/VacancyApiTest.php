@@ -158,4 +158,43 @@ class VacancyApiTest extends TestCase
                 'data' => []
             ]);
     }
+
+    public function test_can_update_status_for_participant_transaction(): void
+    {
+        $ptkform = $this->createTestVacancy();
+
+        $user = User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $transaction = Ptkformtransaction::create([
+            'ptkform_id' => $ptkform->id,
+            'user_id' => $user->id,
+            'status' => '0',
+            'score_candidate' => 80,
+            'experience_years' => 2,
+            'experience_months' => 6,
+        ]);
+
+        $response = $this->postJson("/api/participants/{$transaction->id}/status", [
+            'status' => '1',
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Status updated successfully',
+                'data' => [
+                    'id' => $transaction->id,
+                    'status' => '1',
+                ]
+            ]);
+
+        $this->assertDatabaseHas('ptkformtransactions', [
+            'id' => $transaction->id,
+            'status' => '1',
+        ]);
+    }
 }

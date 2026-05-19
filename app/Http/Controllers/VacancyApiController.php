@@ -142,4 +142,46 @@ class VacancyApiController extends Controller
             ]
         ], 200);
     }
+
+    /**
+     * Update the status for a participant transaction.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required',
+        ]);
+
+        $transaction = Ptkformtransaction::find($id);
+
+        if (!$transaction) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Participant transaction not found',
+            ], 404);
+        }
+
+        $transaction->status = $request->input('status');
+        $transaction->save();
+
+        // Automatically regenerate cache JSON to keep the main dashboard instantly synchronized
+        try {
+            app(\App\Http\Controllers\PtkformtransactionsController::class)->saveDataJson();
+        } catch (\Exception $e) {
+            \Log::error('Failed to auto-generate JSON data on updateStatus: ' . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully',
+            'data' => [
+                'id' => $transaction->id,
+                'status' => $transaction->status
+            ]
+        ], 200);
+    }
 }
