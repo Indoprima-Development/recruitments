@@ -22,6 +22,7 @@ Route::get('/save-data-json', [\App\Http\Controllers\PtkformtransactionsControll
 
 Route::get('/vacancies', [\App\Http\Controllers\VacancyApiController::class, 'listVacancies']);
 Route::get('/vacancies/{id}/participants', [\App\Http\Controllers\VacancyApiController::class, 'listParticipants']);
+Route::post('/participants/{id}/ai-score', [\App\Http\Controllers\VacancyApiController::class, 'updateAiScore']);
 
 Route::group(['middleware' => ['is-ipg']], function () {
 

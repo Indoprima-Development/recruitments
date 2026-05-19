@@ -75,6 +75,7 @@ class VacancyApiController extends Controller
         }
 
         $participants = Ptkformtransaction::where('ptkform_id', $id)
+            ->whereNull('ai_score')
             ->with(['user.datadiri'])
             ->get()
             ->map(function ($transaction) {
@@ -86,6 +87,7 @@ class VacancyApiController extends Controller
                 $cv = $user && $user->cv ? url($user->cv) : null;
 
                 return [
+                    'id' => $transaction->id,
                     'ktp' => $ktp,
                     'name' => $name,
                     'cv' => $cv,
@@ -96,6 +98,48 @@ class VacancyApiController extends Controller
             'success' => true,
             'message' => 'Participants retrieved successfully',
             'data' => $participants
+        ], 200);
+    }
+
+    /**
+     * Update the AI score for a participant transaction.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateAiScore(Request $request, $id)
+    {
+        $request->validate([
+            'ai_score' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $transaction = Ptkformtransaction::find($id);
+
+        if (!$transaction) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Participant transaction not found',
+            ], 404);
+        }
+
+        $transaction->ai_score = $request->input('ai_score');
+        $transaction->save();
+
+        // Automatically regenerate cache JSON to keep the main dashboard instantly synchronized
+        try {
+            app(\App\Http\Controllers\PtkformtransactionsController::class)->saveDataJson();
+        } catch (\Exception $e) {
+            \Log::error('Failed to auto-generate JSON data on updateAiScore: ' . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'AI Score updated successfully',
+            'data' => [
+                'id' => $transaction->id,
+                'ai_score' => $transaction->ai_score
+            ]
         ], 200);
     }
 }

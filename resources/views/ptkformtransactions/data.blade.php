@@ -754,6 +754,12 @@
                         '" target="_blank" class="link-blue"><i class="fas fa-eye me-1"></i> View</a>' :
                         '<span class="text-muted text-small">-</span>';
 
+                    // AI Rev
+                    var aiScore = item.ai_score;
+                    var aiRevLink = (aiScore !== null && aiScore !== undefined) ?
+                        '<span class="badge bg-light text-success border border-success px-2 py-1 fw-bold" style="font-size: 0.65rem;"><i class="fas fa-robot me-1"></i> ' + aiScore + '</span>' :
+                        '<a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>';
+
                     // Score
                     var score = item.score_candidate || 0;
                     var scoreClass = 'text-low';
@@ -839,7 +845,7 @@
                         `<span title="${domisiliFull}">${domisiliShort}</span>`,
                         sourceBadge,
                         cvLink,
-                        '<a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>',
+                        aiRevLink,
                         scoreBadge,
                         noteHtml,
                         statusHtml,

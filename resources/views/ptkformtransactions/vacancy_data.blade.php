@@ -519,7 +519,13 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>
+                            @if(!is_null($item->ai_score))
+                                <span class="badge bg-light text-success border border-success px-2 py-1 fw-bold" style="font-size: 0.65rem;">
+                                    <i class="fas fa-robot me-1"></i> {{ $item->ai_score }}
+                                </span>
+                            @else
+                                <a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>
+                            @endif
                         </td>
                         <td class="text-center">
                             <span class="badge-score {{ $scoreClass }}">{{ $score }}/100</span>
