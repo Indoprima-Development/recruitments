@@ -756,9 +756,22 @@
 
                     // AI Rev
                     var aiScore = item.ai_score;
-                    var aiRevLink = (aiScore !== null && aiScore !== undefined) ?
-                        '<span class="badge bg-light text-success border border-success px-2 py-1 fw-bold" style="font-size: 0.65rem;"><i class="fas fa-robot me-1"></i> ' + aiScore + '</span>' :
-                        '<a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>';
+                    var aiRevLink = '<span class="text-muted">-</span>';
+                    if (aiScore !== null && aiScore !== undefined) {
+                        var scoreVal = parseFloat(aiScore);
+                        var scoreFormatted = scoreVal.toFixed(2);
+                        var badgeStyle = '';
+                        if (scoreVal < 50) {
+                            badgeStyle = 'color: #dc3545; background-color: #fde8e8; border: 1px solid #f8b4b4;';
+                        } else if (scoreVal <= 70) {
+                            badgeStyle = 'color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba;';
+                        } else if (scoreVal <= 85) {
+                            badgeStyle = 'color: #198754; background-color: #e8f5e9; border: 1px solid #c3e6cb;';
+                        } else {
+                            badgeStyle = 'color: #0f5132; background-color: #d1e7dd; border: 1px solid #badbcc;';
+                        }
+                        aiRevLink = '<span class="badge px-2 py-1 fw-bold" style="font-size: 0.65rem; ' + badgeStyle + '"><i class="fas fa-robot me-1"></i> ' + scoreFormatted + '</span>';
+                    }
 
                     // Score
                     var score = item.score_candidate || 0;

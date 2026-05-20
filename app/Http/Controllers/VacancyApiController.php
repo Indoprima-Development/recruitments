@@ -33,7 +33,12 @@ class VacancyApiController extends Controller
                     'section' => $vacancy->section ? $vacancy->section->section_name : null,
                     'education' => $vacancy->education ? $vacancy->education->education_name : null,
                     'major' => $vacancy->major ? $vacancy->major->major_name : null,
-                    'gender' => $vacancy->gender,
+                    'gender' => match ((int) $vacancy->gender) {
+                        0 => 'laki-laki dan perempuan',
+                        1 => 'laki-laki',
+                        2 => 'perempuan',
+                        default => 'laki-laki dan perempuan',
+                    },
                     'ipk' => $vacancy->ipk,
                     'date_open_vacancy' => $vacancy->date_open_vacancy,
                     'date_closed_vacancy' => $vacancy->date_closed_vacancy,

@@ -520,11 +520,28 @@
                         </td>
                         <td class="text-center">
                             @if(!is_null($item->ai_score))
-                                <span class="badge bg-light text-success border border-success px-2 py-1 fw-bold" style="font-size: 0.65rem;">
-                                    <i class="fas fa-robot me-1"></i> {{ $item->ai_score }}
+                                @php
+                                    $aiScore = (float)$item->ai_score;
+                                    $aiScoreFormatted = number_format($aiScore, 2);
+                                    if ($aiScore < 50) {
+                                        // merah (red)
+                                        $badgeStyle = 'color: #dc3545; background-color: #fde8e8; border: 1px solid #f8b4b4;';
+                                    } elseif ($aiScore <= 70) {
+                                        // kuning (yellow)
+                                        $badgeStyle = 'color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba;';
+                                    } elseif ($aiScore <= 85) {
+                                        // hijau muda (light green)
+                                        $badgeStyle = 'color: #198754; background-color: #e8f5e9; border: 1px solid #c3e6cb;';
+                                    } else {
+                                        // hijau tua (dark green)
+                                        $badgeStyle = 'color: #0f5132; background-color: #d1e7dd; border: 1px solid #badbcc;';
+                                    }
+                                @endphp
+                                <span class="badge px-2 py-1 fw-bold" style="font-size: 0.65rem; {{ $badgeStyle }}">
+                                    <i class="fas fa-robot me-1"></i> {{ $aiScoreFormatted }}
                                 </span>
                             @else
-                                <a href="#" class="link-blue text-success"><i class="fas fa-robot me-1"></i> Check</a>
+                                <span class="text-muted">-</span>
                             @endif
                         </td>
                         <td class="text-center">
