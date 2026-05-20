@@ -197,4 +197,63 @@ class VacancyApiTest extends TestCase
             'status' => '1',
         ]);
     }
+
+    public function test_can_list_participants_filtered_by_year(): void
+    {
+        $ptkform = $this->createTestVacancy();
+
+        // Create user 1 (applied this year)
+        $user1 = User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
+            'password' => bcrypt('password'),
+            'ktp' => '1234567890123456',
+            'cv' => 'cv/1.pdf',
+        ]);
+
+        $tx1 = Ptkformtransaction::create([
+            'ptkform_id' => $ptkform->id,
+            'user_id' => $user1->id,
+            'status' => 0,
+            'score_candidate' => 80,
+            'experience_years' => 2,
+            'experience_months' => 6,
+        ]);
+        $tx1->created_at = now(); // Defaults to current year
+        $tx1->save();
+
+        // Create user 2 (applied in previous year)
+        $user2 = User::factory()->create([
+            'name' => 'Jane Smith',
+            'email' => 'jane.smith@example.com',
+            'password' => bcrypt('password'),
+            'ktp' => '9876543210987654',
+            'cv' => 'cv/2.pdf',
+        ]);
+
+        $tx2 = Ptkformtransaction::create([
+            'ptkform_id' => $ptkform->id,
+            'user_id' => $user2->id,
+            'status' => 0,
+            'score_candidate' => 75,
+            'experience_years' => 3,
+            'experience_months' => 0,
+        ]);
+        $tx2->created_at = now()->subYear(); // Last year
+        $tx2->save();
+
+        // 1. Get with default (current year) - should only return user1
+        $response = $this->getJson("/api/vacancies/{$ptkform->id}/participants");
+        $response->assertStatus(200)
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment(['name' => 'John Doe'])
+            ->assertJsonMissing(['name' => 'Jane Smith']);
+
+        // 2. Get with last year - should only return user2
+        $responseLastYear = $this->getJson("/api/vacancies/{$ptkform->id}/participants?tahun=" . now()->subYear()->format('Y'));
+        $responseLastYear->assertStatus(200)
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment(['name' => 'Jane Smith'])
+            ->assertJsonMissing(['name' => 'John Doe']);
+    }
 }

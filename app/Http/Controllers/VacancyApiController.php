@@ -62,7 +62,7 @@ class VacancyApiController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function listParticipants($id)
+    public function listParticipants(Request $request, $id)
     {
         $vacancy = Ptkform::find($id);
 
@@ -74,7 +74,13 @@ class VacancyApiController extends Controller
             ], 404);
         }
 
+        $year = $request->input('tahun');
+        if (empty($year)) {
+            $year = date('Y');
+        }
+
         $participants = Ptkformtransaction::where('ptkform_id', $id)
+            ->whereYear('created_at', $year)
             ->whereNull('ai_score')
             ->with(['user.datadiri'])
             ->get()
