@@ -751,7 +751,7 @@
                     // CV
                     var cvLink = user.cv ?
                         '<a href="{{ asset('') }}' + user.cv +
-                        '" target="_blank" class="link-blue"><i class="fas fa-eye me-1"></i> View</a>' :
+                        '" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>' :
                         '<span class="text-muted text-small">-</span>';
 
                     // AI Rev

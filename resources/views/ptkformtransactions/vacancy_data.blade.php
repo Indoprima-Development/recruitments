@@ -513,7 +513,7 @@
                         </td>
                         <td class="text-center">
                             @if($user && !empty($user->cv))
-                                <a href="{{ asset($user->cv) }}" target="_blank" class="link-blue"><i class="fas fa-eye me-1"></i> View</a>
+                                <a href="{{ asset($user->cv) }}" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>
                             @else
                                 <span class="text-muted text-small">-</span>
                             @endif
