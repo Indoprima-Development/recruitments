@@ -115,6 +115,9 @@
         </table>
     </div>
 
+@stop
+
+@section('modals')
     <!-- Upload Modal -->
     <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -139,5 +142,4 @@
             </div>
         </div>
     </div>
-
 @stop

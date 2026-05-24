@@ -77,10 +77,12 @@ Route::get('/vacancies/{id}', [MainController::class, 'showVacancy']);
 
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\RecruitmentExternalController;
+use App\Http\Controllers\AnalyticsExternalController;
 
 Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
     // ANALYTICS
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/analytics-external', [AnalyticsExternalController::class, 'index'])->name('analytics_external.index');
 
     // IMPERSONATE - Admin login as user
     Route::get('/impersonate/{userId}', [LoginRegisterController::class, 'impersonateUser'])->name('impersonate');
