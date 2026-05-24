@@ -62,13 +62,13 @@ class AnalyticsExternalController extends Controller
         $sumberCounts = $sumberData->pluck('count');
         
         // 6. Result Director
-        $resultDirectorData = RecruitmentExternal::select('result_director', DB::raw('count(*) as count'))
-            ->whereNotNull('result_director')
-            ->groupBy('result_director')
-            ->orderBy('count', 'desc')
-            ->get();
-        $resultDirectorLabels = $resultDirectorData->pluck('result_director');
-        $resultDirectorCounts = $resultDirectorData->pluck('count');
+        $resultDirectorRaw = RecruitmentExternal::whereNotNull('result_director')->get();
+        $resultDirectorData = $resultDirectorRaw->groupBy('result_director')->map(function ($group) {
+            return $group->count();
+        })->sortDesc();
+        
+        $resultDirectorLabels = $resultDirectorData->keys();
+        $resultDirectorCounts = $resultDirectorData->values();
 
         // 7. Funnel (Approached vs Responded vs Connected)
         $funnelConnectSent = RecruitmentExternal::whereNotNull('connect_sent')->where('connect_sent', '!=', '')->count();
