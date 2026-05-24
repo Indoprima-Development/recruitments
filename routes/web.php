@@ -76,6 +76,7 @@ Route::get('/vacancies/{id}', [MainController::class, 'showVacancy']);
 //FIX
 
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\RecruitmentExternalController;
 
 Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
     // ANALYTICS
@@ -145,6 +146,11 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
         Route::get('/ptkformtransactions/vacancy/{ptkform_id}/{status}/data', 'vacancyData')->name('ptkformtransactions.vacancyDataWithStatus');
         Route::get('/ptkformtransactions/vacancy/{ptkform_id}/{status}/json', 'vacancyJson')->name('ptkformtransactions.vacancyJson');
     });
+
+    // RECRUITMENT EXTERNALS
+    Route::get('/recruitment-externals', [RecruitmentExternalController::class, 'index'])->name('recruitment_externals.index');
+    Route::post('/recruitment-externals/upload', [RecruitmentExternalController::class, 'upload'])->name('recruitment_externals.upload');
+    Route::get('/recruitment-externals/template', [RecruitmentExternalController::class, 'downloadTemplate'])->name('recruitment_externals.downloadTemplate');
 });
 
 Route::group(['middleware' => ['auth']], function () {
