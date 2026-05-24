@@ -122,7 +122,7 @@
     <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('recruitment_externals.upload') }}" method="POST" enctype="multipart/form-data">
+                <form id="uploadForm" action="{{ route('recruitment_externals.upload') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="uploadModalLabel">Upload Excel Data</h5>
@@ -136,10 +136,27 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Upload</button>
+                        <button type="submit" class="btn btn-primary" id="btnUpload">
+                            <span class="spinner-border spinner-border-sm d-none" id="uploadSpinner" role="status" aria-hidden="true"></span>
+                            <span id="uploadText">Upload</span>
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 @stop
+
+@section('addJs')
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function() {
+        var btn = document.getElementById('btnUpload');
+        var spinner = document.getElementById('uploadSpinner');
+        var text = document.getElementById('uploadText');
+        
+        btn.disabled = true;
+        spinner.classList.remove('d-none');
+        text.innerText = 'Uploading... Please wait...';
+    });
+</script>
+@endsection

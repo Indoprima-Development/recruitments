@@ -6,8 +6,10 @@ use App\Models\RecruitmentExternal;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class RecruitmentExternalImport implements ToModel, WithStartRow
+class RecruitmentExternalImport implements ToModel, WithStartRow, WithBatchInserts, WithChunkReading
 {
     /**
      * @return int
@@ -77,5 +79,15 @@ class RecruitmentExternalImport implements ToModel, WithStartRow
         } catch (\Exception $e) {
             return null;
         }
+    }
+    
+    public function batchSize(): int
+    {
+        return 50;
+    }
+
+    public function chunkSize(): int
+    {
+        return 500;
     }
 }

@@ -23,6 +23,7 @@ class RecruitmentExternalController extends Controller
         ]);
 
         try {
+            set_time_limit(0); // Prevent timeout for large files
             Excel::import(new RecruitmentExternalImport, $request->file('file'));
             return redirect()->back()->with('success', 'Data imported successfully!');
         } catch (\Exception $e) {
