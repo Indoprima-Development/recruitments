@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class VacancyApiController extends Controller
 {

@@ -873,6 +873,13 @@
                             </a>
                         </li>
                     @else
+                        @if (strtoupper(Auth::user()->role) == 'ADMIN')
+                            <li class="nav-item ms-lg-3">
+                                <a class="btn-nav" style="background-color: #10b981; border-color: #10b981;" href="https://ai-career.ipg.my.id/" target="_blank">
+                                    <i class="fas fa-robot me-2"></i>AI Recruitment
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item ms-lg-3">
                             <a class="btn-nav" href="{{ url('dashboard') }}">
                                 <i class="fas fa-columns me-2"></i>Dashboard
