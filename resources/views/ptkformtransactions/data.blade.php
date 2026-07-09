@@ -408,9 +408,13 @@
                 </div>
                 <div class="col-6 col-md">
                     <select id="filterPosition" class="form-select form-select-sm text-small"
-                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        style="border-radius: 8px; border-color: #dfe6e9;" onchange="filterByVacancy(this.value)">
                         <option value="">🎯 Semua Posisi</option>
-                        <!-- Populated by JS -->
+                        @foreach ($vacancies as $vac)
+                            <option value="{{ $vac->id }}" {{ request('ptkform_id') == $vac->id ? 'selected' : '' }}>
+                                {{ $vac->jobtitle_name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -716,10 +720,7 @@
                 }
             );
 
-            // Trigger search when Position changes
-            $('#filterPosition').on('change', function() {
-                table.draw();
-            });
+
 
             var table = $('#recruitmentTable').DataTable({
                 paging: true,
@@ -814,27 +815,6 @@
                     domSelect.append(new Option(text, text));
                 });
 
-                // Populate Position Filter
-                var posColumn = table.column(5);
-                var posSelect = $('#filterPosition');
-                posSelect.html('<option value="">All Positions</option>');
-
-                var posData = [];
-                posColumn.data().unique().sort().each(function(d, j) {
-                    var tmp = document.createElement("DIV");
-                    tmp.innerHTML = d;
-                    var text = tmp.textContent || tmp.innerText || "";
-                    text = text.trim();
-
-                    if (text !== '' && text !== '-') {
-                        posData.push(text);
-                    }
-                });
-
-                posData = [...new Set(posData)].sort();
-                posData.forEach(function(text) {
-                    posSelect.append(new Option(text, text));
-                });
             }
 
 
@@ -889,6 +869,17 @@
             // Global function for viewCandidate
             window.viewCandidate = function(id) {
                 window.location.href = "{{ url('datadiris/data-users') }}/" + id;
+            };
+
+            // Global function for filterByVacancy
+            window.filterByVacancy = function(val) {
+                var url = new URL(window.location.href);
+                if (val) {
+                    url.searchParams.set('ptkform_id', val);
+                } else {
+                    url.searchParams.delete('ptkform_id');
+                }
+                window.location.href = url.toString();
             };
 
             // Double click to edit note
