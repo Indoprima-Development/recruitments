@@ -472,6 +472,7 @@
                             <option value="Internship">Internship</option>
                             <option value="Apprenticeship">Apprenticeship</option>
                             <option value="Graduate Development Program">Graduate Development Program</option>
+                            <option value="Assistant Manager">Assistant Manager</option>
                         </select>
                         <div class="help-text">Type of employment contract.</div>
                     </div>

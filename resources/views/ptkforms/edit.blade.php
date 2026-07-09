@@ -428,7 +428,7 @@
                                     {{ Form::label('status_pegawai', 'Employment Status', ['class' => 'form-label']) }}
                                     <div class="input-group">
                                         <span class="input-group-text bg-white text-muted"><i class="ti ti-id"></i></span>
-                                        {{ Form::select('status_pegawai', ['Staff' => 'Staff', 'Non Staff' => 'Non Staff', 'Internship' => 'Internship', 'LTC' => 'LTC', 'Graduate Development Program' => 'Graduate Development Program'], null, ['class' => 'form-select']) }}
+                                        {{ Form::select('status_pegawai', ['Staff' => 'Staff', 'Non Staff' => 'Non Staff', 'Internship' => 'Internship', 'LTC' => 'LTC', 'Graduate Development Program' => 'Graduate Development Program', 'Assistant Manager' => 'Assistant Manager'], null, ['class' => 'form-select']) }}
                                     </div>
                                 </div>
                                 <div class="col-md-4">
