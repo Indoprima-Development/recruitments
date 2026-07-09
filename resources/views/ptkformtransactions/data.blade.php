@@ -421,6 +421,7 @@
                 <tr>
                     <th class="text-center"><input type="checkbox"></th>
                     <th>Nama</th>
+                    <th class="text-center">CV</th>
                     <th>Last Modified</th>
                     <th>Total Days</th>
                     <th>Posisi</th>
@@ -431,7 +432,6 @@
                     <th>Durasi</th>
                     <th>Domisili</th>
                     <th class="text-center">Source</th>
-                    <th class="text-center">CV</th>
                     <th class="text-center">AI Rev</th>
                     <th class="text-center">Score</th>
                     <th>Notes</th>
@@ -520,7 +520,7 @@
                 function(settings, data, dataIndex) {
                     // GPA Filter
                     var minGpa = parseFloat($('#filterGpa').val());
-                    var gpa = parseFloat(data[7]) || 0;
+                    var gpa = parseFloat(data[8]) || 0;
                     if (!isNaN(minGpa) && gpa < minGpa) {
                         return false;
                     }
@@ -528,7 +528,7 @@
                     // Education Filter
                     var filterEdu = $('#filterEducation').val();
                     if (filterEdu) {
-                        var cellText = data[6].toUpperCase(); // This is the search data for column 6
+                        var cellText = data[7].toUpperCase(); // This is the search data for column 7
 
                         if (filterEdu === 'SMA/SMK') {
                             if (!(cellText.includes('SMA') || cellText.includes('SMK') || cellText.includes(
@@ -543,7 +543,7 @@
                     // Position Filter
                     var filterPos = $('#filterPosition').val();
                     if (filterPos) {
-                        var posText = data[4] || ""; // column 4 is Position
+                        var posText = data[5] || ""; // column 5 is Position
                         if (posText !== filterPos) {
                             return false;
                         }
@@ -564,7 +564,7 @@
                 scrollX: true,
                 // autoWidth: false, // Let DataTables calculate widths
                 fixedColumns: {
-                    start: 2
+                    start: 3
                 },
                 language: {
                     search: "",
@@ -814,17 +814,17 @@
                     // Add Row Data (Must match column order!)
                     // 0: Checkbox
                     // 1: Name
-                    // 2: Modified
-                    // 3: Total Days
-                    // 4: Position
-                    // 5: Date Applied
-                    // 6: University
-                    // 7: GPA
-                    // 8: Experience
-                    // 9: Duration
-                    // 10: Domicile
-                    // 11: Source
-                    // 12: CV
+                    // 2: CV
+                    // 3: Modified
+                    // 4: Total Days
+                    // 5: Position
+                    // 6: Date Applied
+                    // 7: University
+                    // 8: GPA
+                    // 9: Experience
+                    // 10: Duration
+                    // 11: Domicile
+                    // 12: Source
                     // 13: AI Rev
                     // 14: Score
                     // 15: Notes
@@ -834,6 +834,7 @@
                     rows.push([
                         checkbox,
                         nameLink,
+                        cvLink,
                         updatedStr,
                         `<span class="days-badge ${daysClass}">${diffDays} hari</span>`,
                         position,
@@ -844,7 +845,6 @@
                         duration,
                         `<span title="${domisiliFull}">${domisiliShort}</span>`,
                         sourceBadge,
-                        cvLink,
                         aiRevLink,
                         scoreBadge,
                         noteHtml,
@@ -868,7 +868,7 @@
 
             function populateFilters() {
                 // Populate University Filter
-                var uniColumn = table.column(6);
+                var uniColumn = table.column(7);
                 var uniSelect = $('#filterUniversity');
                 // uniSelect.empty().append('<option value="">All Universities</option>'); // Don't clear if you want to keep placeholder of Select2 or re-init?
                 // Better to clear options but keep the first one
@@ -900,7 +900,7 @@
 
 
                 // Populate Domicile Filter
-                var domColumn = table.column(10);
+                var domColumn = table.column(11);
                 var domSelect = $('#filterDomicile');
                 domSelect.html('<option value="">All Domiciles</option>');
 
@@ -934,17 +934,17 @@
 
             $('#filterUniversity').on('change', function() {
                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                table.column(6).search(val ? val : '', true, false).draw();
+                table.column(7).search(val ? val : '', true, false).draw();
             });
 
             $('#filterExperience').on('change', function() {
                 var val = $(this).val();
-                table.column(8).search(val).draw();
+                table.column(9).search(val).draw();
             });
 
             $('#filterDomicile').on('change', function() {
                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                table.column(10).search(val ? val : '', true, false).draw();
+                table.column(11).search(val ? val : '', true, false).draw();
             });
 
             $(window).on('resize', function() {
