@@ -722,7 +722,8 @@
             });
 
             var table = $('#recruitmentTable').DataTable({
-                paging: false,
+                paging: true,
+                pageLength: 50,
                 deferRender: true,
                 scrollX: true,
                 // autoWidth: false, // Let DataTables calculate widths

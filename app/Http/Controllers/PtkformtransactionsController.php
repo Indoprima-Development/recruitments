@@ -23,37 +23,106 @@ class PtkformtransactionsController extends Controller
 
     private function getQueryData($status)
     {
-        return Ptkformtransaction::query()
-            ->select(['id', 'ptkform_id', 'user_id', 'status', 'score_candidate', 'ai_score', 'created_at', 'updated_at'])
-            ->with([
-                'user' => function ($q) {
-                    $q->select(['id', 'name', 'ipk', 'cv'])
-                        ->with([
-                            'latestEducation' => function ($q) {
-                                $q->select(['datapendidikanformals.id', 'datapendidikanformals.user_id', 'datapendidikanformals.tingkat', 'datapendidikanformals.instansi']);
-                            },
-                            'datadiri' => function ($q) {
-                                $q->select(['id', 'user_id', 'cities', 'provinces']);
-                            },
-                            'datapengalamankerja' => function ($q) {
-                                $q->select(['datapengalamankerjas.id', 'datapengalamankerjas.user_id', 'datapengalamankerjas.date_start', 'datapengalamankerjas.date_end']);
-                            }
-                        ])
-                        ->withCount('datapengalamankerja');
-                },
-                'ptkform' => function ($q) {
-                    $q->select(['id', 'jobtitle_id'])
-                        ->with(['jobtitle' => function ($q) {
-                            $q->select(['id', 'jobtitle_name']);
-                        }]);
-                },
+        $rawTransactions = Ptkformtransaction::query()
+            ->join('users', 'ptkformtransactions.user_id', '=', 'users.id')
+            ->join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
+            ->leftJoin('jobtitles', 'ptkforms.jobtitle_id', '=', 'jobtitles.id')
+            ->leftJoin('datadiris', 'users.id', '=', 'datadiris.user_id')
+            ->select([
+                'ptkformtransactions.id',
+                'ptkformtransactions.ptkform_id',
+                'ptkformtransactions.user_id',
+                'ptkformtransactions.status',
+                'ptkformtransactions.score_candidate',
+                'ptkformtransactions.ai_score',
+                'ptkformtransactions.created_at',
+                'ptkformtransactions.updated_at',
+                'users.name as user_name',
+                'users.ipk as user_ipk',
+                'users.cv as user_cv',
+                'jobtitles.jobtitle_name as jobtitle_name',
+                'datadiris.cities as cities',
+                'datadiris.provinces as provinces',
             ])
             ->when($status !== 'all', function ($query) use ($status) {
-                return $query->where('status', $status);
+                return $query->where('ptkformtransactions.status', $status);
             })
-            ->whereYear('created_at', date('Y'))
-            ->orderBy('id', 'desc')
+            ->whereYear('ptkformtransactions.created_at', date('Y'))
+            ->orderBy('ptkformtransactions.id', 'desc')
             ->get();
+
+        $userIds = $rawTransactions->pluck('user_id')->unique();
+
+        $latestEducations = \DB::table('datapendidikanformals')
+            ->whereIn('user_id', $userIds)
+            ->whereIn('id', function ($query) {
+                $query->selectRaw('MAX(id)')
+                    ->from('datapendidikanformals')
+                    ->groupBy('user_id');
+            })
+            ->select(['user_id', 'tingkat', 'instansi'])
+            ->get()
+            ->keyBy('user_id');
+
+        $experiences = \DB::table('datapengalamankerjas')
+            ->whereIn('user_id', $userIds)
+            ->select(['user_id', 'date_start', 'date_end'])
+            ->get()
+            ->groupBy('user_id');
+
+        $ptkformtransactions = [];
+        foreach ($rawTransactions as $row) {
+            $item = new \stdClass();
+            $item->id = $row->id;
+            $item->ptkform_id = $row->ptkform_id;
+            $item->user_id = $row->user_id;
+            $item->status = $row->status;
+            $item->score_candidate = $row->score_candidate;
+            $item->ai_score = $row->ai_score;
+            $item->created_at = $row->created_at;
+            $item->updated_at = $row->updated_at;
+            $item->notes = null;
+
+            $user = new \stdClass();
+            $user->id = $row->user_id;
+            $user->name = $row->user_name;
+            $user->ipk = $row->user_ipk;
+            $user->cv = $row->user_cv;
+
+            $edu = $latestEducations->get($row->user_id);
+            if ($edu) {
+                $latestEdu = new \stdClass();
+                $latestEdu->tingkat = $edu->tingkat;
+                $latestEdu->instansi = $edu->instansi;
+                $user->latestEducation = $latestEdu;
+            } else {
+                $user->latestEducation = null;
+            }
+
+            $dd = new \stdClass();
+            $dd->cities = $row->cities;
+            $dd->provinces = $row->provinces;
+            $user->datadiri = $dd;
+
+            $userExps = $experiences->get($row->user_id) ?? collect();
+            $user->datapengalamankerja = collect($userExps);
+            $user->datapengalamankerja_count = $user->datapengalamankerja->count();
+
+            $item->user = $user;
+
+            $ptkform = new \stdClass();
+            $ptkform->id = $row->ptkform_id;
+
+            $jobtitle = new \stdClass();
+            $jobtitle->jobtitle_name = $row->jobtitle_name;
+            $ptkform->jobtitle = $jobtitle;
+
+            $item->ptkform = $ptkform;
+
+            $ptkformtransactions[] = $item;
+        }
+
+        return collect($ptkformtransactions);
     }
 
     private function clearDataCache($statuses = null)
@@ -220,7 +289,7 @@ class PtkformtransactionsController extends Controller
      */
     public function dataJsonApi($status)
     {
-        return response()->json($this->getQueryData($status)->toArray());
+        return response()->json($this->getQueryData($status));
     }
 
     /**
