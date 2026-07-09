@@ -142,6 +142,7 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
 
     Route::controller(PtkformtransactionsController::class)->group(function () {
         Route::get('/ptkformtransactions/{status}/data', 'dataByStatus');
+        Route::get('/ptkformtransactions/{status}/data.json', 'dataJsonApi')->name('ptkformtransactions.dataJson');
         Route::post('/ptkformtransactions/change-status', 'changeStatus');
         Route::post('/ptkformtransactions/update-note', 'updateNote');
         Route::get('/ptkformtransactions/vacancy/{ptkform_id}/data', 'vacancyData')->name('ptkformtransactions.vacancyData');

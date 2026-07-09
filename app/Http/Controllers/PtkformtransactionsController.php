@@ -10,9 +10,65 @@ use App\Models\Datadiri;
 use App\Models\Ptkformactivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class PtkformtransactionsController extends Controller
 {
+    /**
+     * All status codes used for the "Riwayat Aktivitas" listing, plus 'all'.
+     */
+    private const DATA_STATUSES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+
+    private const DATA_CACHE_TTL_MINUTES = 15;
+
+    private function dataCacheKey($status)
+    {
+        return "ptkformtransactions_data_{$status}";
+    }
+
+    /**
+     * Fetch (and cache) the transaction list for a given status.
+     *
+     * Cached as a plain array (not the hydrated Eloquent collection): unserializing
+     * ~9k nested Eloquent models from the cache store was measured to cost seconds
+     * on every request, while a plain array round-trips in well under 200ms.
+     */
+    private function getCachedData($status)
+    {
+        return Cache::remember($this->dataCacheKey($status), now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () use ($status) {
+            return Ptkformtransaction::with([
+                'user' => function ($q) {
+                    $q->with('latestEducation', 'datadiri')
+                        ->withCount('datapengalamankerja');
+                },
+                'ptkform.jobtitle'
+            ])
+                ->when($status !== 'all', function ($query) use ($status) {
+                    return $query->where('status', $status);
+                })
+                ->whereYear('created_at', date('Y'))
+                ->orderBy('id', 'desc')
+                ->get()
+                ->toArray();
+        });
+    }
+
+    /**
+     * Invalidate the cached listing for the given statuses (defaults to all).
+     * 'all' is always cleared too since it aggregates every status.
+     */
+    private function clearDataCache($statuses = null)
+    {
+        $statuses = $statuses ?? self::DATA_STATUSES;
+        if (!is_array($statuses)) {
+            $statuses = [$statuses];
+        }
+        $statuses[] = 'all';
+
+        foreach (array_unique($statuses) as $status) {
+            Cache::forget($this->dataCacheKey($status));
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -93,6 +149,8 @@ class PtkformtransactionsController extends Controller
             $user->save();
         }
 
+        $this->clearDataCache(['0']);
+
         AlertSuccess("Success", "Berhasil melamar pekerjaan");
         return redirect()->back();
     }
@@ -131,10 +189,13 @@ class PtkformtransactionsController extends Controller
     public function update(PtkformtransactionRequest $request, $id)
     {
         $ptkformtransaction = Ptkformtransaction::findOrFail($id);
+        $oldStatus = $ptkformtransaction->status;
         $ptkformtransaction->ptkform_id = $request->input('ptkform_id');
         $ptkformtransaction->status = $request->input('status');
         $ptkformtransaction->user_id = $request->input('user_id');
         $ptkformtransaction->save();
+
+        $this->clearDataCache([$oldStatus, $ptkformtransaction->status]);
 
         return to_route('ptkformtransactions.index');
     }
@@ -148,7 +209,10 @@ class PtkformtransactionsController extends Controller
     public function destroy($id)
     {
         $ptkformtransaction = Ptkformtransaction::findOrFail($id);
+        $status = $ptkformtransaction->status;
         $ptkformtransaction->delete();
+
+        $this->clearDataCache([$status]);
 
         return to_route('ptkformtransactions.index');
     }
@@ -158,44 +222,34 @@ class PtkformtransactionsController extends Controller
         return view('ptkformtransactions.data', compact('status'));
     }
 
+    /**
+     * Cached JSON feed powering the "Riwayat Aktivitas" table (replaces the old
+     * pre-generated .gz files). Served straight from cache after the first hit.
+     */
+    public function dataJsonApi($status)
+    {
+        return response()->json($this->getCachedData($status));
+    }
+
+    /**
+     * Warm/refresh the cached listing for the given statuses (defaults to all).
+     * Kept for backward compatibility with existing callers of /api/save-data-json.
+     */
     public function saveDataJson($specificStatuses = null)
     {
-        $statuses = $specificStatuses ?? ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+        $statuses = $specificStatuses ?? self::DATA_STATUSES;
         if (!is_array($statuses)) {
             $statuses = [$statuses];
         }
+        $statuses[] = 'all';
         $statuses = array_unique($statuses);
 
         foreach ($statuses as $status) {
-            $ptkformtransactions = Ptkformtransaction::with([
-                'user' => function ($q) {
-                    $q->with('latestEducation', 'datadiri')
-                        ->withCount('datapengalamankerja');
-                },
-                'ptkform.jobtitle'
-            ])
-                ->when($status !== "all", function ($query) use ($status) {
-                    return $query->where("status", $status);
-                })
-                ->whereYear('created_at', date('Y'))
-                ->orderBy('id', 'desc')
-                ->get();
-
-            $filename = "ptkformtransactions-{$status}.json";
-            $path = public_path("data/{$filename}");
-
-            if (!file_exists(dirname($path))) {
-                mkdir(dirname($path), 0755, true);
-            }
-
-            // encode JSON tanpa escape yang tidak perlu
-            $jsonData = json_encode($ptkformtransactions, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-
-            // simpan versi terkompresi
-            file_put_contents($path . '.gz', gzencode($jsonData, 9));
+            Cache::forget($this->dataCacheKey($status));
+            $this->getCachedData($status);
         }
 
-        return response()->json(['message' => 'Data ptkformtransactions generated successfully for all statuses']);
+        return response()->json(['message' => 'Data ptkformtransactions cache refreshed successfully']);
     }
 
     public function changeStatus(Request $request)
@@ -230,6 +284,8 @@ class PtkformtransactionsController extends Controller
             "keterangan"    => $request->keterangan
         ]);
 
+        $this->clearDataCache([$request->status, $status]);
+
         AlertSuccess("Success", "Status berhasil diubah (Lanjut tahap berikutnya)");
 
         if ($request->expectsJson()) {
@@ -252,6 +308,8 @@ class PtkformtransactionsController extends Controller
         $transaction->notes = $request->note;
         $transaction->save();
 
+        $this->clearDataCache([$transaction->status]);
+
         return response()->json(['success' => true, 'message' => 'Note updated successfully']);
     }
 
@@ -262,12 +320,15 @@ class PtkformtransactionsController extends Controller
     public function deleteLamaran($id)
     {
         $ptkformtransaction = Ptkformtransaction::findOrFail($id);
+        $status = $ptkformtransaction->status;
 
         // Hapus activity logs terkait
         Ptkformactivity::where('ptkformtransaction_id', $id)->delete();
 
         // Hapus lamaran
         $ptkformtransaction->delete();
+
+        $this->clearDataCache([$status]);
 
         if (request()->expectsJson()) {
             return response()->json(['success' => true, 'message' => 'Lamaran berhasil dihapus']);

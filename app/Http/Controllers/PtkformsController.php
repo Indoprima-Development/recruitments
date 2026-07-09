@@ -43,13 +43,13 @@ class PtkformsController extends Controller
      */
     public function create()
     {
-        $divisions = Division::all();
-        $departments = Department::all();
-        $sections = Section::all();
-        $jobtitles = Jobtitle::all();
-        $educations = Education::all();
-        $majors = Major::all();
-        $fields = Field::all();
+        $divisions = cache()->remember('master_divisions', 86400, fn() => Division::all());
+        $departments = cache()->remember('master_departments', 86400, fn() => Department::all());
+        $sections = cache()->remember('master_sections', 86400, fn() => Section::all());
+        $jobtitles = cache()->remember('master_jobtitles', 86400, fn() => Jobtitle::all());
+        $educations = cache()->remember('master_educations', 86400, fn() => Education::all());
+        $majors = cache()->remember('master_majors', 86400, fn() => Major::all());
+        $fields = cache()->remember('master_fields', 86400, fn() => Field::all());
 
         return view('ptkforms.create', compact('divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields'));
     }
@@ -136,13 +136,13 @@ class PtkformsController extends Controller
     public function edit($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        $divisions = Division::all();
-        $departments = Department::all();
-        $sections = Section::all();
-        $jobtitles = Jobtitle::all();
-        $educations = Education::all();
-        $majors = Major::all();
-        $fields = Field::all();
+        $divisions = cache()->remember('master_divisions', 86400, fn() => Division::all());
+        $departments = cache()->remember('master_departments', 86400, fn() => Department::all());
+        $sections = cache()->remember('master_sections', 86400, fn() => Section::all());
+        $jobtitles = cache()->remember('master_jobtitles', 86400, fn() => Jobtitle::all());
+        $educations = cache()->remember('master_educations', 86400, fn() => Education::all());
+        $majors = cache()->remember('master_majors', 86400, fn() => Major::all());
+        $fields = cache()->remember('master_fields', 86400, fn() => Field::all());
 
         return view('ptkforms.edit', compact('ptkform', 'divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields'));
     }

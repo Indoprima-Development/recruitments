@@ -7,6 +7,7 @@ use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class VacancyApiController extends Controller
 {
@@ -138,11 +139,11 @@ class VacancyApiController extends Controller
         $transaction->ai_score = $request->input('ai_score');
         $transaction->save();
 
-        // Automatically regenerate cache JSON to keep the main dashboard instantly synchronized
+        // Invalidate the cached dashboard listing so the new score shows up immediately
         try {
             app(\App\Http\Controllers\PtkformtransactionsController::class)->saveDataJson([$transaction->status]);
         } catch (\Exception $e) {
-            \Log::error('Failed to auto-generate JSON data on updateAiScore: ' . $e->getMessage());
+            Log::error('Failed to refresh ptkformtransactions cache on updateAiScore: ' . $e->getMessage());
         }
 
         return response()->json([
@@ -177,8 +178,15 @@ class VacancyApiController extends Controller
             ], 404);
         }
 
+        $oldStatus = $transaction->status;
         $transaction->status = $request->input('status');
         $transaction->save();
+
+        try {
+            app(\App\Http\Controllers\PtkformtransactionsController::class)->saveDataJson([$oldStatus, $transaction->status]);
+        } catch (\Exception $e) {
+            Log::error('Failed to refresh ptkformtransactions cache on updateStatus: ' . $e->getMessage());
+        }
 
         return response()->json([
             'success' => true,

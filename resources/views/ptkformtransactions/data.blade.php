@@ -493,7 +493,6 @@
 @section('addJs')
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
@@ -587,30 +586,18 @@
                 }
             });
 
-            // Fetch and Render Data
+            // Fetch and Render Data (server-side cached JSON, no more static .gz files)
             var status = "{{ $status }}";
-            // Cache for 10 minutes (600,000 ms)
-            var cacheBuster = Math.floor(new Date().getTime() / 600000);
-            var dataUrl = "{{ asset('data/ptkformtransactions-') }}" + status + ".json.gz?t=" + cacheBuster;
+            var dataUrl = "{{ url('ptkformtransactions') }}/" + status + "/data.json";
 
             // Show loading
             $('#loadingOverlay').fadeIn(200);
 
             fetch(dataUrl)
-                .then(response => response.arrayBuffer())
-                .then(buffer => {
-                    try {
-                        // Decompress
-                        const decompressed = pako.inflate(buffer);
-                        const stringData = new TextDecoder().decode(decompressed);
-                        const jsonData = JSON.parse(stringData);
-
-                        populateTable(jsonData);
-                        populatePositionFilter(jsonData);
-                    } catch (err) {
-                        console.error("Error processing data:", err);
-                        alert("Failed to load data. Please try again.");
-                    }
+                .then(response => response.json())
+                .then(jsonData => {
+                    populateTable(jsonData);
+                    populatePositionFilter(jsonData);
                 })
                 .catch(err => {
                     console.error("Fetch error:", err);
