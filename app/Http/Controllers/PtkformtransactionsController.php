@@ -23,6 +23,8 @@ class PtkformtransactionsController extends Controller
 
     private function getQueryData($status)
     {
+        $ptkformId = request('ptkform_id');
+
         $rawTransactions = Ptkformtransaction::query()
             ->join('users', 'ptkformtransactions.user_id', '=', 'users.id')
             ->join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
@@ -47,8 +49,12 @@ class PtkformtransactionsController extends Controller
             ->when($status !== 'all', function ($query) use ($status) {
                 return $query->where('ptkformtransactions.status', $status);
             })
-            ->whereYear('ptkformtransactions.created_at', date('Y'))
+            ->when($ptkformId, function ($query) use ($ptkformId) {
+                return $query->where('ptkformtransactions.ptkform_id', $ptkformId);
+            })
+            ->where('ptkformtransactions.created_at', '>=', date('Y') . '-01-01 00:00:00')
             ->orderBy('ptkformtransactions.id', 'desc')
+            ->limit(50)
             ->get();
 
         $userIds = $rawTransactions->pluck('user_id')->unique();
