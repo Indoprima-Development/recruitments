@@ -384,6 +384,7 @@
                 <tr>
                     <th class="text-center"><input type="checkbox"></th>
                     <th>Nama</th>
+                    <th class="text-center">CV</th>
                     <th>Last Modified</th>
                     <th>Total Days</th>
                     <th>Posisi</th>
@@ -394,7 +395,6 @@
                     <th>Durasi</th>
                     <th>Domisili</th>
                     <th class="text-center">Source</th>
-                    <th class="text-center">CV</th>
                     <th class="text-center">AI Rev</th>
                     <th class="text-center">Score</th>
                     <th>Notes</th>
@@ -490,6 +490,13 @@
                         <td>
                             <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->user_id }})" title="{{ $user->name ?? '-' }}">{{ $displayName }}</a>
                         </td>
+                        <td class="text-center">
+                            @if($user && !empty($user->cv))
+                                <a href="{{ asset($user->cv) }}" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>
+                            @else
+                                <span class="text-muted text-small">-</span>
+                            @endif
+                        </td>
                         <td>{{ \Carbon\Carbon::parse($item->updated_at)->format('d M Y') }}</td>
                         <td><span class="days-badge {{ $daysClass }}">{{ $diffDays }} hari</span></td>
                         <td>{{ $item->ptkform->jobtitle->jobtitle_name ?? '-' }}</td>
@@ -510,13 +517,6 @@
                         <td><span title="{{ $domisiliFull }}">{{ $domisiliShort }}</span></td>
                         <td class="text-center">
                             <span class="badge bg-light text-primary border border-primary px-2" style="font-size: 0.65rem;">Web</span>
-                        </td>
-                        <td class="text-center">
-                            @if($user && !empty($user->cv))
-                                <a href="{{ asset($user->cv) }}" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>
-                            @else
-                                <span class="text-muted text-small">-</span>
-                            @endif
                         </td>
                         <td class="text-center">
                             @if(!is_null($item->ai_score))
@@ -645,7 +645,7 @@
                 function(settings, data, dataIndex) {
                     // GPA Filter
                     var minGpa = parseFloat($('#filterGpa').val());
-                    var gpa = parseFloat(data[7]) || 0;
+                    var gpa = parseFloat(data[8]) || 0;
                     if (!isNaN(minGpa) && gpa < minGpa) {
                         return false;
                     }
@@ -653,7 +653,7 @@
                     // Education Filter
                     var filterEdu = $('#filterEducation').val();
                     if (filterEdu) {
-                        var cellText = data[6].toUpperCase(); // column 6 is University / Education
+                        var cellText = data[7].toUpperCase(); // column 7 is University / Education
 
                         if (filterEdu === 'SMA/SMK') {
                             if (!(cellText.includes('SMA') || cellText.includes('SMK') || cellText.includes(
@@ -668,7 +668,7 @@
                     // Position Filter
                     var filterPos = $('#filterPosition').val();
                     if (filterPos) {
-                        var posText = data[4] || ""; // column 4 is Position
+                        var posText = data[5] || ""; // column 5 is Position
                         if (posText !== filterPos) {
                             return false;
                         }
@@ -688,7 +688,7 @@
                 deferRender: true,
                 scrollX: true,
                 fixedColumns: {
-                    start: 2
+                    start: 3
                 },
                 language: {
                     search: "",
@@ -722,7 +722,7 @@
             }, 200);
 
             function populateFilters() {
-                var uniColumn = table.column(6);
+                var uniColumn = table.column(7);
                 var uniSelect = $('#filterUniversity');
                 uniSelect.html('<option value="">All Universities</option>');
 
@@ -747,7 +747,7 @@
                 });
 
 
-                var domColumn = table.column(10);
+                var domColumn = table.column(11);
                 var domSelect = $('#filterDomicile');
                 domSelect.html('<option value="">All Domiciles</option>');
 
@@ -768,7 +768,7 @@
                     domSelect.append(new Option(text, text));
                 });
 
-                var posColumn = table.column(4);
+                var posColumn = table.column(5);
                 var posSelect = $('#filterPosition');
                 posSelect.html('<option value="">All Positions</option>');
 
@@ -802,17 +802,17 @@
 
             $('#filterUniversity').on('change', function() {
                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                table.column(6).search(val ? val : '', true, false).draw();
+                table.column(7).search(val ? val : '', true, false).draw();
             });
 
             $('#filterExperience').on('change', function() {
                 var val = $(this).val();
-                table.column(8).search(val).draw();
+                table.column(9).search(val).draw();
             });
 
             $('#filterDomicile').on('change', function() {
                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                table.column(10).search(val ? val : '', true, false).draw();
+                table.column(11).search(val ? val : '', true, false).draw();
             });
 
             $(document).on("click", ".btnEditStatus", function() {
