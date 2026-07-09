@@ -24,7 +24,7 @@ class PtkformtransactionsController extends Controller
     private function getQueryData($status)
     {
         return Ptkformtransaction::query()
-            ->select(['id', 'ptkform_id', 'user_id', 'status', 'score_candidate', 'ai_score', 'created_at', 'updated_at', 'notes'])
+            ->select(['id', 'ptkform_id', 'user_id', 'status', 'score_candidate', 'ai_score', 'created_at', 'updated_at'])
             ->with([
                 'user' => function ($q) {
                     $q->select(['id', 'name', 'ipk', 'cv'])
