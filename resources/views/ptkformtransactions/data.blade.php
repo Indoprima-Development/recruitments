@@ -440,6 +440,169 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($ptkformtransactions as $item)
+                    @php
+                        $user = $item->user ?? null;
+                        
+                        // Name Display
+                        $displayName = $user && $user->name ? (strlen($user->name) > 20 ? substr($user->name, 0, 20) . '...' : $user->name) : '-';
+
+                        // Days Calculation
+                        $created = \Carbon\Carbon::parse($item->created_at);
+                        $diffDays = $created->diffInDays(now());
+                        $daysClass = 'days-green';
+                        if ($diffDays > 7) $daysClass = 'days-yellow';
+                        if ($diffDays > 14) $daysClass = 'days-red';
+
+                        // Education
+                        $latestEdu = $user->latestEducation ?? null;
+                        $eduLevel = $latestEdu->tingkat ?? '';
+                        $eduInst = $latestEdu->instansi ?? '-';
+
+                        // Experience Duration Calculation
+                        $totalMonths = 0;
+                        if ($user) {
+                            $experiences = $user->datapengalamankerja ?? collect();
+                            foreach($experiences as $exp) {
+                                $start = $exp->date_start ? \Carbon\Carbon::parse($exp->date_start) : ($exp->tgl_masuk ? \Carbon\Carbon::parse($exp->tgl_masuk) : ($exp->start_date ? \Carbon\Carbon::parse($exp->start_date) : null));
+                                $end = $exp->date_end ? \Carbon\Carbon::parse($exp->date_end) : ($exp->tgl_keluar ? \Carbon\Carbon::parse($exp->tgl_keluar) : ($exp->end_date ? \Carbon\Carbon::parse($exp->end_date) : \Carbon\Carbon::now()));
+                                if ($start && $end) {
+                                    $months = $start->diffInMonths($end);
+                                    if ($months > 0) {
+                                        $totalMonths += $months;
+                                    }
+                                }
+                            }
+                        }
+                        $duration = '-';
+                        if ($totalMonths > 0) {
+                            $years = floor($totalMonths / 12);
+                            $months = $totalMonths % 12;
+                            if ($years > 0) {
+                                $duration = $years . ' Y ' . $months . ' M';
+                            } else {
+                                $duration = $months . ' Months';
+                            }
+                        } elseif ($user && ($user->datapengalamankerja_count ?? 0) > 0) {
+                            $duration = $user->datapengalamankerja_count . ' Jobs';
+                        }
+
+                        // Domicile
+                        $datadiri = $user->datadiri ?? null;
+                        $city = $datadiri->cities ?? $datadiri->kota_ktp ?? '';
+                        $province = $datadiri->provinces ?? '';
+                        $domisiliFull = '';
+                        if ($city) $domisiliFull .= $city;
+                        if ($city && $province) $domisiliFull .= ', ';
+                        if ($province) $domisiliFull .= $province;
+                        if (!$domisiliFull) $domisiliFull = '-';
+                        $domisiliShort = strlen($domisiliFull) > 20 ? substr($domisiliFull, 0, 20) . '...' : $domisiliFull;
+
+                        // Score
+                        $score = $item->score_candidate ?? 0;
+                        $scoreClass = 'text-low';
+                        if ($score >= 80) $scoreClass = 'text-high';
+                        elseif ($score >= 60) $scoreClass = 'text-med';
+
+                        // Status
+                        $statusVal = (int)$item->status;
+                        $statusBadgeClass = 'status-new';
+                        $statusLabel = 'New';
+                        if (in_array($statusVal, [1, 2, 3, 4, 5, 6])) {
+                            $statusBadgeClass = 'status-hold';
+                            $statusLabel = 'In Progress';
+                        } elseif (in_array($statusVal, [7, 8])) {
+                            $statusBadgeClass = 'status-approved';
+                            $statusLabel = 'Approved';
+                        } elseif ($statusVal === 9) {
+                            $statusBadgeClass = 'status-rejected';
+                            $statusLabel = 'Rejected';
+                        } elseif ($statusVal === 10) {
+                            $statusBadgeClass = 'status-hold';
+                            $statusLabel = 'On Hold';
+                        }
+                    @endphp
+                    <tr>
+                        <td class="text-center"><input type="checkbox"></td>
+                        <td>
+                            <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->user_id }})" title="{{ $user->name ?? '-' }}">{{ $displayName }}</a>
+                        </td>
+                        <td class="text-center">
+                            @if($user && !empty($user->cv))
+                                <a href="{{ asset($user->cv) }}" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>
+                            @else
+                                <span class="text-muted text-small">-</span>
+                            @endif
+                        </td>
+                        <td>{{ \Carbon\Carbon::parse($item->updated_at)->format('d M Y') }}</td>
+                        <td><span class="days-badge {{ $daysClass }}">{{ $diffDays }} hari</span></td>
+                        <td>{{ $item->ptkform->jobtitle->jobtitle_name ?? '-' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</td>
+                        <td>
+                            <span class="edu-level d-none">{{ $eduLevel }}</span>
+                            <span title="{{ $eduInst }}">{{ $eduInst }}</span>
+                        </td>
+                        <td class="text-center">{{ $user->ipk ?? '-' }}</td>
+                        <td class="text-center">
+                            @if($user && ($user->datapengalamankerja_count ?? 0) > 0)
+                                <span class="badge bg-light text-success border border-success px-2 py-1" style="font-size: 0.65rem;">Ya</span>
+                            @else
+                                <span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.65rem;">Tidak</span>
+                            @endif
+                        </td>
+                        <td>{{ $duration }}</td>
+                        <td><span title="{{ $domisiliFull }}">{{ $domisiliShort }}</span></td>
+                        <td class="text-center">
+                            <span class="badge bg-light text-primary border border-primary px-2" style="font-size: 0.65rem;">Web</span>
+                        </td>
+                        <td class="text-center">
+                            @if(!is_null($item->ai_score))
+                                @php
+                                    $aiScore = (float)$item->ai_score;
+                                    $aiScoreFormatted = number_format($aiScore, 2);
+                                    if ($aiScore < 50) {
+                                        // merah (red)
+                                        $badgeStyle = 'color: #dc3545; background-color: #fde8e8; border: 1px solid #f8b4b4;';
+                                    } elseif ($aiScore <= 70) {
+                                        // kuning (yellow)
+                                        $badgeStyle = 'color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba;';
+                                    } elseif ($aiScore <= 85) {
+                                        // hijau muda (light green)
+                                        $badgeStyle = 'color: #198754; background-color: #e8f5e9; border: 1px solid #c3e6cb;';
+                                    } else {
+                                        // hijau tua (dark green)
+                                        $badgeStyle = 'color: #0f5132; background-color: #d1e7dd; border: 1px solid #badbcc;';
+                                    }
+                                @endphp
+                                <span class="badge px-2 py-1 fw-bold" style="font-size: 0.65rem; {{ $badgeStyle }}">
+                                    <i class="fas fa-robot me-1"></i> {{ $aiScoreFormatted }}
+                                </span>
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <span class="badge-score {{ $scoreClass }}">{{ $score }}/100</span>
+                        </td>
+                        <td>
+                            <div class="editable-note text-muted text-small" data-id="{{ $item->id }}" title="Double click to edit">
+                                {{ $item->notes ?? '-' }}
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge-status {{ $statusBadgeClass }}">{{ $statusLabel }}</span>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-1">
+                                <button class="btn-icon btn-check btnApproveDirect" ptkformtrid="{{ $item->id }}" status="{{ $item->status }}" data-bs-toggle="tooltip" title="Approve & Next Stage"><i class="fas fa-arrow-right text-primary"></i></button>
+                                <button class="btn-icon btnEditStatus" ptkformtrid="{{ $item->id }}" status="{{ $item->status }}" data-bs-toggle="tooltip" title="Update Status (Modal)"><i class="fas fa-edit text-secondary"></i></button>
+                                <button class="btn-icon btn-clock btnHold" ptkformtrid="{{ $item->id }}" status="{{ $item->status }}" title="Hold"><i class="fas fa-clock"></i></button>
+                                <button class="btn-icon btn-cross btnReject" ptkformtrid="{{ $item->id }}" status="{{ $item->status }}" title="Reject"><i class="fas fa-times"></i></button>
+                                <button class="btn-icon btn-cross btnDeleteLamaran" ptkformtrid="{{ $item->id }}" title="Hapus Lamaran" style="border-color: #6c757d;"><i class="fas fa-trash text-danger"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -586,300 +749,31 @@
                 }
             });
 
-            // Fetch and Render Data (server-side cached JSON, no more static .gz files)
-            var status = "{{ $status }}";
-            var dataUrl = "{{ url('ptkformtransactions') }}/" + status + "/data.json";
-
-            // Show loading
-            $('#loadingOverlay').fadeIn(200);
-
-            fetch(dataUrl)
-                .then(response => response.json())
-                .then(jsonData => {
-                    populateTable(jsonData);
-                    populatePositionFilter(jsonData);
-                })
-                .catch(err => {
-                    console.error("Fetch error:", err);
-                    alert("Failed to fetch data.");
-                })
-                .finally(() => {
-                    // Hide loading
-                    $('#loadingOverlay').fadeOut(300);
-                });
-
-
-            function populatePositionFilter(data) {
-                var select = $('#filterPosition');
-                // get unique positions
-                var positions = [];
-                data.forEach(item => {
-                    var ptkform = item.ptkform || {};
-                    var jobtitle = ptkform.jobtitle || {};
-                    var posName = jobtitle.jobtitle_name || '-';
-                    if (posName !== '-' && !positions.includes(posName)) {
-                        positions.push(posName);
-                    }
-                });
-                
-                positions.sort();
-                
-                positions.forEach(pos => {
-                    select.append('<option value="' + pos + '">' + pos + '</option>');
-                });
-            }
-
-            function populateTable(data) {
-                table.clear();
-
-                var rows = [];
-
-                data.forEach(item => {
-                    // Logic Logic Logic
-                    var user = item.user || {};
-                    var ptkform = item.ptkform || {};
-                    var jobtitle = ptkform.jobtitle || {};
-                    var latestEducation = user.latest_education || null;
-
-                    var eduInst = latestEducation && latestEducation.instansi ? latestEducation.instansi : '-';
-                    var eduLevel = latestEducation && latestEducation.tingkat ? latestEducation.tingkat : '';
-
-                    // User name
-                    var displayName = user.name ? (user.name.length > 20 ? user.name.substring(0, 20) +
-                        '...' : user.name) : '-';
-                    var uniName = eduInst;
-
-                    // Date Diff
-                    var created = new Date(item.created_at);
-                    var updated = new Date(item.updated_at);
-                    var now = new Date();
-                    var diffTime = Math.abs(now - created);
-                    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                    var daysClass = 'days-green';
-                    if (diffDays > 7) daysClass = 'days-yellow';
-                    if (diffDays > 14) daysClass = 'days-red';
-
-                    // Formats
-                    var dateFormat = {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric'
-                    };
-                    var createdStr = created.toLocaleDateString('en-GB', dateFormat);
-                    var updatedStr = updated.toLocaleDateString('en-GB', dateFormat);
-
-                    // Posisi
-                    var position = jobtitle.jobtitle_name || '-';
-
-                    // GPA
-                    var gpa = user.ipk || '-';
-
-                    // Experience
-                    var expCount = user.datapengalamankerja_count || 0;
-                    var hasExp = expCount > 0;
-                    var expBadge = hasExp ?
-                        '<span class="badge bg-light text-success border border-success px-2 py-1" style="font-size: 0.65rem;">Ya</span>' :
-                        '<span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.65rem;">Tidak</span>';
-
-                    // Experience Duration Calculation
-                    var totalMonths = 0;
-                    if (user.datapengalamankerjas && user.datapengalamankerjas.length > 0) {
-                        user.datapengalamankerjas.forEach(function(exp) {
-                            // Assuming fields are 'tgl_masuk' and 'tgl_keluar' based on common conventions or previous knowledge
-                            // If fields are different, this needs adjustment.
-                            // Let's try to be safe and check if these properties exist, or 'start_date'/'end_date'.
-                            // Based on similar Indonesian projects: 'tgl_masuk', 'tgl_keluar'.
-
-                            var start = exp.tgl_masuk ? new Date(exp.tgl_masuk) : (exp.start_date ?
-                                new Date(exp.start_date) : null);
-                            var end = exp.tgl_keluar ? new Date(exp.tgl_keluar) : (exp.end_date ?
-                                new Date(exp.end_date) : new Date()
-                            ); // Assume current if no end date? Or skip? Let's assume current if 'masih bekerja' logic applies, but for now stick to explicit dates.
-
-                            if (start && end && !isNaN(start) && !isNaN(end)) {
-                                var months = (end.getFullYear() - start.getFullYear()) * 12 + (end
-                                    .getMonth() - start.getMonth());
-                                if (months > 0) totalMonths += months;
-                            }
-                        });
-                    }
-
-                    var duration = '-';
-                    if (totalMonths > 0) {
-                        var years = Math.floor(totalMonths / 12);
-                        var months = totalMonths % 12;
-                        if (years > 0) duration = years + ' Y ' + months + ' M';
-                        else duration = months + ' Months';
-                    } else if (hasExp) {
-                        duration = expCount + ' Jobs'; // Fallback
-                    }
-
-                    // Domicile (Updated to Use City and Province)
-                    var datadiri = user.datadiri || {};
-                    // Fallback to old keys just in case, but prioritize cities/provinces
-                    var city = datadiri.cities || datadiri.kota_ktp || '';
-                    var province = datadiri.provinces || '';
-
-                    var domisiliFull = '';
-                    if (city) domisiliFull += city;
-                    if (city && province) domisiliFull += ', ';
-                    if (province) domisiliFull += province;
-
-                    if (!domisiliFull) domisiliFull = '-';
-
-                    var domisiliShort = domisiliFull.length > 20 ? domisiliFull.substring(0, 20) + '...' :
-                        domisiliFull;
-
-                    // Source - static 'Web'
-                    var sourceBadge =
-                        '<span class="badge bg-light text-primary border border-primary px-2" style="font-size: 0.65rem;">Web</span>';
-
-                    // CV
-                    var cvLink = user.cv ?
-                        '<a href="{{ asset('') }}' + user.cv +
-                        '" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>' :
-                        '<span class="text-muted text-small">-</span>';
-
-                    // AI Rev
-                    var aiScore = item.ai_score;
-                    var aiRevLink = '<span class="text-muted">-</span>';
-                    if (aiScore !== null && aiScore !== undefined) {
-                        var scoreVal = parseFloat(aiScore);
-                        var scoreFormatted = scoreVal.toFixed(2);
-                        var badgeStyle = '';
-                        if (scoreVal < 50) {
-                            badgeStyle = 'color: #dc3545; background-color: #fde8e8; border: 1px solid #f8b4b4;';
-                        } else if (scoreVal <= 70) {
-                            badgeStyle = 'color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba;';
-                        } else if (scoreVal <= 85) {
-                            badgeStyle = 'color: #198754; background-color: #e8f5e9; border: 1px solid #c3e6cb;';
-                        } else {
-                            badgeStyle = 'color: #0f5132; background-color: #d1e7dd; border: 1px solid #badbcc;';
-                        }
-                        aiRevLink = '<span class="badge px-2 py-1 fw-bold" style="font-size: 0.65rem; ' + badgeStyle + '"><i class="fas fa-robot me-1"></i> ' + scoreFormatted + '</span>';
-                    }
-
-                    // Score
-                    var score = item.score_candidate || 0;
-                    var scoreClass = 'text-low';
-                    if (score >= 80) scoreClass = 'text-high';
-                    else if (score >= 60) scoreClass = 'text-med';
-                    var scoreBadge = '<span class="badge-score ' + scoreClass + '">' + score +
-                        '/100</span>';
-
-                    // Notes
-                    var noteText = item.notes || '-';
-                    var noteHtml =
-                        `<div class="editable-note text-muted text-small" data-id="${item.id}" title="Double click to edit">${noteText}</div>`;
-
-                    // Status
-                    var status = parseInt(item.status);
-                    var statusBadgeClass = 'status-new';
-                    var statusLabel = 'New';
-                    if ([1, 2, 3, 4, 5, 6].includes(status)) {
-                        statusBadgeClass = 'status-hold';
-                        statusLabel = 'In Progress';
-                    } else if ([7, 8].includes(status)) {
-                        statusBadgeClass = 'status-approved';
-                        statusLabel = 'Approved';
-                    } else if (status === 9) {
-                        statusBadgeClass = 'status-rejected';
-                        statusLabel = 'Rejected';
-                    } else if (status === 10) {
-                        statusBadgeClass = 'status-hold';
-                        statusLabel = 'On Hold';
-                    }
-                    var statusHtml = '<span class="badge-status ' + statusBadgeClass + '">' + statusLabel +
-                        '</span>';
-
-                    // Actions
-                    var actions = `
-                        <div class="d-flex justify-content-center gap-1">
-                            <button class="btn-icon btn-check btnApproveDirect" ptkformtrid="${item.id}" status="${item.status}" data-bs-toggle="tooltip" title="Approve & Next Stage"><i class="fas fa-arrow-right text-primary"></i></button>
-                            <button class="btn-icon btnEditStatus" ptkformtrid="${item.id}" status="${item.status}" data-bs-toggle="tooltip" title="Update Status (Modal)"><i class="fas fa-edit text-secondary"></i></button>
-                            <button class="btn-icon btn-clock btnHold" ptkformtrid="${item.id}" status="${item.status}" title="Hold"><i class="fas fa-clock"></i></button>
-                            <button class="btn-icon btn-cross btnReject" ptkformtrid="${item.id}" status="${item.status}" title="Reject"><i class="fas fa-times"></i></button>
-                            <button class="btn-icon btn-cross btnDeleteLamaran" ptkformtrid="${item.id}" title="Hapus Lamaran" style="border-color: #6c757d;"><i class="fas fa-trash text-danger"></i></button>
-                        </div>
-                    `;
-
-                    // Checkbox
-                    var checkbox = '<div class="text-center"><input type="checkbox"></div>';
-
-                    // Name Link
-                    var nameLink =
-                        `<a href="#" class="col-candidate" onclick="viewCandidate(${item.user_id})" title="${user.name || '-'}">${displayName}</a>`;
-
-                    // Add Row Data (Must match column order!)
-                    // 0: Checkbox
-                    // 1: Name
-                    // 2: CV
-                    // 3: Modified
-                    // 4: Total Days
-                    // 5: Position
-                    // 6: Date Applied
-                    // 7: University
-                    // 8: GPA
-                    // 9: Experience
-                    // 10: Duration
-                    // 11: Domicile
-                    // 12: Source
-                    // 13: AI Rev
-                    // 14: Score
-                    // 15: Notes
-                    // 16: Status
-                    // 17: Action
-
-                    rows.push([
-                        checkbox,
-                        nameLink,
-                        cvLink,
-                        updatedStr,
-                        `<span class="days-badge ${daysClass}">${diffDays} hari</span>`,
-                        position,
-                        createdStr,
-                        `<span class="edu-level d-none">${eduLevel}</span> <span title="${eduInst}">${uniName}</span>`,
-                        gpa,
-                        expBadge,
-                        duration,
-                        `<span title="${domisiliFull}">${domisiliShort}</span>`,
-                        sourceBadge,
-                        aiRevLink,
-                        scoreBadge,
-                        noteHtml,
-                        statusHtml,
-                        actions
-                    ]);
-                });
-
-                table.rows.add(rows).draw();
-
-                // Adjust columns to fix alignment issues
+            // Adjust columns on window resize
+            $(window).on('resize', function() {
                 table.columns.adjust();
+            });
 
-                // Extra adjustment for FixedColumns and ScrollY
-                setTimeout(function() {
-                    table.columns.adjust();
-                }, 200);
+            // Populate filters and adjust columns after render
+            populateFilters();
+            table.columns.adjust();
+            setTimeout(function() {
+                table.columns.adjust();
+            }, 200);
 
-                populateFilters();
-            }
+            // Hide loading overlay immediately since data is preloaded
+            $('#loadingOverlay').fadeOut(100);
 
             function populateFilters() {
                 // Populate University Filter
                 var uniColumn = table.column(7);
                 var uniSelect = $('#filterUniversity');
-                // uniSelect.empty().append('<option value="">All Universities</option>'); // Don't clear if you want to keep placeholder of Select2 or re-init?
-                // Better to clear options but keep the first one
                 uniSelect.html('<option value="">All Universities</option>');
 
                 var uniData = [];
                 uniColumn.data().unique().sort().each(function(d, j) {
-                    // Strip HTML from d
                     var tmp = document.createElement("DIV");
                     tmp.innerHTML = d;
-                    // Remove hidden education level to avoid it polluting the University name filter
                     var hiddenLevel = tmp.querySelector('.edu-level');
                     if (hiddenLevel) hiddenLevel.remove();
 
@@ -891,9 +785,7 @@
                     }
                 });
 
-                // Deduplicate strings after stripping HTML
                 uniData = [...new Set(uniData)].sort();
-
                 uniData.forEach(function(text) {
                     uniSelect.append(new Option(text, text));
                 });
@@ -919,6 +811,28 @@
                 domData = [...new Set(domData)].sort();
                 domData.forEach(function(text) {
                     domSelect.append(new Option(text, text));
+                });
+
+                // Populate Position Filter
+                var posColumn = table.column(5);
+                var posSelect = $('#filterPosition');
+                posSelect.html('<option value="">All Positions</option>');
+
+                var posData = [];
+                posColumn.data().unique().sort().each(function(d, j) {
+                    var tmp = document.createElement("DIV");
+                    tmp.innerHTML = d;
+                    var text = tmp.textContent || tmp.innerText || "";
+                    text = text.trim();
+
+                    if (text !== '' && text !== '-') {
+                        posData.push(text);
+                    }
+                });
+
+                posData = [...new Set(posData)].sort();
+                posData.forEach(function(text) {
+                    posSelect.append(new Option(text, text));
                 });
             }
 

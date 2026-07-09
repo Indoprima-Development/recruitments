@@ -21,53 +21,44 @@ class PtkformtransactionsController extends Controller
 
     private const DATA_CACHE_TTL_MINUTES = 15;
 
-    private function dataCacheKey($status)
+    private function getQueryData($status)
     {
-        return "ptkformtransactions_data_{$status}";
-    }
-
-    /**
-     * Fetch (and cache) the transaction list for a given status.
-     *
-     * Cached as a plain array (not the hydrated Eloquent collection): unserializing
-     * ~9k nested Eloquent models from the cache store was measured to cost seconds
-     * on every request, while a plain array round-trips in well under 200ms.
-     */
-    private function getCachedData($status)
-    {
-        return Cache::remember($this->dataCacheKey($status), now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () use ($status) {
-            return Ptkformtransaction::with([
+        return Ptkformtransaction::query()
+            ->select(['id', 'ptkform_id', 'user_id', 'status', 'score_candidate', 'ai_score', 'created_at', 'updated_at', 'notes'])
+            ->with([
                 'user' => function ($q) {
-                    $q->with('latestEducation', 'datadiri')
+                    $q->select(['id', 'name', 'ipk', 'cv'])
+                        ->with([
+                            'latestEducation' => function ($q) {
+                                $q->select(['datapendidikanformals.id', 'datapendidikanformals.user_id', 'datapendidikanformals.tingkat', 'datapendidikanformals.instansi']);
+                            },
+                            'datadiri' => function ($q) {
+                                $q->select(['id', 'user_id', 'cities', 'provinces']);
+                            },
+                            'datapengalamankerja' => function ($q) {
+                                $q->select(['datapengalamankerjas.id', 'datapengalamankerjas.user_id', 'datapengalamankerjas.date_start', 'datapengalamankerjas.date_end']);
+                            }
+                        ])
                         ->withCount('datapengalamankerja');
                 },
-                'ptkform.jobtitle'
+                'ptkform' => function ($q) {
+                    $q->select(['id', 'jobtitle_id'])
+                        ->with(['jobtitle' => function ($q) {
+                            $q->select(['id', 'jobtitle_name']);
+                        }]);
+                },
             ])
-                ->when($status !== 'all', function ($query) use ($status) {
-                    return $query->where('status', $status);
-                })
-                ->whereYear('created_at', date('Y'))
-                ->orderBy('id', 'desc')
-                ->get()
-                ->toArray();
-        });
+            ->when($status !== 'all', function ($query) use ($status) {
+                return $query->where('status', $status);
+            })
+            ->whereYear('created_at', date('Y'))
+            ->orderBy('id', 'desc')
+            ->get();
     }
 
-    /**
-     * Invalidate the cached listing for the given statuses (defaults to all).
-     * 'all' is always cleared too since it aggregates every status.
-     */
     private function clearDataCache($statuses = null)
     {
-        $statuses = $statuses ?? self::DATA_STATUSES;
-        if (!is_array($statuses)) {
-            $statuses = [$statuses];
-        }
-        $statuses[] = 'all';
-
-        foreach (array_unique($statuses) as $status) {
-            Cache::forget($this->dataCacheKey($status));
-        }
+        // No-op: cache disabled to optimize speed and query directly
     }
     /**
      * Display a listing of the resource.
@@ -219,37 +210,25 @@ class PtkformtransactionsController extends Controller
 
     public function dataByStatus($status)
     {
-        return view('ptkformtransactions.data', compact('status'));
+        $ptkformtransactions = $this->getQueryData($status);
+        return view('ptkformtransactions.data', compact('status', 'ptkformtransactions'));
     }
 
     /**
-     * Cached JSON feed powering the "Riwayat Aktivitas" table (replaces the old
-     * pre-generated .gz files). Served straight from cache after the first hit.
+     * JSON feed powering the "Riwayat Aktivitas" table.
+     * Served directly from the optimized query without caching.
      */
     public function dataJsonApi($status)
     {
-        return response()->json($this->getCachedData($status));
+        return response()->json($this->getQueryData($status)->toArray());
     }
 
     /**
-     * Warm/refresh the cached listing for the given statuses (defaults to all).
-     * Kept for backward compatibility with existing callers of /api/save-data-json.
+     * Warm/refresh the cached listing. Now a no-op as caching is disabled.
      */
     public function saveDataJson($specificStatuses = null)
     {
-        $statuses = $specificStatuses ?? self::DATA_STATUSES;
-        if (!is_array($statuses)) {
-            $statuses = [$statuses];
-        }
-        $statuses[] = 'all';
-        $statuses = array_unique($statuses);
-
-        foreach ($statuses as $status) {
-            Cache::forget($this->dataCacheKey($status));
-            $this->getCachedData($status);
-        }
-
-        return response()->json(['message' => 'Data ptkformtransactions cache refreshed successfully']);
+        return response()->json(['message' => 'Cache disabled, query loaded directly.']);
     }
 
     public function changeStatus(Request $request)

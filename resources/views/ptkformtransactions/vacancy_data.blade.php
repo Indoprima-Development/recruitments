@@ -427,8 +427,8 @@
                         if ($user) {
                             $experiences = $user->datapengalamankerja ?? collect();
                             foreach($experiences as $exp) {
-                                $start = $exp->tgl_masuk ? \Carbon\Carbon::parse($exp->tgl_masuk) : ($exp->start_date ? \Carbon\Carbon::parse($exp->start_date) : null);
-                                $end = $exp->tgl_keluar ? \Carbon\Carbon::parse($exp->tgl_keluar) : ($exp->end_date ? \Carbon\Carbon::parse($exp->end_date) : \Carbon\Carbon::now());
+                                $start = $exp->date_start ? \Carbon\Carbon::parse($exp->date_start) : ($exp->tgl_masuk ? \Carbon\Carbon::parse($exp->tgl_masuk) : ($exp->start_date ? \Carbon\Carbon::parse($exp->start_date) : null));
+                                $end = $exp->date_end ? \Carbon\Carbon::parse($exp->date_end) : ($exp->tgl_keluar ? \Carbon\Carbon::parse($exp->tgl_keluar) : ($exp->end_date ? \Carbon\Carbon::parse($exp->end_date) : \Carbon\Carbon::now()));
                                 if ($start && $end) {
                                     $months = $start->diffInMonths($end);
                                     if ($months > 0) {
