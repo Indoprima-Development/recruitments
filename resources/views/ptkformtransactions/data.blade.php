@@ -378,7 +378,9 @@
                     <select id="filterUniversity" class="form-select form-select-sm text-small"
                         style="border-radius: 8px; border-color: #dfe6e9;">
                         <option value="">🏫 Semua Universitas</option>
-                        <!-- Populated by JS -->
+                        @foreach ($filterOptions['universities'] as $uni)
+                            <option value="{{ $uni }}">{{ $uni }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-6 col-md">
@@ -403,7 +405,9 @@
                     <select id="filterDomicile" class="form-select form-select-sm text-small"
                         style="border-radius: 8px; border-color: #dfe6e9;">
                         <option value="">📍 Semua Domisili</option>
-                        <!-- Populated by JS -->
+                        @foreach ($filterOptions['cities'] as $city)
+                            <option value="{{ $city }}">{{ $city }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-6 col-md">
@@ -444,169 +448,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($ptkformtransactions as $item)
-                    @php
-                        $user = $item->user ?? null;
-                        
-                        // Name Display
-                        $displayName = $user && $user->name ? (strlen($user->name) > 20 ? substr($user->name, 0, 20) . '...' : $user->name) : '-';
-
-                        // Days Calculation
-                        $created = \Carbon\Carbon::parse($item->created_at);
-                        $diffDays = $created->diffInDays(now());
-                        $daysClass = 'days-green';
-                        if ($diffDays > 7) $daysClass = 'days-yellow';
-                        if ($diffDays > 14) $daysClass = 'days-red';
-
-                        // Education
-                        $latestEdu = $user->latestEducation ?? null;
-                        $eduLevel = $latestEdu->tingkat ?? '';
-                        $eduInst = $latestEdu->instansi ?? '-';
-
-                        // Experience Duration Calculation
-                        $totalMonths = 0;
-                        if ($user) {
-                            $experiences = $user->datapengalamankerja ?? collect();
-                            foreach($experiences as $exp) {
-                                $start = $exp->date_start ? \Carbon\Carbon::parse($exp->date_start) : ($exp->tgl_masuk ? \Carbon\Carbon::parse($exp->tgl_masuk) : ($exp->start_date ? \Carbon\Carbon::parse($exp->start_date) : null));
-                                $end = $exp->date_end ? \Carbon\Carbon::parse($exp->date_end) : ($exp->tgl_keluar ? \Carbon\Carbon::parse($exp->tgl_keluar) : ($exp->end_date ? \Carbon\Carbon::parse($exp->end_date) : \Carbon\Carbon::now()));
-                                if ($start && $end) {
-                                    $months = $start->diffInMonths($end);
-                                    if ($months > 0) {
-                                        $totalMonths += $months;
-                                    }
-                                }
-                            }
-                        }
-                        $duration = '-';
-                        if ($totalMonths > 0) {
-                            $years = floor($totalMonths / 12);
-                            $months = $totalMonths % 12;
-                            if ($years > 0) {
-                                $duration = $years . ' Y ' . $months . ' M';
-                            } else {
-                                $duration = $months . ' Months';
-                            }
-                        } elseif ($user && ($user->datapengalamankerja_count ?? 0) > 0) {
-                            $duration = $user->datapengalamankerja_count . ' Jobs';
-                        }
-
-                        // Domicile
-                        $datadiri = $user->datadiri ?? null;
-                        $city = $datadiri->cities ?? $datadiri->kota_ktp ?? '';
-                        $province = $datadiri->provinces ?? '';
-                        $domisiliFull = '';
-                        if ($city) $domisiliFull .= $city;
-                        if ($city && $province) $domisiliFull .= ', ';
-                        if ($province) $domisiliFull .= $province;
-                        if (!$domisiliFull) $domisiliFull = '-';
-                        $domisiliShort = strlen($domisiliFull) > 20 ? substr($domisiliFull, 0, 20) . '...' : $domisiliFull;
-
-                        // Score
-                        $score = $item->score_candidate ?? 0;
-                        $scoreClass = 'text-low';
-                        if ($score >= 80) $scoreClass = 'text-high';
-                        elseif ($score >= 60) $scoreClass = 'text-med';
-
-                        // Status
-                        $statusVal = (int)$item->status;
-                        $statusBadgeClass = 'status-new';
-                        $statusLabel = 'New';
-                        if (in_array($statusVal, [1, 2, 3, 4, 5, 6])) {
-                            $statusBadgeClass = 'status-hold';
-                            $statusLabel = 'In Progress';
-                        } elseif (in_array($statusVal, [7, 8])) {
-                            $statusBadgeClass = 'status-approved';
-                            $statusLabel = 'Approved';
-                        } elseif ($statusVal === 9) {
-                            $statusBadgeClass = 'status-rejected';
-                            $statusLabel = 'Rejected';
-                        } elseif ($statusVal === 10) {
-                            $statusBadgeClass = 'status-hold';
-                            $statusLabel = 'On Hold';
-                        }
-                    @endphp
-                    <tr>
-                        <td class="text-center"><input type="checkbox"></td>
-                        <td>
-                            <a href="#" class="col-candidate" onclick="viewCandidate({{ $item->user_id }})" title="{{ $user->name ?? '-' }}">{{ $displayName }}</a>
-                        </td>
-                        <td class="text-center">
-                            @if($user && !empty($user->cv))
-                                <a href="{{ asset($user->cv) }}" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>
-                            @else
-                                <span class="text-muted text-small">-</span>
-                            @endif
-                        </td>
-                        <td>{{ \Carbon\Carbon::parse($item->updated_at)->format('d M Y') }}</td>
-                        <td><span class="days-badge {{ $daysClass }}">{{ $diffDays }} hari</span></td>
-                        <td>{{ $item->ptkform->jobtitle->jobtitle_name ?? '-' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</td>
-                        <td>
-                            <span class="edu-level d-none">{{ $eduLevel }}</span>
-                            <span title="{{ $eduInst }}">{{ $eduInst }}</span>
-                        </td>
-                        <td class="text-center">{{ $user->ipk ?? '-' }}</td>
-                        <td class="text-center">
-                            @if($user && ($user->datapengalamankerja_count ?? 0) > 0)
-                                <span class="badge bg-light text-success border border-success px-2 py-1" style="font-size: 0.65rem;">Ya</span>
-                            @else
-                                <span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.65rem;">Tidak</span>
-                            @endif
-                        </td>
-                        <td>{{ $duration }}</td>
-                        <td><span title="{{ $domisiliFull }}">{{ $domisiliShort }}</span></td>
-                        <td class="text-center">
-                            <span class="badge bg-light text-primary border border-primary px-2" style="font-size: 0.65rem;">Web</span>
-                        </td>
-                        <td class="text-center">
-                            @if(!is_null($item->ai_score))
-                                @php
-                                    $aiScore = (float)$item->ai_score;
-                                    $aiScoreFormatted = number_format($aiScore, 2);
-                                    if ($aiScore < 50) {
-                                        // merah (red)
-                                        $badgeStyle = 'color: #dc3545; background-color: #fde8e8; border: 1px solid #f8b4b4;';
-                                    } elseif ($aiScore <= 70) {
-                                        // kuning (yellow)
-                                        $badgeStyle = 'color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba;';
-                                    } elseif ($aiScore <= 85) {
-                                        // hijau muda (light green)
-                                        $badgeStyle = 'color: #198754; background-color: #e8f5e9; border: 1px solid #c3e6cb;';
-                                    } else {
-                                        // hijau tua (dark green)
-                                        $badgeStyle = 'color: #0f5132; background-color: #d1e7dd; border: 1px solid #badbcc;';
-                                    }
-                                @endphp
-                                <span class="badge px-2 py-1 fw-bold" style="font-size: 0.65rem; {{ $badgeStyle }}">
-                                    <i class="fas fa-robot me-1"></i> {{ $aiScoreFormatted }}
-                                </span>
-                            @else
-                                <span class="text-muted">-</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            <span class="badge-score {{ $scoreClass }}">{{ $score }}/100</span>
-                        </td>
-                        <td>
-                            <div class="editable-note text-muted text-small" data-id="{{ $item->id }}" title="Double click to edit">
-                                {{ $item->notes ?? '-' }}
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <span class="badge-status {{ $statusBadgeClass }}">{{ $statusLabel }}</span>
-                        </td>
-                        <td class="text-center">
-                            <div class="d-flex justify-content-center gap-1">
-                                <button class="btn-icon btn-check btnApproveDirect" ptkformtrid="{{ $item->id }}" status="{{ $item->status }}" data-bs-toggle="tooltip" title="Approve & Next Stage"><i class="fas fa-arrow-right text-primary"></i></button>
-                                <button class="btn-icon btnEditStatus" ptkformtrid="{{ $item->id }}" status="{{ $item->status }}" data-bs-toggle="tooltip" title="Update Status (Modal)"><i class="fas fa-edit text-secondary"></i></button>
-                                <button class="btn-icon btn-clock btnHold" ptkformtrid="{{ $item->id }}" status="{{ $item->status }}" title="Hold"><i class="fas fa-clock"></i></button>
-                                <button class="btn-icon btn-cross btnReject" ptkformtrid="{{ $item->id }}" status="{{ $item->status }}" title="Reject"><i class="fas fa-times"></i></button>
-                                <button class="btn-icon btn-cross btnDeleteLamaran" ptkformtrid="{{ $item->id }}" title="Hapus Lamaran" style="border-color: #6c757d;"><i class="fas fa-trash text-danger"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
+                <!-- Populated via DataTables serverSide AJAX (dataTableAjax) -->
             </tbody>
         </table>
     </div>
@@ -682,71 +524,97 @@
 
             console.log("PTKForm Transaction Script Loaded");
 
-            // Custom Filtering Function for GPA and Education
-            $.fn.dataTable.ext.search.push(
-                function(settings, data, dataIndex) {
-                    // GPA Filter
-                    var minGpa = parseFloat($('#filterGpa').val());
-                    var gpa = parseFloat(data[8]) || 0;
-                    if (!isNaN(minGpa) && gpa < minGpa) {
-                        return false;
-                    }
-
-                    // Education Filter
-                    var filterEdu = $('#filterEducation').val();
-                    if (filterEdu) {
-                        var cellText = data[7].toUpperCase(); // This is the search data for column 7
-
-                        if (filterEdu === 'SMA/SMK') {
-                            if (!(cellText.includes('SMA') || cellText.includes('SMK') || cellText.includes(
-                                    'SLTA') || cellText.includes('STM'))) return false;
-                        } else if (filterEdu === 'S1/D4') {
-                            if (!(cellText.includes('S1') || cellText.includes('D4'))) return false;
-                        } else {
-                            if (!cellText.includes(filterEdu.toUpperCase())) return false;
-                        }
-                    }
-
-                    // Position Filter
-                    var filterPos = $('#filterPosition').val();
-                    if (filterPos) {
-                        var posText = data[5] || ""; // column 5 is Position
-                        if (posText !== filterPos) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-            );
-
-
-
             var table = $('#recruitmentTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ url('ptkformtransactions/' . $status . '/datatable') }}",
+                    data: function(d) {
+                        d.ptkform_id = new URLSearchParams(window.location.search).get('ptkform_id') || '';
+                        d.gpa = $('#filterGpa').val();
+                        d.education = $('#filterEducation').val();
+                        d.university = $('#filterUniversity').val();
+                        d.experience = $('#filterExperience').val();
+                        d.domicile = $('#filterDomicile').val();
+                    }
+                },
+                columns: [{
+                        data: 'cb',
+                        orderable: false,
+                        width: '30px'
+                    },
+                    {
+                        data: 'name'
+                    },
+                    {
+                        data: 'cv'
+                    },
+                    {
+                        data: 'last_modified'
+                    },
+                    {
+                        data: 'total_days'
+                    },
+                    {
+                        data: 'position'
+                    },
+                    {
+                        data: 'date_applied'
+                    },
+                    {
+                        data: 'university'
+                    },
+                    {
+                        data: 'gpa'
+                    },
+                    {
+                        data: 'experience'
+                    },
+                    {
+                        data: 'duration'
+                    },
+                    {
+                        data: 'domicile'
+                    },
+                    {
+                        data: 'source'
+                    },
+                    {
+                        data: 'ai_rev'
+                    },
+                    {
+                        data: 'score'
+                    },
+                    {
+                        data: 'notes'
+                    },
+                    {
+                        data: 'status'
+                    },
+                    {
+                        data: 'action',
+                        orderable: false
+                    },
+                ],
+                ordering: false,
                 paging: true,
                 pageLength: 50,
+                lengthMenu: [25, 50, 100, 200],
                 deferRender: true,
                 scrollX: true,
-                // autoWidth: false, // Let DataTables calculate widths
                 fixedColumns: {
                     start: 3
                 },
                 language: {
                     search: "",
                     searchPlaceholder: "Cari kandidat, universitas, posisi...",
-                    info: "Showing _TOTAL_ candidates"
+                    info: "Showing _START_ to _END_ of _TOTAL_ candidates",
+                    processing: "Memuat data..."
                 },
-                columnDefs: [{
-                        orderable: false,
-                        targets: [0, 17]
-                    },
-                    {
-                        width: '30px',
-                        targets: 0
-                    }
-                ],
                 initComplete: function() {
-                    // Adjust columns after init
+                    this.api().columns.adjust();
+                },
+                drawCallback: function() {
                     this.api().columns.adjust();
                 }
             });
@@ -756,94 +624,15 @@
                 table.columns.adjust();
             });
 
-            // Populate filters and adjust columns after render
-            populateFilters();
-            table.columns.adjust();
-            setTimeout(function() {
-                table.columns.adjust();
-            }, 200);
-
-            // Hide loading overlay immediately since data is preloaded
             $('#loadingOverlay').fadeOut(100);
 
-            function populateFilters() {
-                // Populate University Filter
-                var uniColumn = table.column(7);
-                var uniSelect = $('#filterUniversity');
-                uniSelect.html('<option value="">All Universities</option>');
-
-                var uniData = [];
-                uniColumn.data().unique().sort().each(function(d, j) {
-                    var tmp = document.createElement("DIV");
-                    tmp.innerHTML = d;
-                    var hiddenLevel = tmp.querySelector('.edu-level');
-                    if (hiddenLevel) hiddenLevel.remove();
-
-                    var text = tmp.textContent || tmp.innerText || "";
-                    text = text.trim();
-
-                    if (text !== '' && text !== '-') {
-                        uniData.push(text);
-                    }
-                });
-
-                uniData = [...new Set(uniData)].sort();
-                uniData.forEach(function(text) {
-                    uniSelect.append(new Option(text, text));
-                });
-
-
-                // Populate Domicile Filter
-                var domColumn = table.column(11);
-                var domSelect = $('#filterDomicile');
-                domSelect.html('<option value="">All Domiciles</option>');
-
-                var domData = [];
-                domColumn.data().unique().sort().each(function(d, j) {
-                    var tmp = document.createElement("DIV");
-                    tmp.innerHTML = d;
-                    var text = tmp.textContent || tmp.innerText || "";
-                    text = text.trim();
-
-                    if (text !== '' && text !== '-') {
-                        domData.push(text);
-                    }
-                });
-
-                domData = [...new Set(domData)].sort();
-                domData.forEach(function(text) {
-                    domSelect.append(new Option(text, text));
-                });
-
-            }
-
-
-            // Listeners
-            $('#filterGpa').on('change', function() {
-                table.draw();
+            // Listeners: every filter change reloads page 1 from the server
+            $('#filterGpa, #filterEducation, #filterExperience').on('change', function() {
+                table.ajax.reload();
             });
 
-            $('#filterEducation').on('change', function() {
-                table.draw();
-            });
-
-            $('#filterUniversity').on('change', function() {
-                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                table.column(7).search(val ? val : '', true, false).draw();
-            });
-
-            $('#filterExperience').on('change', function() {
-                var val = $(this).val();
-                table.column(9).search(val).draw();
-            });
-
-            $('#filterDomicile').on('change', function() {
-                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                table.column(11).search(val ? val : '', true, false).draw();
-            });
-
-            $(window).on('resize', function() {
-                table.columns.adjust();
+            $('#filterUniversity, #filterDomicile').on('change', function() {
+                table.ajax.reload();
             });
 
             $(document).on("click", ".btnEditStatus", function() {
@@ -879,7 +668,8 @@
                 } else {
                     url.searchParams.delete('ptkform_id');
                 }
-                window.location.href = url.toString();
+                window.history.replaceState(null, '', url.toString());
+                table.ajax.reload();
             };
 
             // Double click to edit note
@@ -945,7 +735,7 @@
                     },
                     success: function(response) {
                         // Remove row from DataTable
-                        table.row($row).remove().draw();
+                        table.ajax.reload(null, false);
                     },
                     error: function() {
                         alert('Failed to approve');
@@ -976,7 +766,7 @@
                     },
                     success: function(response) {
                         // Remove row from DataTable
-                        table.row($row).remove().draw();
+                        table.ajax.reload(null, false);
                     },
                     error: function() {
                         alert('Failed to hold');
@@ -1009,7 +799,7 @@
                     },
                     success: function(response) {
                         // Remove row from DataTable
-                        table.row($row).remove().draw();
+                        table.ajax.reload(null, false);
                     },
                     error: function() {
                         alert('Failed to reject');
@@ -1036,7 +826,7 @@
                         // Find and remove the row
                         var $row = $('.btnEditStatus[ptkformtrid="' + ptkformtrid + '"]')
                             .closest('tr');
-                        table.row($row).remove().draw();
+                        table.ajax.reload(null, false);
                     },
                     error: function(xhr) {
                         alert('Failed to update status');
@@ -1065,7 +855,7 @@
                         _token: "{{ csrf_token() }}"
                     },
                     success: function(response) {
-                        table.row($row).remove().draw();
+                        table.ajax.reload(null, false);
                     },
                     error: function() {
                         alert('Gagal menghapus lamaran');

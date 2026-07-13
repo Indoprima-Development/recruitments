@@ -310,9 +310,281 @@ class PtkformtransactionsController extends Controller
 
     public function dataByStatus($status)
     {
-        $ptkformtransactions = $this->getQueryData($status);
+        // The table itself is now populated via AJAX (dataTableAjax) with
+        // real server-side paging/filtering, so this only renders the shell.
         $vacancies = $this->getVacanciesForFilter();
-        return view('ptkformtransactions.data', compact('status', 'ptkformtransactions', 'vacancies'));
+        $filterOptions = $this->getFilterOptions();
+        return view('ptkformtransactions.data', compact('status', 'vacancies', 'filterOptions'));
+    }
+
+    /**
+     * DataTables server-side processing endpoint. Paginates and filters at the
+     * database level so "all" data is reachable (not capped), and the
+     * GPA/University/Education/Experience/Domicile filters run against the
+     * full matching dataset instead of just whatever page happened to be loaded.
+     */
+    public function dataTableAjax($status, Request $request)
+    {
+        $query = $this->buildFilteredQuery($status, $request);
+
+        $recordsTotal = (clone $query)->count();
+
+        $searchValue = trim((string) $request->input('search.value'));
+        if ($searchValue !== '') {
+            $query->where(function ($q) use ($searchValue) {
+                $q->where('users.name', 'like', "%{$searchValue}%")
+                    ->orWhere('jobtitles.jobtitle_name', 'like', "%{$searchValue}%")
+                    ->orWhere('latest_edu.instansi', 'like', "%{$searchValue}%")
+                    ->orWhere('datadiris.cities', 'like', "%{$searchValue}%")
+                    ->orWhere('datadiris.provinces', 'like', "%{$searchValue}%");
+            });
+        }
+
+        $recordsFiltered = (clone $query)->count();
+
+        $start = max((int) $request->input('start', 0), 0);
+        $length = (int) $request->input('length', 50);
+        if ($length <= 0) {
+            $length = 50;
+        }
+
+        // SQL Server 2008 predates OFFSET/FETCH (added in 2012), so Eloquent's
+        // ->offset()/->limit() (which always emit OFFSET/FETCH on sqlsrv) can't
+        // be used here. Page manually with ROW_NUMBER() OVER(), which SQL Server
+        // has supported since 2005.
+        $query->selectRaw(
+            'ROW_NUMBER() OVER (ORDER BY ptkformtransactions.id DESC) AS row_num, '
+            . 'ptkformtransactions.id, ptkformtransactions.ptkform_id, ptkformtransactions.user_id, '
+            . 'ptkformtransactions.status, ptkformtransactions.score_candidate, ptkformtransactions.ai_score, '
+            . 'ptkformtransactions.created_at, ptkformtransactions.updated_at, '
+            . 'users.name as user_name, users.ipk as user_ipk, users.cv as user_cv, '
+            . 'jobtitles.jobtitle_name as jobtitle_name, datadiris.cities as cities, datadiris.provinces as provinces, '
+            . 'latest_edu.instansi as edu_instansi'
+        );
+
+        $rows = \DB::query()
+            ->fromSub($query, 'numbered')
+            ->whereBetween('row_num', [$start + 1, $start + $length])
+            ->orderBy('row_num')
+            ->get();
+
+        $userIds = $rows->pluck('user_id')->unique();
+
+        $experiences = \DB::table('datapengalamankerjas')
+            ->whereIn('user_id', $userIds)
+            ->select(['user_id', 'date_start', 'date_end'])
+            ->get()
+            ->groupBy('user_id');
+
+        $data = $rows->map(function ($row) use ($experiences) {
+            return $this->formatRow($row, $experiences->get($row->user_id) ?? collect());
+        })->values();
+
+        return response()->json([
+            'draw' => (int) $request->input('draw', 1),
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $data,
+        ]);
+    }
+
+    /**
+     * Base joined query for the "Riwayat Aktivitas" listing, with every
+     * Filter Kandidat criterion applied at the database level.
+     */
+    private function buildFilteredQuery($status, Request $request)
+    {
+        $ptkformId = $request->input('ptkform_id');
+        $gpa = $request->input('gpa');
+        $education = $request->input('education');
+        $experience = $request->input('experience');
+        $university = $request->input('university');
+        $domicile = $request->input('domicile');
+
+        $latestEdu = \DB::table('datapendidikanformals as e1')
+            ->select('e1.user_id', 'e1.tingkat', 'e1.instansi')
+            ->whereRaw('e1.id = (SELECT MAX(e2.id) FROM datapendidikanformals e2 WHERE e2.user_id = e1.user_id)');
+
+        $expCount = \DB::table('datapengalamankerjas')
+            ->select('user_id', \DB::raw('COUNT(*) as exp_count'))
+            ->groupBy('user_id');
+
+        return Ptkformtransaction::query()
+            ->join('users', 'ptkformtransactions.user_id', '=', 'users.id')
+            ->join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
+            ->leftJoin('jobtitles', 'ptkforms.jobtitle_id', '=', 'jobtitles.id')
+            ->leftJoin('datadiris', 'users.id', '=', 'datadiris.user_id')
+            ->leftJoinSub($latestEdu, 'latest_edu', 'users.id', '=', 'latest_edu.user_id')
+            ->leftJoinSub($expCount, 'exp', 'users.id', '=', 'exp.user_id')
+            ->when($status !== 'all', function ($q) use ($status) {
+                return $q->where('ptkformtransactions.status', $status);
+            })
+            ->when($ptkformId, function ($q) use ($ptkformId) {
+                return $q->where('ptkformtransactions.ptkform_id', $ptkformId);
+            })
+            ->where('ptkformtransactions.created_at', '>=', date('Y') . '-01-01 00:00:00')
+            ->when($gpa, function ($q) use ($gpa) {
+                return $q->where('users.ipk', '>=', (float) $gpa);
+            })
+            ->when($university, function ($q) use ($university) {
+                return $q->where('latest_edu.instansi', 'like', "%{$university}%");
+            })
+            ->when($domicile, function ($q) use ($domicile) {
+                return $q->where(function ($qq) use ($domicile) {
+                    $qq->where('datadiris.cities', 'like', "%{$domicile}%")
+                        ->orWhere('datadiris.provinces', 'like', "%{$domicile}%");
+                });
+            })
+            ->when($experience === 'Ya', function ($q) {
+                return $q->where('exp.exp_count', '>', 0);
+            })
+            ->when($experience === 'Tidak', function ($q) {
+                return $q->where(function ($qq) {
+                    $qq->whereNull('exp.exp_count')->orWhere('exp.exp_count', 0);
+                });
+            })
+            ->when($education, function ($q) use ($education) {
+                return $q->where(function ($qq) use ($education) {
+                    switch ($education) {
+                        case 'SMA/SMK':
+                            $qq->where('latest_edu.tingkat', 'like', '%SMA%')
+                                ->orWhere('latest_edu.tingkat', 'like', '%SMK%')
+                                ->orWhere('latest_edu.tingkat', 'like', '%SLTA%')
+                                ->orWhere('latest_edu.tingkat', 'like', '%STM%');
+                            break;
+                        case 'D3':
+                            $qq->where('latest_edu.tingkat', 'like', '%D3%');
+                            break;
+                        case 'S1/D4':
+                            $qq->where('latest_edu.tingkat', 'like', '%S1%')
+                                ->orWhere('latest_edu.tingkat', 'like', '%D4%');
+                            break;
+                        case 'S2':
+                            $qq->where('latest_edu.tingkat', 'like', '%S2%');
+                            break;
+                    }
+                });
+            });
+    }
+
+    /**
+     * Renders one row's cells (as HTML strings, mirroring the old Blade markup)
+     * for the server-side DataTables response.
+     */
+    private function formatRow($row, $userExperiences)
+    {
+        $displayName = $row->user_name
+            ? (strlen($row->user_name) > 20 ? substr($row->user_name, 0, 20) . '...' : $row->user_name)
+            : '-';
+
+        $created = \Carbon\Carbon::parse($row->created_at);
+        $diffDays = $created->diffInDays(now());
+        $daysClass = 'days-green';
+        if ($diffDays > 7) $daysClass = 'days-yellow';
+        if ($diffDays > 14) $daysClass = 'days-red';
+
+        $eduInst = $row->edu_instansi ?: '-';
+
+        $totalMonths = 0;
+        foreach ($userExperiences as $exp) {
+            $start = $exp->date_start ? \Carbon\Carbon::parse($exp->date_start) : null;
+            $end = $exp->date_end ? \Carbon\Carbon::parse($exp->date_end) : \Carbon\Carbon::now();
+            if ($start) {
+                $months = $start->diffInMonths($end);
+                if ($months > 0) {
+                    $totalMonths += $months;
+                }
+            }
+        }
+        $expCount = $userExperiences->count();
+        $duration = '-';
+        if ($totalMonths > 0) {
+            $years = floor($totalMonths / 12);
+            $months = $totalMonths % 12;
+            $duration = $years > 0 ? "{$years} Y {$months} M" : "{$months} Months";
+        } elseif ($expCount > 0) {
+            $duration = "{$expCount} Jobs";
+        }
+
+        $city = $row->cities ?? '';
+        $province = $row->provinces ?? '';
+        $domisiliFull = trim(implode(', ', array_filter([$city, $province])));
+        if ($domisiliFull === '') $domisiliFull = '-';
+        $domisiliShort = strlen($domisiliFull) > 20 ? substr($domisiliFull, 0, 20) . '...' : $domisiliFull;
+
+        $score = $row->score_candidate ?? 0;
+        $scoreClass = 'text-low';
+        if ($score >= 80) $scoreClass = 'text-high';
+        elseif ($score >= 60) $scoreClass = 'text-med';
+
+        $statusVal = (int) $row->status;
+        $statusBadgeClass = 'status-new';
+        $statusLabel = 'New';
+        if (in_array($statusVal, [1, 2, 3, 4, 5, 6])) {
+            $statusBadgeClass = 'status-hold';
+            $statusLabel = 'In Progress';
+        } elseif (in_array($statusVal, [7, 8])) {
+            $statusBadgeClass = 'status-approved';
+            $statusLabel = 'Approved';
+        } elseif ($statusVal === 9) {
+            $statusBadgeClass = 'status-rejected';
+            $statusLabel = 'Rejected';
+        } elseif ($statusVal === 10) {
+            $statusBadgeClass = 'status-hold';
+            $statusLabel = 'On Hold';
+        }
+
+        $aiRevHtml = '<span class="text-muted">-</span>';
+        if (!is_null($row->ai_score)) {
+            $aiScore = (float) $row->ai_score;
+            $aiScoreFormatted = number_format($aiScore, 2);
+            if ($aiScore < 50) {
+                $badgeStyle = 'color: #dc3545; background-color: #fde8e8; border: 1px solid #f8b4b4;';
+            } elseif ($aiScore <= 70) {
+                $badgeStyle = 'color: #856404; background-color: #fff3cd; border: 1px solid #ffeeba;';
+            } elseif ($aiScore <= 85) {
+                $badgeStyle = 'color: #198754; background-color: #e8f5e9; border: 1px solid #c3e6cb;';
+            } else {
+                $badgeStyle = 'color: #0f5132; background-color: #d1e7dd; border: 1px solid #badbcc;';
+            }
+            $aiRevHtml = '<span class="badge px-2 py-1 fw-bold" style="font-size: 0.65rem; ' . $badgeStyle . '"><i class="fas fa-robot me-1"></i> ' . $aiScoreFormatted . '</span>';
+        }
+
+        $cvHtml = '<span class="text-muted text-small">-</span>';
+        if (!empty($row->user_cv)) {
+            $cvHtml = '<a href="' . e(asset($row->user_cv)) . '" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>';
+        }
+
+        $experienceHtml = $expCount > 0
+            ? '<span class="badge bg-light text-success border border-success px-2 py-1" style="font-size: 0.65rem;">Ya</span>'
+            : '<span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.65rem;">Tidak</span>';
+
+        return [
+            'cb' => '<input type="checkbox">',
+            'name' => '<a href="#" class="col-candidate" onclick="viewCandidate(' . (int) $row->user_id . ')" title="' . e($row->user_name ?? '-') . '">' . e($displayName) . '</a>',
+            'cv' => $cvHtml,
+            'last_modified' => \Carbon\Carbon::parse($row->updated_at)->format('d M Y'),
+            'total_days' => '<span class="days-badge ' . $daysClass . '">' . $diffDays . ' hari</span>',
+            'position' => e($row->jobtitle_name ?? '-'),
+            'date_applied' => $created->format('d M Y'),
+            'university' => e($eduInst),
+            'gpa' => e($row->user_ipk ?? '-'),
+            'experience' => $experienceHtml,
+            'duration' => e($duration),
+            'domicile' => '<span title="' . e($domisiliFull) . '">' . e($domisiliShort) . '</span>',
+            'source' => '<span class="badge bg-light text-primary border border-primary px-2" style="font-size: 0.65rem;">Web</span>',
+            'ai_rev' => $aiRevHtml,
+            'score' => '<span class="badge-score ' . $scoreClass . '">' . $score . '/100</span>',
+            'notes' => '<div class="editable-note text-muted text-small" data-id="' . (int) $row->id . '" title="Double click to edit">-</div>',
+            'status' => '<span class="badge-status ' . $statusBadgeClass . '">' . $statusLabel . '</span>',
+            'action' => '<div class="d-flex justify-content-center gap-1">'
+                . '<button class="btn-icon btn-check btnApproveDirect" ptkformtrid="' . (int) $row->id . '" status="' . $statusVal . '" data-bs-toggle="tooltip" title="Approve & Next Stage"><i class="fas fa-arrow-right text-primary"></i></button>'
+                . '<button class="btn-icon btnEditStatus" ptkformtrid="' . (int) $row->id . '" status="' . $statusVal . '" data-bs-toggle="tooltip" title="Update Status (Modal)"><i class="fas fa-edit text-secondary"></i></button>'
+                . '<button class="btn-icon btn-clock btnHold" ptkformtrid="' . (int) $row->id . '" status="' . $statusVal . '" title="Hold"><i class="fas fa-clock"></i></button>'
+                . '<button class="btn-icon btn-cross btnReject" ptkformtrid="' . (int) $row->id . '" status="' . $statusVal . '" title="Reject"><i class="fas fa-times"></i></button>'
+                . '<button class="btn-icon btn-cross btnDeleteLamaran" ptkformtrid="' . (int) $row->id . '" title="Hapus Lamaran" style="border-color: #6c757d;"><i class="fas fa-trash text-danger"></i></button>'
+                . '</div>',
+        ];
     }
 
     /**
@@ -326,6 +598,34 @@ class PtkformtransactionsController extends Controller
                 ->select(['ptkforms.id', 'jobtitles.jobtitle_name'])
                 ->orderBy('jobtitles.jobtitle_name')
                 ->get();
+        });
+    }
+
+    /**
+     * Distinct value lists (university, domicile) that back the Filter Kandidat dropdowns.
+     * Sourced from the full table, not just the currently loaded page.
+     */
+    private function getFilterOptions()
+    {
+        return Cache::remember('ptkform_filter_options', now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () {
+            $universities = \DB::table('datapendidikanformals')
+                ->whereNotNull('instansi')
+                ->where('instansi', '<>', '')
+                ->distinct()
+                ->orderBy('instansi')
+                ->pluck('instansi');
+
+            $cities = \DB::table('datadiris')
+                ->whereNotNull('cities')
+                ->where('cities', '<>', '')
+                ->distinct()
+                ->orderBy('cities')
+                ->pluck('cities');
+
+            return [
+                'universities' => $universities,
+                'cities' => $cities,
+            ];
         });
     }
 
