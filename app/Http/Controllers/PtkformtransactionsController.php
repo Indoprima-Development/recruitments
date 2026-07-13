@@ -25,6 +25,20 @@ class PtkformtransactionsController extends Controller
     {
         $ptkformId = request('ptkform_id');
 
+        $cacheKey = sprintf(
+            'ptkform_data_v%d_status_%s_ptkform_%s',
+            $this->getCacheVersion(),
+            $status,
+            $ptkformId ?: 'none'
+        );
+
+        return Cache::remember($cacheKey, now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () use ($status, $ptkformId) {
+            return $this->buildQueryData($status, $ptkformId);
+        });
+    }
+
+    private function buildQueryData($status, $ptkformId)
+    {
         $rawTransactions = Ptkformtransaction::query()
             ->join('users', 'ptkformtransactions.user_id', '=', 'users.id')
             ->join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
@@ -61,9 +75,10 @@ class PtkformtransactionsController extends Controller
 
         $latestEducations = \DB::table('datapendidikanformals')
             ->whereIn('user_id', $userIds)
-            ->whereIn('id', function ($query) {
+            ->whereIn('id', function ($query) use ($userIds) {
                 $query->selectRaw('MAX(id)')
                     ->from('datapendidikanformals')
+                    ->whereIn('user_id', $userIds)
                     ->groupBy('user_id');
             })
             ->select(['user_id', 'tingkat', 'instansi'])
@@ -131,9 +146,19 @@ class PtkformtransactionsController extends Controller
         return collect($ptkformtransactions);
     }
 
+    /**
+     * Current cache "generation" for the data listing. Bumping it makes every
+     * previously cached key for this listing unreachable, which is a cheap
+     * way to invalidate on the file cache driver (no tag support).
+     */
+    private function getCacheVersion()
+    {
+        return Cache::get('ptkform_cache_version', 1);
+    }
+
     private function clearDataCache($statuses = null)
     {
-        // No-op: cache disabled to optimize speed and query directly
+        Cache::put('ptkform_cache_version', $this->getCacheVersion() + 1, now()->addDay());
     }
     /**
      * Display a listing of the resource.
@@ -286,12 +311,27 @@ class PtkformtransactionsController extends Controller
     public function dataByStatus($status)
     {
         $ptkformtransactions = $this->getQueryData($status);
-        return view('ptkformtransactions.data', compact('status', 'ptkformtransactions'));
+        $vacancies = $this->getVacanciesForFilter();
+        return view('ptkformtransactions.data', compact('status', 'ptkformtransactions', 'vacancies'));
+    }
+
+    /**
+     * Lightweight vacancy list ("id" + "jobtitle_name") for the position filter dropdown.
+     */
+    private function getVacanciesForFilter()
+    {
+        return Cache::remember('ptkform_vacancies_filter_list', now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () {
+            return \DB::table('ptkforms')
+                ->leftJoin('jobtitles', 'ptkforms.jobtitle_id', '=', 'jobtitles.id')
+                ->select(['ptkforms.id', 'jobtitles.jobtitle_name'])
+                ->orderBy('jobtitles.jobtitle_name')
+                ->get();
+        });
     }
 
     /**
      * JSON feed powering the "Riwayat Aktivitas" table.
-     * Served directly from the optimized query without caching.
+     * Backed by the same cached, indexed query as dataByStatus().
      */
     public function dataJsonApi($status)
     {
@@ -299,11 +339,13 @@ class PtkformtransactionsController extends Controller
     }
 
     /**
-     * Warm/refresh the cached listing. Now a no-op as caching is disabled.
+     * Invalidate the cached listing for all statuses (e.g. cron/manual warm-up trigger).
      */
     public function saveDataJson($specificStatuses = null)
     {
-        return response()->json(['message' => 'Cache disabled, query loaded directly.']);
+        $this->clearDataCache($specificStatuses);
+
+        return response()->json(['message' => 'Cache invalidated, next request will rebuild it.']);
     }
 
     public function changeStatus(Request $request)
