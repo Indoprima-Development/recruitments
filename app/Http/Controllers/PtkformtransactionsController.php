@@ -423,7 +423,11 @@ class PtkformtransactionsController extends Controller
             ->when($ptkformId, function ($q) use ($ptkformId) {
                 return $q->where('ptkformtransactions.ptkform_id', $ptkformId);
             })
-            ->where('ptkformtransactions.created_at', '>=', date('Y') . '-01-01 00:00:00')
+            // The "this year only" scope only makes sense for the global listing;
+            // when a specific vacancy is targeted we want every applicant it ever had.
+            ->when(!$ptkformId, function ($q) {
+                return $q->where('ptkformtransactions.created_at', '>=', date('Y') . '-01-01 00:00:00');
+            })
             ->when($gpa, function ($q) use ($gpa) {
                 return $q->where('users.ipk', '>=', (float) $gpa);
             })
@@ -737,29 +741,33 @@ class PtkformtransactionsController extends Controller
 
     public function vacancyData($ptkform_id, $status = 'all')
     {
+        // Just like dataByStatus(), the applicant table is populated via the
+        // shared dataTableAjax endpoint (ptkform_id fixed), so this only
+        // renders the shell. Some vacancies have 1000+ applicants, so eagerly
+        // loading them all with nested relations here used to be very slow.
         $ptkform = \App\Models\Ptkform::with('jobtitle')->findOrFail($ptkform_id);
 
-        $ptkformtransactions = Ptkformtransaction::with([
-            'user' => function ($q) {
-                $q->with('latestEducation', 'datadiri', 'datapengalamankerja')
-                    ->withCount('datapengalamankerja');
-            },
-            'ptkform.jobtitle'
-        ])
-            ->where('ptkform_id', $ptkform_id)
-            ->when($status !== "all", function ($query) use ($status) {
-                return $query->where("status", $status);
-            })
-            ->orderBy('id', 'desc')
-            ->get();
+        $counts = $this->getVacancyStatusCounts($ptkform_id);
 
-        $counts = Ptkformtransaction::where('ptkform_id', $ptkform_id)
-            ->selectRaw('status, count(*) as total')
-            ->groupBy('status')
-            ->pluck('total', 'status')
-            ->toArray();
+        $filterOptions = $this->getFilterOptions();
 
-        return view('ptkformtransactions.vacancy_data', compact('ptkform_id', 'status', 'ptkform', 'ptkformtransactions', 'counts'));
+        return view('ptkformtransactions.vacancy_data', compact('ptkform_id', 'status', 'ptkform', 'counts', 'filterOptions'));
+    }
+
+    /**
+     * Per-status applicant counts for one vacancy's tab badges.
+     */
+    private function getVacancyStatusCounts($ptkform_id)
+    {
+        $cacheKey = sprintf('ptkform_vacancy_counts_v%d_%s', $this->getCacheVersion(), $ptkform_id);
+
+        return Cache::remember($cacheKey, now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () use ($ptkform_id) {
+            return Ptkformtransaction::where('ptkform_id', $ptkform_id)
+                ->selectRaw('status, count(*) as total')
+                ->groupBy('status')
+                ->pluck('total', 'status')
+                ->toArray();
+        });
     }
 
     public function vacancyJson($ptkform_id, $status)
