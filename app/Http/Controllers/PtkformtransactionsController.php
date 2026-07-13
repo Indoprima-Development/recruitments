@@ -11,6 +11,7 @@ use App\Models\Ptkformactivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class PtkformtransactionsController extends Controller
 {
@@ -73,7 +74,7 @@ class PtkformtransactionsController extends Controller
 
         $userIds = $rawTransactions->pluck('user_id')->unique();
 
-        $latestEducations = \DB::table('datapendidikanformals')
+        $latestEducations = DB::table('datapendidikanformals')
             ->whereIn('user_id', $userIds)
             ->whereIn('id', function ($query) use ($userIds) {
                 $query->selectRaw('MAX(id)')
@@ -85,7 +86,7 @@ class PtkformtransactionsController extends Controller
             ->get()
             ->keyBy('user_id');
 
-        $experiences = \DB::table('datapengalamankerjas')
+        $experiences = DB::table('datapengalamankerjas')
             ->whereIn('user_id', $userIds)
             ->select(['user_id', 'date_start', 'date_end'])
             ->get()
@@ -362,7 +363,7 @@ class PtkformtransactionsController extends Controller
             . 'latest_edu.instansi as edu_instansi'
         );
 
-        $rows = \DB::query()
+        $rows = DB::query()
             ->fromSub($query, 'numbered')
             ->whereBetween('row_num', [$start + 1, $start + $length])
             ->orderBy('row_num')
@@ -370,7 +371,7 @@ class PtkformtransactionsController extends Controller
 
         $userIds = $rows->pluck('user_id')->unique();
 
-        $experiences = \DB::table('datapengalamankerjas')
+        $experiences = DB::table('datapengalamankerjas')
             ->whereIn('user_id', $userIds)
             ->select(['user_id', 'date_start', 'date_end'])
             ->get()
@@ -401,12 +402,12 @@ class PtkformtransactionsController extends Controller
         $university = $request->input('university');
         $domicile = $request->input('domicile');
 
-        $latestEdu = \DB::table('datapendidikanformals as e1')
+        $latestEdu = DB::table('datapendidikanformals as e1')
             ->select('e1.user_id', 'e1.tingkat', 'e1.instansi')
             ->whereRaw('e1.id = (SELECT MAX(e2.id) FROM datapendidikanformals e2 WHERE e2.user_id = e1.user_id)');
 
-        $expCount = \DB::table('datapengalamankerjas')
-            ->select('user_id', \DB::raw('COUNT(*) as exp_count'))
+        $expCount = DB::table('datapengalamankerjas')
+            ->select('user_id', DB::raw('COUNT(*) as exp_count'))
             ->groupBy('user_id');
 
         return Ptkformtransaction::query()
@@ -593,7 +594,7 @@ class PtkformtransactionsController extends Controller
     private function getVacanciesForFilter()
     {
         return Cache::remember('ptkform_vacancies_filter_list', now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () {
-            return \DB::table('ptkforms')
+            return DB::table('ptkforms')
                 ->leftJoin('jobtitles', 'ptkforms.jobtitle_id', '=', 'jobtitles.id')
                 ->select(['ptkforms.id', 'jobtitles.jobtitle_name'])
                 ->orderBy('jobtitles.jobtitle_name')
@@ -608,14 +609,14 @@ class PtkformtransactionsController extends Controller
     private function getFilterOptions()
     {
         return Cache::remember('ptkform_filter_options', now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () {
-            $universities = \DB::table('datapendidikanformals')
+            $universities = DB::table('datapendidikanformals')
                 ->whereNotNull('instansi')
                 ->where('instansi', '<>', '')
                 ->distinct()
                 ->orderBy('instansi')
                 ->pluck('instansi');
 
-            $cities = \DB::table('datadiris')
+            $cities = DB::table('datadiris')
                 ->whereNotNull('cities')
                 ->where('cities', '<>', '')
                 ->distinct()
