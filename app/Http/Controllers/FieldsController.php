@@ -42,6 +42,8 @@ class FieldsController extends Controller
 		$field->field_name = $request->input('field_name');
         $field->save();
 
+        cache()->forget('master_fields');
+
         return to_route('fields.index');
     }
 
@@ -82,6 +84,8 @@ class FieldsController extends Controller
 		$field->field_name = $request->input('field_name');
         $field->save();
 
+        cache()->forget('master_fields');
+
         return to_route('fields.index');
     }
 
@@ -95,6 +99,8 @@ class FieldsController extends Controller
     {
         $field = Field::findOrFail($id);
         $field->delete();
+
+        cache()->forget('master_fields');
 
         return to_route('fields.index');
     }

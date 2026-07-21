@@ -535,6 +535,11 @@
                         <label class="form-label">Expected Start Date <span class="text-danger">*</span></label>
                         {{ Form::date('date_startwork', null, ['class' => 'form-control', 'required' => 'required']) }}
                     </div>
+
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Location</label>
+                        {{ Form::text('location', null, ['class' => 'form-control', 'placeholder' => 'e.g. Jakarta']) }}
+                    </div>
                 </div>
             </section>
 

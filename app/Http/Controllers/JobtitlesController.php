@@ -58,6 +58,8 @@ class JobtitlesController extends Controller
 
         $jobtitle->save();
 
+        cache()->forget('master_jobtitles');
+
         return to_route('jobtitles.index');
     }
 
@@ -109,6 +111,8 @@ class JobtitlesController extends Controller
         }
         $jobtitle->save();
 
+        cache()->forget('master_jobtitles');
+
         return to_route('jobtitles.index');
     }
 
@@ -122,6 +126,8 @@ class JobtitlesController extends Controller
     {
         $jobtitle = Jobtitle::findOrFail($id);
         $jobtitle->delete();
+
+        cache()->forget('master_jobtitles');
 
         return to_route('jobtitles.index');
     }

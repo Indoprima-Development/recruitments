@@ -149,6 +149,13 @@
                                 <label class="small text-muted mb-1">Section</label>
                                 <div class="fw-semibold">{{ $ptkform->section->section_name ?? '-' }}</div>
                             </div>
+                            <div class="mb-3">
+                                <label class="small text-muted mb-1">Location</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="ti ti-map-pin text-primary"></i>
+                                    <span class="fw-semibold">{{ $ptkform->location ?: '-' }}</span>
+                                </div>
+                            </div>
 
                             <hr class="border-light">
 

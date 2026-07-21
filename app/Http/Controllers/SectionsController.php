@@ -45,6 +45,8 @@ class SectionsController extends Controller
 		$section->section_name = $request->input('section_name');
         $section->save();
 
+        cache()->forget('master_sections');
+
         return to_route('sections.index');
     }
 
@@ -87,6 +89,8 @@ class SectionsController extends Controller
 		$section->section_name = $request->input('section_name');
         $section->save();
 
+        cache()->forget('master_sections');
+
         return to_route('sections.index');
     }
 
@@ -100,6 +104,8 @@ class SectionsController extends Controller
     {
         $section = Section::findOrFail($id);
         $section->delete();
+
+        cache()->forget('master_sections');
 
         return to_route('sections.index');
     }

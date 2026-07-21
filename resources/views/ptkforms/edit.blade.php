@@ -440,6 +440,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
+                                    {{ Form::label('location', 'Location', ['class' => 'form-label']) }}
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white text-muted"><i
+                                                class="ti ti-map-pin"></i></span>
+                                        {{ Form::text('location', $ptkform->location, ['class' => 'form-control', 'placeholder' => 'e.g. Jakarta']) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     {{ Form::label('date_startwork', 'Target Start Date', ['class' => 'form-label']) }}
                                     <div class="input-group">
                                         <span class="input-group-text bg-white text-muted"><i

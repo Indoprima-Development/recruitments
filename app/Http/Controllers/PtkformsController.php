@@ -67,6 +67,7 @@ class PtkformsController extends Controller
         $ptkform->department_id = $request->input('department_id');
         $ptkform->section_id = $request->input('section_id');
         $ptkform->jobtitle_id = $request->input('jobtitle_id');
+        $ptkform->location = $request->input('location');
         $ptkform->education_id = $request->input('education_id');
         $ptkform->major_id = $request->input('major_id');
         $ptkform->date_startwork = $request->input('date_startwork');
@@ -161,6 +162,7 @@ class PtkformsController extends Controller
         $ptkform->department_id = $request->input('department_id');
         $ptkform->section_id = $request->input('section_id');
         $ptkform->jobtitle_id = $request->input('jobtitle_id');
+        $ptkform->location = $request->input('location');
         $ptkform->education_id = $request->input('education_id');
         $ptkform->major_id = $request->input('major_id');
         $ptkform->date_startwork = $request->input('date_startwork');

@@ -402,9 +402,17 @@ class PtkformtransactionsController extends Controller
         $university = $request->input('university');
         $domicile = $request->input('domicile');
 
-        $latestEdu = DB::table('datapendidikanformals as e1')
-            ->select('e1.user_id', 'e1.tingkat', 'e1.instansi')
-            ->whereRaw('e1.id = (SELECT MAX(e2.id) FROM datapendidikanformals e2 WHERE e2.user_id = e1.user_id)');
+        // A correlated subquery (WHERE id = (SELECT MAX(id) ... WHERE user_id = ...))
+        // makes SQL Server evaluate one subquery per row with no way to scope it to
+        // just the users in this result set, which timed out once the table grew.
+        // ROW_NUMBER() PARTITION BY is a single scan/sort and stays fast at any size.
+        $latestEdu = DB::table(DB::raw(
+            '(SELECT user_id, tingkat, instansi, '
+            . 'ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY id DESC) AS rn '
+            . 'FROM datapendidikanformals) AS ranked_edu'
+        ))
+            ->select('user_id', 'tingkat', 'instansi')
+            ->where('rn', 1);
 
         $expCount = DB::table('datapengalamankerjas')
             ->select('user_id', DB::raw('COUNT(*) as exp_count'))

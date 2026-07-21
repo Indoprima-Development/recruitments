@@ -503,7 +503,9 @@
                             ($job->division->division_name ?? '-') .
                             '
                                         <span class="mx-2">•</span>
-                                        <i class="ti ti-map-pin me-1"></i> Surabaya
+                                        <i class="ti ti-map-pin me-1"></i> ' .
+                            ($job->location ?: '-') .
+                            '
                                     </div>
                                     <div class="d-flex gap-3 text-muted small">
                                          <span title="Education"><i class="ti ti-certificate me-1"></i> ' .

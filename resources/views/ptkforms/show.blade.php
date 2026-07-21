@@ -380,7 +380,7 @@
                                     style="width: 32px; height: 32px;">
                                     <i class="ti ti-map-pin fs-5"></i>
                                 </div>
-                                <span>Surabaya, Indonesia</span>
+                                <span>{{ $ptkform->location ?: '-' }}</span>
                             </div>
                             <div class="job-meta-item">
                                 <div class="icon-box-sm bg-orange-light text-warning rounded-circle d-flex align-items-center justify-content-center"

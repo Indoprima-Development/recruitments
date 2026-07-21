@@ -42,6 +42,8 @@ class EducationController extends Controller
 		$education->education_name = $request->input('education_name');
         $education->save();
 
+        cache()->forget('master_educations');
+
         return to_route('education.index');
     }
 
@@ -82,6 +84,8 @@ class EducationController extends Controller
 		$education->education_name = $request->input('education_name');
         $education->save();
 
+        cache()->forget('master_educations');
+
         return to_route('education.index');
     }
 
@@ -95,6 +99,8 @@ class EducationController extends Controller
     {
         $education = Education::findOrFail($id);
         $education->delete();
+
+        cache()->forget('master_educations');
 
         return to_route('education.index');
     }

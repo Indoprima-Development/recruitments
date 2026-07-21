@@ -42,6 +42,8 @@ class DivisionsController extends Controller
 		$division->division_name = $request->input('division_name');
         $division->save();
 
+        cache()->forget('master_divisions');
+
         return to_route('divisions.index');
     }
 
@@ -82,6 +84,8 @@ class DivisionsController extends Controller
 		$division->division_name = $request->input('division_name');
         $division->save();
 
+        cache()->forget('master_divisions');
+
         return to_route('divisions.index');
     }
 
@@ -95,6 +99,8 @@ class DivisionsController extends Controller
     {
         $division = Division::findOrFail($id);
         $division->delete();
+
+        cache()->forget('master_divisions');
 
         return to_route('divisions.index');
     }

@@ -427,22 +427,14 @@
         <table id="recruitmentTable" class="stripe row-border order-column" style="width:100%">
             <thead>
                 <tr>
-                    <th class="text-center"><input type="checkbox"></th>
                     <th>Nama</th>
                     <th class="text-center">CV</th>
-                    <th>Last Modified</th>
                     <th>Total Days</th>
                     <th>Posisi</th>
                     <th>Date Applied</th>
                     <th>Universitas</th>
                     <th class="text-center">GPA</th>
                     <th class="text-center">Pengalaman</th>
-                    <th>Durasi</th>
-                    <th>Domisili</th>
-                    <th class="text-center">Source</th>
-                    <th class="text-center">AI Rev</th>
-                    <th class="text-center">Score</th>
-                    <th>Notes</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Action</th>
                 </tr>
@@ -539,18 +531,10 @@
                     }
                 },
                 columns: [{
-                        data: 'cb',
-                        orderable: false,
-                        width: '30px'
-                    },
-                    {
                         data: 'name'
                     },
                     {
                         data: 'cv'
-                    },
-                    {
-                        data: 'last_modified'
                     },
                     {
                         data: 'total_days'
@@ -571,24 +555,6 @@
                         data: 'experience'
                     },
                     {
-                        data: 'duration'
-                    },
-                    {
-                        data: 'domicile'
-                    },
-                    {
-                        data: 'source'
-                    },
-                    {
-                        data: 'ai_rev'
-                    },
-                    {
-                        data: 'score'
-                    },
-                    {
-                        data: 'notes'
-                    },
-                    {
                         data: 'status'
                     },
                     {
@@ -603,7 +569,7 @@
                 deferRender: true,
                 scrollX: true,
                 fixedColumns: {
-                    start: 3
+                    start: 2
                 },
                 language: {
                     search: "",
@@ -671,47 +637,6 @@
                 window.history.replaceState(null, '', url.toString());
                 table.ajax.reload();
             };
-
-            // Double click to edit note
-            $(document).on('dblclick', '.editable-note', function() {
-                var $this = $(this);
-                if ($this.find('input').length > 0) return; // Already editing
-
-                var currentText = $this.text().trim();
-                if (currentText === '-') currentText = '';
-
-                var id = $this.data('id');
-                var input = $(
-                        '<input type="text" class="form-control form-control-sm" style="width: 150px;">')
-                    .val(currentText)
-                    .on('blur keypress', function(e) {
-                        if (e.type === 'keypress' && e.which !== 13) return;
-
-                        var newNote = $(this).val();
-                        var $container = $(this).parent();
-
-                        // Save via AJAX
-                        $.ajax({
-                            url: "{{ url('ptkformtransactions/update-note') }}",
-                            method: "POST",
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                id: id,
-                                note: newNote
-                            },
-                            success: function(response) {
-                                $container.text(newNote || '-');
-                            },
-                            error: function() {
-                                alert('Failed to save note');
-                                $container.text(currentText || '-');
-                            }
-                        });
-                    });
-
-                $this.empty().append(input);
-                input.focus();
-            });
 
             // Direct Approve Button
             $(document).on('click', '.btnApproveDirect', function(e) {

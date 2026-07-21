@@ -38,6 +38,7 @@ class MainController extends Controller
             ->where("status", 1)
             ->whereDate('date_open_vacancy', '<=', $date)
             ->whereDate('date_closed_vacancy', '>=', $date)
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('vacancy', compact("jobs"));

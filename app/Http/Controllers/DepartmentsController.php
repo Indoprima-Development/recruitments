@@ -45,6 +45,8 @@ class DepartmentsController extends Controller
 		$department->department_name = $request->input('department_name');
         $department->save();
 
+        cache()->forget('master_departments');
+
         return to_route('departments.index');
     }
 
@@ -87,6 +89,8 @@ class DepartmentsController extends Controller
 		$department->department_name = $request->input('department_name');
         $department->save();
 
+        cache()->forget('master_departments');
+
         return to_route('departments.index');
     }
 
@@ -100,6 +104,8 @@ class DepartmentsController extends Controller
     {
         $department = Department::findOrFail($id);
         $department->delete();
+
+        cache()->forget('master_departments');
 
         return to_route('departments.index');
     }

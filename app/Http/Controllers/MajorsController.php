@@ -42,6 +42,8 @@ class MajorsController extends Controller
 		$major->major_name = $request->input('major_name');
         $major->save();
 
+        cache()->forget('master_majors');
+
         return to_route('majors.index');
     }
 
@@ -82,6 +84,8 @@ class MajorsController extends Controller
 		$major->major_name = $request->input('major_name');
         $major->save();
 
+        cache()->forget('master_majors');
+
         return to_route('majors.index');
     }
 
@@ -95,6 +99,8 @@ class MajorsController extends Controller
     {
         $major = Major::findOrFail($id);
         $major->delete();
+
+        cache()->forget('master_majors');
 
         return to_route('majors.index');
     }
