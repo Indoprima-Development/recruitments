@@ -291,6 +291,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
@@ -504,7 +505,7 @@
                             '
                                         <span class="mx-2">•</span>
                                         <i class="ti ti-map-pin me-1"></i> ' .
-                            ($job->location ?: '-') .
+                            ($job->location->location_name ?? '-') .
                             '
                                     </div>
                                     <div class="d-flex gap-3 text-muted small">

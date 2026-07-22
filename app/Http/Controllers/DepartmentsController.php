@@ -47,7 +47,7 @@ class DepartmentsController extends Controller
 
         cache()->forget('master_departments');
 
-        return to_route('departments.index');
+        return redirect(route('organization.index') . '#departments');
     }
 
     /**
@@ -91,7 +91,7 @@ class DepartmentsController extends Controller
 
         cache()->forget('master_departments');
 
-        return to_route('departments.index');
+        return redirect(route('organization.index') . '#departments');
     }
 
     /**
@@ -107,6 +107,6 @@ class DepartmentsController extends Controller
 
         cache()->forget('master_departments');
 
-        return to_route('departments.index');
+        return redirect(route('organization.index') . '#departments');
     }
 }

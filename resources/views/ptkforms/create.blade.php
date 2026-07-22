@@ -442,6 +442,17 @@
             </div>
         </div>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>The form could not be submitted:</strong>
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- Main Wizard Card -->
         <div class="wizard-card">
             {!! Form::open([
@@ -538,7 +549,12 @@
 
                     <div class="col-12 col-md-6">
                         <label class="form-label">Location</label>
-                        {{ Form::text('location', null, ['class' => 'form-control', 'placeholder' => 'e.g. Jakarta']) }}
+                        <select class="form-select" name="location_id">
+                            <option value="" disabled selected>Select Location</option>
+                            @foreach ($locations as $loc)
+                                <option value="{{ $loc->id }}">{{ $loc->location_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </section>

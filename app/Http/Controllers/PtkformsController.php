@@ -14,6 +14,7 @@ use App\Models\Jobtitle;
 use App\Models\Education;
 use App\Models\Major;
 use App\Models\Field;
+use App\Models\Location;
 use App\Models\Ptkformtransaction;
 use App\Models\Ptkfield;
 use Illuminate\Http\Request;
@@ -50,8 +51,9 @@ class PtkformsController extends Controller
         $educations = cache()->remember('master_educations', 86400, fn() => Education::all());
         $majors = cache()->remember('master_majors', 86400, fn() => Major::all());
         $fields = cache()->remember('master_fields', 86400, fn() => Field::all());
+        $locations = cache()->remember('master_locations', 86400, fn() => Location::all());
 
-        return view('ptkforms.create', compact('divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields'));
+        return view('ptkforms.create', compact('divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields', 'locations'));
     }
 
     /**
@@ -67,7 +69,7 @@ class PtkformsController extends Controller
         $ptkform->department_id = $request->input('department_id');
         $ptkform->section_id = $request->input('section_id');
         $ptkform->jobtitle_id = $request->input('jobtitle_id');
-        $ptkform->location = $request->input('location');
+        $ptkform->location_id = $request->input('location_id');
         $ptkform->education_id = $request->input('education_id');
         $ptkform->major_id = $request->input('major_id');
         $ptkform->date_startwork = $request->input('date_startwork');
@@ -144,8 +146,9 @@ class PtkformsController extends Controller
         $educations = cache()->remember('master_educations', 86400, fn() => Education::all());
         $majors = cache()->remember('master_majors', 86400, fn() => Major::all());
         $fields = cache()->remember('master_fields', 86400, fn() => Field::all());
+        $locations = cache()->remember('master_locations', 86400, fn() => Location::all());
 
-        return view('ptkforms.edit', compact('ptkform', 'divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields'));
+        return view('ptkforms.edit', compact('ptkform', 'divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields', 'locations'));
     }
 
     /**
@@ -162,7 +165,7 @@ class PtkformsController extends Controller
         $ptkform->department_id = $request->input('department_id');
         $ptkform->section_id = $request->input('section_id');
         $ptkform->jobtitle_id = $request->input('jobtitle_id');
-        $ptkform->location = $request->input('location');
+        $ptkform->location_id = $request->input('location_id');
         $ptkform->education_id = $request->input('education_id');
         $ptkform->major_id = $request->input('major_id');
         $ptkform->date_startwork = $request->input('date_startwork');

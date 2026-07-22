@@ -380,7 +380,7 @@
                                     style="width: 32px; height: 32px;">
                                     <i class="ti ti-map-pin fs-5"></i>
                                 </div>
-                                <span>{{ $ptkform->location ?: '-' }}</span>
+                                <span>{{ $ptkform->location->location_name ?? '-' }}</span>
                             </div>
                             <div class="job-meta-item">
                                 <div class="icon-box-sm bg-orange-light text-warning rounded-circle d-flex align-items-center justify-content-center"

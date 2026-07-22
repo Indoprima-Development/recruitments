@@ -47,7 +47,7 @@ class SectionsController extends Controller
 
         cache()->forget('master_sections');
 
-        return to_route('sections.index');
+        return redirect(route('organization.index') . '#sections');
     }
 
     /**
@@ -91,7 +91,7 @@ class SectionsController extends Controller
 
         cache()->forget('master_sections');
 
-        return to_route('sections.index');
+        return redirect(route('organization.index') . '#sections');
     }
 
     /**
@@ -107,6 +107,6 @@ class SectionsController extends Controller
 
         cache()->forget('master_sections');
 
-        return to_route('sections.index');
+        return redirect(route('organization.index') . '#sections');
     }
 }

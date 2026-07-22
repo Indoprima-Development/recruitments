@@ -18,11 +18,12 @@
                                 <tr>
                                     <th class="ps-4 rounded-start" style="width: 5%;">No</th>
                                     <th class="text-center" style="width: 10%;">Action</th>
-                                    <th style="width: 25%;">Job Title</th>
-                                    <th style="width: 25%;" class="d-none d-md-table-cell">Dept / Div</th>
-                                    <th style="width: 15%;" class="d-none d-lg-table-cell">Section</th>
+                                    <th style="width: 22%;">Job Title</th>
+                                    <th style="width: 20%;" class="d-none d-md-table-cell">Dept / Div</th>
+                                    <th style="width: 13%;" class="d-none d-lg-table-cell">Section</th>
                                     <th style="width: 10%;">Status</th>
-                                    <th class="text-center rounded-end" style="width: 10%;">Count</th>
+                                    <th class="text-center" style="width: 10%;">Count</th>
+                                    <th class="text-center rounded-end d-none d-lg-table-cell" style="width: 10%;">Posted</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,11 +110,13 @@
                                                 </span>
                                             </div>
                                         </td>
+                                        <td class="text-center d-none d-lg-table-cell">
+                                            <span class="text-muted small">{{ \Carbon\Carbon::parse($ptkform->created_at)->format('d M Y') }}</span>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -125,13 +128,20 @@
     <script>
         $(document).ready(function() {
             $('#example').DataTable({
-                "order": [],
-                "paging": false,
-                "scrollY": "500px",
-                "scrollCollapse": true,
+                "order": [
+                    [7, 'desc']
+                ],
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": [0, 1]
+                }],
+                "paging": true,
+                "pageLength": 15,
+                "lengthMenu": [10, 15, 25, 50],
                 "language": {
                     "search": "",
-                    "searchPlaceholder": "Search vacancies..."
+                    "searchPlaceholder": "Search vacancies...",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ vacancies (newest first)"
                 },
                 "dom": '<"d-flex justify-content-between align-items-center mb-3"f>rt<"d-flex justify-content-start align-items-center mt-3"i>'
             });

@@ -25,6 +25,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\MajorsController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\PtkfieldsController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PtkformsController;
 use App\Http\Controllers\PtkformtransactionsController;
 use App\Http\Controllers\QnasController;
@@ -96,6 +97,8 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
         Route::get('/rank-test-by-project/{project_id}', 'rankTestByProjectId');
         Route::get('/rank-test/{exam_id}', 'rankTest');
     });
+
+    Route::get('/organization', [OrganizationController::class, 'index'])->name('organization.index');
 
     Route::resource('/divisions', DivisionsController::class);
     Route::resource('/departments', DepartmentsController::class);

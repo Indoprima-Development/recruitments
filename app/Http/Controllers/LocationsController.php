@@ -42,7 +42,9 @@ class LocationsController extends Controller
 		$location->location_name = $request->input('location_name');
         $location->save();
 
-        return to_route('locations.index');
+        cache()->forget('master_locations');
+
+        return redirect(route('organization.index') . '#locations');
     }
 
     /**
@@ -82,7 +84,9 @@ class LocationsController extends Controller
 		$location->location_name = $request->input('location_name');
         $location->save();
 
-        return to_route('locations.index');
+        cache()->forget('master_locations');
+
+        return redirect(route('organization.index') . '#locations');
     }
 
     /**
@@ -96,6 +100,8 @@ class LocationsController extends Controller
         $location = Location::findOrFail($id);
         $location->delete();
 
-        return to_route('locations.index');
+        cache()->forget('master_locations');
+
+        return redirect(route('organization.index') . '#locations');
     }
 }

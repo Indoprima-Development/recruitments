@@ -335,6 +335,17 @@
             </a>
         </div>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>The form could not be submitted:</strong>
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="row justify-content-center">
             <div class="col-12 col-xl-11">
                 <div class="card card-modern animate-fade" style="animation-delay: 0.1s;">
@@ -440,11 +451,17 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    {{ Form::label('location', 'Location', ['class' => 'form-label']) }}
+                                    {{ Form::label('location_id', 'Location', ['class' => 'form-label']) }}
                                     <div class="input-group">
                                         <span class="input-group-text bg-white text-muted"><i
                                                 class="ti ti-map-pin"></i></span>
-                                        {{ Form::text('location', $ptkform->location, ['class' => 'form-control', 'placeholder' => 'e.g. Jakarta']) }}
+                                        <select class="form-select select2-basic" name="location_id">
+                                            <option value="" disabled>Select Location</option>
+                                            @foreach ($locations as $loc)
+                                                <option value="{{ $loc->id }}" {{ $ptkform->location_id == $loc->id ? 'selected' : '' }}>
+                                                    {{ $loc->location_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">

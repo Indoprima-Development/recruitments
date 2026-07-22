@@ -34,7 +34,7 @@ class MainController extends Controller
         $date = date("Y-m-d");
 
         //find from ptk which has status = 1
-        $jobs = Ptkform::with(['jobtitle', 'division', 'education'])
+        $jobs = Ptkform::with(['jobtitle', 'division', 'education', 'location'])
             ->where("status", 1)
             ->whereDate('date_open_vacancy', '<=', $date)
             ->whereDate('date_closed_vacancy', '>=', $date)

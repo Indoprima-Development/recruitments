@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('ptkforms', 'location')) {
+        // Uses location_id (FK to the locations master table) rather than a free-text
+        // string, to match how division_id/department_id/section_id/jobtitle_id work.
+        if (!Schema::hasColumn('ptkforms', 'location_id')) {
             Schema::table('ptkforms', function (Blueprint $table) {
-                $table->string('location')->nullable()->after('jobtitle_id');
+                $table->integer('location_id')->nullable()->after('jobtitle_id');
             });
         }
     }
@@ -23,9 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasColumn('ptkforms', 'location')) {
+        if (Schema::hasColumn('ptkforms', 'location_id')) {
             Schema::table('ptkforms', function (Blueprint $table) {
-                $table->dropColumn('location');
+                $table->dropColumn('location_id');
             });
         }
     }

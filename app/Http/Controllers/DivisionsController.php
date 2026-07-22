@@ -44,7 +44,7 @@ class DivisionsController extends Controller
 
         cache()->forget('master_divisions');
 
-        return to_route('divisions.index');
+        return redirect(route('organization.index') . '#divisions');
     }
 
     /**
@@ -86,7 +86,7 @@ class DivisionsController extends Controller
 
         cache()->forget('master_divisions');
 
-        return to_route('divisions.index');
+        return redirect(route('organization.index') . '#divisions');
     }
 
     /**
@@ -102,6 +102,6 @@ class DivisionsController extends Controller
 
         cache()->forget('master_divisions');
 
-        return to_route('divisions.index');
+        return redirect(route('organization.index') . '#divisions');
     }
 }
