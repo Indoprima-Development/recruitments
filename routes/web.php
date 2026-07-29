@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\CvController;
 use App\Http\Controllers\DatadetailsController;
 use App\Http\Controllers\DatadirisController;
 use App\Http\Controllers\DatakeluargasController;
@@ -164,6 +165,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     // STOP IMPERSONATE - Kembali ke admin
     Route::get('/stop-impersonate', [LoginRegisterController::class, 'stopImpersonate'])->name('stop-impersonate');
+
+    // CV (protected: owner or admin only)
+    Route::get('/cv/{id}', [CvController::class, 'show'])->name('cv.show')->where('id', '[0-9]+');
 
     Route::post('/ptkformtransactions', [PtkformtransactionsController::class, 'store'])->name('ptkformtransactions.store');
 

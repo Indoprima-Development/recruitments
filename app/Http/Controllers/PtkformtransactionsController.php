@@ -220,24 +220,15 @@ class PtkformtransactionsController extends Controller
             $user = Auth::user();
             $file = $request->file('cv');
             $filename = $user->id . ".pdf";
-            $pathUpload = "cv";
-            
-            $publicPath = public_path($pathUpload);
-            if (!file_exists($publicPath)) {
-                mkdir($publicPath, 0755, true);
+            $cvDir = storage_path('app/cv');
+
+            if (!file_exists($cvDir)) {
+                mkdir($cvDir, 0755, true);
             }
 
-            // Hapus file lama jika ada (baik di storage maupun di public/cv)
-            if ($user->cv && file_exists(public_path($user->cv))) {
-                @unlink(public_path($user->cv));
-            }
-            if ($user->cv && file_exists(public_path('storage/cv/' . $user->cv))) {
-                @unlink(public_path('storage/cv/' . $user->cv));
-            }
-            
-            $file->move($publicPath, $filename);
+            $file->move($cvDir, $filename);
 
-            $user->cv = "$pathUpload/$filename";
+            $user->cv = $filename;
             $user->save();
         }
 
@@ -565,7 +556,7 @@ class PtkformtransactionsController extends Controller
 
         $cvHtml = '<span class="text-muted text-small">-</span>';
         if (!empty($row->user_cv)) {
-            $cvHtml = '<a href="' . e(asset($row->user_cv)) . '" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>';
+            $cvHtml = '<a href="' . e(route('cv.show', $row->user_id)) . '" target="_blank" class="link-blue" title="View CV"><i class="fas fa-file-alt"></i></a>';
         }
 
         $experienceHtml = $expCount > 0

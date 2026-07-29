@@ -336,7 +336,7 @@
                         </form>
 
                         @if ($users->cv)
-                            <a href="{{ url($users->cv) }}" target="_blank"
+                            <a href="{{ route('cv.show', $users->id) }}" target="_blank"
                                 class="btn btn-light rounded-pill fw-bold btn-sm py-2 border text-dark">
                                 <i class="ti ti-eye me-2"></i> Lihat CV
                             </a>

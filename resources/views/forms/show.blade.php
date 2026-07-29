@@ -301,7 +301,7 @@
 
                         <div class="d-grid gap-2 no-print">
                             @if ($users->cv)
-                                <a href="{{ url($users->cv) }}" target="_blank" class="btn btn-outline-primary btn-action">
+                                <a href="{{ route('cv.show', $users->id) }}" target="_blank" class="btn btn-outline-primary btn-action">
                                     <i class="fas fa-file-pdf me-2"></i>View CV Document
                                 </a>
                             @endif

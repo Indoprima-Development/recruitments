@@ -270,14 +270,14 @@ class DatadirisController extends Controller
         if ($request->hasFile('cv')) {
             $file = $request->file('cv');
             $filename = $user->id . ".pdf";
-            $pathUpload = "cv";
-            
-            if (!file_exists(public_path($pathUpload))) {
-                mkdir(public_path($pathUpload), 0755, true);
+            $cvDir = storage_path('app/cv');
+
+            if (!file_exists($cvDir)) {
+                mkdir($cvDir, 0755, true);
             }
-            
-            UploadFile($file, $pathUpload, $filename);
-            $user->cv = "$pathUpload/$filename";
+
+            $file->move($cvDir, $filename);
+            $user->cv = $filename;
         }
 
         $user->save();
