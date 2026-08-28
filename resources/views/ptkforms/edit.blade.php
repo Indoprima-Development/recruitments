@@ -335,7 +335,7 @@
             </a>
         </div>
 
-        @if ($errors->any())
+        @if (isset($errors) && $errors->any())
             <div class="alert alert-danger">
                 <strong>The form could not be submitted:</strong>
                 <ul class="mb-0">
@@ -698,7 +698,9 @@
 
     <script>
         function quilInit(className) {
-            var quill = new Quill("." + className, {
+            var el = document.querySelector("." + className);
+            if (!el) return;
+            var quill = new Quill(el, {
                 theme: "snow",
                 placeholder: 'Type details here...',
                 modules: {
@@ -719,7 +721,12 @@
 
             // Sync content on change
             quill.on('text-change', function() {
-                $("#" + className).val(quill.root.innerHTML)
+                $("#" + className).val(quill.root.innerHTML);
+            });
+
+            // Sync on form submit
+            $('#formptk').on('submit', function() {
+                $("#" + className).val(quill.root.innerHTML);
             });
         }
 

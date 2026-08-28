@@ -44,14 +44,14 @@ class PtkformsController extends Controller
      */
     public function create()
     {
-        $divisions = cache()->remember('master_divisions', 86400, fn() => Division::all());
-        $departments = cache()->remember('master_departments', 86400, fn() => Department::all());
-        $sections = cache()->remember('master_sections', 86400, fn() => Section::all());
-        $jobtitles = cache()->remember('master_jobtitles', 86400, fn() => Jobtitle::all());
-        $educations = cache()->remember('master_educations', 86400, fn() => Education::all());
-        $majors = cache()->remember('master_majors', 86400, fn() => Major::all());
-        $fields = cache()->remember('master_fields', 86400, fn() => Field::all());
-        $locations = cache()->remember('master_locations', 86400, fn() => Location::all());
+        $divisions = Division::orderBy('division_name')->get();
+        $departments = Department::orderBy('department_name')->get();
+        $sections = Section::orderBy('section_name')->get();
+        $jobtitles = Jobtitle::orderBy('jobtitle_name')->get();
+        $educations = Education::all();
+        $majors = Major::orderBy('major_name')->get();
+        $fields = Field::orderBy('field_name')->get();
+        $locations = Location::orderBy('location_name')->get();
 
         return view('ptkforms.create', compact('divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields', 'locations'));
     }
@@ -72,39 +72,53 @@ class PtkformsController extends Controller
         $ptkform->location_id = $request->input('location_id');
         $ptkform->education_id = $request->input('education_id');
         $ptkform->major_id = $request->input('major_id');
-        $ptkform->date_startwork = $request->input('date_startwork');
+        $ptkform->date_startwork = $request->input('date_startwork', date('Y-m-d'));
         $ptkform->direct_superior = $request->input('direct_superior');
-        $ptkform->direct_junior = $request->input('direct_junior');
+        $ptkform->direct_junior = $request->input('direct_junior') ?? '0';
         $ptkform->responsibility = $request->input('responsibility');
-        $ptkform->gender = $request->input('gender');
-        $ptkform->ipk = $request->input('ipk');
+        $ptkform->gender = $request->input('gender', 0);
+        $ptkform->ipk = $request->input('ipk', 3.00);
         $ptkform->special_conditions = $request->input('special_conditions');
         $ptkform->general_others = $request->input('general_others');
-        $ptkform->request_basis = $request->input('request_basis');
-        $ptkform->request_basis_for = $request->input('request_basis_for');
-        $ptkform->status_pegawai = $request->input('status_pegawai');
-        $ptkform->status = 0;
-
-        //if create by admin, by pass to approved status
-        if (Auth::user()->role == 'ADMIN') {
-            $ptkform->status = 1;
-            $ptkform->date_open_vacancy   = '2000-01-01';
-            $ptkform->date_closed_vacancy = '2030-12-31';
+        $ptkform->request_basis = $request->input('request_basis', 'Peningkatan Volume Kerja');
+        $ptkform->request_basis_for = $request->input('request_basis_for', 'Pengembangan Struktur Organisasi');
+        $ptkform->status_pegawai = $request->input('status_pegawai', 'Staff');
+        
+        $userRole = strtoupper(Auth::user()->role ?? '');
+        if ($request->has('status') && $request->input('status') !== null) {
+            $ptkform->status = $request->input('status');
+        } else {
+            $ptkform->status = ($userRole == 'ADMIN') ? 1 : 0;
         }
+
+        $ptkform->date_open_vacancy = $request->input('date_open_vacancy') ?: date('Y-m-d');
+        $ptkform->date_closed_vacancy = $request->input('date_closed_vacancy') ?: date('Y-m-d', strtotime('+5 years'));
 
         $ptkform->save();
 
-        if ($request->fields != null) {
+        if ($request->fields != null && is_array($request->fields)) {
             for ($i = 0; $i < count($request->fields); $i++) {
-                Ptkfield::create([
-                    "ptkform_id"    => $ptkform->id,
-                    "field_id"      => $request->fields[$i],
-                    "year"          => $request->tahun[$i]
-                ]);
+                if (!empty($request->fields[$i])) {
+                    Ptkfield::create([
+                        "ptkform_id" => $ptkform->id,
+                        "field_id"   => $request->fields[$i],
+                        "year"       => $request->tahun[$i] ?? 1
+                    ]);
+                }
             }
         }
 
-        AlertSuccess("Success","Data berhasil dibuat");
+        // Forget master data cache so new entries are visible immediately
+        cache()->forget('master_divisions');
+        cache()->forget('master_departments');
+        cache()->forget('master_sections');
+        cache()->forget('master_jobtitles');
+        cache()->forget('master_educations');
+        cache()->forget('master_majors');
+        cache()->forget('master_fields');
+        cache()->forget('master_locations');
+
+        AlertSuccess("Success", "Vacancy / Lowongan berhasil dibuat dan dipublikasikan!");
         return redirect('vacancies');
     }
 
@@ -117,9 +131,9 @@ class PtkformsController extends Controller
     public function show($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        $trs = Ptkformtransaction::where('ptkform_id',$id)
-        ->where('user_id',Auth::user()->id)
-        ->first();
+        $trs = Ptkformtransaction::where('ptkform_id', $id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
 
         $jobtitle = Jobtitle::findOrFail($ptkform->jobtitle_id);
 
@@ -127,7 +141,7 @@ class PtkformsController extends Controller
         if (!empty($trs)) {
             $isApplied = true;
         }
-        return view('ptkforms.detail', compact('isApplied','ptkform','jobtitle'));
+        return view('ptkforms.detail', compact('isApplied', 'ptkform', 'jobtitle'));
     }
 
     /**
@@ -139,14 +153,14 @@ class PtkformsController extends Controller
     public function edit($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        $divisions = cache()->remember('master_divisions', 86400, fn() => Division::all());
-        $departments = cache()->remember('master_departments', 86400, fn() => Department::all());
-        $sections = cache()->remember('master_sections', 86400, fn() => Section::all());
-        $jobtitles = cache()->remember('master_jobtitles', 86400, fn() => Jobtitle::all());
-        $educations = cache()->remember('master_educations', 86400, fn() => Education::all());
-        $majors = cache()->remember('master_majors', 86400, fn() => Major::all());
-        $fields = cache()->remember('master_fields', 86400, fn() => Field::all());
-        $locations = cache()->remember('master_locations', 86400, fn() => Location::all());
+        $divisions = Division::all();
+        $departments = Department::all();
+        $sections = Section::all();
+        $jobtitles = Jobtitle::all();
+        $educations = Education::all();
+        $majors = Major::all();
+        $fields = Field::all();
+        $locations = Location::all();
 
         return view('ptkforms.edit', compact('ptkform', 'divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields', 'locations'));
     }
@@ -170,31 +184,52 @@ class PtkformsController extends Controller
         $ptkform->major_id = $request->input('major_id');
         $ptkform->date_startwork = $request->input('date_startwork');
         $ptkform->direct_superior = $request->input('direct_superior');
-        $ptkform->direct_junior = $request->input('direct_junior');
+        $ptkform->direct_junior = $request->input('direct_junior') ?? '0';
         $ptkform->responsibility = $request->input('responsibility');
-        $ptkform->gender = $request->input('gender');
+        $ptkform->gender = $request->input('gender', 0);
         $ptkform->ipk = $request->input('ipk');
         $ptkform->special_conditions = $request->input('special_conditions');
         $ptkform->general_others = $request->input('general_others');
-        $ptkform->request_basis = $request->input('request_basis');
-        $ptkform->request_basis_for = $request->input('request_basis_for');
+        $ptkform->request_basis = $request->input('request_basis', 'Peningkatan Volume Kerja');
+        $ptkform->request_basis_for = $request->input('request_basis_for', 'Pengembangan Struktur Organisasi');
         $ptkform->status_pegawai = $request->input('status_pegawai');
-        $ptkform->status = $request->input('status');
+        
+        if ($request->has('status')) {
+            $ptkform->status = $request->input('status');
+        }
+        if ($request->filled('date_open_vacancy')) {
+            $ptkform->date_open_vacancy = $request->input('date_open_vacancy');
+        }
+        if ($request->filled('date_closed_vacancy')) {
+            $ptkform->date_closed_vacancy = $request->input('date_closed_vacancy');
+        }
+
         $ptkform->save();
         
         // Update experience requirements
         \App\Models\Ptkfield::where('ptkform_id', $id)->delete();
-        if ($request->fields != null) {
+        if ($request->fields != null && is_array($request->fields)) {
             for ($i = 0; $i < count($request->fields); $i++) {
-                \App\Models\Ptkfield::create([
-                    "ptkform_id"    => $ptkform->id,
-                    "field_id"      => $request->fields[$i],
-                    "year"          => $request->tahun[$i]
-                ]);
+                if (!empty($request->fields[$i])) {
+                    \App\Models\Ptkfield::create([
+                        "ptkform_id" => $ptkform->id,
+                        "field_id"   => $request->fields[$i],
+                        "year"       => $request->tahun[$i] ?? 1
+                    ]);
+                }
             }
         }
 
-        AlertSuccess("Success","Data berhasil diubah");
+        cache()->forget('master_divisions');
+        cache()->forget('master_departments');
+        cache()->forget('master_sections');
+        cache()->forget('master_jobtitles');
+        cache()->forget('master_educations');
+        cache()->forget('master_majors');
+        cache()->forget('master_fields');
+        cache()->forget('master_locations');
+
+        AlertSuccess("Success", "Data lowongan berhasil diperbarui!");
         return redirect('vacancies');
     }
 

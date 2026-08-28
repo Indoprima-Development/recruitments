@@ -67,13 +67,13 @@
                         aria-expanded="false">
                         <div class="d-flex align-items-center">
                             <div class="user-profile-img">
-                                @if (Auth::user()->photo)
+                                @if (Auth::user()?->photo)
                                     <img src="{{ asset(Auth::user()->photo) }}" class="rounded-circle object-fit-cover"
                                         width="35" height="35" alt="" />
                                 @else
                                     <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold"
                                         style="width: 35px; height: 35px; font-size: 0.9rem;">
-                                        {{ substr(Auth::user()->name, 0, 1) }}
+                                        {{ substr(Auth::user()?->name ?? 'U', 0, 1) }}
                                     </div>
                                 @endif
                             </div>
@@ -86,20 +86,20 @@
                                 <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
                             </div>
                             <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-                                @if (Auth::user()->photo)
+                                @if (Auth::user()?->photo)
                                     <img src="{{ asset(Auth::user()->photo) }}" class="rounded-circle object-fit-cover"
                                         width="80" height="80" alt="" />
                                 @else
                                     <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold"
                                         style="width: 80px; height: 80px; font-size: 2rem;">
-                                        {{ substr(Auth::user()->name, 0, 1) }}
+                                        {{ substr(Auth::user()?->name ?? 'U', 0, 1) }}
                                     </div>
                                 @endif
                                 <div class="ms-3">
-                                    <h5 class="mb-1 fs-3">{{ Auth::user()->name }}</h5>
-                                    <span class="mb-1 d-block text-dark">{{ Auth::user()->role }}</span>
+                                    <h5 class="mb-1 fs-3">{{ Auth::user()?->name ?? 'User' }}</h5>
+                                    <span class="mb-1 d-block text-dark">{{ Auth::user()?->role ?? 'Guest' }}</span>
                                     <p class="mb-0 d-flex text-dark align-items-center gap-2">
-                                        <i class="ti ti-mail fs-4"></i> {{ Auth::user()->email }}
+                                        <i class="ti ti-mail fs-4"></i> {{ Auth::user()?->email ?? '-' }}
                                     </p>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@
                                     </div>
                                 </a>
 
-                                @if (Auth::user()->role == 'ADMIN')
+                                @if (strtoupper(Auth::user()?->role ?? '') == 'ADMIN')
                                     <a href="{{ url('home') }}" class="py-8 px-7 d-flex align-items-center">
                                         <span
                                             class="d-flex align-items-center justify-content-center bg-light rounded-1 p-6">

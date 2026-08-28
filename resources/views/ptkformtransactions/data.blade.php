@@ -421,6 +421,31 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="col-6 col-md">
+                    <select id="filterYear" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">📅 Semua Tahun</option>
+                        @foreach ($years as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-6 col-md">
+                    <select id="filterMonth" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">🗓️ Semua Bulan</option>
+                        @php
+                            $months = [
+                                1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                                5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                                9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+                            ];
+                        @endphp
+                        @foreach ($months as $num => $label)
+                            <option value="{{ $num }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -528,6 +553,8 @@
                         d.university = $('#filterUniversity').val();
                         d.experience = $('#filterExperience').val();
                         d.domicile = $('#filterDomicile').val();
+                        d.year = $('#filterYear').val();
+                        d.month = $('#filterMonth').val();
                     }
                 },
                 columns: [{
@@ -593,7 +620,7 @@
             $('#loadingOverlay').fadeOut(100);
 
             // Listeners: every filter change reloads page 1 from the server
-            $('#filterGpa, #filterEducation, #filterExperience').on('change', function() {
+            $('#filterGpa, #filterEducation, #filterExperience, #filterYear, #filterMonth').on('change', function() {
                 table.ajax.reload();
             });
 

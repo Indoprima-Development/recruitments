@@ -3,426 +3,303 @@
 @section('addCss')
     <link rel="stylesheet" href="{{ asset('package/dist/libs/quill/dist/quill.snow.css') }}">
     <link rel="stylesheet" href="{{ asset('package/dist/libs/sweetalert2/dist/sweetalert2.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <style>
         :root {
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
+            --primary-subtle: #eff6ff;
+            --primary-border: #bfdbfe;
             --secondary: #64748b;
-            --secondary-bg: #f8fafc;
             --success: #10b981;
             --danger: #ef4444;
             --border-color: #e2e8f0;
             --text-main: #0f172a;
-            --text-secondary: #475569;
-            --bg-body: #f1f5f9;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --input-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --radius-md: 0.5rem;
-            --radius-lg: 0.75rem;
+            --text-muted: #64748b;
+            --bg-card: #ffffff;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
         }
 
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            /* Setup font if available or fallback */
-        }
-
-        /* -------------------------------- */
-        /* WIZARD CONTAINER OVERRIDES       */
-        /* -------------------------------- */
-
-        .wizard-card {
-            background: white;
+        .create-wizard-card {
+            background: var(--bg-card);
             border-radius: var(--radius-lg);
-            box-shadow: var(--card-shadow);
-            padding: 2rem;
-            position: relative;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
             overflow: hidden;
-            /* Prevent overflow but handled carefully */
         }
 
-        /* Fix JQuery Steps Overlapping Content Issue */
-        .wizard.vertical>.content {
-            display: block;
-            /* ensure block display */
-            width: 100%;
-        }
-
-        /* Ensure the content steps don't collapse */
-        .wizard>.content {
-            background: transparent;
-            border: none;
-            min-height: 500px;
-            /* Give enough height */
-            margin: 0;
-            padding: 0;
-            overflow: visible;
-            /* Important for tooltips/dropdowns */
-        }
-
-        /* Reset the body position to static to properly stack content */
-        .wizard>.content>.body {
-            float: none;
-            position: static;
-            width: 100%;
-            height: auto;
-            padding: 1rem 0;
-        }
-
-        /* -------------------------------- */
-        /* WIZARD HEADER (STEPS INDICATOR)  */
-        /* -------------------------------- */
-
-        .wizard>.steps {
-            margin-bottom: 2rem;
+        /* Stepper Navigation */
+        .stepper-header {
+            background: #f8fafc;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1.5rem;
+            padding: 1.25rem 1.5rem;
         }
 
-        .wizard>.steps>ul {
+        .stepper-list {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             list-style: none;
-            padding: 0;
             margin: 0;
-            width: 100%;
+            padding: 0;
             position: relative;
         }
 
-        .wizard>.steps>ul>li {
+        .stepper-list::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 3px;
+            background: var(--border-color);
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .stepper-item {
             position: relative;
+            z-index: 2;
             text-align: center;
             flex: 1;
         }
 
-        /* Connector Line Background */
-        .wizard>.steps>ul>li::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            /* adjusted to center of circle */
-            left: 50%;
-            width: 100%;
-            height: 3px;
-            background-color: var(--border-color);
-            z-index: 0;
-            transform: translateY(-50%);
-        }
-
-        .wizard>.steps>ul>li:last-child::after {
-            display: none;
-        }
-
-        /* Active Connector Line Color */
-        .wizard>.steps>ul>li.current::after,
-        .wizard>.steps>ul>li.done::after {
-            background-color: var(--primary);
-            transition: background-color 0.4s ease;
-        }
-
-        /* The Link Styles */
-        .wizard>.steps>ul>li>a {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            position: relative;
-            z-index: 1;
-            /* Above line */
-        }
-
-        /* The Number Circle */
-        .wizard>.steps>ul>li>a .number {
-            width: 40px;
-            height: 40px;
-            background-color: white;
+        .stepper-btn {
+            background: #ffffff;
             border: 2px solid var(--border-color);
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            color: var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
         }
 
-        /* Step Label */
-        .wizard>.steps>ul>li>a .title-text {
-            font-size: 0.85rem;
+        .stepper-label {
+            display: block;
+            font-size: 0.82rem;
             font-weight: 600;
-            color: var(--text-secondary);
-            background-color: white;
-            /* Cover line if needed */
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+            transition: all 0.3s;
         }
 
-        /* Current Step State */
-        .wizard>.steps>ul>li.current>a .number {
+        .stepper-item.active .stepper-btn {
+            background: var(--primary);
             border-color: var(--primary);
-            background-color: var(--primary);
-            color: white;
-            box-shadow: 0 0 0 4px var(--primary-light);
+            color: #ffffff;
+            box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
             transform: scale(1.1);
         }
 
-        .wizard>.steps>ul>li.current>a .title-text {
+        .stepper-item.active .stepper-label {
             color: var(--primary);
             font-weight: 700;
         }
 
-        /* Done Step State */
-        .wizard>.steps>ul>li.done>a .number {
+        .stepper-item.completed .stepper-btn {
+            background: var(--success);
             border-color: var(--success);
-            background-color: var(--success);
-            color: white;
+            color: #ffffff;
         }
 
-        .wizard>.steps>ul>li.done>a .title-text {
+        .stepper-item.completed .stepper-label {
             color: var(--success);
         }
 
-        /* Error Step State */
-        .wizard>.steps>ul>li.error>a .number {
-            border-color: var(--danger);
-            color: var(--danger);
+        /* Wizard Step Content */
+        .step-content {
+            display: none;
+            padding: 2rem 2.5rem;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
-
-        /* -------------------------------- */
-        /* ACTIONS (BUTTONS) FIXED          */
-        /* -------------------------------- */
-
-        .wizard>.actions {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            text-align: right;
+        .step-content.active {
+            display: block;
         }
 
-        .wizard>.actions>ul {
-            display: inline-flex;
-            gap: 1rem;
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .wizard>.actions>ul>li {
-            margin: 0;
-        }
-
-        .wizard>.actions>ul>li>a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-            font-size: 0.95rem;
-        }
-
-        /* Previous Button */
-        .wizard>.actions>ul>li>a[href="#previous"] {
-            background: white;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-
-        .wizard>.actions>ul>li>a[href="#previous"]:hover {
-            background: var(--secondary-bg);
-            border-color: #cbd5e1;
-        }
-
-        /* Next Button */
-        .wizard>.actions>ul>li>a[href="#next"] {
-            background: var(--primary);
-            color: white;
-            border: 1px solid var(--primary);
-            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
-        }
-
-        .wizard>.actions>ul>li>a[href="#next"]:hover {
-            background: var(--primary-hover);
-        }
-
-        /* Finish Button (Distinct Style) */
-        .wizard>.actions>ul>li>a[href="#finish"] {
-            display: inline-flex !important;
-            /* Force display */
-            background: var(--success);
-            color: white;
-            border: 1px solid var(--success);
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
-        }
-
-        .wizard>.actions>ul>li>a[href="#finish"]:hover {
-            background: #059669;
-            /* darker success */
-        }
-
-        /* Disabled Buttons */
-        .wizard>.actions>ul>li.disabled>a {
-            opacity: 0.5;
-            pointer-events: none;
-            background: #e2e8f0;
-            color: #94a3b8;
-            border-color: #e2e8f0;
-            box-shadow: none;
-        }
-
-
-        /* -------------------------------- */
-        /* FORM COMPONENTS                  */
-        /* -------------------------------- */
-
-        .section-header {
-            margin-bottom: 1.5rem;
-            background: var(--primary-light);
-            padding: 1rem;
+        /* Section Banner */
+        .section-intro-card {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+            border: 1px solid #bfdbfe;
             border-radius: var(--radius-md);
-            border-left: 4px solid var(--primary);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
-        .section-header i {
+        .section-intro-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .section-header h5 {
-            margin: 0;
-            font-weight: 700;
-            color: var(--primary-dark);
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
         }
 
         .form-label {
+            font-size: 0.875rem;
             font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control, .form-select {
+            border: 1.5px solid var(--border-color);
+            border-radius: 0.6rem;
+            padding: 0.7rem 1rem;
+            font-size: 0.925rem;
             color: var(--text-main);
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            transition: all 0.2s ease;
         }
 
-        /* Input Styles */
-        .form-control,
-        .form-select {
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--border-color);
-            font-size: 0.95rem;
-            box-shadow: var(--input-shadow);
-            transition: all 0.2s;
-        }
-
-        .form-control:focus,
-        .form-select:focus {
+        .form-control:focus, .form-select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
 
-        .input-group-text {
-            background-color: #f1f5f9;
-            border-color: var(--border-color);
-            color: var(--secondary);
+        .form-control.is-invalid, .form-select.is-invalid {
+            border-color: var(--danger);
+            background-image: none;
         }
 
-        /* Quill Editor Fixes */
+        .invalid-feedback-custom {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        /* Quill */
         .ql-toolbar.ql-snow {
-            border-top-left-radius: var(--radius-md);
-            border-top-right-radius: var(--radius-md);
+            border-top-left-radius: 0.6rem;
+            border-top-right-radius: 0.6rem;
             border-color: var(--border-color);
-            background-color: #f8fafc;
+            background: #f8fafc;
         }
 
         .ql-container.ql-snow {
-            border-bottom-left-radius: var(--radius-md);
-            border-bottom-right-radius: var(--radius-md);
+            border-bottom-left-radius: 0.6rem;
+            border-bottom-right-radius: 0.6rem;
             border-color: var(--border-color);
-            min-height: 150px;
+            min-height: 160px;
+            font-family: inherit;
+            font-size: 0.95rem;
         }
 
-        /* Help Text */
-        .help-text {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-        }
-
-        /* Experience Items */
+        /* Experience Box */
         .experience-card {
-            background: #fff;
+            background: #f8fafc;
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 1.25rem;
-            margin-bottom: 1rem;
+            border-radius: 0.6rem;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.85rem;
             position: relative;
             transition: all 0.2s;
-            animation: fadeInDown 0.3s ease-out;
         }
 
         .experience-card:hover {
-            border-color: var(--primary);
-            box-shadow: var(--input-shadow);
+            border-color: var(--primary-border);
+            background: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        .experience-card .delete-btn {
+        .btn-remove-exp {
             position: absolute;
             top: 10px;
             right: 10px;
-            color: var(--danger);
             background: #fee2e2;
+            color: var(--danger);
             border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            border-radius: 6px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .experience-card .delete-btn:hover {
+        .btn-remove-exp:hover {
             background: var(--danger);
             color: white;
         }
 
-        .btn-add-experience {
-            width: 100%;
-            background: #f0f9ff;
-            border: 2px dashed #bfdbfe;
+        .btn-add-exp {
+            background: var(--primary-subtle);
+            border: 2px dashed var(--primary-border);
             color: var(--primary);
-            padding: 1rem;
-            border-radius: var(--radius-md);
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.6rem;
             font-weight: 600;
-            transition: all 0.2s;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            transition: all 0.2s;
         }
 
-        .btn-add-experience:hover {
-            background: #e0f2fe;
+        .btn-add-exp:hover {
+            background: #dbeafe;
             border-color: var(--primary);
         }
 
-        /* Error Label */
-        label.error {
-            color: var(--danger);
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-            display: block;
-            font-weight: 500;
+        /* Live Preview Card */
+        .preview-box {
+            background: #ffffff;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .preview-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: #eff6ff;
+            color: var(--primary);
+        }
+
+        /* Footer Navigation */
+        .stepper-footer {
+            background: #f8fafc;
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 @endsection
@@ -432,296 +309,370 @@
         <!-- Header Page -->
         <div class="row mb-4 align-items-center">
             <div class="col-md-8">
-                <h3 class="fw-bold text-dark mb-1">Create Job Requisition (PTK)</h3>
-                <p class="text-muted mb-0">Fill out the wizard form below to submit a new personnel request.</p>
+                <h3 class="fw-bold text-dark mb-1">
+                    <i class="ti ti-briefcase text-primary me-2"></i>Tambah Vacancy / Lowongan Kerja
+                </h3>
+                <p class="text-muted mb-0">Isi formulir bertahap di bawah ini untuk membuka lowongan posisi baru.</p>
             </div>
             <div class="col-md-4 text-md-end mt-3 mt-md-0">
                 <a href="{{ route('ptkforms.index') }}" class="btn btn-outline-secondary rounded-pill px-4">
-                    <i class="ti ti-arrow-left me-2"></i> Back to List
+                    <i class="ti ti-arrow-left me-1"></i> Kembali ke Daftar
                 </a>
             </div>
         </div>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <strong>The form could not be submitted:</strong>
-                <ul class="mb-0">
+        @if (isset($errors) && $errors->any())
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 shadow-sm" role="alert">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="ti ti-alert-circle fs-5"></i>
+                    <strong>Mohon periksa kembali isian formulir:</strong>
+                </div>
+                <ul class="mb-0 ps-3">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
-        <!-- Main Wizard Card -->
-        <div class="wizard-card">
+        <!-- Main Stepper Card -->
+        <div class="create-wizard-card">
+            <!-- Stepper Header -->
+            <div class="stepper-header">
+                <ul class="stepper-list">
+                    <li class="stepper-item active" data-step="1">
+                        <button type="button" class="stepper-btn" onclick="goToStep(1)">1</button>
+                        <span class="stepper-label">1. Posisi & Struktur</span>
+                    </li>
+                    <li class="stepper-item" data-step="2">
+                        <button type="button" class="stepper-btn" onclick="goToStep(2)">2</button>
+                        <span class="stepper-label">2. Tanggung Jawab</span>
+                    </li>
+                    <li class="stepper-item" data-step="3">
+                        <button type="button" class="stepper-btn" onclick="goToStep(3)">3</button>
+                        <span class="stepper-label">3. Kualifikasi & Syarat</span>
+                    </li>
+                    <li class="stepper-item" data-step="4">
+                        <button type="button" class="stepper-btn" onclick="goToStep(4)">4</button>
+                        <span class="stepper-label">4. Publikasi & Review</span>
+                    </li>
+                </ul>
+            </div>
+
             {!! Form::open([
                 'route' => 'ptkforms.store',
                 'id' => 'formptk',
-                'class' => 'ptk-wizard',
                 'autocomplete' => 'off',
             ]) !!}
 
-            <!-- STEP 1 -->
-            <h6>Position</h6>
-            <section>
-                <div class="section-header">
-                    <i class="ti ti-briefcase"></i>
+            <!-- STEP 1: Posisi & Organisasi -->
+            <div class="step-content active" id="step-1">
+                <div class="section-intro-card">
+                    <div class="section-intro-icon">
+                        <i class="ti ti-building-skyscraper"></i>
+                    </div>
                     <div>
-                        <h5>Position Details</h5>
-                        <small class="text-dark">Specify the basic information for the position.</small>
+                        <h5 class="fw-bold mb-1 text-dark">Informasi Posisi & Penempatan</h5>
+                        <p class="text-muted small mb-0">Tentukan jabatan, status kepegawaian, struktur divisi/departemen, dan lokasi kerja.</p>
                     </div>
                 </div>
 
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label class="form-label">Employment Status <span class="text-danger">*</span></label>
-                        <select class="form-select" name="status_pegawai" required>
-                            <option value="" disabled selected>Select Status</option>
-                            <option value="Staff">Staff</option>
+                        <label class="form-label">Job Title / Posisi <span class="text-danger">*</span></label>
+                        <select class="form-select" id="jobtitle_id" name="jobtitle_id" required>
+                            <option value="" disabled selected>-- Pilih Posisi / Job Title --</option>
+                            @foreach ($jobtitles as $j)
+                                <option value="{{ $j->id }}" data-section="{{ $j->section_id }}">{{ $j->jobtitle_name }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback-custom">Posisi wajib dipilih.</div>
+                        <div class="small text-muted mt-1">Pilih posisi yang akan dibuka lowongannya.</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Status Kepegawaian <span class="text-danger">*</span></label>
+                        <select class="form-select" id="status_pegawai" name="status_pegawai" required>
+                            <option value="" disabled selected>-- Pilih Status --</option>
+                            <option value="Staff" selected>Staff</option>
                             <option value="Non Staff">Non Staff</option>
                             <option value="Internship">Internship</option>
                             <option value="Apprenticeship">Apprenticeship</option>
                             <option value="Graduate Development Program">Graduate Development Program</option>
                             <option value="Assistant Manager">Assistant Manager</option>
                         </select>
-                        <div class="help-text">Type of employment contract.</div>
+                        <div class="invalid-feedback-custom">Status kepegawaian wajib dipilih.</div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label">Headcount Required <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="ti ti-users"></i></span>
-                            {{ Form::number('jumlah_kebutuhan_pegawai', null, ['class' => 'form-control', 'placeholder' => '1', 'min' => '1', 'required' => 'required']) }}
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label">Division <span class="text-danger">*</span></label>
-                        <select id="division" class="form-select" name="division_id" required>
-                            <option value="" disabled selected>Select Division</option>
+                    <div class="col-md-4">
+                        <label class="form-label">Divisi <span class="text-danger">*</span></label>
+                        <select id="division_id" class="form-select" name="division_id" required>
+                            <option value="" disabled selected>-- Pilih Divisi --</option>
                             @foreach ($divisions as $d)
                                 <option value="{{ $d->id }}">{{ $d->division_name }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback-custom">Divisi wajib dipilih.</div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label">Department <span class="text-danger">*</span></label>
-                        <select id="department" class="form-select" name="department_id" required>
-                            <option value="" disabled selected>Select Department</option>
+                    <div class="col-md-4">
+                        <label class="form-label">Departemen <span class="text-danger">*</span></label>
+                        <select id="department_id" class="form-select" name="department_id" required>
+                            <option value="" disabled selected>-- Pilih Departemen --</option>
                             @foreach ($departments as $d)
-                                <option class="adjustdivision division_{{ $d->division_id }}" style="display:none;"
-                                    value="{{ $d->id }}">
-                                    {{ $d->department_name }}</option>
+                                <option value="{{ $d->id }}" data-division="{{ $d->division_id }}">{{ $d->department_name }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback-custom">Departemen wajib dipilih.</div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label">Section <span class="text-danger">*</span></label>
-                        <select id="section" class="form-select" name="section_id" required>
-                            <option value="" disabled selected>Select Section</option>
-                            @foreach ($sections as $d)
-                                <option class="adjustdepartment department_{{ $d->department_id }}" style="display:none;"
-                                    value="{{ $d->id }}">
-                                    {{ $d->section_name }}</option>
+                    <div class="col-md-4">
+                        <label class="form-label">Section / Bagian <span class="text-danger">*</span></label>
+                        <select id="section_id" class="form-select" name="section_id" required>
+                            <option value="" disabled selected>-- Pilih Section --</option>
+                            @foreach ($sections as $s)
+                                <option value="{{ $s->id }}" data-department="{{ $s->department_id }}">{{ $s->section_name }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback-custom">Section wajib dipilih.</div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label">Job Position <span class="text-danger">*</span></label>
-                        <select class="form-select" name="jobtitle_id" required>
-                            <option value="" disabled selected>Select Job Title</option>
-                            @foreach ($jobtitles as $d)
-                                <option class="adjustsection section_{{ $d->section_id }}" style="display:none;"
-                                    value="{{ $d->id }}">
-                                    {{ $d->jobtitle_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <label class="form-label">Expected Start Date <span class="text-danger">*</span></label>
-                        {{ Form::date('date_startwork', null, ['class' => 'form-control', 'required' => 'required']) }}
-                    </div>
-
-                    <div class="col-12 col-md-6">
-                        <label class="form-label">Location</label>
-                        <select class="form-select" name="location_id">
-                            <option value="" disabled selected>Select Location</option>
+                    <div class="col-md-4">
+                        <label class="form-label">Lokasi Penempatan</label>
+                        <select class="form-select" name="location_id" id="location_id">
+                            <option value="" selected>Semua Area / Fleksibel</option>
                             @foreach ($locations as $loc)
                                 <option value="{{ $loc->id }}">{{ $loc->location_name }}</option>
                             @endforeach
                         </select>
+                        <div class="small text-muted mt-1">Lokasi penempatan kerja karyawan.</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Tanggal Estimasi Masuk Kerja <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" name="date_startwork" id="date_startwork" value="{{ date('Y-m-d') }}" required>
+                        <div class="invalid-feedback-custom">Tanggal mulai kerja wajib diisi.</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Jumlah Kebutuhan (Headcount)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="ti ti-users"></i></span>
+                            <input type="number" class="form-control" name="jumlah_kebutuhan_pegawai" id="jumlah_kebutuhan_pegawai" value="1" min="1" placeholder="1">
+                        </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- STEP 2 -->
-            <h6>Responsibility</h6>
-            <section>
-                <div class="section-header">
-                    <i class="ti ti-list-check"></i>
+            <!-- STEP 2: Tanggung Jawab & Scope -->
+            <div class="step-content" id="step-2">
+                <div class="section-intro-card">
+                    <div class="section-intro-icon">
+                        <i class="ti ti-list-check"></i>
+                    </div>
                     <div>
-                        <h5>Role Scope & Responsibilities</h5>
-                        <small class="text-dark">Define the reporting structure and key duties.</small>
+                        <h5 class="fw-bold mb-1 text-dark">Tugas & Tanggung Jawab Pekerjaan</h5>
+                        <p class="text-muted small mb-0">Tentukan atasan langsung, jumlah bawahan, dan rincian deskripsi tanggung jawab pekerjaan.</p>
                     </div>
                 </div>
 
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label class="form-label">Direct Supervisor <span class="text-danger">*</span></label>
-                        {{ Form::text('direct_superior', null, ['class' => 'form-control', 'placeholder' => 'e.g. Manager IT', 'required' => 'required']) }}
+                        <label class="form-label">Atasan Langsung (Direct Superior) <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="direct_superior" id="direct_superior" placeholder="contoh: Accounting Manager / Section Head" required>
+                        <div class="invalid-feedback-custom">Atasan langsung wajib diisi.</div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">Number of Subordinates</label>
-                        {{ Form::number('direct_junior', null, ['class' => 'form-control', 'placeholder' => '0', 'min' => '0']) }}
+                        <label class="form-label">Jumlah Bawahan Langsung (Direct Junior)</label>
+                        <input type="number" class="form-control" name="direct_junior" id="direct_junior" placeholder="0" value="0" min="0">
+                        <div class="small text-muted mt-1">Isi 0 jika posisi tidak memiliki bawahan langsung.</div>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">Job Description / Key Responsibilities <span
-                                class="text-danger">*</span></label>
-                        {{ Form::hidden('responsibility', null, ['id' => 'responsibility']) }}
-                        <div class="responsibility"></div>
-                        <div class="help-text text-end">Please list the main tasks concisely.</div>
+                        <label class="form-label">Deskripsi Pekerjaan & Tanggung Jawab (Job Responsibilities)</label>
+                        <input type="hidden" name="responsibility" id="responsibility">
+                        <div id="editor-responsibility" class="responsibility"></div>
+                        <div class="small text-muted mt-1">Gunakan poin-poin (bullet list) untuk memudahkan pelamar membaca tugas utama.</div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- STEP 3 -->
-            <h6>Requirements</h6>
-            <section>
-                <div class="section-header">
-                    <i class="ti ti-school"></i>
+            <!-- STEP 3: Kualifikasi & Persyaratan -->
+            <div class="step-content" id="step-3">
+                <div class="section-intro-card">
+                    <div class="section-intro-icon">
+                        <i class="ti ti-school"></i>
+                    </div>
                     <div>
-                        <h5>Qualifications & Requirements</h5>
-                        <small class="text-dark">Set criteria for the ideal candidate.</small>
+                        <h5 class="fw-bold mb-1 text-dark">Kualifikasi & Kriteria Kandidat</h5>
+                        <p class="text-muted small mb-0">Tetapkan standar pendidikan, jurusan, IPK, jenis kelamin, keahlian khusus, dan pengalaman kerja.</p>
                     </div>
                 </div>
 
                 <div class="row g-4">
                     <div class="col-md-4">
-                        <label class="form-label">Education <span class="text-danger">*</span></label>
-                        <select class="form-select" name="education_id" required>
-                            <option value="" disabled selected>Min. Education</option>
+                        <label class="form-label">Minimal Pendidikan <span class="text-danger">*</span></label>
+                        <select class="form-select" name="education_id" id="education_id" required>
+                            <option value="" disabled selected>-- Pilih Pendidikan --</option>
                             @foreach ($educations as $d)
                                 <option value="{{ $d->id }}">{{ $d->education_name }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback-custom">Pendidikan wajib dipilih.</div>
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label">Major <span class="text-danger">*</span></label>
-                        <select class="form-select" name="major_id" required>
-                            <option value="" disabled selected>Required Major</option>
+                        <label class="form-label">Jurusan / Program Studi <span class="text-danger">*</span></label>
+                        <select class="form-select" name="major_id" id="major_id" required>
+                            <option value="" disabled selected>-- Pilih Jurusan --</option>
                             @foreach ($majors as $d)
                                 <option value="{{ $d->id }}">{{ $d->major_name }}</option>
                             @endforeach
                         </select>
+                        <div class="invalid-feedback-custom">Jurusan wajib dipilih.</div>
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label">Min. GPA (IPK) <span class="text-danger">*</span></label>
-                        {{ Form::number('ipk', null, ['class' => 'form-control', 'step' => '0.01', 'placeholder' => '3.00', 'required' => 'required']) }}
+                        <label class="form-label">Minimal IPK (GPA) <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" class="form-control" name="ipk" id="ipk" value="3.00" min="0" max="4.00" placeholder="3.00" required>
+                        <div class="invalid-feedback-custom">Minimal IPK wajib diisi angka (contoh: 3.00).</div>
                     </div>
 
                     <div class="col-md-12">
-                        <label class="form-label">Gender Preference</label>
-                        <div class="d-flex gap-3">
+                        <label class="form-label d-block">Preferensi Jenis Kelamin <span class="text-danger">*</span></label>
+                        <div class="d-flex gap-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" id="gender0"
-                                    value="0" checked>
-                                <label class="form-check-label" for="gender0">Any Gender</label>
+                                <input class="form-check-input" type="radio" name="gender" id="gender0" value="0" checked>
+                                <label class="form-check-label fw-semibold" for="gender0">Semua Jenis Kelamin (Laki-laki / Perempuan)</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" id="gender1"
-                                    value="1">
-                                <label class="form-check-label" for="gender1">Male</label>
+                                <input class="form-check-input" type="radio" name="gender" id="gender1" value="1">
+                                <label class="form-check-label fw-semibold" for="gender1">Laki-laki</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" id="gender2"
-                                    value="2">
-                                <label class="form-check-label" for="gender2">Female</label>
+                                <input class="form-check-input" type="radio" name="gender" id="gender2" value="2">
+                                <label class="form-check-label fw-semibold" for="gender2">Perempuan</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">Required Experiences</label>
+                        <label class="form-label">Persyaratan Pengalaman Kerja (Opsional)</label>
                         <div id="pengalamanContainer"></div>
-                        <button type="button" id="addPengalaman" class="btn-add-experience mt-2">
-                            <i class="ti ti-plus"></i> Add Experience
+                        <button type="button" id="addPengalaman" class="btn-add-exp mt-2">
+                            <i class="ti ti-plus"></i> Tambah Bidang Pengalaman Kerja
                         </button>
                     </div>
 
-                    <div class="col-12 mt-3">
-                        <label class="form-label">Special Skills / Additional Conditions</label>
-                        {{ Form::hidden('special_conditions', null, ['id' => 'special_conditions']) }}
-                        <div class="special_conditions"></div>
+                    <div class="col-12">
+                        <label class="form-label">Kualifikasi Tambahan / Keahlian Khusus (Requirements)</label>
+                        <input type="hidden" name="special_conditions" id="special_conditions">
+                        <div id="editor-special_conditions" class="special_conditions"></div>
+                        <div class="small text-muted mt-1">Cantumkan syarat bahasa (misal Mandarin HSK 3), keahlian software, sertifikasi, dll.</div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- STEP 4 -->
-            <h6>Justification</h6>
-            <section>
-                <div class="section-header">
-                    <i class="ti ti-file-text"></i>
+            <!-- STEP 4: Justifikasi & Jadwal Publikasi -->
+            <div class="step-content" id="step-4">
+                <div class="section-intro-card">
+                    <div class="section-intro-icon">
+                        <i class="ti ti-send"></i>
+                    </div>
                     <div>
-                        <h5>Final Justification</h5>
-                        <small class="text-dark">Explain why this position is needed.</small>
+                        <h5 class="fw-bold mb-1 text-dark">Jadwal Publikasi & Finalisasi</h5>
+                        <p class="text-muted small mb-0">Tentukan status lowongan, periode aktif di website karir, dan review ringkasan lowongan.</p>
                     </div>
                 </div>
 
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label class="form-label">Basis of Request <span class="text-danger">*</span></label>
-                        <select class="form-select" name="request_basis" required>
-                            <option value="" disabled selected>Select Basis</option>
-                            <option value="Peningkatan Volume Kerja">Workload Increase</option>
-                            <option value="Pengembangan Struktur Organisasi">Organizational Structural Development</option>
+                        <label class="form-label">Status Lowongan</label>
+                        <select class="form-select fw-bold text-success" name="status" id="status">
+                            <option value="1" selected class="text-success">● Aktif / Open (Ditampilkan di Website Karir)</option>
+                            <option value="0" class="text-danger">● Tutup / Closed (Disembunyikan)</option>
+                            <option value="2" class="text-warning">● Draft</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Tanggal Buka Lowongan</label>
+                        <input type="date" class="form-control" name="date_open_vacancy" id="date_open_vacancy" value="{{ date('Y-m-d') }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Tanggal Tutup Lowongan</label>
+                        <input type="date" class="form-control" name="date_closed_vacancy" id="date_closed_vacancy" value="{{ date('Y-m-d', strtotime('+5 years')) }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Dasar Permintaan (Basis of Request)</label>
+                        <select class="form-select" name="request_basis">
+                            <option value="Peningkatan Volume Kerja" selected>Peningkatan Volume Kerja</option>
+                            <option value="Pengembangan Struktur Organisasi">Pengembangan Struktur Organisasi</option>
                         </select>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">Request Type <span class="text-danger">*</span></label>
-                        <select class="form-select" name="request_basis_for" required>
-                            <option value="" disabled selected>Select Type</option>
-                            <option value="Resign">Replacement (Resignation)</option>
-                            <option value="Mutasi">Replacement (Mutation)</option>
-                            <option value="Promosi">Promotion</option>
-                            <option value="Lainya">Other</option>
+                        <label class="form-label">Alasan Permintaan (Request Type)</label>
+                        <select class="form-select" name="request_basis_for">
+                            <option value="Pengembangan Struktur Organisasi" selected>Pengembangan Struktur Organisasi</option>
+                            <option value="Resign">Penggantian Karyawan (Resign)</option>
+                            <option value="Mutasi">Penggantian Karyawan (Mutasi)</option>
+                            <option value="Promosi">Promosi</option>
+                            <option value="Lainya">Lainnya</option>
                         </select>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label">Additional Remarks</label>
-                        {{ Form::hidden('general_others', null, ['id' => 'general_others']) }}
-                        <div class="general_others"></div>
+                        <label class="form-label">Catatan Tambahan (Additional Remarks)</label>
+                        <input type="hidden" name="general_others" id="general_others">
+                        <div id="editor-general_others" class="general_others"></div>
                     </div>
 
-                    <div class="col-12">
-                        <div class="alert alert-light-primary d-flex align-items-center" role="alert">
-                            <i class="ti ti-info-circle fs-4 me-2"></i>
-                            <div>
-                                Please review all entered information before submitting. Once submitted, the request will
-                                enter the approval workflow.
+                    <!-- Live Summary Preview -->
+                    <div class="col-12 mt-4">
+                        <label class="form-label fw-bold"><i class="ti ti-eye me-1"></i> Preview Ringkasan Lowongan</label>
+                        <div class="preview-box">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <span class="preview-badge mb-2"><i class="ti ti-briefcase"></i> <span id="preview-status-pegawai">Staff</span></span>
+                                    <h4 class="fw-bold text-dark mb-1" id="preview-title">Judul Posisi Lowongan</h4>
+                                    <p class="text-muted small mb-0" id="preview-dept">Departemen / Divisi</p>
+                                </div>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-bold">
+                                    <i class="ti ti-circle-check me-1"></i> Siap Publikasi
+                                </span>
+                            </div>
+                            <div class="row g-2 pt-2 border-top small text-secondary">
+                                <div class="col-md-4"><strong>Pendidikan:</strong> <span id="preview-edu">-</span></div>
+                                <div class="col-md-4"><strong>Jurusan:</strong> <span id="preview-major">-</span></div>
+                                <div class="col-md-4"><strong>Min. IPK:</strong> <span id="preview-ipk">3.00</span></div>
+                                <div class="col-md-4"><strong>Lokasi:</strong> <span id="preview-loc">Semua Area</span></div>
+                                <div class="col-md-4"><strong>Supervisor:</strong> <span id="preview-sup">-</span></div>
+                                <div class="col-md-4"><strong>Periode:</strong> <span id="preview-period">{{ date('d M Y') }} - Seterusnya</span></div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Manual Submit Button Backup -->
-                    <div class="col-12 text-end mt-4">
-                        <button type="button" class="btn btn-success rounded-pill px-4 py-2 fw-bold"
-                            onclick="submitFormManual()">
-                            <i class="ti ti-send me-2"></i> Submit Request
-                        </button>
-                    </div>
                 </div>
-            </section>
+            </div>
+
+            <!-- Stepper Footer -->
+            <div class="stepper-footer">
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" id="btnPrev" onclick="prevStep()" style="display: none;">
+                    <i class="ti ti-chevron-left me-1"></i> Sebelumnya
+                </button>
+                <div class="ms-auto d-flex gap-2">
+                    <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm" id="btnNext" onclick="nextStep()">
+                        Selanjutnya <i class="ti ti-chevron-right ms-1"></i>
+                    </button>
+                    <button type="button" class="btn btn-success rounded-pill px-4 shadow-sm" id="btnSubmit" onclick="confirmSubmit()" style="display: none;">
+                        <i class="ti ti-check me-1"></i> Simpan & Publikasikan
+                    </button>
+                </div>
+            </div>
 
             {!! Form::close() !!}
         </div>
@@ -730,187 +681,321 @@
 
 @section('addJs')
     <script src="{{ asset('package/dist/libs/quill/dist/quill.min.js') }}"></script>
-    <script src="{{ asset('package/dist/libs/jquery-steps/build/jquery.steps.min.js') }}"></script>
-    <script src="{{ asset('package/dist/libs/jquery-validation/dist/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('package/dist/libs/sweetalert2/dist/sweetalert2.min.js') }}"></script>
 
     <script>
-        // Define submit function globally so explicit button can call it
-        function submitFormManual() {
-            var form = $("#formptk");
-            if (form.valid()) {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "Do you want to submit this PTK request?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#10b981',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Submit!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            } else {
-                // Show validation error on the last step if any
-                form.validate().focusInvalid();
+        // Master Data Structures for robust dynamic cascading
+        var masterSections = @json($sections);
+        var masterDepartments = @json($departments);
+        var masterJobtitles = @json($jobtitles);
+        var masterFields = @json($fields);
+
+        var currentStep = 1;
+        var totalSteps = 4;
+        var quillResponsibility, quillSpecial, quillOthers;
+
+        // Initialize Quill Editors
+        function initQuillEditors() {
+            var toolbarOptions = [
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['clean']
+            ];
+
+            quillResponsibility = new Quill('#editor-responsibility', {
+                theme: 'snow',
+                placeholder: 'Tuliskan rincian tugas dan tanggung jawab utama...',
+                modules: { toolbar: toolbarOptions }
+            });
+
+            quillSpecial = new Quill('#editor-special_conditions', {
+                theme: 'snow',
+                placeholder: 'Tuliskan kualifikasi tambahan, sertifikasi, kemampuan bahasa, dll...',
+                modules: { toolbar: toolbarOptions }
+            });
+
+            quillOthers = new Quill('#editor-general_others', {
+                theme: 'snow',
+                placeholder: 'Catatan tambahan terkait lowongan (opsional)...',
+                modules: { toolbar: toolbarOptions }
+            });
+
+            // Live sync to hidden inputs
+            quillResponsibility.on('text-change', function() {
+                $('#responsibility').val(quillResponsibility.root.innerHTML);
+            });
+            quillSpecial.on('text-change', function() {
+                $('#special_conditions').val(quillSpecial.root.innerHTML);
+            });
+            quillOthers.on('text-change', function() {
+                $('#general_others').val(quillOthers.root.innerHTML);
+            });
+        }
+
+        // Stepper Navigation Logic
+        function goToStep(step) {
+            if (step > currentStep && !validateCurrentStep()) {
+                return;
+            }
+            syncQuillData();
+            showStep(step);
+        }
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                syncQuillData();
+                if (currentStep < totalSteps) {
+                    showStep(currentStep + 1);
+                }
             }
         }
 
-        $(document).ready(function() {
-            var form = $("#formptk");
-
-            // 1. Initialize Validation
-            form.validate({
-                errorClass: "error",
-                errorElement: "label",
-                highlight: function(element) {
-                    $(element).addClass("is-invalid");
-                },
-                unhighlight: function(element) {
-                    $(element).removeClass("is-invalid");
-                }
-            });
-
-            // 2. Initialize Steps Wizard
-            form.children("div").steps({
-                headerTag: "h6",
-                bodyTag: "section",
-                transitionEffect: "fade",
-                titleTemplate: '<span class="number">#index#</span> <span class="title-text">#title#</span>',
-                labels: {
-                    finish: "Submit Request",
-                    next: "Next",
-                    previous: "Back"
-                },
-                onStepChanging: function(event, currentIndex, newIndex) {
-                    // Always allow going back
-                    if (currentIndex > newIndex) {
-                        return true;
-                    }
-
-                    // Validate current step
-                    if (currentIndex < newIndex) {
-                        form.find(".body:eq(" + currentIndex + ") label.error").remove();
-                        form.find(".body:eq(" + currentIndex + ") .error").removeClass("error");
-                    }
-
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                    return form.valid();
-                },
-                onFinishing: function(event, currentIndex) {
-                    form.validate().settings.ignore = ":disabled";
-                    return form.valid();
-                },
-                onFinished: function(event, currentIndex) {
-                    submitFormManual();
-                }
-            });
-
-            // 3. Setup Dependent Dropdowns
-            function setupDependency(sourceId, targetId, prefix) {
-                $("#" + sourceId).change(function() {
-                    var val = $(this).val();
-                    var target = $("#" + targetId);
-
-                    target.find("option").each(function() {
-                        if ($(this).val() == "") {
-                            $(this).show(); // Always show placeholder
-                        } else if ($(this).hasClass(prefix + val)) {
-                            $(this).show();
-                        } else {
-                            $(this).hide();
-                        }
-                    });
-
-                    target.val(""); // Reset selection
-                });
+        function prevStep() {
+            syncQuillData();
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
             }
+        }
 
-            setupDependency('division', 'department', 'division_');
-            setupDependency('department', 'section', 'department_');
+        function showStep(step) {
+            $('.step-content').removeClass('active');
+            $('#step-' + step).addClass('active');
 
-            $("#section").change(function() {
-                var val = $(this).val();
-                var target = $("select[name='jobtitle_id']");
-
-                target.find("option").each(function() {
-                    if ($(this).val() == "") {
-                        $(this).show();
-                    } else if ($(this).hasClass('section_' + val)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-
-                target.val("");
-            });
-
-            // 4. Initialize Quill Editors
-            function initQuill(id) {
-                var element = document.querySelector("." + id);
-                if (element) {
-                    var quill = new Quill(element, {
-                        theme: "snow",
-                        placeholder: 'Type details here...',
-                        modules: {
-                            toolbar: [
-                                ['bold', 'italic', 'underline'],
-                                [{
-                                    'list': 'ordered'
-                                }, {
-                                    'list': 'bullet'
-                                }],
-                                ['clean']
-                            ]
-                        }
-                    });
-
-                    quill.on('text-change', function() {
-                        $("#" + id).val(quill.root.innerHTML);
-                    });
-
-                    // Initial load if any
-                    var existingVal = $("#" + id).val();
-                    if (existingVal) {
-                        quill.root.innerHTML = existingVal;
-                    }
+            $('.stepper-item').removeClass('active');
+            for (var i = 1; i <= totalSteps; i++) {
+                var item = $('.stepper-item[data-step="' + i + '"]');
+                if (i === step) {
+                    item.addClass('active').removeClass('completed');
+                } else if (i < step) {
+                    item.addClass('completed').removeClass('active');
+                } else {
+                    item.removeClass('active completed');
                 }
             }
 
-            ['responsibility', 'special_conditions', 'general_others'].forEach(initQuill);
+            currentStep = step;
 
-            // 5. Dynamic Experience
-            $("#addPengalaman").click(function() {
-                var html = `
-                    <div class="experience-card">
-                        <button type="button" class="delete-btn deletePengalaman">
+            // Manage buttons
+            if (currentStep === 1) {
+                $('#btnPrev').hide();
+            } else {
+                $('#btnPrev').show();
+            }
+
+            if (currentStep === totalSteps) {
+                $('#btnNext').hide();
+                $('#btnSubmit').show();
+                updateLivePreview();
+            } else {
+                $('#btnNext').show();
+                $('#btnSubmit').hide();
+            }
+
+            window.scrollTo({ top: $('.create-wizard-card').offset().top - 20, behavior: 'smooth' });
+        }
+
+        function syncQuillData() {
+            if (quillResponsibility) $('#responsibility').val(quillResponsibility.root.innerHTML);
+            if (quillSpecial) $('#special_conditions').val(quillSpecial.root.innerHTML);
+            if (quillOthers) $('#general_others').val(quillOthers.root.innerHTML);
+        }
+
+        function validateCurrentStep() {
+            var isValid = true;
+            var currentPanel = $('#step-' + currentStep);
+
+            currentPanel.find('input[required], select[required], textarea[required]').each(function() {
+                var field = $(this);
+                var val = field.val();
+                if (!val || (Array.isArray(val) && val.length === 0) || val.toString().trim() === '') {
+                    field.addClass('is-invalid');
+                    field.closest('div').find('.invalid-feedback-custom').show();
+                    isValid = false;
+                } else {
+                    field.removeClass('is-invalid');
+                    field.closest('div').find('.invalid-feedback-custom').hide();
+                }
+            });
+
+            if (!isValid) {
+                var firstInvalid = currentPanel.find('.is-invalid:first');
+                if (firstInvalid.length) {
+                    firstInvalid.focus();
+                }
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Lengkapi Data Wajib',
+                    text: 'Mohon isi semua bidang bertanda bintang (*) sebelum melanjutkan.',
+                    confirmButtonColor: '#2563eb'
+                });
+            }
+
+            return isValid;
+        }
+
+        function updateLivePreview() {
+            var title = $('#jobtitle_id option:selected').text();
+            if ($('#jobtitle_id').val()) $('#preview-title').text(title);
+            
+            var dept = $('#department_id option:selected').text();
+            var div = $('#division_id option:selected').text();
+            if ($('#department_id').val()) $('#preview-dept').text(dept + ' - ' + div);
+
+            $('#preview-status-pegawai').text($('#status_pegawai').val() || 'Staff');
+            $('#preview-edu').text($('#education_id option:selected').text() || '-');
+            $('#preview-major').text($('#major_id option:selected').text() || '-');
+            $('#preview-ipk').text($('#ipk').val() || '3.00');
+            $('#preview-loc').text($('#location_id option:selected').text() || 'Semua Area');
+            $('#preview-sup').text($('#direct_superior').val() || '-');
+            
+            var openDate = $('#date_open_vacancy').val();
+            var closeDate = $('#date_closed_vacancy').val();
+            if (openDate && closeDate) {
+                $('#preview-period').text(openDate + ' s/d ' + closeDate);
+            }
+        }
+
+        function confirmSubmit() {
+            syncQuillData();
+            if (!validateCurrentStep()) return;
+
+            Swal.fire({
+                title: 'Konfirmasi Publikasi Lowongan',
+                text: 'Apakah Anda yakin data lowongan sudah lengkap dan siap disimpan?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: '<i class="ti ti-check me-1"></i> Ya, Publikasikan!',
+                cancelButtonText: 'Periksa Lagi'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Menyimpan...',
+                        text: 'Mohon tunggu sebentar',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    $('#formptk').submit();
+                }
+            });
+        }
+
+        // Setup Cascading Selects
+        function setupCascadingDropdowns() {
+            // When Division Changes -> filter Departments
+            $('#division_id').on('change', function() {
+                var divId = $(this).val();
+                var deptSelect = $('#department_id');
+
+                deptSelect.find('option:not(:first)').each(function() {
+                    var match = $(this).data('division') == divId;
+                    $(this).toggle(match);
+                });
+
+                // Reset downstream if not matching
+                var selectedDeptOption = deptSelect.find('option:selected');
+                if (selectedDeptOption.length && selectedDeptOption.data('division') != divId) {
+                    deptSelect.val('');
+                    $('#section_id').val('');
+                }
+            });
+
+            // When Department Changes -> filter Sections
+            $('#department_id').on('change', function() {
+                var deptId = $(this).val();
+                var sectionSelect = $('#section_id');
+
+                sectionSelect.find('option:not(:first)').each(function() {
+                    var match = $(this).data('department') == deptId;
+                    $(this).toggle(match);
+                });
+
+                var selectedSecOption = sectionSelect.find('option:selected');
+                if (selectedSecOption.length && selectedSecOption.data('department') != deptId) {
+                    sectionSelect.val('');
+                }
+            });
+
+            // When Section Changes -> filter Job Titles
+            $('#section_id').on('change', function() {
+                var secId = $(this).val();
+                var jobSelect = $('#jobtitle_id');
+
+                jobSelect.find('option:not(:first)').each(function() {
+                    var match = $(this).data('section') == secId;
+                    $(this).toggle(match);
+                });
+            });
+
+            // When Job Title is selected directly -> auto-cascade upwards!
+            $('#jobtitle_id').on('change', function() {
+                var secId = $(this).find('option:selected').data('section');
+                if (secId) {
+                    var targetSec = masterSections.find(s => s.id == secId);
+                    if (targetSec) {
+                        var targetDept = masterDepartments.find(d => d.id == targetSec.department_id);
+                        if (targetDept) {
+                            $('#division_id').val(targetDept.division_id).trigger('change');
+                            $('#department_id').val(targetDept.id).trigger('change');
+                            $('#section_id').val(targetSec.id);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Dynamic Experience Add/Remove
+        function setupExperienceRepeater() {
+            var expIndex = 0;
+
+            $('#addPengalaman').on('click', function() {
+                expIndex++;
+                var optionsHtml = '<option value="" disabled selected>-- Pilih Bidang --</option>';
+                masterFields.forEach(function(f) {
+                    optionsHtml += '<option value="' + f.id + '">' + f.field_name + '</option>';
+                });
+
+                var expCardHtml = `
+                    <div class="experience-card" id="exp-row-${expIndex}">
+                        <button type="button" class="btn-remove-exp" onclick="$('#exp-row-${expIndex}').remove()">
                             <i class="ti ti-trash"></i>
                         </button>
                         <div class="row g-3">
                             <div class="col-md-8">
-                                <label class="form-label small text-muted">Field of Expertise</label>
+                                <label class="form-label small mb-1">Bidang Keahlian / Pengalaman</label>
                                 <select class="form-select form-select-sm" name="fields[]" required>
-                                    <option value="" disabled selected>Select Field</option>
-                                    @foreach ($fields as $d)
-                                    <option value="{{ $d->id }}">{{ $d->field_name }}</option>
-                                    @endforeach
+                                    ${optionsHtml}
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label small text-muted">Years</label>
-                                <input type="number" name="tahun[]" class="form-control form-control-sm" placeholder="e.g 2" min="1" required>
+                                <label class="form-label small mb-1">Minimal Pengalaman (Tahun)</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="number" name="tahun[]" class="form-control" placeholder="1" min="1" value="1" required>
+                                    <span class="input-group-text bg-white text-muted">Tahun</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 `;
-                $("#pengalamanContainer").append(html);
-            });
 
-            $(document).on("click", ".deletePengalaman", function() {
-                $(this).closest(".experience-card").remove();
+                $('#pengalamanContainer').append(expCardHtml);
+            });
+        }
+
+        $(document).ready(function() {
+            initQuillEditors();
+            setupCascadingDropdowns();
+            setupExperienceRepeater();
+
+            // Real-time invalid remover
+            $('input, select').on('input change', function() {
+                if ($(this).val()) {
+                    $(this).removeClass('is-invalid');
+                    $(this).closest('div').find('.invalid-feedback-custom').hide();
+                }
             });
         });
     </script>

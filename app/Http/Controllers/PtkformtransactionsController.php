@@ -306,7 +306,8 @@ class PtkformtransactionsController extends Controller
         // real server-side paging/filtering, so this only renders the shell.
         $vacancies = $this->getVacanciesForFilter();
         $filterOptions = $this->getFilterOptions();
-        return view('ptkformtransactions.data', compact('status', 'vacancies', 'filterOptions'));
+        $years = $this->getAvailableYears();
+        return view('ptkformtransactions.data', compact('status', 'vacancies', 'filterOptions', 'years'));
     }
 
     /**
@@ -317,28 +318,31 @@ class PtkformtransactionsController extends Controller
      */
     public function dataTableAjax($status, Request $request)
     {
-        $query = $this->buildFilteredQuery($status, $request);
-
-        $recordsTotal = (clone $query)->count();
-
         $searchValue = trim((string) $request->input('search.value'));
-        if ($searchValue !== '') {
-            $query->where(function ($q) use ($searchValue) {
-                $q->where('users.name', 'like', "%{$searchValue}%")
-                    ->orWhere('jobtitles.jobtitle_name', 'like', "%{$searchValue}%")
-                    ->orWhere('latest_edu.instansi', 'like', "%{$searchValue}%")
-                    ->orWhere('datadiris.cities', 'like', "%{$searchValue}%")
-                    ->orWhere('datadiris.provinces', 'like', "%{$searchValue}%");
-            });
-        }
 
-        $recordsFiltered = (clone $query)->count();
+        // Lightweight query for the two COUNT(*)s: joins are limited to what
+        // the active filters/search actually need (see buildFilteredQuery).
+        $countQuery = $this->buildFilteredQuery($status, $request);
+        $recordsTotal = (clone $countQuery)->count();
+
+        $this->applySearch($countQuery, $searchValue);
+
+        // Skip the second full COUNT(*) over the joined query when there's no
+        // search term — it's identical to recordsTotal in that case, and this
+        // was one of three near-identical heavy counts run on every request.
+        $recordsFiltered = $searchValue !== '' ? (clone $countQuery)->count() : $recordsTotal;
 
         $start = max((int) $request->input('start', 0), 0);
         $length = (int) $request->input('length', 50);
         if ($length <= 0) {
             $length = 50;
         }
+
+        // Rebuilt with forDisplay=true so latest_edu is always joined here
+        // (needed for the "Universitas" column), regardless of which filters
+        // happen to be active.
+        $query = $this->buildFilteredQuery($status, $request, true);
+        $this->applySearch($query, $searchValue);
 
         // SQL Server 2008 predates OFFSET/FETCH (added in 2012), so Eloquent's
         // ->offset()/->limit() (which always emit OFFSET/FETCH on sqlsrv) can't
@@ -381,10 +385,34 @@ class PtkformtransactionsController extends Controller
     }
 
     /**
+     * Applies the DataTables free-text search box to a query built by
+     * buildFilteredQuery(). Deliberately excludes latest_edu.instansi
+     * (university): matching it required joining a ROW_NUMBER() scan over
+     * the entire datapendidikanformals table on every keystroke, which,
+     * combined with an unindexable leading-wildcard LIKE, was slow enough to
+     * time out the request in production. Searching by university is still
+     * available via the dedicated "Universitas" filter dropdown, which only
+     * joins that subquery when actually used.
+     */
+    private function applySearch($query, string $searchValue)
+    {
+        if ($searchValue === '') {
+            return;
+        }
+
+        $query->where(function ($q) use ($searchValue) {
+            $q->where('users.name', 'like', "%{$searchValue}%")
+                ->orWhere('jobtitles.jobtitle_name', 'like', "%{$searchValue}%")
+                ->orWhere('datadiris.cities', 'like', "%{$searchValue}%")
+                ->orWhere('datadiris.provinces', 'like', "%{$searchValue}%");
+        });
+    }
+
+    /**
      * Base joined query for the "Riwayat Aktivitas" listing, with every
      * Filter Kandidat criterion applied at the database level.
      */
-    private function buildFilteredQuery($status, Request $request)
+    private function buildFilteredQuery($status, Request $request, bool $forDisplay = false)
     {
         $ptkformId = $request->input('ptkform_id');
         $gpa = $request->input('gpa');
@@ -392,30 +420,50 @@ class PtkformtransactionsController extends Controller
         $experience = $request->input('experience');
         $university = $request->input('university');
         $domicile = $request->input('domicile');
+        $year = $request->input('year');
+        $month = $request->input('month');
 
-        // A correlated subquery (WHERE id = (SELECT MAX(id) ... WHERE user_id = ...))
-        // makes SQL Server evaluate one subquery per row with no way to scope it to
-        // just the users in this result set, which timed out once the table grew.
-        // ROW_NUMBER() PARTITION BY is a single scan/sort and stays fast at any size.
-        $latestEdu = DB::table(DB::raw(
-            '(SELECT user_id, tingkat, instansi, '
-            . 'ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY id DESC) AS rn '
-            . 'FROM datapendidikanformals) AS ranked_edu'
-        ))
-            ->select('user_id', 'tingkat', 'instansi')
-            ->where('rn', 1);
-
-        $expCount = DB::table('datapengalamankerjas')
-            ->select('user_id', DB::raw('COUNT(*) as exp_count'))
-            ->groupBy('user_id');
-
-        return Ptkformtransaction::query()
+        $query = Ptkformtransaction::query()
             ->join('users', 'ptkformtransactions.user_id', '=', 'users.id')
             ->join('ptkforms', 'ptkformtransactions.ptkform_id', '=', 'ptkforms.id')
             ->leftJoin('jobtitles', 'ptkforms.jobtitle_id', '=', 'jobtitles.id')
-            ->leftJoin('datadiris', 'users.id', '=', 'datadiris.user_id')
-            ->leftJoinSub($latestEdu, 'latest_edu', 'users.id', '=', 'latest_edu.user_id')
-            ->leftJoinSub($expCount, 'exp', 'users.id', '=', 'exp.user_id')
+            ->leftJoin('datadiris', 'users.id', '=', 'datadiris.user_id');
+
+        // Only join the "latest education" subquery (a ROW_NUMBER() scan over
+        // the entire datapendidikanformals table) when it's actually needed:
+        // for display (the paginated row fetch always shows "Universitas") or
+        // for the University/Education filters. The free-text search box
+        // deliberately does not match against it (see applySearch()), so it
+        // no longer forces this join either. Joining it unconditionally on
+        // every request — including both COUNT(*) queries — was the main
+        // reason the datatable endpoint timed out under load.
+        if ($forDisplay || $university || $education) {
+            // A correlated subquery (WHERE id = (SELECT MAX(id) ... WHERE user_id = ...))
+            // makes SQL Server evaluate one subquery per row with no way to scope it to
+            // just the users in this result set, which timed out once the table grew.
+            // ROW_NUMBER() PARTITION BY is a single scan/sort and stays fast at any size.
+            $latestEdu = DB::table(DB::raw(
+                '(SELECT user_id, tingkat, instansi, '
+                . 'ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY id DESC) AS rn '
+                . 'FROM datapendidikanformals) AS ranked_edu'
+            ))
+                ->select('user_id', 'tingkat', 'instansi')
+                ->where('rn', 1);
+            $query->leftJoinSub($latestEdu, 'latest_edu', 'users.id', '=', 'latest_edu.user_id');
+        }
+
+        // Only join the experience-count subquery (a full GROUP BY over
+        // datapengalamankerjas) when the "Pengalaman" filter is actually in
+        // use — joining it unconditionally on every request was a major
+        // contributor to the datatable endpoint timing out under load.
+        if (in_array($experience, ['Ya', 'Tidak'], true)) {
+            $expCount = DB::table('datapengalamankerjas')
+                ->select('user_id', DB::raw('COUNT(*) as exp_count'))
+                ->groupBy('user_id');
+            $query->leftJoinSub($expCount, 'exp', 'users.id', '=', 'exp.user_id');
+        }
+
+        return $query
             ->when($status !== 'all', function ($q) use ($status) {
                 return $q->where('ptkformtransactions.status', $status);
             })
@@ -424,8 +472,15 @@ class PtkformtransactionsController extends Controller
             })
             // The "this year only" scope only makes sense for the global listing;
             // when a specific vacancy is targeted we want every applicant it ever had.
-            ->when(!$ptkformId, function ($q) {
+            // An explicit year filter takes precedence over this default scope.
+            ->when(!$ptkformId && !$year, function ($q) {
                 return $q->where('ptkformtransactions.created_at', '>=', date('Y') . '-01-01 00:00:00');
+            })
+            ->when($year, function ($q) use ($year) {
+                return $q->whereYear('ptkformtransactions.created_at', (int) $year);
+            })
+            ->when($month, function ($q) use ($month) {
+                return $q->whereMonth('ptkformtransactions.created_at', (int) $month);
             })
             ->when($gpa, function ($q) use ($gpa) {
                 return $q->where('users.ipk', '>=', (float) $gpa);
@@ -630,6 +685,20 @@ class PtkformtransactionsController extends Controller
                 'universities' => $universities,
                 'cities' => $cities,
             ];
+        });
+    }
+
+    /**
+     * Distinct years present in ptkformtransactions.created_at, newest first,
+     * used to populate the "Filter Tahun" dropdown.
+     */
+    private function getAvailableYears()
+    {
+        return Cache::remember('ptkform_available_years', now()->addMinutes(self::DATA_CACHE_TTL_MINUTES), function () {
+            return DB::table('ptkformtransactions')
+                ->selectRaw('DISTINCT YEAR(created_at) as year')
+                ->orderByDesc('year')
+                ->pluck('year');
         });
     }
 
