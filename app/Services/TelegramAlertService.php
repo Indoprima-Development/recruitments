@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
+use App\Jobs\SendTelegramAlert;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -46,11 +46,7 @@ class TelegramAlertService
                 $text = mb_substr($text, 0, 3990) . "\n...";
             }
 
-            Http::timeout(5)->post("https://api.telegram.org/bot{$botToken}/sendMessage", [
-                'chat_id' => $chatId,
-                'text' => $text,
-                'disable_web_page_preview' => true,
-            ]);
+            SendTelegramAlert::dispatch($botToken, $chatId, $text);
         } catch (Throwable $e) {
             // Prevent recursive error loops; fallback to standard log
             Log::channel('single')->error('Failed to send Telegram alert: ' . $e->getMessage());
