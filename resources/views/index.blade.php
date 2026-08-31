@@ -1016,7 +1016,7 @@
                                 </div>
                             </div>
 
-                            <a href="{{ url('vacancies', $job->id) }}" class="btn-job-apply">
+                            <a href="{{ url('vacancies', EncodeVacancyId($job->id)) }}" class="btn-job-apply">
                                 Apply Now <i class="ti ti-arrow-right"></i>
                             </a>
                         </div>

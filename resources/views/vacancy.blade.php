@@ -469,17 +469,12 @@
                             $icon = 'ti-school';
                         }
 
-                        // Encrypt ID
-                        try {
-                            $encryptedId = Crypt::encryptString($job->id);
-                        } catch (\Exception $e) {
-                            $encryptedId = $job->id; // Fallback
-                        }
+                        $vacancyHash = EncodeVacancyId($job->id);
 
                         return '
                         <div class="col-lg-6" data-aos="fade-up">
                             <a href="' .
-                            url('vacancies', $encryptedId) .
+                            url('vacancies', $vacancyHash) .
                             '" class="job-card-horizontal">
                                 <div class="job-card-icon-wrapper">
                                     <div class="job-icon-slim">

@@ -275,7 +275,7 @@
     <div class="card-custom">
         <div class="row mb-4 align-items-center">
             <div class="col">
-                <a href="{{ url('vacancies/' . $ptkform_id) }}" class="text-decoration-none text-muted mb-2 d-inline-block text-small">
+                <a href="{{ url('vacancies/' . EncodeVacancyId($ptkform_id)) }}" class="text-decoration-none text-muted mb-2 d-inline-block text-small">
                     <i class="ti ti-arrow-left me-1"></i> Kembali ke Detail Lowongan
                 </a>
                 <h4>Pelamar: {{ $ptkform->jobtitle->jobtitle_name }}</h4>

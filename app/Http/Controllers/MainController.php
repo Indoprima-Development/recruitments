@@ -11,7 +11,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Crypt;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MainController extends Controller
@@ -57,9 +56,10 @@ class MainController extends Controller
         return view('vacancy', compact("jobs"));
     }
 
-    public function showVacancy($id)
+    public function showVacancy($hash)
     {
-        $id = Crypt::decryptString($id);
+        $id = DecodeVacancyId($hash);
+        abort_if($id === null, 404);
 
         // Only the vacancy/jobtitle/fields lookup is cached: it's the same
         // for every visitor. isApplied/isSaved depend on the logged-in user
