@@ -59,6 +59,7 @@ class JobtitlesController extends Controller
         $jobtitle->save();
 
         cache()->forget('master_jobtitles');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#jobtitles');
     }
@@ -112,6 +113,7 @@ class JobtitlesController extends Controller
         $jobtitle->save();
 
         cache()->forget('master_jobtitles');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#jobtitles');
     }
@@ -128,6 +130,7 @@ class JobtitlesController extends Controller
         $jobtitle->delete();
 
         cache()->forget('master_jobtitles');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#jobtitles');
     }

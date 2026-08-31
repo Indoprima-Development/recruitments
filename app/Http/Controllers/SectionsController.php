@@ -46,6 +46,7 @@ class SectionsController extends Controller
         $section->save();
 
         cache()->forget('master_sections');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#sections');
     }
@@ -90,6 +91,7 @@ class SectionsController extends Controller
         $section->save();
 
         cache()->forget('master_sections');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#sections');
     }
@@ -106,6 +108,7 @@ class SectionsController extends Controller
         $section->delete();
 
         cache()->forget('master_sections');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#sections');
     }

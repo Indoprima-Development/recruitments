@@ -39,4 +39,6 @@
 		</tbody>
 	</table>
 
+	{{ $ptk_approvals->links() }}
+
 @stop

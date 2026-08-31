@@ -16,7 +16,7 @@ class Qna_transactionsController extends Controller
      */
     public function index()
     {
-        $qna_transactions= Qna_transaction::all();
+        $qna_transactions= Qna_transaction::orderBy('id', 'desc')->paginate(25);
         return view('qna_transactions.index', ['qna_transactions'=>$qna_transactions]);
     }
 

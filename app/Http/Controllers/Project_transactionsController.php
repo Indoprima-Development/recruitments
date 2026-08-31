@@ -16,7 +16,7 @@ class Project_transactionsController extends Controller
      */
     public function index()
     {
-        $project_transactions= Project_transaction::all();
+        $project_transactions= Project_transaction::orderBy('id', 'desc')->paginate(25);
         return view('project_transactions.index', ['project_transactions'=>$project_transactions]);
     }
 

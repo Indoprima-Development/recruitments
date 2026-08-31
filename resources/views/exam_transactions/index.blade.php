@@ -41,4 +41,6 @@
 		</tbody>
 	</table>
 
+	{{ $exam_transactions->links() }}
+
 @stop

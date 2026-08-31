@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\RecruitmentExternal;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -10,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
-class RecruitmentExternalImport implements ToModel, WithStartRow, WithBatchInserts, WithChunkReading, WithCalculatedFormulas
+class RecruitmentExternalImport implements ToModel, WithStartRow, WithBatchInserts, WithChunkReading, WithCalculatedFormulas, ShouldQueue
 {
     /**
      * @return int

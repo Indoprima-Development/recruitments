@@ -46,6 +46,7 @@ class DepartmentsController extends Controller
         $department->save();
 
         cache()->forget('master_departments');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#departments');
     }
@@ -90,6 +91,7 @@ class DepartmentsController extends Controller
         $department->save();
 
         cache()->forget('master_departments');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#departments');
     }
@@ -106,6 +108,7 @@ class DepartmentsController extends Controller
         $department->delete();
 
         cache()->forget('master_departments');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#departments');
     }

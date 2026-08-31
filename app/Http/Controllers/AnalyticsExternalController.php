@@ -62,11 +62,12 @@ class AnalyticsExternalController extends Controller
         $sumberCounts = $sumberData->pluck('count');
         
         // 6. Result Director
-        $resultDirectorRaw = RecruitmentExternal::whereNotNull('result_director')->get();
-        $resultDirectorData = $resultDirectorRaw->groupBy('result_director')->map(function ($group) {
-            return $group->count();
-        })->sortDesc();
-        
+        $resultDirectorData = RecruitmentExternal::whereNotNull('result_director')
+            ->select('result_director', DB::raw('count(*) as count'))
+            ->groupBy('result_director')
+            ->orderByDesc('count')
+            ->pluck('count', 'result_director');
+
         $resultDirectorLabels = $resultDirectorData->keys();
         $resultDirectorCounts = $resultDirectorData->values();
 

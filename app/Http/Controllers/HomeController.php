@@ -13,6 +13,7 @@ use App\Models\Ptkformtransaction;
 use App\Models\Qna;
 use App\Models\Qna_transaction;
 use App\Models\SavedJob;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use League\OAuth2\Client\Provider\Google;
 
@@ -24,6 +25,13 @@ use Google\Service\Gmail\Message as Google_Service_Gmail_Message;
 
 class HomeController extends Controller
 {
+    /**
+     * Admin dashboard is the first page hit after every admin login and runs
+     * a dozen+ counts/aggregations, so a short cache absorbs repeat loads
+     * without the numbers feeling stale.
+     */
+    private const DASHBOARD_CACHE_TTL_MINUTES = 5;
+
     public function home(Request $request)
     {
         if (Auth::user()->role != 'ADMIN') {
@@ -33,6 +41,15 @@ class HomeController extends Controller
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
 
+        $data = Cache::remember("home_dashboard_{$year}_{$month}", now()->addMinutes(self::DASHBOARD_CACHE_TTL_MINUTES), function () use ($month, $year) {
+            return $this->buildHomeDashboardData($month, $year);
+        });
+
+        return view("home.home", array_merge(['month' => $month, 'year' => $year], $data));
+    }
+
+    private function buildHomeDashboardData($month, $year)
+    {
         // Base Query
         $query = Ptkformtransaction::query();
         if ($year != 'all') {
@@ -82,26 +99,7 @@ class HomeController extends Controller
             'hired' => $hiredCount
         ];
 
-        // Hiring by Department
-        // Group by ptkform.jobtitle.department (if exists) or just jobtitle name for now simple
-        $deptQuery = Ptkformtransaction::select('ptkforms.id', DB::raw('count(*) as apps'))
-            ->join('ptkforms', 'ptkforms.id', 'ptkformtransactions.ptkform_id')
-            ->join('jobtitles', 'jobtitles.id', 'ptkforms.jobtitle_id');
-            
-        if ($year != 'all') {
-            $deptQuery->whereYear('ptkformtransactions.created_at', $year);
-        }
-        if ($month != 'all') {
-            $deptQuery->whereMonth('ptkformtransactions.created_at', $month);
-        }
-            
-        $departmentData = $deptQuery->groupBy('ptkforms.id')
-            ->with('ptkform.jobtitle') // Load relationship
-            ->get();
-
-        // Refine department data
-        // Since groupBy ptkforms.id might split same job title if different PTK forms, we will aggregate in PHP or improve query.
-        // Let's use the Collection to aggregate by JobTitle Name.
+        // Hiring by Department (aggregated by job title name below via $rawDept)
         $deptStats = [];
         
         $rawDeptQuery = Ptkformtransaction::with(['ptkform.jobtitle']);
@@ -132,15 +130,17 @@ class HomeController extends Controller
             if($item->status == 7) $deptStats[$name]['hired']++;
         }
 
+        // Open position counts per job title, in one grouped query instead of
+        // one Ptkform::whereHas()->count() per distinct job title.
+        $openCountsByJobtitle = Ptkform::join('jobtitles', 'jobtitles.id', 'ptkforms.jobtitle_id')
+            ->select('jobtitles.jobtitle_name', DB::raw('count(*) as open'))
+            ->groupBy('jobtitles.jobtitle_name')
+            ->pluck('open', 'jobtitle_name');
+
         // Calculate success rate
         foreach($deptStats as &$stat) {
             $stat['success_rate'] = $stat['applications'] > 0 ? round(($stat['hired'] / $stat['applications']) * 100, 1) : 0;
-            // Get Open positions.
-            // We can Count PTKForms for this jobtitle that are OPEN (is_open=1 works?)
-            // This is a bit outside transaction scope, but let's just create a nice table.
-            $stat['open'] = Ptkform::whereHas('jobtitle', function($q) use ($stat) {
-                $q->where('jobtitle_name', $stat['name']);
-            })->count();
+            $stat['open'] = $openCountsByJobtitle[$stat['name']] ?? 0;
         }
 
         // Original Dashboard Data (Total Counts per Status)
@@ -156,7 +156,7 @@ class HomeController extends Controller
             }
         }
 
-        return view("home.home", compact("totalApplications", "hireRate", "avgTimeToHire", "offerAcceptance", "funnelData", "deptStats", "month", "year", "dataResults"));
+        return compact("totalApplications", "hireRate", "avgTimeToHire", "offerAcceptance", "funnelData", "deptStats", "dataResults");
     }
 
     public function index()

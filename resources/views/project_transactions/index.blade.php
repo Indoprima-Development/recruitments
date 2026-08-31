@@ -39,4 +39,6 @@
 		</tbody>
 	</table>
 
+	{{ $project_transactions->links() }}
+
 @stop

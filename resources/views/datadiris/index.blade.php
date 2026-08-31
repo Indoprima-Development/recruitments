@@ -77,4 +77,6 @@
 		</tbody>
 	</table>
 
+	{{ $datadiris->links() }}
+
 @stop

@@ -16,7 +16,7 @@ class Exam_transactionsController extends Controller
      */
     public function index()
     {
-        $exam_transactions= Exam_transaction::all();
+        $exam_transactions= Exam_transaction::orderBy('id', 'desc')->paginate(25);
         return view('exam_transactions.index', ['exam_transactions'=>$exam_transactions]);
     }
 

@@ -115,6 +115,8 @@
         </table>
     </div>
 
+    {{ $data->links() }}
+
 @stop
 
 @section('modals')

@@ -168,7 +168,7 @@ class PtkformtransactionsController extends Controller
      */
     public function index()
     {
-        $ptkformtransactions = Ptkformtransaction::all();
+        $ptkformtransactions = Ptkformtransaction::orderBy('id', 'desc')->paginate(25);
         return view('ptkformtransactions.index', ['ptkformtransactions' => $ptkformtransactions]);
     }
 

@@ -43,6 +43,7 @@ class DivisionsController extends Controller
         $division->save();
 
         cache()->forget('master_divisions');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#divisions');
     }
@@ -85,6 +86,7 @@ class DivisionsController extends Controller
         $division->save();
 
         cache()->forget('master_divisions');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#divisions');
     }
@@ -101,6 +103,7 @@ class DivisionsController extends Controller
         $division->delete();
 
         cache()->forget('master_divisions');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#divisions');
     }

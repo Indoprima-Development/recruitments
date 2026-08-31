@@ -16,7 +16,7 @@ class PtkformactivitiesController extends Controller
      */
     public function index()
     {
-        $ptkformactivities= Ptkformactivity::all();
+        $ptkformactivities= Ptkformactivity::orderBy('id', 'desc')->paginate(25);
         return view('ptkformactivities.index', ['ptkformactivities'=>$ptkformactivities]);
     }
 

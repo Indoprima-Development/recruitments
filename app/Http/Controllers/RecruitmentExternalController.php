@@ -12,7 +12,7 @@ class RecruitmentExternalController extends Controller
 {
     public function index()
     {
-        $data = RecruitmentExternal::latest()->get();
+        $data = RecruitmentExternal::latest()->paginate(25);
         return view('recruitment_externals.index', compact('data'));
     }
 
@@ -23,9 +23,11 @@ class RecruitmentExternalController extends Controller
         ]);
 
         try {
-            set_time_limit(0); // Prevent timeout for large files
-            Excel::import(new RecruitmentExternalImport, $request->file('file'));
-            return redirect()->back()->with('success', 'Data imported successfully!');
+            // Queued: the import runs in the background via the redis queue
+            // worker instead of blocking this request until every row/chunk
+            // is inserted.
+            Excel::queueImport(new RecruitmentExternalImport, $request->file('file'));
+            return redirect()->back()->with('success', 'File diterima dan sedang diproses di background. Data akan muncul beberapa saat lagi.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error importing file: ' . $e->getMessage());
         }

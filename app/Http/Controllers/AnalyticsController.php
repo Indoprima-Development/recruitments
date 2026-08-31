@@ -6,16 +6,33 @@ use Illuminate\Http\Request;
 use App\Models\Ptkform;
 use App\Models\Ptkformtransaction;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class AnalyticsController extends Controller
 {
+    /**
+     * Dashboard is admin-only and expensive (a dozen+ aggregate queries per
+     * load), so a short cache absorbs repeat/refresh hits without the data
+     * feeling stale.
+     */
+    private const CACHE_TTL_MINUTES = 5;
+
     public function index(Request $request)
     {
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
 
+        $data = Cache::remember("analytics_dashboard_{$year}_{$month}", now()->addMinutes(self::CACHE_TTL_MINUTES), function () use ($month, $year) {
+            return $this->buildDashboardData($month, $year);
+        });
+
+        return view('analytics.index', array_merge(['month' => $month, 'year' => $year], $data));
+    }
+
+    private function buildDashboardData($month, $year)
+    {
         $query = Ptkformtransaction::query();
         if ($year != 'all') {
             $query->whereYear('created_at', $year);
@@ -281,9 +298,7 @@ class AnalyticsController extends Controller
             ->take(5)
             ->get();
 
-        return view('analytics.index', compact(
-            'month',
-            'year',
+        return compact(
             'totalVacancies',
             'activeVacancies',
             'totalApplicants',
@@ -317,6 +332,6 @@ class AnalyticsController extends Controller
             'sectionOtherCount',
             'provinceOtherCount',
             'cityOtherCount'
-        ));
+        );
     }
 }

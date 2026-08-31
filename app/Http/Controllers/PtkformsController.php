@@ -19,9 +19,46 @@ use App\Models\Ptkformtransaction;
 use App\Models\Ptkfield;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class PtkformsController extends Controller
 {
+    /**
+     * Master data (division/department/.../location) rarely changes, but
+     * create()/edit() were loading all 8 tables in full on every request.
+     * These are cached indefinitely and busted by the 'master_*' forget()
+     * calls already scattered across this controller and the dedicated
+     * Divisions/Departments/Jobtitles controllers.
+     */
+    private function getMasterData()
+    {
+        return [
+            'divisions' => Cache::rememberForever('master_divisions', fn () => Division::orderBy('division_name')->get()),
+            'departments' => Cache::rememberForever('master_departments', fn () => Department::orderBy('department_name')->get()),
+            'sections' => Cache::rememberForever('master_sections', fn () => Section::orderBy('section_name')->get()),
+            'jobtitles' => Cache::rememberForever('master_jobtitles', fn () => Jobtitle::orderBy('jobtitle_name')->get()),
+            'educations' => Cache::rememberForever('master_educations', fn () => Education::all()),
+            'majors' => Cache::rememberForever('master_majors', fn () => Major::orderBy('major_name')->get()),
+            'fields' => Cache::rememberForever('master_fields', fn () => Field::orderBy('field_name')->get()),
+            'locations' => Cache::rememberForever('master_locations', fn () => Location::orderBy('location_name')->get()),
+        ];
+    }
+
+    /**
+     * Clears the public vacancy listing/detail caches (MainController,
+     * VacancyApiController) so a status/date/content change on a vacancy is
+     * visible immediately instead of waiting out the cache TTL.
+     */
+    private function clearPublicVacancyCache($id = null)
+    {
+        cache()->forget('public_vacancies_home');
+        cache()->forget('public_vacancies_all');
+        cache()->forget('public_vacancies_api');
+        if ($id) {
+            cache()->forget("public_vacancy_detail_{$id}");
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -44,16 +81,7 @@ class PtkformsController extends Controller
      */
     public function create()
     {
-        $divisions = Division::orderBy('division_name')->get();
-        $departments = Department::orderBy('department_name')->get();
-        $sections = Section::orderBy('section_name')->get();
-        $jobtitles = Jobtitle::orderBy('jobtitle_name')->get();
-        $educations = Education::all();
-        $majors = Major::orderBy('major_name')->get();
-        $fields = Field::orderBy('field_name')->get();
-        $locations = Location::orderBy('location_name')->get();
-
-        return view('ptkforms.create', compact('divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields', 'locations'));
+        return view('ptkforms.create', $this->getMasterData());
     }
 
     /**
@@ -117,6 +145,7 @@ class PtkformsController extends Controller
         cache()->forget('master_majors');
         cache()->forget('master_fields');
         cache()->forget('master_locations');
+        $this->clearPublicVacancyCache();
 
         AlertSuccess("Success", "Vacancy / Lowongan berhasil dibuat dan dipublikasikan!");
         return redirect('vacancies');
@@ -153,16 +182,8 @@ class PtkformsController extends Controller
     public function edit($id)
     {
         $ptkform = Ptkform::findOrFail($id);
-        $divisions = Division::all();
-        $departments = Department::all();
-        $sections = Section::all();
-        $jobtitles = Jobtitle::all();
-        $educations = Education::all();
-        $majors = Major::all();
-        $fields = Field::all();
-        $locations = Location::all();
 
-        return view('ptkforms.edit', compact('ptkform', 'divisions', 'departments', 'sections', 'jobtitles', 'educations', 'majors', 'fields', 'locations'));
+        return view('ptkforms.edit', array_merge(['ptkform' => $ptkform], $this->getMasterData()));
     }
 
     /**
@@ -228,6 +249,7 @@ class PtkformsController extends Controller
         cache()->forget('master_majors');
         cache()->forget('master_fields');
         cache()->forget('master_locations');
+        $this->clearPublicVacancyCache($id);
 
         AlertSuccess("Success", "Data lowongan berhasil diperbarui!");
         return redirect('vacancies');
@@ -246,6 +268,7 @@ class PtkformsController extends Controller
         // Soft delete logic - simply close the vacancy
         $ptkform->status = 0; // 0 = Inactive/Closed
         $ptkform->save();
+        $this->clearPublicVacancyCache($id);
 
         AlertSuccess("Success", "Vacancy closed successfully (Hidden from public)");
         return redirect()->back();
@@ -258,6 +281,7 @@ class PtkformsController extends Controller
             "date_open_vacancy"=> $request->date_start,
             "date_closed_vacancy"=> $request->date_end,
         ]);
+        $this->clearPublicVacancyCache($id);
 
         return redirect("ptkforms/$id");
     }

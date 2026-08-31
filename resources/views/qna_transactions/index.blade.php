@@ -41,4 +41,6 @@
 		</tbody>
 	</table>
 
+	{{ $qna_transactions->links() }}
+
 @stop

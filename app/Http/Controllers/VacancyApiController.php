@@ -20,41 +20,43 @@ class VacancyApiController extends Controller
     {
         $date = date("Y-m-d");
 
-        $vacancies = Ptkform::with(['jobtitle', 'division', 'department', 'section', 'education', 'major', 'ptkfields.field'])
-            ->where("status", 1)
-            ->whereDate('date_open_vacancy', '<=', $date)
-            ->whereDate('date_closed_vacancy', '>=', $date)
-            ->orderBy('id', 'desc')
-            ->get()
-            ->map(function ($vacancy) {
-                return [
-                    'id' => $vacancy->id,
-                    'job_title' => $vacancy->jobtitle ? $vacancy->jobtitle->jobtitle_name : null,
-                    'division' => $vacancy->division ? $vacancy->division->division_name : null,
-                    'department' => $vacancy->department ? $vacancy->department->department_name : null,
-                    'section' => $vacancy->section ? $vacancy->section->section_name : null,
-                    'education' => $vacancy->education ? $vacancy->education->education_name : null,
-                    'major' => $vacancy->major ? $vacancy->major->major_name : null,
-                    'gender' => match ((int) $vacancy->gender) {
-                        0 => 'laki-laki dan perempuan',
-                        1 => 'laki-laki',
-                        2 => 'perempuan',
-                        default => 'laki-laki dan perempuan',
-                    },
-                    'ipk' => $vacancy->ipk,
-                    'date_open_vacancy' => $vacancy->date_open_vacancy,
-                    'date_closed_vacancy' => $vacancy->date_closed_vacancy,
-                    'responsibility' => $vacancy->responsibility,
-                    'special_conditions' => $vacancy->special_conditions,
-                    'general_others' => $vacancy->general_others,
-                    'experience_requirements' => $vacancy->ptkfields->map(function ($ptkfield) {
-                        return [
-                            'field' => $ptkfield->field ? $ptkfield->field->field_name : null,
-                            'years' => $ptkfield->year
-                        ];
-                    }),
-                ];
-            });
+        $vacancies = Cache::remember('public_vacancies_api', now()->addMinutes(10), function () use ($date) {
+            return Ptkform::with(['jobtitle', 'division', 'department', 'section', 'education', 'major', 'ptkfields.field'])
+                ->where("status", 1)
+                ->whereDate('date_open_vacancy', '<=', $date)
+                ->whereDate('date_closed_vacancy', '>=', $date)
+                ->orderBy('id', 'desc')
+                ->get()
+                ->map(function ($vacancy) {
+                    return [
+                        'id' => $vacancy->id,
+                        'job_title' => $vacancy->jobtitle ? $vacancy->jobtitle->jobtitle_name : null,
+                        'division' => $vacancy->division ? $vacancy->division->division_name : null,
+                        'department' => $vacancy->department ? $vacancy->department->department_name : null,
+                        'section' => $vacancy->section ? $vacancy->section->section_name : null,
+                        'education' => $vacancy->education ? $vacancy->education->education_name : null,
+                        'major' => $vacancy->major ? $vacancy->major->major_name : null,
+                        'gender' => match ((int) $vacancy->gender) {
+                            0 => 'laki-laki dan perempuan',
+                            1 => 'laki-laki',
+                            2 => 'perempuan',
+                            default => 'laki-laki dan perempuan',
+                        },
+                        'ipk' => $vacancy->ipk,
+                        'date_open_vacancy' => $vacancy->date_open_vacancy,
+                        'date_closed_vacancy' => $vacancy->date_closed_vacancy,
+                        'responsibility' => $vacancy->responsibility,
+                        'special_conditions' => $vacancy->special_conditions,
+                        'general_others' => $vacancy->general_others,
+                        'experience_requirements' => $vacancy->ptkfields->map(function ($ptkfield) {
+                            return [
+                                'field' => $ptkfield->field ? $ptkfield->field->field_name : null,
+                                'years' => $ptkfield->year
+                            ];
+                        }),
+                    ];
+                });
+        });
 
         return response()->json([
             'success' => true,

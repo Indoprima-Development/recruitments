@@ -16,7 +16,7 @@ class Ptk_approvalsController extends Controller
      */
     public function index()
     {
-        $ptk_approvals= Ptk_approval::all();
+        $ptk_approvals= Ptk_approval::orderBy('id', 'desc')->paginate(25);
         return view('ptk_approvals.index', ['ptk_approvals'=>$ptk_approvals]);
     }
 

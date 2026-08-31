@@ -30,7 +30,7 @@ class DatadirisController extends Controller
      */
     public function index()
     {
-        $datadiris = Datadiri::all();
+        $datadiris = Datadiri::orderBy('id', 'desc')->paginate(25);
         return view('datadiris.index', ['datadiris' => $datadiris]);
     }
 

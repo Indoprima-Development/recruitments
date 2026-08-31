@@ -43,6 +43,7 @@ class LocationsController extends Controller
         $location->save();
 
         cache()->forget('master_locations');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#locations');
     }
@@ -85,6 +86,7 @@ class LocationsController extends Controller
         $location->save();
 
         cache()->forget('master_locations');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#locations');
     }
@@ -101,6 +103,7 @@ class LocationsController extends Controller
         $location->delete();
 
         cache()->forget('master_locations');
+        cache()->forget('organization_index_data');
 
         return redirect(route('organization.index') . '#locations');
     }
