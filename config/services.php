@@ -37,4 +37,9 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'telegram' => [
+        'bot_token' => env('TELEGRAM_ALERT_BOT_TOKEN'),
+        'chat_id' => env('TELEGRAM_ALERT_CHAT_ID'),
+    ],
+
 ];
