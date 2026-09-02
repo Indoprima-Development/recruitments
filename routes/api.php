@@ -28,3 +28,5 @@ Route::post('/participants/{id}/status', [\App\Http\Controllers\VacancyApiContro
 Route::group(['middleware' => ['is-ipg']], function () {
 
 });
+
+Route::middleware('auth:sanctum')->get('/cv/{id}', [\App\Http\Controllers\CvController::class, 'apiShow'])->name('api.cv.show');

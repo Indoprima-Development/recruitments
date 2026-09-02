@@ -99,7 +99,7 @@ class VacancyApiController extends Controller
 
                 $ktp = $user && $user->ktp ? $user->ktp : ($datadiri ? $datadiri->ktp : null);
                 $name = $user && $user->name ? $user->name : ($datadiri ? $datadiri->name : null);
-                $cv = $user && $user->cv ? route('cv.show', $user->id) : null;
+                $cv = $user && $user->cv ? route('api.cv.show', $user->id) : null;
 
                 return [
                     'id' => $transaction->id,
