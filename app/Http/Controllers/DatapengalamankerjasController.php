@@ -6,10 +6,20 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datapengalamankerja;
 use App\Http\Requests\DatapengalamankerjaRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class DatapengalamankerjasController extends Controller
 {
+    private function decryptId($id)
+    {
+        try {
+            return Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -73,7 +83,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function show($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
         return view('datapengalamankerjas.show',['datapengalamankerja'=>$datapengalamankerja]);
     }
@@ -86,7 +96,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
         return view('datapengalamankerjas.edit',['datapengalamankerja'=>$datapengalamankerja]);
     }
@@ -100,7 +110,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function update(DatapengalamankerjaRequest $request, $id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
 		$datapengalamankerja->user_id = $request->input('user_id');
 		$datapengalamankerja->perusahaan = $request->input('perusahaan');
@@ -125,7 +135,7 @@ class DatapengalamankerjasController extends Controller
      */
     public function destroy($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datapengalamankerja = Datapengalamankerja::findOrFail($id);
         $datapengalamankerja->delete();
 

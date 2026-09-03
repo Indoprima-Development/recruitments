@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Constants\Constants;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\Crypt;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -41,20 +42,32 @@ class LoginRegisterController extends Controller
             return view('auth.alreadyRegistered', compact('user'));
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'ktp'      => $request->ktp,
-            'no_wa'    => $request->no_wa,
-            'pendidikan_terakhir' => $request->pendidikan_terakhir,
-            'asal_instansi'       => $request->asal_instansi,
-            'jurusan'             => $request->jurusan,
-            'ipk'                 => $request->ipk,
-            'berat_badan'         => (int)$request->berat_badan,
-            'tinggi_badan'        => (int)$request->tinggi_badan,
-            'is_active'           => 1,
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'ktp'      => $request->ktp,
+                'no_wa'    => $request->no_wa,
+                'pendidikan_terakhir' => $request->pendidikan_terakhir,
+                'asal_instansi'       => $request->asal_instansi,
+                'jurusan'             => $request->jurusan,
+                'ipk'                 => $request->ipk,
+                'berat_badan'         => (int)$request->berat_badan,
+                'tinggi_badan'        => (int)$request->tinggi_badan,
+                'is_active'           => 1,
+            ]);
+        } catch (UniqueConstraintViolationException $e) {
+            $user = User::where("email", $request->email)
+                ->orWhere("ktp", $request->ktp)
+                ->first();
+
+            if ($user) {
+                return view('auth.alreadyRegistered', compact('user'));
+            }
+
+            throw $e;
+        }
 
         Alert::success('Success', 'Akun berhasil dibuat. Silakan login untuk melanjutkan.');
 
