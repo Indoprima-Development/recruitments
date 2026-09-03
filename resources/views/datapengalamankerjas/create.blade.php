@@ -49,7 +49,8 @@
 		</div>
 		<div class="mb-3">
 			{{ Form::label('surat_pengalaman', 'Surat Pengalaman', ['class'=>'form-label']) }}
-            <input type="file" class="form-control" name="surat_pengalaman" />
+            <input type="file" class="form-control" name="surat_pengalaman" id="suratPengalamanInput" />
+            <small class="text-muted">Ukuran file maksimal 1 MB.</small>
 		</div>
 
 
@@ -57,5 +58,15 @@
 
 	{{ Form::close() }}
 
+    <script>
+        document.getElementById('suratPengalamanInput').addEventListener('change', function (e) {
+            var maxSizeBytes = 1024 * 1024; // 1 MB
+            var file = e.target.files[0];
+            if (file && file.size > maxSizeBytes) {
+                alert('Ukuran file "' + file.name + '" terlalu besar. Maksimal 1 MB.');
+                e.target.value = '';
+            }
+        });
+    </script>
 
 @stop

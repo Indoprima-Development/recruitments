@@ -34,6 +34,19 @@ class DatapengalamankerjaRequest extends FormRequest
 			'date_start' => 'required',
 			'date_end' => 'required',
 			'alasan_keluar' => 'required',
+			'surat_pengalaman' => 'nullable|file|max:1024',
+        ];
+    }
+
+    /**
+     * Get the custom validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages()
+    {
+        return [
+            'surat_pengalaman.max' => 'Ukuran file surat pengalaman terlalu besar. Maksimal 1 MB.',
         ];
     }
 }

@@ -53,6 +53,13 @@ class Handler extends ExceptionHandler
             return redirect('/home')->with('error', 'Sesi atau link tidak valid atau sudah kadaluarsa. Silakan coba lagi.');
         }
 
+        // Handle uploaded files exceeding the server's allowed size globally
+        if ($exception instanceof \Symfony\Component\HttpFoundation\File\Exception\FileException
+            || $exception instanceof \Illuminate\Http\Exceptions\PostTooLargeException) {
+            \RealRashid\SweetAlert\Facades\Alert::error('Gagal!', 'Ukuran file yang diupload terlalu besar. Maksimal 1 MB.');
+            return redirect()->back()->withInput($request->except(['password', 'password_confirmation']));
+        }
+
         return parent::render($request, $exception);
     }
 }
