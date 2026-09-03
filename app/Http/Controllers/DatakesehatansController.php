@@ -8,10 +8,20 @@ use App\Models\Datakesehatan;
 use App\Http\Requests\DatakesehatanRequest;
 
 
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class DatakesehatansController extends Controller
 {
+    private function decryptId($id)
+    {
+        try {
+            return Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -68,7 +78,7 @@ class DatakesehatansController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakesehatan = Datakesehatan::findOrFail($id);
         return view('datakesehatans.edit',['datakesehatan'=>$datakesehatan]);
     }
@@ -82,7 +92,7 @@ class DatakesehatansController extends Controller
      */
     public function update(DatakesehatanRequest $request, $id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakesehatan = Datakesehatan::findOrFail($id);
 		$datakesehatan->user_id = $request->input('user_id');
 		$datakesehatan->kesehatan = $request->input('kesehatan');
@@ -100,7 +110,7 @@ class DatakesehatansController extends Controller
      */
     public function destroy($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakesehatan = Datakesehatan::findOrFail($id);
         $datakesehatan->delete();
 

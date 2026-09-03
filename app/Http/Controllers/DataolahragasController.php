@@ -6,10 +6,20 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Dataolahraga;
 use App\Http\Requests\DataolahragaRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class DataolahragasController extends Controller
 {
+    private function decryptId($id)
+    {
+        try {
+            return Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -66,7 +76,7 @@ class DataolahragasController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $dataolahraga = Dataolahraga::findOrFail($id);
         return view('dataolahragas.edit',['dataolahraga'=>$dataolahraga]);
     }
@@ -80,7 +90,7 @@ class DataolahragasController extends Controller
      */
     public function update(DataolahragaRequest $request, $id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $dataolahraga = Dataolahraga::findOrFail($id);
 		$dataolahraga->user_id = $request->input('user_id');
 		$dataolahraga->olahraga = $request->input('olahraga');
@@ -98,7 +108,7 @@ class DataolahragasController extends Controller
      */
     public function destroy($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $dataolahraga = Dataolahraga::findOrFail($id);
         $dataolahraga->delete();
 

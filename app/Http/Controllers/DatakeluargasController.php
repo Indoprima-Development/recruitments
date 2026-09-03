@@ -6,10 +6,20 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datakeluarga;
 use App\Http\Requests\DatakeluargaRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class DatakeluargasController extends Controller
 {
+    private function decryptId($id)
+    {
+        try {
+            return Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -59,7 +69,7 @@ class DatakeluargasController extends Controller
      */
     public function show($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakeluarga = Datakeluarga::findOrFail($id);
         return view('datakeluargas.show',['datakeluarga'=>$datakeluarga]);
     }
@@ -72,7 +82,7 @@ class DatakeluargasController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakeluarga = Datakeluarga::findOrFail($id);
         return view('datakeluargas.edit',['datakeluarga'=>$datakeluarga]);
     }
@@ -86,7 +96,7 @@ class DatakeluargasController extends Controller
      */
     public function update(DatakeluargaRequest $request, $id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakeluarga = Datakeluarga::findOrFail($id);
 		$datakeluarga->user_id = $request->input('user_id');
 		$datakeluarga->status_hubungan = $request->input('status_hubungan');
@@ -108,7 +118,7 @@ class DatakeluargasController extends Controller
      */
     public function destroy($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakeluarga = Datakeluarga::findOrFail($id);
         $datakeluarga->delete();
 

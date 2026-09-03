@@ -8,10 +8,20 @@ use App\Models\Datapeminatan;
 use App\Http\Requests\DatapeminatanRequest;
 use App\Models\Field;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class DatapeminatansController extends Controller
 {
+    private function decryptId($id)
+    {
+        try {
+            return Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -69,7 +79,7 @@ class DatapeminatansController extends Controller
      */
     public function show($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datapeminatan = Datapeminatan::findOrFail($id);
         return view('datapeminatans.show', ['datapeminatan' => $datapeminatan]);
     }
@@ -82,7 +92,7 @@ class DatapeminatansController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datapeminatan = Datapeminatan::findOrFail($id);
         return redirect('forms');
     }
@@ -96,7 +106,7 @@ class DatapeminatansController extends Controller
      */
     public function update(DatapeminatanRequest $request, $id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datapeminatan = Datapeminatan::findOrFail($id);
         $datapeminatan->user_id = $request->input('user_id');
         $datapeminatan->field_id = $request->input('field_id');
@@ -113,7 +123,7 @@ class DatapeminatansController extends Controller
      */
     public function destroy($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datapeminatan = Datapeminatan::findOrFail($id);
         $datapeminatan->delete();
 

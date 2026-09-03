@@ -6,10 +6,20 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datadetail;
 use App\Http\Requests\DatadetailRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class DatadetailsController extends Controller
 {
+    private function decryptId($id)
+    {
+        try {
+            return Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -57,7 +67,7 @@ class DatadetailsController extends Controller
      */
     public function show($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datadetail = Datadetail::findOrFail($id);
         return view('datadetails.show',['datadetail'=>$datadetail]);
     }
@@ -70,7 +80,7 @@ class DatadetailsController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datadetail = Datadetail::findOrFail($id);
         return view('datadetails.edit',['datadetail'=>$datadetail]);
     }
@@ -84,7 +94,7 @@ class DatadetailsController extends Controller
      */
     public function update(DatadetailRequest $request, $id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datadetail = Datadetail::findOrFail($id);
 		$datadetail->user_id = $request->input('user_id');
 		$datadetail->tipe = $request->input('tipe');
@@ -104,7 +114,7 @@ class DatadetailsController extends Controller
      */
     public function destroy($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datadetail = Datadetail::findOrFail($id);
         $datadetail->delete();
 

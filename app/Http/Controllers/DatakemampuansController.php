@@ -6,10 +6,20 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Datakemampuan;
 use App\Http\Requests\DatakemampuanRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class DatakemampuansController extends Controller
 {
+    private function decryptId($id)
+    {
+        try {
+            return Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -55,7 +65,7 @@ class DatakemampuansController extends Controller
      */
     public function show($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         return redirect('forms?section=ketrampilan');
     }
 
@@ -67,7 +77,7 @@ class DatakemampuansController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakemampuan = Datakemampuan::findOrFail($id);
         return view('datakemampuans.edit',['datakemampuan'=>$datakemampuan]);
     }
@@ -81,7 +91,7 @@ class DatakemampuansController extends Controller
      */
     public function update(DatakemampuanRequest $request, $id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakemampuan = Datakemampuan::findOrFail($id);
 		$datakemampuan->user_id = $request->input('user_id');
 		$datakemampuan->kemampuan = $request->input('kemampuan');
@@ -99,7 +109,7 @@ class DatakemampuansController extends Controller
      */
     public function destroy($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $datakemampuan = Datakemampuan::findOrFail($id);
         $datakemampuan->delete();
 

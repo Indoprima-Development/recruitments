@@ -6,10 +6,20 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Dataorganisasi;
 use App\Http\Requests\DataorganisasiRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 
 class DataorganisasisController extends Controller
 {
+    private function decryptId($id)
+    {
+        try {
+            return Crypt::decryptString($id);
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -58,7 +68,7 @@ class DataorganisasisController extends Controller
      */
     public function show($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $dataorganisasi = Dataorganisasi::findOrFail($id);
         return view('dataorganisasis.show',['dataorganisasi'=>$dataorganisasi]);
     }
@@ -71,7 +81,7 @@ class DataorganisasisController extends Controller
      */
     public function edit($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $dataorganisasi = Dataorganisasi::findOrFail($id);
         return redirect('forms?section=organisasi');
     }
@@ -85,7 +95,7 @@ class DataorganisasisController extends Controller
      */
     public function update(DataorganisasiRequest $request, $id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $dataorganisasi = Dataorganisasi::findOrFail($id);
 		$dataorganisasi->user_id = $request->input('user_id');
 		$dataorganisasi->nama_organisasi = $request->input('nama_organisasi');
@@ -106,7 +116,7 @@ class DataorganisasisController extends Controller
      */
     public function destroy($id)
     {
-        $id = Crypt::decryptString($id);
+        $id = $this->decryptId($id);
         $dataorganisasi = Dataorganisasi::findOrFail($id);
         $dataorganisasi->delete();
 

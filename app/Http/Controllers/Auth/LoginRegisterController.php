@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Constants\Constants;
 use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -243,7 +244,12 @@ class LoginRegisterController extends Controller
 
     public function forgetPasswordLink(Request $request)
     {
-        $id = Crypt::decryptString($request->input("token"));
+        try {
+            $id = Crypt::decryptString($request->input("token"));
+        } catch (DecryptException $e) {
+            Alert::error('Gagal!', 'Tautan reset password tidak valid atau sudah kedaluwarsa.');
+            return redirect('auth/login');
+        }
         $user = User::findOrFail($id);
         $token = Crypt::encryptString($user->id);
 
@@ -252,7 +258,12 @@ class LoginRegisterController extends Controller
 
     public function changePassword(Request $request)
     {
-        $id = Crypt::decryptString($request->input("token"));
+        try {
+            $id = Crypt::decryptString($request->input("token"));
+        } catch (DecryptException $e) {
+            Alert::error('Gagal!', 'Tautan reset password tidak valid atau sudah kedaluwarsa.');
+            return redirect('auth/login');
+        }
         $user = User::findOrFail($id);
         $user->update([
             'password' => Hash::make($request->new_password),
