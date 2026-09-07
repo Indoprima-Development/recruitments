@@ -133,9 +133,9 @@ class HomeController extends Controller
         // Open position counts per job title, in one grouped query instead of
         // one Ptkform::whereHas()->count() per distinct job title.
         $openCountsByJobtitle = Ptkform::join('jobtitles', 'jobtitles.id', 'ptkforms.jobtitle_id')
-            ->select('jobtitles.jobtitle_name', DB::raw('count(*) as open'))
+            ->select('jobtitles.jobtitle_name', DB::raw('count(*) as open_count'))
             ->groupBy('jobtitles.jobtitle_name')
-            ->pluck('open', 'jobtitle_name');
+            ->pluck('open_count', 'jobtitle_name');
 
         // Calculate success rate
         foreach($deptStats as &$stat) {
