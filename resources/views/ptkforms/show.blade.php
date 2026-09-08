@@ -573,14 +573,23 @@
                                 <div class="sidebar-card text-center p-4" style="background: #f1f5f9; border: none;">
                                     @if (Auth::check())
                                         @if (!$isApplied)
-                                            <button type="button"
-                                                class="btn btn-primary btn-apply rounded-pill shadow-lg mb-3"
-                                                data-bs-toggle="modal" data-bs-target="#applicationModal">
-                                                Apply Now <i class="ti ti-arrow-right ms-2"></i>
-                                            </button>
-                                            <p class="small text-muted mb-0">You are applying as
-                                                <strong>{{ Auth::user()->name }}</strong>
-                                            </p>
+                                            @if ($isProfileComplete)
+                                                <button type="button"
+                                                    class="btn btn-primary btn-apply rounded-pill shadow-lg mb-3"
+                                                    data-bs-toggle="modal" data-bs-target="#applicationModal">
+                                                    Apply Now <i class="ti ti-arrow-right ms-2"></i>
+                                                </button>
+                                                <p class="small text-muted mb-0">You are applying as
+                                                    <strong>{{ Auth::user()->name }}</strong>
+                                                </p>
+                                            @else
+                                                <i class="ti ti-alert-triangle text-warning fs-8 mb-3 d-block"></i>
+                                                <h6 class="fw-bold mb-2">Lengkapi Profil Anda</h6>
+                                                <p class="small text-muted mb-3">Domisili dan instansi/kampus wajib
+                                                    diisi sebelum melamar pekerjaan.</p>
+                                                <a href="{{ url('forms?section=account') }}"
+                                                    class="btn btn-primary w-100 rounded-pill">Lengkapi Profil</a>
+                                            @endif
                                         @else
                                             <button type="button"
                                                 class="btn btn-success btn-apply rounded-pill shadow-lg mb-3" disabled>
@@ -642,7 +651,7 @@
     </footer>
 
     <!-- Application Modal (Questionnaire) -->
-    @if (Auth::check() && !$isApplied)
+    @if (Auth::check() && !$isApplied && $isProfileComplete)
         <div class="modal fade" id="applicationModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content border-0 rounded-4 shadow-lg">

@@ -190,6 +190,11 @@ class PtkformtransactionsController extends Controller
      */
     public function store(PtkformtransactionRequest $request)
     {
+        if (!IsApplyProfileComplete(Auth::user())) {
+            AlertError('Lengkapi Profil', 'Domisili dan instansi/kampus wajib diisi sebelum melamar pekerjaan.');
+            return redirect('forms?section=account');
+        }
+
         $questions = json_decode($request->questions);
         $score = 0;
 

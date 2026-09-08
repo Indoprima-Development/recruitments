@@ -7,5 +7,6 @@ require_once __DIR__.'/Cache.php';
 require_once __DIR__.'/EncodeDecode.php';
 require_once __DIR__.'/Date.php';
 require_once __DIR__.'/File.php';
+require_once __DIR__.'/Profile.php';
 require_once __DIR__.'/Session.php';
 require_once __DIR__.'/VacancyHash.php';

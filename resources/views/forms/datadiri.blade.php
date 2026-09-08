@@ -95,6 +95,14 @@
                             {{ Form::label('tanggal_lahir', 'Tanggal Lahir') }}
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ Form::text('asal_instansi', Auth::user()->asal_instansi, ['class' => 'form-control bg-light-subtle border-light shadow-none fw-medium', 'placeholder' => 'Instansi Kampus', 'required', 'id' => 'asal_instansi']) }}
+                            {{ Form::label('asal_instansi', 'Instansi Kampus') }}
+                            <div class="invalid-feedback">Instansi kampus wajib diisi.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

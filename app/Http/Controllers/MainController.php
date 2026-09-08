@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Datadiri;
 use App\Models\Jobtitle;
 use App\Models\Ptkfield;
 use App\Models\Ptkform;
@@ -77,6 +78,7 @@ class MainController extends Controller
 
         $isApplied = false;
         $isSaved = false;
+        $isProfileComplete = false;
 
         if (Auth::check()) {
             $trs = Ptkformtransaction::where('ptkform_id', $id)
@@ -86,6 +88,8 @@ class MainController extends Controller
             if (!empty($trs)) {
                 $isApplied = true;
             }
+
+            $isProfileComplete = IsApplyProfileComplete(Auth::user());
 
             // Check if job is saved
             $savedJob = SavedJob::where('ptkform_id', $id)
@@ -97,7 +101,7 @@ class MainController extends Controller
             }
         }
 
-        return view('ptkforms.show', compact('ptkform', 'isApplied', 'isSaved', 'jobtitle','ptkfields'));
+        return view('ptkforms.show', compact('ptkform', 'isApplied', 'isSaved', 'isProfileComplete', 'jobtitle', 'ptkfields'));
     }
 
     public function konfirmation(Request $request){

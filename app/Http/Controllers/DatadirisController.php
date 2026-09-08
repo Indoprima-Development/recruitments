@@ -82,6 +82,12 @@ class DatadirisController extends Controller
             $datadiri->update($dataRequest);
         }
 
+        if ($request->filled('asal_instansi')) {
+            User::whereKey($userId)->update([
+                'asal_instansi' => $request->input('asal_instansi'),
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Data diri berhasil disimpan.');
     }
 
