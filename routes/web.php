@@ -150,6 +150,9 @@ Route::middleware(['web', 'auth', 'isadmin'])->group(function () {
         Route::get('/ptkformtransactions/{status}/data.json', 'dataJsonApi')->name('ptkformtransactions.dataJson');
         Route::post('/ptkformtransactions/change-status', 'changeStatus');
         Route::post('/ptkformtransactions/update-note', 'updateNote');
+        Route::post('/ptkformtransactions/bulk-reject', 'bulkReject')->name('ptkformtransactions.bulkReject');
+        Route::post('/ptkformtransactions/{status}/auto-reject', 'autoReject')->name('ptkformtransactions.autoReject');
+        Route::get('/ptkformtransactions/{id}/activities', 'activityLog')->where('id', '[0-9]+')->name('ptkformtransactions.activityLog');
         Route::get('/ptkformtransactions/vacancy/{ptkform_id}/data', 'vacancyData')->name('ptkformtransactions.vacancyData');
         Route::get('/ptkformtransactions/vacancy/{ptkform_id}/{status}/data', 'vacancyData')->name('ptkformtransactions.vacancyDataWithStatus');
         Route::get('/ptkformtransactions/vacancy/{ptkform_id}/{status}/json', 'vacancyJson')->name('ptkformtransactions.vacancyJson');

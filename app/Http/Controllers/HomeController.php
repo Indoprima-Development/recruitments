@@ -41,7 +41,7 @@ class HomeController extends Controller
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
 
-        $data = Cache::remember("home_dashboard_{$year}_{$month}", now()->addMinutes(self::DASHBOARD_CACHE_TTL_MINUTES), function () use ($month, $year) {
+        $data = Cache::remember("home_dashboard_v2_{$year}_{$month}", now()->addMinutes(self::DASHBOARD_CACHE_TTL_MINUTES), function () use ($month, $year) {
             return $this->buildHomeDashboardData($month, $year);
         });
 
@@ -61,45 +61,37 @@ class HomeController extends Controller
 
         $totalApplications = $query->count();
 
-        // Hired Count (Status 7 = Joined)
-        $hiredCount = (clone $query)->where('status', 7)->count();
+        // Hired Count (Status 7 = Joined) - safely query as string
+        $hiredCount = (clone $query)->where('status', '7')->count();
 
         // Hire Rate
         $hireRate = $totalApplications > 0 ? round(($hiredCount / $totalApplications) * 100, 1) : 0;
 
         // Time to Hire
-        // Fetch hired candidates for this month and calculate avg days
-        $hiredCandidates = (clone $query)->where('status', 7)->get();
+        $hiredCandidates = (clone $query)->where('status', '7')->get();
         $totalDays = 0;
         foreach($hiredCandidates as $candidate) {
             $created = \Carbon\Carbon::parse($candidate->created_at);
-            $updated = \Carbon\Carbon::parse($candidate->updated_at); // Assuming updated_at is the join date
+            $updated = \Carbon\Carbon::parse($candidate->updated_at);
             $totalDays += $created->diffInDays($updated);
         }
         $avgTimeToHire = $hiredCount > 0 ? round($totalDays / $hiredCount) : 0;
 
-
         // Offer Acceptance
-        // Assume Status 5 = Offering (Sent), Status 7 = Joined (Accepted)
-        // This is a rough estimate. Ideally we track Offer Sent vs Offer Accepted.
-        // Let's assume Status 5 and above means Offer was reached.
-        $offersReached = (clone $query)->where('status', '>=', 5)->count();
+        $offersReached = (clone $query)->whereIn('status', ['5', '6', '7'])->count();
         $offerAcceptance = $offersReached > 0 ? round(($hiredCount / $offersReached) * 100, 1) : 0;
 
-        // Funnel Data
-        // 0: App, 1: HC, 3: User, 5: Offer, 7: Hired
-        // Note: The flow codes might skip some numbers based on visual but let's map standard ones.
-        // The visual shows: Aplikasi Masuk, Screening, Interview HR, Interview User, Offering, Hired.
+        // Funnel Data (using whereIn with strings to prevent SQL Server nvarchar int conversion errors)
         $funnelData = [
             'total' => $totalApplications,
-            'screening' => (clone $query)->where('status', '>=', 0)->count(), // All entered are screened
-            'interview_hr' => (clone $query)->where('status', '>=', 1)->count(),
-            'interview_user' => (clone $query)->where('status', '>=', 3)->count(),
+            'screening' => (clone $query)->whereIn('status', ['0', '1', '2', '3', '4', '5', '6', '7'])->count(),
+            'interview_hr' => (clone $query)->whereIn('status', ['1', '2', '3', '4', '5', '6', '7'])->count(),
+            'interview_user' => (clone $query)->whereIn('status', ['3', '4', '5', '6', '7'])->count(),
             'offering' => $offersReached,
             'hired' => $hiredCount
         ];
 
-        // Hiring by Department (aggregated by job title name below via $rawDept)
+        // Hiring by Department
         $deptStats = [];
         
         $rawDeptQuery = Ptkformtransaction::with(['ptkform.jobtitle']);
@@ -116,22 +108,19 @@ class HomeController extends Controller
             if(!isset($deptStats[$name])) {
                 $deptStats[$name] = [
                     'name' => $name,
-                    'open' => 0, // Placeholder
+                    'open' => 0,
                     'applications' => 0,
                     'interviews' => 0,
                     'hired' => 0
                 ];
-                // Try to get open positions count? Ptkform has 'jumlah'?
-                // For now just 1 per form or summation.
-                // This is complex, let's simplify: existing PTK forms open.
             }
             $deptStats[$name]['applications']++;
-            if($item->status >= 1) $deptStats[$name]['interviews']++;
-            if($item->status == 7) $deptStats[$name]['hired']++;
+            $statusStr = (string)$item->status;
+            if(in_array($statusStr, ['1', '2', '3', '4', '5', '6', '7'])) $deptStats[$name]['interviews']++;
+            if($statusStr === '7') $deptStats[$name]['hired']++;
         }
 
-        // Open position counts per job title, in one grouped query instead of
-        // one Ptkform::whereHas()->count() per distinct job title.
+        // Open position counts per job title
         $openCountsByJobtitle = Ptkform::join('jobtitles', 'jobtitles.id', 'ptkforms.jobtitle_id')
             ->select('jobtitles.jobtitle_name', DB::raw('count(*) as open_count'))
             ->groupBy('jobtitles.jobtitle_name')
@@ -145,18 +134,53 @@ class HomeController extends Controller
 
         // Original Dashboard Data (Total Counts per Status)
         $dataCounts = Ptkformtransaction::select(DB::raw('count(id) as jumlah, status'))
-            ->orderBy('status', 'ASC')
             ->groupBy('status')
             ->get();
 
         $dataResults = [0, 0, 0, 0, 0, 0, 0, 0];
         foreach ($dataCounts as $key => $d) {
-            if(isset($dataResults[$d->status])) {
-                $dataResults[$d->status] = $d->jumlah;
+            $s = (string)$d->status;
+            if (is_numeric($s) && isset($dataResults[(int)$s])) {
+                $dataResults[(int)$s] = $d->jumlah;
             }
         }
 
-        return compact("totalApplications", "hireRate", "avgTimeToHire", "offerAcceptance", "funnelData", "deptStats", "dataResults");
+        // 12 Months Application & Hiring Trends
+        $trendYear = ($year != 'all') ? $year : date('Y');
+        $monthlyCounts = Ptkformtransaction::select(DB::raw('MONTH(created_at) as month, count(id) as total'))
+            ->whereYear('created_at', $trendYear)
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->pluck('total', 'month')
+            ->toArray();
+
+        $monthlyHiredCounts = Ptkformtransaction::select(DB::raw('MONTH(created_at) as month, count(id) as total'))
+            ->whereYear('created_at', $trendYear)
+            ->where('status', '7')
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->pluck('total', 'month')
+            ->toArray();
+
+        $monthlyTrendsMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $monthlyTrendsApplications = [];
+        $monthlyTrendsHired = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $monthlyTrendsApplications[] = (int)($monthlyCounts[$m] ?? 0);
+            $monthlyTrendsHired[] = (int)($monthlyHiredCounts[$m] ?? 0);
+        }
+
+        return compact(
+            "totalApplications",
+            "hireRate",
+            "avgTimeToHire",
+            "offerAcceptance",
+            "funnelData",
+            "deptStats",
+            "dataResults",
+            "monthlyTrendsMonths",
+            "monthlyTrendsApplications",
+            "monthlyTrendsHired",
+            "trendYear"
+        );
     }
 
     public function index()

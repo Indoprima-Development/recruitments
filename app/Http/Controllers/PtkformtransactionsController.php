@@ -360,7 +360,8 @@ class PtkformtransactionsController extends Controller
             . 'ptkformtransactions.created_at, ptkformtransactions.updated_at, '
             . 'users.name as user_name, users.ipk as user_ipk, users.cv as user_cv, '
             . 'jobtitles.jobtitle_name as jobtitle_name, datadiris.cities as cities, datadiris.provinces as provinces, '
-            . 'latest_edu.instansi as edu_instansi'
+            . 'datadiris.gender as gender, latest_edu.instansi as edu_instansi, '
+            . 'notes_agg.notes_count as notes_count'
         );
 
         $rows = DB::query()
@@ -427,6 +428,7 @@ class PtkformtransactionsController extends Controller
         $domicile = $request->input('domicile');
         $year = $request->input('year');
         $month = $request->input('month');
+        $gender = $request->input('gender');
 
         $query = Ptkformtransaction::query()
             ->join('users', 'ptkformtransactions.user_id', '=', 'users.id')
@@ -468,6 +470,15 @@ class PtkformtransactionsController extends Controller
             $query->leftJoinSub($expCount, 'exp', 'users.id', '=', 'exp.user_id');
         }
 
+        // Count of HC-written notes (Ptkformactivity.keterangan) per candidate, only
+        // needed to badge the "Notes" button in the paginated row fetch.
+        if ($forDisplay) {
+            $notesCount = DB::table('ptkformactivities')
+                ->select('ptkformtransaction_id', DB::raw('COUNT(*) as notes_count'))
+                ->groupBy('ptkformtransaction_id');
+            $query->leftJoinSub($notesCount, 'notes_agg', 'ptkformtransactions.id', '=', 'notes_agg.ptkformtransaction_id');
+        }
+
         return $query
             ->when($status !== 'all', function ($q) use ($status) {
                 return $q->where('ptkformtransactions.status', $status);
@@ -489,6 +500,9 @@ class PtkformtransactionsController extends Controller
             })
             ->when($gpa, function ($q) use ($gpa) {
                 return $q->where('users.ipk', '>=', (float) $gpa);
+            })
+            ->when($gender !== null && $gender !== '', function ($q) use ($gender) {
+                return $q->where('datadiris.gender', (int) $gender);
             })
             ->when($university, function ($q) use ($university) {
                 return $q->where('latest_edu.instansi', 'like', "%{$university}%");
@@ -623,8 +637,19 @@ class PtkformtransactionsController extends Controller
             ? '<span class="badge bg-light text-success border border-success px-2 py-1" style="font-size: 0.65rem;">Ya</span>'
             : '<span class="badge bg-light text-muted border px-2 py-1" style="font-size: 0.65rem;">Tidak</span>';
 
+        $genderLabel = '-';
+        if (isset($row->gender) && $row->gender !== null) {
+            $genderLabel = ((int) $row->gender === 1) ? 'Laki-laki' : 'Perempuan';
+        }
+
+        $notesCount = (int) ($row->notes_count ?? 0);
+        $notesHtml = '<button type="button" class="btn-icon btnViewNotes" ptkformtrid="' . (int) $row->id . '" '
+            . 'title="Lihat Notes"><i class="fas fa-sticky-note' . ($notesCount > 0 ? ' text-warning' : ' text-muted') . '"></i>'
+            . ($notesCount > 0 ? '<span class="badge rounded-pill bg-danger" style="font-size: 0.55rem; position: relative; top: -8px; left: 2px; padding: 1px 4px;">' . $notesCount . '</span>' : '')
+            . '</button>';
+
         return [
-            'cb' => '<input type="checkbox">',
+            'cb' => '<input type="checkbox" class="row-checkbox" data-id="' . (int) $row->id . '">',
             'name' => '<a href="#" class="col-candidate" onclick="viewCandidate(' . (int) $row->user_id . ')" title="' . e($row->user_name ?? '-') . '">' . e($displayName) . '</a>',
             'cv' => $cvHtml,
             'last_modified' => \Carbon\Carbon::parse($row->updated_at)->format('d M Y'),
@@ -633,13 +658,14 @@ class PtkformtransactionsController extends Controller
             'date_applied' => $created->format('d M Y'),
             'university' => e($eduInst),
             'gpa' => e($row->user_ipk ?? '-'),
+            'gender' => e($genderLabel),
             'experience' => $experienceHtml,
             'duration' => e($duration),
             'domicile' => '<span title="' . e($domisiliFull) . '">' . e($domisiliShort) . '</span>',
             'source' => '<span class="badge bg-light text-primary border border-primary px-2" style="font-size: 0.65rem;">Web</span>',
             'ai_rev' => $aiRevHtml,
             'score' => '<span class="badge-score ' . $scoreClass . '">' . $score . '/100</span>',
-            'notes' => '<div class="editable-note text-muted text-small" data-id="' . (int) $row->id . '" title="Double click to edit">-</div>',
+            'notes' => $notesHtml,
             'status' => '<span class="badge-status ' . $statusBadgeClass . '">' . $statusLabel . '</span>',
             'action' => '<div class="d-flex justify-content-center gap-1">'
                 . '<button class="btn-icon btn-check btnApproveDirect" ptkformtrid="' . (int) $row->id . '" status="' . $statusVal . '" data-bs-toggle="tooltip" title="Approve & Next Stage"><i class="fas fa-arrow-right text-primary"></i></button>'
@@ -767,6 +793,197 @@ class PtkformtransactionsController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * Notes written by HC directly on the career site: every changeStatus() call
+     * (approve/hold/reject) logs one Ptkformactivity row with its `keterangan`.
+     * Feeds the "Lihat Notes" button/modal.
+     */
+    public function activityLog($id)
+    {
+        $activities = Ptkformactivity::with('user:id,name')
+            ->where('ptkformtransaction_id', $id)
+            ->orderByDesc('created_at')
+            ->get()
+            ->map(function ($activity) {
+                return [
+                    'author' => $activity->user->name ?? '-',
+                    'keterangan' => $activity->keterangan ?: '-',
+                    'created_at' => $activity->created_at?->format('d M Y H:i'),
+                ];
+            });
+
+        return response()->json(['data' => $activities]);
+    }
+
+    /**
+     * Reject a manually selected batch of candidates (checkbox "Bulk Action" in the UI).
+     */
+    public function bulkReject(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer|exists:ptkformtransactions,id',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        $keterangan = $request->input('keterangan') ?: 'Bulk Reject';
+        $affectedStatuses = $this->rejectTransactions($request->input('ids'), $keterangan);
+
+        $this->clearDataCache($affectedStatuses);
+
+        return response()->json([
+            'success' => true,
+            'message' => count($request->input('ids')) . ' kandidat berhasil ditolak.',
+        ]);
+    }
+
+    /**
+     * Reject every candidate (within the current status tab / vacancy scope) that fails
+     * the given screening criteria. With `preview=1` it only counts matches so the UI can
+     * confirm before actually rejecting anyone.
+     */
+    public function autoReject($status, Request $request)
+    {
+        $request->validate([
+            'ptkform_id' => 'nullable|integer',
+            'gpa_min' => 'nullable|numeric|min:0|max:4',
+            'gender' => 'nullable|in:0,1',
+            'universities' => 'nullable|array',
+            'universities.*' => 'string',
+            'lulus_tahun_max' => 'nullable|digits:4',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        if (
+            !$request->filled('gpa_min') &&
+            !$request->filled('gender') &&
+            !$request->filled('universities') &&
+            !$request->filled('lulus_tahun_max')
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pilih minimal satu kriteria (IPK, Jenis Kelamin, Universitas, atau Tahun Kelulusan).',
+            ], 422);
+        }
+
+        $ids = $this->buildAutoRejectQuery($status, $request)
+            ->pluck('ptkformtransactions.id')
+            ->all();
+
+        if ($request->boolean('preview')) {
+            return response()->json(['count' => count($ids)]);
+        }
+
+        if (empty($ids)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Tidak ada kandidat yang cocok dengan kriteria tersebut.',
+                'count' => 0,
+            ]);
+        }
+
+        $keterangan = $request->input('keterangan') ?: 'Auto Reject (tidak memenuhi kriteria minimum)';
+        $affectedStatuses = $this->rejectTransactions($ids, $keterangan);
+
+        $this->clearDataCache($affectedStatuses);
+
+        return response()->json([
+            'success' => true,
+            'message' => count($ids) . ' kandidat berhasil ditolak otomatis.',
+            'count' => count($ids),
+        ]);
+    }
+
+    /**
+     * Candidates in the given status/vacancy scope that fail the screening criteria.
+     * Mirrors buildFilteredQuery()'s join/scope conventions but the criteria here are
+     * "reject if" thresholds rather than "show if" filters, so it's kept separate.
+     * Already-rejected candidates are always excluded so re-running never double-logs them.
+     */
+    private function buildAutoRejectQuery($status, Request $request)
+    {
+        $ptkformId = $request->input('ptkform_id');
+        $gpaMin = $request->input('gpa_min');
+        $gender = $request->input('gender');
+        $universities = array_values(array_filter((array) $request->input('universities', [])));
+        $lulusTahunMax = $request->input('lulus_tahun_max');
+
+        $needsEdu = !empty($universities) || $lulusTahunMax;
+
+        $query = Ptkformtransaction::query()
+            ->join('users', 'ptkformtransactions.user_id', '=', 'users.id')
+            ->leftJoin('datadiris', 'users.id', '=', 'datadiris.user_id')
+            ->when($status !== 'all', function ($q) use ($status) {
+                return $q->where('ptkformtransactions.status', $status);
+            })
+            ->when($ptkformId, function ($q) use ($ptkformId) {
+                return $q->where('ptkformtransactions.ptkform_id', $ptkformId);
+            })
+            ->where('ptkformtransactions.status', '!=', 9);
+
+        if ($needsEdu) {
+            $latestEdu = DB::table(DB::raw(
+                '(SELECT user_id, instansi, lulus_tahun, '
+                . 'ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY id DESC) AS rn '
+                . 'FROM datapendidikanformals) AS ranked_edu'
+            ))
+                ->select('user_id', 'instansi', 'lulus_tahun')
+                ->where('rn', 1);
+            $query->joinSub($latestEdu, 'latest_edu', 'users.id', '=', 'latest_edu.user_id');
+        }
+
+        return $query
+            ->when($gpaMin !== null && $gpaMin !== '', function ($q) use ($gpaMin) {
+                return $q->where('users.ipk', '<', (float) $gpaMin);
+            })
+            ->when($gender !== null && $gender !== '', function ($q) use ($gender) {
+                return $q->where('datadiris.gender', (int) $gender);
+            })
+            ->when(!empty($universities), function ($q) use ($universities) {
+                return $q->whereIn('latest_edu.instansi', $universities);
+            })
+            ->when($lulusTahunMax, function ($q) use ($lulusTahunMax) {
+                return $q->whereRaw('TRY_CAST(latest_edu.lulus_tahun AS INT) <= ?', [(int) $lulusTahunMax]);
+            });
+    }
+
+    /**
+     * Shared reject routine for both bulk and auto-reject: sets status=9, fills in
+     * `pic` when unset, and logs one Ptkformactivity per candidate (same audit trail
+     * changeStatus() produces for a single reject).
+     *
+     * @return array Distinct statuses touched (old + new), for cache invalidation.
+     */
+    private function rejectTransactions(array $ids, string $keterangan): array
+    {
+        $ids = array_values(array_unique(array_map('intval', $ids)));
+        $transactions = Ptkformtransaction::whereIn('id', $ids)->get();
+        $picName = Auth::user()->name;
+        $affectedStatuses = [];
+
+        DB::transaction(function () use ($transactions, $picName, $keterangan, &$affectedStatuses) {
+            foreach ($transactions as $transaction) {
+                $affectedStatuses[] = $transaction->status;
+
+                $update = ['status' => 9];
+                if (empty($transaction->pic)) {
+                    $update['pic'] = $picName;
+                }
+                $transaction->update($update);
+
+                Ptkformactivity::create([
+                    'user_id' => Auth::user()->id,
+                    'ptkformtransaction_id' => $transaction->id,
+                    'keterangan' => $keterangan,
+                ]);
+            }
+        });
+
+        $affectedStatuses[] = 9;
+
+        return array_values(array_unique($affectedStatuses));
     }
 
     public function updateNote(Request $request)

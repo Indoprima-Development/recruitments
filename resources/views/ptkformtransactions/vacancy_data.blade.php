@@ -368,6 +368,14 @@
                     </select>
                 </div>
                 <div class="col-6 col-md">
+                    <select id="filterGender" class="form-select form-select-sm text-small"
+                        style="border-radius: 8px; border-color: #dfe6e9;">
+                        <option value="">🚻 Semua Jenis Kelamin</option>
+                        <option value="1">Laki-laki</option>
+                        <option value="0">Perempuan</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md">
                     <select id="filterDomicile" class="form-select form-select-sm text-small"
                         style="border-radius: 8px; border-color: #dfe6e9;">
                         <option value="">📍 Semua Domisili</option>
@@ -379,10 +387,29 @@
             </div>
         </div>
 
+        <!-- Bulk Action Toolbar -->
+        <div class="d-flex align-items-center gap-2 mb-2 p-2" style="background: #fff5f5; border-radius: 8px; border: 1px solid #ffd7d7;">
+            <span class="text-small fw-bold text-muted">
+                <span id="bulkSelectedCount">0</span> kandidat dipilih
+            </span>
+            <button type="button" id="btnBulkReject" class="btn btn-sm btn-outline-danger text-small" disabled>
+                <i class="fas fa-times me-1"></i> Reject Terpilih
+            </button>
+            <button type="button" id="btnClearSelection" class="btn btn-sm btn-outline-secondary text-small" disabled>
+                Batal Pilih
+            </button>
+            <div class="ms-auto">
+                <button type="button" class="btn btn-sm btn-danger text-small" data-bs-toggle="modal"
+                    data-bs-target="#modalAutoReject">
+                    <i class="fas fa-robot me-1"></i> Auto Reject (Kriteria)
+                </button>
+            </div>
+        </div>
+
         <table id="recruitmentTable" class="stripe row-border order-column" style="width:100%">
             <thead>
                 <tr>
-                    <th class="text-center"><input type="checkbox"></th>
+                    <th class="text-center"><input type="checkbox" id="selectAllRows" title="Pilih semua di halaman ini"></th>
                     <th>Nama</th>
                     <th class="text-center">CV</th>
                     <th>Last Modified</th>
@@ -391,6 +418,7 @@
                     <th>Date Applied</th>
                     <th>Universitas</th>
                     <th class="text-center">GPA</th>
+                    <th class="text-center">Jenis Kelamin</th>
                     <th class="text-center">Pengalaman</th>
                     <th>Durasi</th>
                     <th>Domisili</th>
@@ -452,6 +480,92 @@
             </div>
         </div>
     </div>
+
+    <!-- Auto Reject Modal -->
+    <div class="modal fade" id="modalAutoReject" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title"><i class="fas fa-robot me-1"></i> Auto Reject Kandidat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted text-small">
+                        Kandidat pelamar posisi ini pada tab status saat ini yang <strong>tidak memenuhi</strong>
+                        semua kriteria berikut akan otomatis ditolak. Kosongkan kriteria yang tidak ingin digunakan.
+                    </p>
+
+                    <div class="mb-3">
+                        <label class="form-label text-small fw-bold">IPK Minimum</label>
+                        <input type="number" id="autoRejectGpaMin" class="form-control form-control-sm" step="0.01"
+                            min="0" max="4" placeholder="Contoh: 3.5 (kandidat di bawah nilai ini ditolak)">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-small fw-bold">Jenis Kelamin yang Diterima</label>
+                        <select id="autoRejectGender" class="form-select form-select-sm">
+                            <option value="">Semua (tidak difilter)</option>
+                            <option value="1">Laki-laki</option>
+                            <option value="0">Perempuan</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-small fw-bold">Universitas yang Diterima</label>
+                        <select id="autoRejectUniversities" class="form-select form-select-sm" multiple
+                            style="width: 100%;">
+                            @foreach ($filterOptions['universities'] as $uni)
+                                <option value="{{ $uni }}">{{ $uni }}</option>
+                            @endforeach
+                        </select>
+                        <div class="form-text text-small">Kosongkan untuk menerima semua universitas. Jika diisi,
+                            kandidat di luar daftar ini akan ditolak.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-small fw-bold">Tahun Kelulusan Minimum</label>
+                        <input type="number" id="autoRejectLulusTahunMax" class="form-control form-control-sm"
+                            step="1" placeholder="Contoh: 2022 (kandidat lulus sebelum tahun ini ditolak)">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-small fw-bold">Catatan (opsional)</label>
+                        <input type="text" id="autoRejectKeterangan" class="form-control form-control-sm"
+                            placeholder="Auto Reject (tidak memenuhi kriteria minimum)">
+                    </div>
+
+                    <div id="autoRejectPreviewBox" class="alert alert-secondary text-small d-none mb-0"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" id="btnAutoRejectPreview" class="btn btn-outline-primary">Cek Jumlah</button>
+                    <button type="button" id="btnAutoRejectExecute" class="btn btn-danger" disabled>
+                        <i class="fas fa-times me-1"></i> Tolak Otomatis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes History Modal -->
+    <div class="modal fade" id="modalViewNotes" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title"><i class="fas fa-sticky-note me-1"></i> Notes Kandidat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="notesListContainer">
+                        <p class="text-muted text-small mb-0">Memuat notes...</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('addJs')
@@ -476,7 +590,22 @@
                 allowClear: true
             });
 
+            $('#autoRejectUniversities').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: "Semua universitas (kosongkan untuk tidak difilter)",
+                allowClear: true
+            });
+
             console.log("Vacancy PTKForm Transaction Script Loaded - Server Side Data");
+
+            // ----- Bulk selection state -----
+            var selectedIds = new Set();
+
+            function refreshBulkToolbar() {
+                $('#bulkSelectedCount').text(selectedIds.size);
+                $('#btnBulkReject, #btnClearSelection').prop('disabled', selectedIds.size === 0);
+            }
 
             var table = $('#recruitmentTable').DataTable({
                 processing: true,
@@ -489,6 +618,7 @@
                         d.education = $('#filterEducation').val();
                         d.university = $('#filterUniversity').val();
                         d.experience = $('#filterExperience').val();
+                        d.gender = $('#filterGender').val();
                         d.domicile = $('#filterDomicile').val();
                     }
                 },
@@ -520,6 +650,9 @@
                     },
                     {
                         data: 'gpa'
+                    },
+                    {
+                        data: 'gender'
                     },
                     {
                         data: 'experience'
@@ -570,6 +703,12 @@
                 },
                 drawCallback: function() {
                     this.api().columns.adjust();
+                    // Re-apply the checked state for rows still selected from a previous page.
+                    $('#recruitmentTable .row-checkbox').each(function() {
+                        var id = $(this).data('id');
+                        $(this).prop('checked', selectedIds.has(id));
+                    });
+                    $('#selectAllRows').prop('checked', false);
                 }
             });
 
@@ -579,7 +718,7 @@
             });
 
             // Listeners: every filter change reloads page 1 from the server
-            $('#filterGpa, #filterEducation, #filterExperience').on('change', function() {
+            $('#filterGpa, #filterEducation, #filterExperience, #filterGender').on('change', function() {
                 table.ajax.reload();
             });
 
@@ -611,44 +750,189 @@
                 window.location.href = "{{ url('datadiris/data-users') }}/" + id;
             };
 
-            // Double click to edit note
-            $(document).on('dblclick', '.editable-note', function() {
-                var $this = $(this);
-                if ($this.find('input').length > 0) return;
+            // View Notes Button (activity/keterangan history written by HC on this site)
+            $(document).on('click', '.btnViewNotes', function() {
+                var id = $(this).attr('ptkformtrid');
+                var $container = $('#notesListContainer');
+                $container.html('<p class="text-muted text-small mb-0">Memuat notes...</p>');
+                $('#modalViewNotes').modal('show');
 
-                var currentText = $this.text().trim();
-                if (currentText === '-') currentText = '';
+                $.ajax({
+                    url: "{{ url('ptkformtransactions') }}/" + id + "/activities",
+                    method: "GET",
+                    success: function(response) {
+                        var items = response.data || [];
+                        if (items.length === 0) {
+                            $container.html(
+                                '<p class="text-muted text-small mb-0">Belum ada notes untuk kandidat ini.</p>'
+                            );
+                            return;
+                        }
 
-                var id = $this.data('id');
-                var input = $(
-                        '<input type="text" class="form-control form-control-sm" style="width: 150px;">')
-                    .val(currentText)
-                    .on('blur keypress', function(e) {
-                        if (e.type === 'keypress' && e.which !== 13) return;
-
-                        var newNote = $(this).val();
-                        var $container = $(this).parent();
-
-                        $.ajax({
-                            url: "{{ url('ptkformtransactions/update-note') }}",
-                            method: "POST",
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                id: id,
-                                note: newNote
-                            },
-                            success: function(response) {
-                                $container.text(newNote || '-');
-                            },
-                            error: function() {
-                                alert('Failed to save note');
-                                $container.text(currentText || '-');
-                            }
+                        var html = '<ul class="list-group">';
+                        items.forEach(function(item) {
+                            html += '<li class="list-group-item">' +
+                                '<div class="d-flex justify-content-between align-items-center mb-1">' +
+                                '<span class="fw-bold text-small">' + $('<div>').text(item.author)
+                                .html() + '</span>' +
+                                '<span class="text-muted text-small">' + $('<div>').text(item
+                                    .created_at).html() + '</span>' +
+                                '</div>' +
+                                '<div class="text-small">' + $('<div>').text(item.keterangan).html() +
+                                '</div>' +
+                                '</li>';
                         });
-                    });
+                        html += '</ul>';
+                        $container.html(html);
+                    },
+                    error: function() {
+                        $container.html(
+                            '<p class="text-danger text-small mb-0">Gagal memuat notes.</p>');
+                    }
+                });
+            });
 
-                $this.empty().append(input);
-                input.focus();
+            // ----- Row / select-all checkboxes -----
+            $(document).on('change', '.row-checkbox', function() {
+                var id = $(this).data('id');
+                if (this.checked) {
+                    selectedIds.add(id);
+                } else {
+                    selectedIds.delete(id);
+                }
+                refreshBulkToolbar();
+            });
+
+            $('#selectAllRows').on('change', function() {
+                var checked = this.checked;
+                $('#recruitmentTable .row-checkbox').each(function() {
+                    $(this).prop('checked', checked);
+                    var id = $(this).data('id');
+                    if (checked) {
+                        selectedIds.add(id);
+                    } else {
+                        selectedIds.delete(id);
+                    }
+                });
+                refreshBulkToolbar();
+            });
+
+            $('#btnClearSelection').on('click', function() {
+                selectedIds.clear();
+                $('#recruitmentTable .row-checkbox').prop('checked', false);
+                $('#selectAllRows').prop('checked', false);
+                refreshBulkToolbar();
+            });
+
+            // ----- Bulk Reject (manually selected candidates) -----
+            $('#btnBulkReject').on('click', function() {
+                if (selectedIds.size === 0) return;
+                if (!confirm('Tolak ' + selectedIds.size + ' kandidat terpilih? Aksi ini tidak dapat dibatalkan.'))
+                    return;
+
+                var reason = prompt('Alasan penolakan (opsional):') || 'Bulk Reject';
+                var btn = $(this);
+                btn.prop('disabled', true);
+
+                $.ajax({
+                    url: "{{ route('ptkformtransactions.bulkReject') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        ids: Array.from(selectedIds),
+                        keterangan: reason
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        selectedIds.clear();
+                        $('#selectAllRows').prop('checked', false);
+                        refreshBulkToolbar();
+                        table.ajax.reload(null, false);
+                    },
+                    error: function(xhr) {
+                        alert(xhr.responseJSON?.message || 'Gagal menolak kandidat terpilih.');
+                    },
+                    complete: function() {
+                        refreshBulkToolbar();
+                    }
+                });
+            });
+
+            // ----- Auto Reject (screening criteria, scoped to this vacancy) -----
+            function collectAutoRejectCriteria() {
+                return {
+                    _token: "{{ csrf_token() }}",
+                    ptkform_id: "{{ $ptkform_id }}",
+                    gpa_min: $('#autoRejectGpaMin').val(),
+                    gender: $('#autoRejectGender').val(),
+                    universities: $('#autoRejectUniversities').val() || [],
+                    lulus_tahun_max: $('#autoRejectLulusTahunMax').val(),
+                    keterangan: $('#autoRejectKeterangan').val()
+                };
+            }
+
+            $('#modalAutoReject').on('hidden.bs.modal', function() {
+                $('#autoRejectPreviewBox').addClass('d-none').text('');
+                $('#btnAutoRejectExecute').prop('disabled', true);
+            });
+
+            $('#modalAutoReject').on('change',
+                '#autoRejectGpaMin, #autoRejectGender, #autoRejectUniversities, #autoRejectLulusTahunMax',
+                function() {
+                    $('#autoRejectPreviewBox').addClass('d-none').text('');
+                    $('#btnAutoRejectExecute').prop('disabled', true);
+                });
+
+            $('#btnAutoRejectPreview').on('click', function() {
+                var btn = $(this);
+                btn.prop('disabled', true).text('Menghitung...');
+
+                $.ajax({
+                    url: "{{ url('ptkformtransactions/' . $status . '/auto-reject') }}",
+                    method: "POST",
+                    data: $.extend({
+                        preview: 1
+                    }, collectAutoRejectCriteria()),
+                    success: function(response) {
+                        $('#autoRejectPreviewBox').removeClass('d-none')
+                            .text(response.count + ' kandidat cocok dengan kriteria ini dan akan ditolak.');
+                        $('#btnAutoRejectExecute').prop('disabled', response.count === 0);
+                    },
+                    error: function(xhr) {
+                        $('#autoRejectPreviewBox').removeClass('d-none')
+                            .text(xhr.responseJSON?.message || 'Gagal menghitung kandidat.');
+                        $('#btnAutoRejectExecute').prop('disabled', true);
+                    },
+                    complete: function() {
+                        btn.prop('disabled', false).text('Cek Jumlah');
+                    }
+                });
+            });
+
+            $('#btnAutoRejectExecute').on('click', function() {
+                if (!confirm(
+                        'Tolak SEMUA kandidat yang cocok dengan kriteria ini secara otomatis? Aksi ini tidak dapat dibatalkan.'
+                        )) return;
+
+                var btn = $(this);
+                btn.prop('disabled', true).text('Memproses...');
+
+                $.ajax({
+                    url: "{{ url('ptkformtransactions/' . $status . '/auto-reject') }}",
+                    method: "POST",
+                    data: collectAutoRejectCriteria(),
+                    success: function(response) {
+                        alert(response.message);
+                        $('#modalAutoReject').modal('hide');
+                        table.ajax.reload(null, false);
+                    },
+                    error: function(xhr) {
+                        alert(xhr.responseJSON?.message || 'Gagal menjalankan auto reject.');
+                    },
+                    complete: function() {
+                        btn.prop('disabled', false).html('<i class="fas fa-times me-1"></i> Tolak Otomatis');
+                    }
+                });
             });
 
             // Direct Approve Button
