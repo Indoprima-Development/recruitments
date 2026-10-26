@@ -73,7 +73,7 @@ class HomeController extends Controller
         foreach($hiredCandidates as $candidate) {
             $created = \Carbon\Carbon::parse($candidate->created_at);
             $updated = \Carbon\Carbon::parse($candidate->updated_at);
-            $totalDays += $created->diffInDays($updated);
+            $totalDays += (int) $created->diffInDays($updated);
         }
         $avgTimeToHire = $hiredCount > 0 ? round($totalDays / $hiredCount) : 0;
 
