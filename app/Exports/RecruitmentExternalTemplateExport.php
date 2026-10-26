@@ -29,7 +29,7 @@ class RecruitmentExternalTemplateExport implements FromArray, WithHeadings, Shou
         ];
     }
     
-    public function styles(Worksheet $sheet)
+    public function styles(Worksheet $sheet): ?array
     {
         return [
             1    => ['font' => ['bold' => true]],

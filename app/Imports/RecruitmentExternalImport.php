@@ -26,7 +26,7 @@ class RecruitmentExternalImport implements ToModel, WithStartRow, WithBatchInser
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
+    public function model(array $row): ?\Illuminate\Database\Eloquent\Model
     {
         // Skip if name is empty
         if (empty($row[1])) {
