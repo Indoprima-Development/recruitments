@@ -556,7 +556,7 @@ class PtkformtransactionsController extends Controller
             : '-';
 
         $created = \Carbon\Carbon::parse($row->created_at);
-        $diffDays = $created->diffInDays(now());
+        $diffDays = (int) $created->diffInDays(now());
         $daysClass = 'days-green';
         if ($diffDays > 7) $daysClass = 'days-yellow';
         if ($diffDays > 14) $daysClass = 'days-red';
@@ -568,7 +568,7 @@ class PtkformtransactionsController extends Controller
             $start = $exp->date_start ? \Carbon\Carbon::parse($exp->date_start) : null;
             $end = $exp->date_end ? \Carbon\Carbon::parse($exp->date_end) : \Carbon\Carbon::now();
             if ($start) {
-                $months = $start->diffInMonths($end);
+                $months = (int) $start->diffInMonths($end);
                 if ($months > 0) {
                     $totalMonths += $months;
                 }

@@ -33,5 +33,5 @@ jobs:
             php artisan route:cache
             php artisan view:cache
             php artisan queue:restart
-            sudo systemctl reload php8.2-fpm
+            sudo systemctl reload php8.5-fpm
           EOF
